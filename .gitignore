@@ -1,0 +1,4 @@
+**/__pycache__/*
+oelint_adv.egg-info/*
+build/
+dist/
