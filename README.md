@@ -59,6 +59,7 @@ Example:
  * oelint.var.override - Check if include/append is overriding a variable
  * oelint.var.suggestedvar - Notice on suggeste variables
  * oelint.vars.bugtrackerisurl - BUGTRACKER should be an URL
+ * oelint.vars.sectionlowercase - SECTION should be lowercase only
  * oelint.vars.homepageprefix - HOMEPAGE should begin with https:// or http://
  * oelint.vars.spacesassignment - ' = ' should be correct variable assigment
  * oelint.vars.summary80chars - SUMMARY should max. be 80 characters long

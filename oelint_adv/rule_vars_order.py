@@ -1,7 +1,12 @@
-from cls_rule import Rule
-from cls_item import *
+try:
+    from .cls_rule import Rule
+    from .cls_item import *
+    from .const_vars import VAR_ORDER
+except (SystemError, ImportError):
+    from cls_rule import Rule
+    from cls_item import *
+    from const_vars import VAR_ORDER
 import os
-from const_vars import VAR_ORDER
 
 class VarsOrder(Rule):
     def __init__(self):

@@ -1,6 +1,11 @@
-from cls_rule import Rule
-from cls_item import *
-from const_vars import SUGGESTED_VARS
+try:
+    from .cls_rule import Rule
+    from .cls_item import *
+    from .const_vars import SUGGESTED_VARS
+except (SystemError, ImportError):
+    from cls_rule import Rule
+    from cls_item import *
+    from const_vars import SUGGESTED_VARS
 
 class VarSuggestedExists(Rule):
     def __init__(self):

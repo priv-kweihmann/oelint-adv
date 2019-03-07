@@ -1,5 +1,9 @@
-from cls_item import *
-from parser import get_items
+try:
+    from .cls_item import *
+    from .parser import get_items
+except (SystemError, ImportError):
+    from cls_item import *
+    from parser import get_items
 
 class Stash():
 

@@ -2,3 +2,4 @@
 oelint_adv.egg-info/*
 build/
 dist/
+*.pyc

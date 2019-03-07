@@ -3,8 +3,12 @@ import argparse
 import glob
 import sys
 
-from cls_rule import load_rules
-from cls_stash import Stash
+try:
+    from .cls_rule import load_rules
+    from .cls_stash import Stash
+except (SystemError, ImportError):
+    from cls_rule import load_rules
+    from cls_stash import Stash
 
 def create_argparser():
     parser = argparse.ArgumentParser(
@@ -21,7 +25,10 @@ if __name__ == '__main__':
     stash = Stash()
     issues = []
     for f in args.files:
-        stash.AddFile(f)
+        try:
+            stash.AddFile(f)
+        except FileNotFoundError:
+            print("Can't open/read {}".format(f))
 
     for f in stash.GetRecipes():
         for r in rules:

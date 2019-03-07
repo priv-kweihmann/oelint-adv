@@ -1,5 +1,9 @@
-from cls_rule import Rule
-from cls_item import *
+try:
+    from .cls_rule import Rule
+    from .cls_item import *
+except (SystemError, ImportError):
+    from cls_rule import Rule
+    from cls_item import *
 import os
 
 class TaskInstallNoMkdir(Rule):

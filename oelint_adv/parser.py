@@ -1,7 +1,10 @@
 import re
 import collections
 import os
-from cls_item import Item, Comment, Function, PythonBlock, Variable, Include
+try:
+    from .cls_item import Item, Comment, Function, PythonBlock, Variable, Include
+except (SystemError, ImportError):
+    from cls_item import Item, Comment, Function, PythonBlock, Variable, Include
 
 def prepare_lines(_file, lineOffset=0):
     __func_start_regexp__ = r".*(((?P<py>python)|(?P<fr>fakeroot))\s*)*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{"

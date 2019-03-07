@@ -1,5 +1,9 @@
-from cls_rule import Rule
-from cls_item import *
+try:
+    from .cls_rule import Rule
+    from cls_rule import Rule
+except (SystemError, ImportError):
+    from cls_rule import Rule
+    from cls_item import *
 
 class VarSummaryLinebreaks(Rule):
     def __init__(self):

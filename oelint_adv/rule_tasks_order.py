@@ -1,7 +1,12 @@
-from cls_rule import Rule
-from cls_item import *
+try:
+    from .cls_rule import Rule
+    from .cls_item import *
+    from .const_func import FUNC_ORDER
+except (SystemError, ImportError):
+    from cls_rule import Rule
+    from cls_item import *
+    from const_func import FUNC_ORDER
 import os
-from const_func import FUNC_ORDER
 
 class TaskOrder(Rule):
     def __init__(self):

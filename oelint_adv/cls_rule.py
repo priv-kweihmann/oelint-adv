@@ -1,6 +1,9 @@
 import os
 import glob
-from cls_item import *
+try:
+    from .cls_item import *
+except (SystemError, ImportError):
+    from cls_item import *
 
 class Rule():
     def __init__(self, id="", severity="", message=""):
@@ -24,13 +27,18 @@ def load_rules():
     res = []
     for file in glob.glob(os.path.join(os.path.dirname(os.path.abspath(__file__)), "rule_*.py")):
         name = os.path.splitext(os.path.basename(file))[0]
-        module = __import__(name)
-        for member in dir(module):
+        for m in ["oelint_adv." + name, "." + name, name]:
             try:
-                if issubclass(getattr(module, member), Rule):
-                    inst = getattr(module, member)()
-                    if inst.ID:
-                        res.append(inst)
+                module = __import__(name)
+                for member in dir(module):
+                    try:
+                        if issubclass(getattr(module, member), Rule):
+                            inst = getattr(module, member)()
+                            if inst.ID:
+                                res.append(inst)
+                    except:
+                        pass
+                break
             except:
-                pass 
+                pass
     return res
