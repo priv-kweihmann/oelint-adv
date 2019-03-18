@@ -13,7 +13,7 @@ class VarSectionLowercase(Rule):
 
     def check(self, _file, stash):
         res = []
-        items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attvalue="SECTION")
+        items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue="SECTION")
         for i in items:
             if not i.VarValue.islower():
                 res += self.finding(i.Origin, i.InFileLine)
