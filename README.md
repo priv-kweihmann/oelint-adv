@@ -7,11 +7,13 @@ Based on the [OpenEmbedded Styleguide](https://www.openembedded.org/wiki/Stylegu
 
 The tool does handle includes/requires automatically so you don't have to pass them via CLI.
 
+**NOTE**: .bbappend-files have to be passed via CLI - these are NOT gathered automatically
+
 ## Usage
 
 ```
-python3 oelint_adv -h
-usage: oelint_adv [-h] [--suppress SUPPRESS] [--output OUTPUT]
+oelint-adv
+usage: oelint-adv [-h] [--suppress SUPPRESS] [--output OUTPUT]
                   files [files ...]
 
 Advanced OELint - Check bitbake recipes against OECore styleguide
@@ -43,7 +45,9 @@ Example:
 
 ## Available rules
 
- * oelint.comments.notrailing - No traling comments allowed, comments should be on a single line
+ * oelint.comments.notrailing - No trailing comments allowed, comments should be on a single line
+ * oelint.file.patchsignedoff - Patches should contain a Signed-Of-By entry
+ * oelint.file.upstreamstatus - Patches should contain a Upstream-Status entry
  * oelint.spaces.emptyline - Empty line should not contain spaces or tabs
  * oelint.spaces.linebeginning - No space at a line beginning
  * oelint.spaces.linecont - Safe line continuation 
@@ -53,7 +57,10 @@ Example:
  * oelint.task.nomkdir - No mkdir usage in do_install
  * oelint.task.order - Order of tasks
  * oelint.var.bbclassextend - Use BBCLASSEXTEND when possible
+ * oelint.var.licenseremotefile - License shall be a file in remote source not a local file
  * oelint.var.mandatoryvar - Check for mandatory variables
+ * oelint.var.multiinclude - Warn on including the same file more than once
+ * oelint.var.multiinherit - Warn on inherit the same file more than once
  * oelint.var.nativefilename - Native only recipes should be named -native
  * oelint.var.order - Variable order
  * oelint.var.override - Check if include/append is overriding a variable
