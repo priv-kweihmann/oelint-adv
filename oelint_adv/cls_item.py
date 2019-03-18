@@ -3,6 +3,7 @@ class Item():
     ATTR_RAW = "Raw"
     ATTR_ORIGIN = "Origin"
     CLASSIFIER = "Item"
+    ATTR_SUB = "SubItem"
 
     def __init__(self, origin, line, infileline, rawtext):
         self.Line = line
@@ -10,9 +11,16 @@ class Item():
         self.Links = []
         self.Origin = origin
         self.InFileLine = infileline
+
+    def extract_sub(self, name):
+        chunks = name.split("_")
+        if len(chunks) > 1 and chunks[-1].islower():
+            return ("_".join(chunks[:-1]), chunks[-1])
+        return ("_".join(chunks), "")
     
     def AddLink(self, _file):
         self.Links.append(_file)
+        self.Links = list(set(self.Links))
 
     def GetAttributes(self):
         return {k: v for k, v in self.__dict__.items() if not k.startswith("_")}
@@ -32,15 +40,15 @@ class Variable(Item):
     ATTR_VAR = "VarName"
     ATTR_VARVAL = "VarValue"
     CLASSIFIER = "Variable"
+    VARIABLE_APPEND_NEEDLES = ["+=", "?=", "??=", ":="]
 
     def __init__(self, origin, line, infileline, rawtext, name, value):
         super().__init__(origin, line, infileline, rawtext)
-        self.VarName = name
+        self.VarName, self.SubItem = self.extract_sub(name)
         self.VarValue = value
     
     def IsAppend(self):
-        return self.Raw.find("+=") != -1
-
+        return any([x for x in Variable.VARIABLE_APPEND_NEEDLES if self.Raw.find(x) != -1]) or self.SubItem == "append"
 
 class Comment(Item):
     CLASSIFIER = "Comment"
@@ -61,7 +69,7 @@ class Function(Item):
 
     def __init__(self, origin, line, infileline, rawtext, name, body):
         super().__init__(origin, line, infileline, rawtext)
-        self.FuncName = name[:name.find("{")].replace("(", "").replace(")", "").strip()
+        self.FuncName, self.SubItem = self.extract_sub(name[:name.find("{")].replace("(", "").replace(")", "").strip())
         self.FuncBody = body
 
 

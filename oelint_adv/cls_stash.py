@@ -4,6 +4,8 @@ try:
 except (SystemError, ImportError):
     from cls_item import *
     from parser import get_items
+import re
+import os
 
 class Stash():
 
@@ -16,6 +18,14 @@ class Stash():
         if forcedLink:
             for item in [x for x in res if x.Origin == _file]:
                 item.AddLink(forcedLink)
+        ## Match bbappends to bbs
+        if _file.endswith(".bbappend"):
+            bn_this = os.path.basename(_file).replace(".bbappend", "").replace("%", ".*")
+            for item in self.__list:
+                if re.match(bn_this, os.path.basename(item.Origin).replace(".bb", "")):
+                    item.AddLink(_file)
+                    for r in res:
+                        r.AddLink(item.Origin)
         self.__list += res
         return res
 

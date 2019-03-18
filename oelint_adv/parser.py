@@ -44,7 +44,7 @@ def split_filename_bb(_file):
 
 def get_items(stash, _file, lineOffset = 0):
     res = []
-    __regex_var = r"^.*?(?P<varname>([A-Z0-9_-]|\$|\{|\})+)(\s*|\t*)(\+*)=(\s*|\t*)(?P<varval>.*)"
+    __regex_var = r"^.*?(?P<varname>([A-Z0-9a-z_-]|\$|\{|\})+)(\s*|\t*)(\+|\?)*=(\s*|\t*)(?P<varval>.*)"
     __regex_func = r"^.*(((?P<py>python)|(?P<fr>fakeroot))\s*)*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{(?P<funcbody>.*)\s*\}"
     __regex_inherit = r"^.*?inherit(\s+|\t+)(?P<inhname>.+)"
     __regex_comments = r"^.*?#+(?P<body>.*)"
@@ -81,11 +81,11 @@ def get_items(stash, _file, lineOffset = 0):
                 elif k == "include":
                     tmp = stash.AddFile(os.path.abspath(os.path.join(os.path.dirname(_file), m.group("incname"))), lineOffset=line["line"], forcedLink=_file)
                     res.append(Include(_file, line["line"], line["line"] - lineOffset, line["raw"], m.group("incname")))
-                    lineOffset += max([x.InFileLine for x in tmp])
+                    if any(tmp):
+                        lineOffset += max([x.InFileLine for x in tmp])
                 good = True
             if good:
                 break
         if not good:
             res.append(Item(_file, line["line"], line["line"] - lineOffset, line["raw"]))
-    ##print(res)
     return res
