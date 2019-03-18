@@ -17,9 +17,9 @@ class VarSpacesOnAssignment(Rule):
         for i in items:
             if i.VarName == "inherit":
                 continue
-            needle = " = "
+            needles = [" = "]
             if i.IsAppend():
-                needle = " += "
-            if i.Raw.find(needle) == -1:
+                needles += Variable.VARIABLE_APPEND_NEEDLES
+            if not any([x for x in needles if i.Raw.find(x) != -1]):
                 res += self.finding(i.Origin, i.InFileLine)
         return res
