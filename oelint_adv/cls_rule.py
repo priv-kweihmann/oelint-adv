@@ -14,8 +14,8 @@ class Rule():
     def check(self, _file, stash):
         return []
 
-    def finding(self, _file, _line):
-        return ["{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, self.Severity, self.ID, self.Msg)]
+    def finding(self, _file, _line, override_msg=None):
+        return ["{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, self.Severity, self.ID, override_msg or self.Msg)]
 
     def __repr__(self):
         return "{}".format(self.ID)
