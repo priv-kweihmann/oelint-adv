@@ -36,5 +36,5 @@ if __name__ == '__main__':
     issues = list(set(issues))
     if args.output != sys.stderr:
         args.output = open(args.output, "w")
-    args.output.write("\n".join(issues) + "\n")
+    args.output.write("\n".join(sorted(issues)) + "\n")
     sys.exit(len(issues))
