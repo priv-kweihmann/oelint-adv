@@ -14,7 +14,7 @@ class Item():
 
     def extract_sub(self, name):
         chunks = name.split("_")
-        if len(chunks) > 1 and chunks[-1].islower():
+        if len(chunks) > 2 and chunks[-1].islower():
             return ("_".join(chunks[:-1]), chunks[-1])
         return ("_".join(chunks), "")
     
