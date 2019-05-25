@@ -1,0 +1,26 @@
+try:
+    from .cls_rule import Rule
+    from .cls_item import *
+    from .const_func import FUNC_ORDER
+except (SystemError, ImportError):
+    from cls_rule import Rule
+    from cls_item import *
+    from const_func import FUNC_ORDER
+import os
+
+class TaskDocStrings(Rule):
+    def __init__(self):
+        super().__init__(id = "oelint.task.docstrings", 
+                         severity="info",
+                         message="Every custom task should have a doc string set by task[doc] = \"\"")
+
+    def check(self, _file, stash):
+        res = []
+        for item in stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER):
+            if item.FuncName in FUNC_ORDER:
+                ## Skip for buildin tasks
+                continue
+            _ta = stash.GetItemsFor(filename=_file, classifier=TaskAssignment.CLASSIFIER, attribute="FuncName", attributeValue=item.FuncName)
+            if not any(_ta):
+                res += self.finding(item.Origin, item.InFileLine)
+        return res
