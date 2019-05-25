@@ -1,7 +1,7 @@
 import setuptools
 
 with open("README.md", "r") as fh:
-    long_description = fh.read()
+    long_description = "See README.md for details"
 
 setuptools.setup(
     name="oelint_adv",
@@ -10,7 +10,6 @@ setuptools.setup(
     author_email="kweihmann@outlook.com",
     description="Advanced bitbake-recipe linter",
     long_description=long_description,
-    long_description_content_type="text/markdown",
     url="https://github.com/priv-kweihmann/oelint-adv",
     packages=setuptools.find_packages(),
     scripts=['bin/oelint-adv'],
