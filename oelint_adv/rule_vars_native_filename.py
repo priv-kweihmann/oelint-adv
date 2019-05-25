@@ -1,9 +1,5 @@
-try:
-    from .cls_rule import Rule
-    from .cls_item import *
-except (SystemError, ImportError):
-    from cls_rule import Rule
-    from cls_item import *
+from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_item import *
 
 class VarNativeFilename(Rule):
     def __init__(self):

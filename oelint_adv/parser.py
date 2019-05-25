@@ -1,10 +1,7 @@
 import re
 import collections
 import os
-try:
-    from .cls_item import Item, Comment, Function, PythonBlock, Variable, Include, TaskAdd, TaskAssignment
-except (SystemError, ImportError):
-    from cls_item import Item, Comment, Function, PythonBlock, Variable, Include, TaskAdd, TaskAssignment
+from oelint_adv.cls_item import Item, Comment, Function, PythonBlock, Variable, Include, TaskAdd, TaskAssignment
 
 def prepare_lines(_file, lineOffset=0):
     __func_start_regexp__ = r".*(((?P<py>python)|(?P<fr>fakeroot))\s*)*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{"

@@ -1,9 +1,6 @@
 import os
 import glob
-try:
-    from .cls_item import *
-except (SystemError, ImportError):
-    from cls_item import *
+from oelint_adv.cls_item import *
 
 class Rule():
     def __init__(self, id="", severity="", message=""):
@@ -30,9 +27,9 @@ def load_rules():
     res = []
     for file in glob.glob(os.path.join(os.path.dirname(os.path.abspath(__file__)), "rule_*.py")):
         name = os.path.splitext(os.path.basename(file))[0]
-        for m in ["oelint_adv." + name, "." + name, name]:
+        for m in ["oelint_adv." + name]:##, "." + name, name]:
             try:
-                module = __import__(name)
+                module = __import__(name)                
                 for member in dir(module):
                     try:
                         if issubclass(getattr(module, member), Rule):
@@ -42,6 +39,6 @@ def load_rules():
                     except:
                         pass
                 break
-            except:
+            except Exception as e:
                 pass
     return res

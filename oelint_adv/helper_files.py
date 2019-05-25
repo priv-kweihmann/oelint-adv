@@ -1,11 +1,7 @@
 import os
 import glob
-try:
-    from .cls_stash import Stash
-    from .cls_item import Comment, Function, Include, Item, PythonBlock, Variable
-except (SystemError, ImportError):
-    from cls_stash import Stash
-    from cls_item import Comment, Function, Include, Item, PythonBlock, Variable
+from oelint_adv.cls_stash import Stash
+from oelint_adv.cls_item import Comment, Function, Include, Item, PythonBlock, Variable
 
 def get_files(stash, _file, pattern):
     res = []

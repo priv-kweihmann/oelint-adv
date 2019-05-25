@@ -1,11 +1,6 @@
-try:
-    from .cls_rule import Rule
-    from .cls_item import *
-    from .helper_files import get_files
-except (SystemError, ImportError):
-    from cls_rule import Rule
-    from cls_item import *
-    from helper_files import get_files
+from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_item import *
+from oelint_adv.helper_files import get_files
 from urllib.parse import urlparse
 import os
 

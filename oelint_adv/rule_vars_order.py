@@ -1,11 +1,6 @@
-try:
-    from .cls_rule import Rule
-    from .cls_item import *
-    from .const_vars import VAR_ORDER
-except (SystemError, ImportError):
-    from cls_rule import Rule
-    from cls_item import *
-    from const_vars import VAR_ORDER
+from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_item import *
+from oelint_adv.const_vars import VAR_ORDER
 import os
 
 class VarsOrder(Rule):

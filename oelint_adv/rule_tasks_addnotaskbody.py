@@ -1,11 +1,6 @@
-try:
-    from .cls_rule import Rule
-    from .cls_item import *
-    from .const_func import FUNC_ORDER
-except (SystemError, ImportError):
-    from cls_rule import Rule
-    from cls_item import *
-    from const_func import FUNC_ORDER
+from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_item import *
+from oelint_adv.const_func import FUNC_ORDER
 import os
 
 class TaskAddNoTaskBody(Rule):

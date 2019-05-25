@@ -1,11 +1,6 @@
-try:
-    from .cls_rule import Rule
-    from .cls_item import *
-    from .const_vars import MANDATORY_VARS
-except (SystemError, ImportError):
-    from cls_rule import Rule
-    from cls_item import *
-    from const_vars import MANDATORY_VARS
+from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_item import *
+from oelint_adv.const_vars import MANDATORY_VARS
 
 class VarMandatoryExists(Rule):
     def __init__(self):

@@ -1,14 +1,11 @@
 import os
+import sys
 import argparse
 import glob
-import sys
 
-try:
-    from .cls_rule import load_rules
-    from .cls_stash import Stash
-except (SystemError, ImportError):
-    from cls_rule import load_rules
-    from cls_stash import Stash
+sys.path.append(os.path.abspath(os.path.join(__file__, "..")))
+from oelint_adv.cls_rule import load_rules
+from oelint_adv.cls_stash import Stash
 
 def create_argparser():
     parser = argparse.ArgumentParser(

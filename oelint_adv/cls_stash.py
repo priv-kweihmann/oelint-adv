@@ -1,9 +1,5 @@
-try:
-    from .cls_item import *
-    from .parser import get_items
-except (SystemError, ImportError):
-    from cls_item import *
-    from parser import get_items
+from oelint_adv.cls_item import *
+from oelint_adv.parser import get_items
 import re
 import os
 

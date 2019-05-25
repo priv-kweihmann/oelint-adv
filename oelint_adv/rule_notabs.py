@@ -1,7 +1,4 @@
-try:
-    from .cls_rule import Rule
-except (SystemError, ImportError):
-    from cls_rule import Rule
+from oelint_adv.cls_rule import Rule
 
 class NoTabs(Rule):
     def __init__(self):
