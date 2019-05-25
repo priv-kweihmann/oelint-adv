@@ -28,9 +28,8 @@ class Item():
     def GetAttributes(self):
         return {k: v for k, v in self.__dict__.items() if not k.startswith("_")}
 
-    def GetRawCleaned(self):
+    def GetRawCleaned(self, chars="\t\n\r"):
         res = self.Raw
-        chars = "\t\n\r"
         for c in chars:
             res = res.replace(c, " ")
         return res
@@ -52,6 +51,9 @@ class Variable(Item):
     
     def IsAppend(self):
         return any([x for x in Variable.VARIABLE_APPEND_NEEDLES if self.Raw.find(x) != -1]) or self.SubItem == "append"
+    
+    def IsMultiLine(self):
+        return "\\" in self.Raw
 
 class Comment(Item):
     CLASSIFIER = "Comment"

@@ -20,6 +20,9 @@ class Rule():
     def __repr__(self):
         return "{}".format(self.ID)
 
+    def FormatMsg(self, *args):
+        return self.Msg.format(*args)
+
     def OverrideMsg(self, newmsg):
         self.Msg = newmsg
 
