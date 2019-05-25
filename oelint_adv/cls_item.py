@@ -79,3 +79,25 @@ class PythonBlock(Item):
     def __init__(self, origin, line, infileline, rawtext, name):
         super().__init__(origin, line, infileline, rawtext)
         self.FuncName = name
+
+class TaskAssignment(Item):
+    ATTR_FUNCNAME = "FuncName"
+    ATTR_VAR = "VarName"
+    ATTR_VARVAL = "VarValue"
+    CLASSIFIER = "TaskAssignment"
+    def __init__(self, origin, line, infileline, rawtext, name, ident, value):
+        super().__init__(origin, line, infileline, rawtext)
+        self.FuncName = name
+        self.VarName = ident
+        self.VarValue = value
+
+class TaskAdd(Item):
+    ATTR_FUNCNAME = "FuncName"
+    ATTR_BEFORE = "Before"
+    ATTR_AFTER = "After"
+    CLASSIFIER = "TaskAdd"
+    def __init__(self, origin, line, infileline, rawtext, name, before = "", after = ""):
+        super().__init__(origin, line, infileline, rawtext)
+        self.FuncName = name
+        self.Before = [x for x in (before or "").split(" ") if x]
+        self.After = [x for x in (after or "").split(" ") if x]

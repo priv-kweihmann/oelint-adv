@@ -2,9 +2,9 @@ import re
 import collections
 import os
 try:
-    from .cls_item import Item, Comment, Function, PythonBlock, Variable, Include
+    from .cls_item import Item, Comment, Function, PythonBlock, Variable, Include, TaskAdd, TaskAssignment
 except (SystemError, ImportError):
-    from cls_item import Item, Comment, Function, PythonBlock, Variable, Include
+    from cls_item import Item, Comment, Function, PythonBlock, Variable, Include, TaskAdd, TaskAssignment
 
 def prepare_lines(_file, lineOffset=0):
     __func_start_regexp__ = r".*(((?P<py>python)|(?P<fr>fakeroot))\s*)*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{"
@@ -50,6 +50,8 @@ def get_items(stash, _file, lineOffset = 0):
     __regex_comments = r"^.*?#+(?P<body>.*)"
     __regex_python = r"^(\s*|\t*)def(\s+|\t+)(?P<funcname>[a-z0-9_]+)(\s*|\t*)\:.+"
     __regex_include = r"^(\s*|\t*)(include|require)(\s+|\t+)(?P<incname>[A-za-z0-9\-\.]+)"
+    __regex_addtask = r"^(\s*|\t*)addtask\s+(?P<func>\w+)\s*((before\s*(?P<before>((.*(?=after))|(.*))))|(after\s*(?P<after>((.*(?=before))|(.*)))))*"
+    __regex_taskass = r"^(\s*|\t*)(?P<func>\w+)\[(?P<ident>\w+)\](\s+|\t+)=(\s+|\t+)(?P<varval>.*)"
 
     _order = collections.OrderedDict([
         ("comment", __regex_comments),
@@ -57,6 +59,8 @@ def get_items(stash, _file, lineOffset = 0):
         ("inherit", __regex_inherit),
         ("python", __regex_python),
         ("include", __regex_include),
+        ("addtask", __regex_addtask),
+        ("taskassign", __regex_taskass),
         ("vars", __regex_var)
     ])
 
@@ -78,6 +82,19 @@ def get_items(stash, _file, lineOffset = 0):
                     res.append(Comment(_file, line["line"], line["line"] - lineOffset, line["raw"]))
                 elif k == "inherit":
                     res.append(Variable(_file, line["line"], line["line"] - lineOffset, line["raw"], "inherit", m.group("inhname")))
+                elif k == "taskassign":
+                    res.append(TaskAssignment(_file, line["line"], line["line"] - lineOffset, line["raw"], m.group("func"), m.group("ident"), m.group("varval")))
+                elif k == "addtask":
+                    _g = m.groupdict()
+                    if "before" in _g.keys():
+                        _b = _g["before"]
+                    else:
+                        _b = ""
+                    if "after" in _g.keys():
+                        _a = _g["after"]
+                    else:
+                        _a = ""
+                    res.append(TaskAdd(_file, line["line"], line["line"] - lineOffset, line["raw"], m.group("func"), _b, _a))
                 elif k == "include":
                     tmp = stash.AddFile(os.path.abspath(os.path.join(os.path.dirname(_file), m.group("incname"))), lineOffset=line["line"], forcedLink=_file)
                     res.append(Include(_file, line["line"], line["line"] - lineOffset, line["raw"], m.group("incname")))
