@@ -17,6 +17,9 @@ class Item():
         if len(chunks) > 2 and chunks[-1].islower():
             return ("_".join(chunks[:-1]), chunks[-1])
         return ("_".join(chunks), "")
+
+    def IsFromAppend(self):
+        return self.Origin.endswith(".bbappend")
     
     def AddLink(self, _file):
         self.Links.append(_file)
