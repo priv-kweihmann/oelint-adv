@@ -53,6 +53,10 @@ Example:
  * oelint.spaces.linecont - Safe line continuation 
  * oelint.spaces.lineend - No spaces at line end
  * oelint.tabs.notabs - No tabs allowed
+ * oelint.task.addnotaskbody - Task added by addtask cannot be found
+ * oelint.task.customorder - order of custom tasks added via addtask
+ * oelint.task.docstrings - Custom tasks should have docstrings
+ * oelint.task.multiappends - Multiple appends to the same function in the same file won't work in bitbake
  * oelint.task.nocopy - No cp usage in do_install
  * oelint.task.nomkdir - No mkdir usage in do_install
  * oelint.task.order - Order of tasks
@@ -66,8 +70,9 @@ Example:
  * oelint.var.override - Check if include/append is overriding a variable
  * oelint.var.suggestedvar - Notice on suggeste variables
  * oelint.vars.bugtrackerisurl - BUGTRACKER should be an URL
- * oelint.vars.sectionlowercase - SECTION should be lowercase only
  * oelint.vars.homepageprefix - HOMEPAGE should begin with https:// or http://
+ * oelint.vars.multilineident - On a multiline assignment, line indent is desirable
+ * oelint.vars.sectionlowercase - SECTION should be lowercase only
  * oelint.vars.spacesassignment - ' = ' should be correct variable assigment
  * oelint.vars.summary80chars - SUMMARY should max. be 80 characters long
  * oelint.vars.summarylinebreaks - No line breaks in SUMMARY
