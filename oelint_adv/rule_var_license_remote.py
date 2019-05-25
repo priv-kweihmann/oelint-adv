@@ -20,6 +20,9 @@ class VarLicenseRemoteFile(Rule):
         _items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue="LIC_FILES_CHKSUM")
         for i in _items:
             components = get_scr_components(i.VarValue)
+            print(str(components))
             if any(components) and components["proto"] == "file":
-                res += self.finding(i.Origin, i.InFileLine)
+                if "name" in components:
+                    if "${" in components["name"]:
+                        res += self.finding(i.Origin, i.InFileLine)
         return res
