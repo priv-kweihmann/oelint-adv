@@ -50,7 +50,7 @@ Example:
  * oelint.file.upstreamstatus - Patches should contain a Upstream-Status entry
  * oelint.spaces.emptyline - Empty line should not contain spaces or tabs
  * oelint.spaces.linebeginning - No space at a line beginning
- * oelint.spaces.linecont - Safe line continuation 
+ * oelint.spaces.linecont - Safe line continuation
  * oelint.spaces.lineend - No spaces at line end
  * oelint.tabs.notabs - No tabs allowed
  * oelint.task.addnotaskbody - Task added by addtask cannot be found
@@ -61,6 +61,7 @@ Example:
  * oelint.task.nomkdir - No mkdir usage in do_install
  * oelint.task.order - Order of tasks
  * oelint.var.bbclassextend - Use BBCLASSEXTEND when possible
+ * oelint.vars.dependsappend - DEPENDS should only be appended, not overwritten
  * oelint.var.licenseremotefile - License shall be a file in remote source not a local file
  * oelint.var.mandatoryvar - Check for mandatory variables
  * oelint.var.multiinclude - Warn on including the same file more than once

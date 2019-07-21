@@ -42,7 +42,7 @@ class Variable(Item):
     ATTR_VAR = "VarName"
     ATTR_VARVAL = "VarValue"
     CLASSIFIER = "Variable"
-    VARIABLE_APPEND_NEEDLES = ["+=", "?=", "??=", ":="]
+    VARIABLE_APPEND_NEEDLES = ["+="]
 
     def __init__(self, origin, line, infileline, rawtext, name, value):
         super().__init__(origin, line, infileline, rawtext)
@@ -50,7 +50,7 @@ class Variable(Item):
         self.VarValue = value
     
     def IsAppend(self):
-        return any([x for x in Variable.VARIABLE_APPEND_NEEDLES if self.Raw.find(x) != -1]) or self.SubItem == "append"
+        return any([x for x in Variable.VARIABLE_APPEND_NEEDLES if self.Raw.find(x) != -1]) or self.Raw.find("_append") != -1
     
     def IsMultiLine(self):
         return "\\" in self.Raw
