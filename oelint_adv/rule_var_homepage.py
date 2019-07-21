@@ -11,6 +11,7 @@ class VarHomepagePrefix(Rule):
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue="HOMEPAGE")
         for i in items:
-            if not any([x for x in ["https://", "http://"] if i.VarValue.startswith(x)]):
+            tmp = i.VarValue.strip('"').strip()
+            if not any([x for x in ["https://", "http://"] if tmp.startswith(x)]):
                 res += self.finding(i.Origin, i.InFileLine)
         return res
