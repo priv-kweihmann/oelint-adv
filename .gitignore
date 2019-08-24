@@ -3,3 +3,9 @@ oelint_adv.egg-info/*
 build/
 dist/
 *.pyc
+
+# PyCharm
+.idea/*
+
+# VisualStudioCode
+.vscode/*
