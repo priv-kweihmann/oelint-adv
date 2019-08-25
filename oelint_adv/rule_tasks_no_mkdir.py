@@ -2,9 +2,10 @@ from oelint_adv.cls_rule import Rule
 from oelint_adv.cls_item import *
 import os
 
+
 class TaskInstallNoMkdir(Rule):
     def __init__(self):
-        super().__init__(id = "oelint.task.nomkdir", 
+        super().__init__(id="oelint.task.nomkdir",
                          severity="error",
                          message="'mkdir' shall not be used in do_install. Use 'install'")
 

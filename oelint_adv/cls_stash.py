@@ -3,6 +3,7 @@ from oelint_adv.parser import get_items
 import re
 import os
 
+
 class Stash():
 
     def __init__(self):
@@ -14,9 +15,10 @@ class Stash():
         if forcedLink:
             for item in [x for x in res if x.Origin == _file]:
                 item.AddLink(forcedLink)
-        ## Match bbappends to bbs
+        # Match bbappends to bbs
         if _file.endswith(".bbappend"):
-            bn_this = os.path.basename(_file).replace(".bbappend", "").replace("%", ".*")
+            bn_this = os.path.basename(_file).replace(
+                ".bbappend", "").replace("%", ".*")
             for item in self.__list:
                 if re.match(bn_this, os.path.basename(item.Origin).replace(".bb", "")):
                     item.AddLink(_file)
@@ -30,24 +32,25 @@ class Stash():
 
     def __is_linked_to(self, item, filename):
         return filename in item.Links or filename == item.Origin
-    
+
     def __get_items_by_file(self, items, filename):
         if not filename:
             return items
         return [x for x in items if self.__is_linked_to(x, filename)]
-    
+
     def __get_items_by_classifier(self, items, classifier):
         if not classifier:
             return items
         return [x for x in items if x.CLASSIFIER == classifier]
-    
+
     def __get_items_by_attribute(self, items, attname, attvalue):
         if not attname:
             return items
-        ## v is a list
+        # v is a list
         res = [x for x in items if attname in x.GetAttributes().keys()]
         if attvalue:
-            res = [x for x in res if (attname in x.GetAttributes().keys() and x.GetAttributes()[attname] == attvalue)]
+            res = [x for x in res if (attname in x.GetAttributes(
+            ).keys() and x.GetAttributes()[attname] == attvalue)]
         return res
 
     def GetItemsFor(self, filename=None, classifier=None, attribute=None, attributeValue=None):

@@ -1,8 +1,9 @@
 from oelint_adv.cls_rule import Rule
 
+
 class NoSpaceRuleCont(Rule):
     def __init__(self):
-        super().__init__(id = "oelint.spaces.linecont", 
+        super().__init__(id="oelint.spaces.linecont",
                          severity="error",
                          message="No spaces after line continuation")
 

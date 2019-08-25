@@ -1,8 +1,9 @@
 from oelint_adv.cls_rule import Rule
 
+
 class NoSpaceTrailingRule(Rule):
     def __init__(self):
-        super().__init__(id = "oelint.spaces.lineend", 
+        super().__init__(id="oelint.spaces.lineend",
                          severity="warning",
                          message="Line shall not end with a space")
 

@@ -3,6 +3,7 @@ import collections
 import os
 from oelint_adv.cls_item import Item, Comment, Function, PythonBlock, Variable, Include, TaskAdd, TaskAssignment
 
+
 def prepare_lines(_file, lineOffset=0):
     __func_start_regexp__ = r".*(((?P<py>python)|(?P<fr>fakeroot))\s*)*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{"
     with open(_file) as i:
@@ -30,16 +31,18 @@ def prepare_lines(_file, lineOffset=0):
                     _, line = _iter.__next__()
                     if not line.strip():
                         break
-            prep_lines.append({"line": num + 1 + lineOffset, "raw": raw_line , "cnt": raw_line.replace("\n", "").replace("\\", "")})
-        ##print(prep_lines)
+            prep_lines.append({"line": num + 1 + lineOffset, "raw": raw_line,
+                               "cnt": raw_line.replace("\n", "").replace("\\", "")})
+        # print(prep_lines)
         return prep_lines
     return []
+
 
 def split_filename_bb(_file):
     __regex_version = r"(?P<recipe>[A-Za-z\-0-9]+)(_(?P<version>.*))*\.(?P<suffix>.*)"
 
 
-def get_items(stash, _file, lineOffset = 0):
+def get_items(stash, _file, lineOffset=0):
     res = []
     __regex_var = r"^.*?(?P<varname>([A-Z0-9a-z_-]|\$|\{|\})+)(\s*|\t*)(\+|\?)*=(\s*|\t*)(?P<varval>.*)"
     __regex_func = r"^.*(((?P<py>python)|(?P<fr>fakeroot))\s*)*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{(?P<funcbody>.*)\s*\}"
@@ -70,17 +73,23 @@ def get_items(stash, _file, lineOffset = 0):
                     if any(res) and isinstance(res[-1], PythonBlock):
                         res[-1].Raw += line["raw"]
                     else:
-                        res.append(PythonBlock(_file, line["line"],  line["line"] - lineOffset, line["raw"], m.group("funcname")))
+                        res.append(PythonBlock(
+                            _file, line["line"],  line["line"] - lineOffset, line["raw"], m.group("funcname")))
                 elif k == "vars":
-                    res.append(Variable(_file, line["line"], line["line"] - lineOffset, line["raw"], m.group("varname"), m.group("varval")))
+                    res.append(Variable(
+                        _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("varname"), m.group("varval")))
                 elif k == "func":
-                    res.append(Function(_file, line["line"], line["line"] - lineOffset, line["raw"], line["raw"], m.group("funcbody")))
+                    res.append(Function(
+                        _file, line["line"], line["line"] - lineOffset, line["raw"], line["raw"], m.group("funcbody")))
                 elif k == "comment":
-                    res.append(Comment(_file, line["line"], line["line"] - lineOffset, line["raw"]))
+                    res.append(
+                        Comment(_file, line["line"], line["line"] - lineOffset, line["raw"]))
                 elif k == "inherit":
-                    res.append(Variable(_file, line["line"], line["line"] - lineOffset, line["raw"], "inherit", m.group("inhname")))
+                    res.append(Variable(
+                        _file, line["line"], line["line"] - lineOffset, line["raw"], "inherit", m.group("inhname")))
                 elif k == "taskassign":
-                    res.append(TaskAssignment(_file, line["line"], line["line"] - lineOffset, line["raw"], m.group("func"), m.group("ident"), m.group("varval")))
+                    res.append(TaskAssignment(_file, line["line"], line["line"] - lineOffset, line["raw"], m.group(
+                        "func"), m.group("ident"), m.group("varval")))
                 elif k == "addtask":
                     _g = m.groupdict()
                     if "before" in _g.keys():
@@ -91,15 +100,19 @@ def get_items(stash, _file, lineOffset = 0):
                         _a = _g["after"]
                     else:
                         _a = ""
-                    res.append(TaskAdd(_file, line["line"], line["line"] - lineOffset, line["raw"], m.group("func"), _b, _a))
+                    res.append(TaskAdd(
+                        _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("func"), _b, _a))
                 elif k == "include":
-                    tmp = stash.AddFile(os.path.abspath(os.path.join(os.path.dirname(_file), m.group("incname"))), lineOffset=line["line"], forcedLink=_file)
-                    res.append(Include(_file, line["line"], line["line"] - lineOffset, line["raw"], m.group("incname")))
+                    tmp = stash.AddFile(os.path.abspath(os.path.join(os.path.dirname(
+                        _file), m.group("incname"))), lineOffset=line["line"], forcedLink=_file)
+                    res.append(Include(
+                        _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("incname")))
                     if any(tmp):
                         lineOffset += max([x.InFileLine for x in tmp])
                 good = True
             if good:
                 break
         if not good:
-            res.append(Item(_file, line["line"], line["line"] - lineOffset, line["raw"]))
+            res.append(
+                Item(_file, line["line"], line["line"] - lineOffset, line["raw"]))
     return res

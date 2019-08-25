@@ -2,9 +2,10 @@ from oelint_adv.cls_rule import Rule
 from oelint_adv.cls_item import *
 import os
 
+
 class TaskInstallNoCp(Rule):
     def __init__(self):
-        super().__init__(id = "oelint.task.nocopy", 
+        super().__init__(id="oelint.task.nocopy",
                          severity="error",
                          message="'cp' shall not be used in do_install. Use 'install'")
 

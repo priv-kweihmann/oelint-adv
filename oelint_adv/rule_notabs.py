@@ -1,8 +1,9 @@
 from oelint_adv.cls_rule import Rule
 
+
 class NoTabs(Rule):
     def __init__(self):
-        super().__init__(id = "oelint.tabs.notabs", 
+        super().__init__(id="oelint.tabs.notabs",
                          severity="warning",
                          message="Don't use tabs use spaces")
 

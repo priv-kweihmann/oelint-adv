@@ -1,8 +1,9 @@
 from oelint_adv.cls_rule import Rule
 
+
 class NoCommentsTrailing(Rule):
     def __init__(self):
-        super().__init__(id = "oelint.comments.notrailing", 
+        super().__init__(id="oelint.comments.notrailing",
                          severity="error",
                          message="Comments shall be put on seperate lines")
 
