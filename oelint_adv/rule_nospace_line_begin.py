@@ -1,8 +1,9 @@
 from oelint_adv.cls_rule import Rule
 
+
 class NoSpaceBeginningRule(Rule):
     def __init__(self):
-        super().__init__(id = "oelint.spaces.linebeginning", 
+        super().__init__(id="oelint.spaces.linebeginning",
                          severity="warning",
                          message="Line shall not begin with a space")
 

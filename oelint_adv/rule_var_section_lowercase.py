@@ -1,15 +1,17 @@
 from oelint_adv.cls_rule import Rule
 from oelint_adv.cls_item import *
 
+
 class VarSectionLowercase(Rule):
     def __init__(self):
-        super().__init__(id = "oelint.vars.sectionlowercase", 
+        super().__init__(id="oelint.vars.sectionlowercase",
                          severity="warning",
                          message="'SECTION' should only lowercase characters")
 
     def check(self, _file, stash):
         res = []
-        items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue="SECTION")
+        items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                                  attribute=Variable.ATTR_VAR, attributeValue="SECTION")
         for i in items:
             if not i.VarValue.islower():
                 res += self.finding(i.Origin, i.InFileLine)

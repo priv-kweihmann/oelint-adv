@@ -2,12 +2,13 @@ import os
 import glob
 from oelint_adv.cls_item import *
 
+
 class Rule():
     def __init__(self, id="", severity="", message=""):
         self.ID = id
         self.Severity = severity
         self.Msg = message
-    
+
     def check(self, _file, stash):
         return []
 
@@ -23,13 +24,14 @@ class Rule():
     def OverrideMsg(self, newmsg):
         self.Msg = newmsg
 
+
 def load_rules():
     res = []
     for file in glob.glob(os.path.join(os.path.dirname(os.path.abspath(__file__)), "rule_*.py")):
         name = os.path.splitext(os.path.basename(file))[0]
-        for m in ["oelint_adv." + name]:##, "." + name, name]:
+        for m in ["oelint_adv." + name]:  # , "." + name, name]:
             try:
-                module = __import__(name)                
+                module = __import__(name)
                 for member in dir(module):
                     try:
                         if issubclass(getattr(module, member), Rule):

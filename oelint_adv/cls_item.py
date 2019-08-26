@@ -20,7 +20,7 @@ class Item():
 
     def IsFromAppend(self):
         return self.Origin.endswith(".bbappend")
-    
+
     def AddLink(self, _file):
         self.Links.append(_file)
         self.Links = list(set(self.Links))
@@ -48,24 +48,29 @@ class Variable(Item):
         super().__init__(origin, line, infileline, rawtext)
         self.VarName, self.SubItem = self.extract_sub(name)
         self.VarValue = value
-    
+
     def IsAppend(self):
         return any([x for x in Variable.VARIABLE_APPEND_NEEDLES if self.Raw.find(x) != -1]) or self.Raw.find("_append") != -1
-    
+
     def IsMultiLine(self):
         return "\\" in self.Raw
 
+
 class Comment(Item):
     CLASSIFIER = "Comment"
+
     def __init__(self, origin, line, infileline, rawtext):
         super().__init__(origin, line, infileline, rawtext)
+
 
 class Include(Item):
     CLASSIFIER = "Include"
     ATTR_INCNAME = "IncName"
+
     def __init__(self, origin, line, infileline, rawtext, incname):
         super().__init__(origin, line, infileline, rawtext)
         self.IncName = incname
+
 
 class Function(Item):
     ATTR_FUNCNAME = "FuncName"
@@ -74,34 +79,40 @@ class Function(Item):
 
     def __init__(self, origin, line, infileline, rawtext, name, body):
         super().__init__(origin, line, infileline, rawtext)
-        self.FuncName, self.SubItem = self.extract_sub(name[:name.find("{")].replace("(", "").replace(")", "").strip())
+        self.FuncName, self.SubItem = self.extract_sub(
+            name[:name.find("{")].replace("(", "").replace(")", "").strip())
         self.FuncBody = body
 
 
 class PythonBlock(Item):
     ATTR_FUNCNAME = "FuncName"
     CLASSIFIER = "PythonBlock"
+
     def __init__(self, origin, line, infileline, rawtext, name):
         super().__init__(origin, line, infileline, rawtext)
         self.FuncName = name
+
 
 class TaskAssignment(Item):
     ATTR_FUNCNAME = "FuncName"
     ATTR_VAR = "VarName"
     ATTR_VARVAL = "VarValue"
     CLASSIFIER = "TaskAssignment"
+
     def __init__(self, origin, line, infileline, rawtext, name, ident, value):
         super().__init__(origin, line, infileline, rawtext)
         self.FuncName = name
         self.VarName = ident
         self.VarValue = value
 
+
 class TaskAdd(Item):
     ATTR_FUNCNAME = "FuncName"
     ATTR_BEFORE = "Before"
     ATTR_AFTER = "After"
     CLASSIFIER = "TaskAdd"
-    def __init__(self, origin, line, infileline, rawtext, name, before = "", after = ""):
+
+    def __init__(self, origin, line, infileline, rawtext, name, before="", after=""):
         super().__init__(origin, line, infileline, rawtext)
         self.FuncName = name
         self.Before = [x for x in (before or "").split(" ") if x]
