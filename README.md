@@ -13,8 +13,9 @@ The tool does handle includes/requires automatically so you don't have to pass t
 
 ```
 oelint-adv
-usage: oelint-adv [-h] [--suppress SUPPRESS] [--output OUTPUT]
-                  files [files ...]
+usage: __main__.py [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix]
+                   [--nobackup]
+                   files [files ...]
 
 Advanced OELint - Check bitbake recipes against OECore styleguide
 
@@ -25,6 +26,8 @@ optional arguments:
   -h, --help           show this help message and exit
   --suppress SUPPRESS  Rules to suppress
   --output OUTPUT      Where to flush the findings (default: stderr)
+  --fix                Automatically try to fix the issues
+  --nobackup           Don't create backup file when auto fixing
 ```
 
 ## Output
@@ -43,16 +46,25 @@ Example:
 /disk/meta-some/cppcheck-native/cppcheck.inc:12:warning:oelint.var.order:'DEPENDS' should be placed before 'inherit'
 ```
 
+## Apply automatic fixing
+
+Some of the rules are capable of fixing the issues found automatically.
+This will be done if you pass **--fix** as a startup parameter.
+
+As long as you don't pass **--nobackup** a backup copy (filename + .bak) will be created for all files fixed.
+
 ## Available rules
+
+Rules marked with **[F]** are able to perform automatic fixing
 
  * oelint.comments.notrailing - No trailing comments allowed, comments should be on a single line
  * oelint.file.patchsignedoff - Patches should contain a Signed-Of-By entry
  * oelint.file.upstreamstatus - Patches should contain a Upstream-Status entry
- * oelint.spaces.emptyline - Empty line should not contain spaces or tabs
- * oelint.spaces.linebeginning - No space at a line beginning
- * oelint.spaces.linecont - Safe line continuation
- * oelint.spaces.lineend - No spaces at line end
- * oelint.tabs.notabs - No tabs allowed
+ * oelint.spaces.emptyline - Empty line should not contain spaces or tabs **[F]**
+ * oelint.spaces.linebeginning - No space at a line beginning **[F]**
+ * oelint.spaces.linecont - Safe line continuation **[F]**
+ * oelint.spaces.lineend - No spaces at line end **[F]**
+ * oelint.tabs.notabs - No tabs allowed **[F]**
  * oelint.task.addnotaskbody - Task added by addtask cannot be found
  * oelint.task.customorder - order of custom tasks added via addtask
  * oelint.task.docstrings - Custom tasks should have docstrings
@@ -73,7 +85,7 @@ Example:
  * oelint.vars.bugtrackerisurl - BUGTRACKER should be an URL
  * oelint.vars.homepageprefix - HOMEPAGE should begin with https:// or http://
  * oelint.vars.multilineident - On a multiline assignment, line indent is desirable
- * oelint.vars.sectionlowercase - SECTION should be lowercase only
+ * oelint.vars.sectionlowercase - SECTION should be lowercase only **[F]**
  * oelint.vars.spacesassignment - ' = ' should be correct variable assignment
  * oelint.vars.summary80chars - SUMMARY should max. be 80 characters long
  * oelint.vars.summarylinebreaks - No line breaks in SUMMARY

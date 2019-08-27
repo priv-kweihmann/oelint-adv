@@ -12,6 +12,9 @@ class Rule():
     def check(self, _file, stash):
         return []
 
+    def fix(self, _file, stash):
+        return []
+
     def finding(self, _file, _line, override_msg=None):
         return ["{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, self.Severity, self.ID, override_msg or self.Msg)]
 
