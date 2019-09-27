@@ -11,7 +11,7 @@ except (subprocess.CalledProcessError, Exception):
 
 setuptools.setup(
     name="oelint_adv",
-    version="1.5.0",
+    version="1.6.0",
     author="Konrad Weihmann",
     author_email="kweihmann@outlook.com",
     description="Advanced bitbake-recipe linter",
