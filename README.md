@@ -73,7 +73,6 @@ Rules marked with **[F]** are able to perform automatic fixing
  * oelint.task.nomkdir - No mkdir usage in do_install
  * oelint.task.order - Order of tasks
  * oelint.var.bbclassextend - Use BBCLASSEXTEND when possible
- * oelint.vars.dependsappend - DEPENDS should only be appended, not overwritten
  * oelint.var.licenseremotefile - License shall be a file in remote source not a local file
  * oelint.var.mandatoryvar - Check for mandatory variables
  * oelint.var.multiinclude - Warn on including the same file more than once
@@ -82,7 +81,9 @@ Rules marked with **[F]** are able to perform automatic fixing
  * oelint.var.order - Variable order
  * oelint.var.override - Check if include/append is overriding a variable
  * oelint.var.suggestedvar - Notice on suggested variables
+ * oelint.vars.autorev - The usage of 'AUTOREV' for SRCREV leads to not reproducible builds
  * oelint.vars.bugtrackerisurl - BUGTRACKER should be an URL
+ * oelint.vars.dependsappend - DEPENDS should only be appended, not overwritten
  * oelint.vars.homepageprefix - HOMEPAGE should begin with https:// or http://
  * oelint.vars.multilineident - On a multiline assignment, line indent is desirable
  * oelint.vars.sectionlowercase - SECTION should be lowercase only **[F]**
