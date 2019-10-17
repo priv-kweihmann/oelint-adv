@@ -41,6 +41,7 @@ class Item():
 class Variable(Item):
     ATTR_VAR = "VarName"
     ATTR_VARVAL = "VarValue"
+    ATTR_VARVALSTRIPPED = "VarValueStripped"
     CLASSIFIER = "Variable"
     VARIABLE_APPEND_NEEDLES = ["+="]
 
@@ -48,6 +49,7 @@ class Variable(Item):
         super().__init__(origin, line, infileline, rawtext)
         self.VarName, self.SubItem = self.extract_sub(name)
         self.VarValue = value
+        self.VarValueStripped = self.VarValue.strip().lstrip('"').rstrip('"')
 
     def IsAppend(self):
         return any([x for x in Variable.VARIABLE_APPEND_NEEDLES if self.Raw.find(x) != -1]) or self.Raw.find("_append") != -1
@@ -81,8 +83,10 @@ class Function(Item):
         super().__init__(origin, line, infileline, rawtext)
         self.FuncName, self.SubItem = self.extract_sub(
             name[:name.find("{")].replace("(", "").replace(")", "").strip())
+        if self.SubItem not in ["", "append", "remove", "class-target", "class-native"]:
+            self.FuncName += "_" + self.SubItem
         self.FuncBody = body
-
+        self.FuncBodyStripped = body.replace("{", "").replace("}", "").replace("\n", "").strip()
 
 class PythonBlock(Item):
     ATTR_FUNCNAME = "FuncName"
