@@ -20,6 +20,10 @@ setuptools.setup(
     url="https://github.com/priv-kweihmann/oelint-adv",
     packages=setuptools.find_packages(),
     scripts=['bin/oelint-adv'],
+    install_requires=[
+        'urllib3>=1.21.1',
+        'anytree>=2.7.0'
+    ],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
