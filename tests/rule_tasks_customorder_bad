@@ -2,7 +2,7 @@
 TESTFILE="/tmp/oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.task.customorder"
-TESTOCC="2"
+TESTOCC="1"
 cat > ${TESTFILE} << EOF
 do_foo() {
     :
@@ -11,6 +11,6 @@ addtask do_compile after do_configure before do_foo
 addtask do_configure after do_compile
 addtask do_foo before do_configure
 EOF
-[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) -ge "${TESTOCC}" ] && exit 0
 echo "Test for ${0} failed"
 exit 1
