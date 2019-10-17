@@ -15,10 +15,10 @@ class VarMultiInherit(Rule):
                                   attribute=Variable.ATTR_VAR, attributeValue="inherit")
         keys = []
         for i in items:
-            keys += [x.strip() for x in re.split("\s|,", i.VarValue) if x]
-        for key in list(set(keys)):
-            _i = [x for x in items if x.VarValue.find(key) != -1]
-            if len(_i) > 1:
-                res += self.finding(_i[-1].Origin, _i[-1].InFileLine,
-                                    self.Msg.replace("{INH}", key))
+            for y in [x.strip() for x in re.split(r"\s|,", i.VarValue) if x]:
+                if y not in keys:
+                    keys.append(y)
+                else:
+                    res += self.finding(i.Origin, i.InFileLine,
+                                    self.Msg.replace("{INH}", y))
         return res
