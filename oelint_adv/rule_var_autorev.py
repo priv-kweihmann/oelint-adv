@@ -13,7 +13,6 @@ class VarAutorev(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR)
         for i in [x for x in items if x.VarName.startswith("SRCREV")]:
-            tmp = i.VarValue.strip('"').strip()
-            if i.VarValue.strip('"').strip() == "${AUTOREV}":
+            if i.VarValueStripped == "${AUTOREV}":
                 res += self.finding(i.Origin, i.InFileLine)
         return res
