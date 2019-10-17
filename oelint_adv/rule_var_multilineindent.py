@@ -16,10 +16,11 @@ class VarMultiLineIndent(Rule):
             if not i.IsMultiLine():
                 continue
             _rawclean = i.GetRawCleaned()
-            _needle = i.VarValue
+            _needle = i.VarValue.lstrip('"')
             if len(_needle) > 10:
                 _needle = _needle[:10]
-            _value = _rawclean[_rawclean.find(_needle):]
+            _value = _rawclean[_rawclean.find("=") + 1:]
+            _value = _value.lstrip("+ ")
             _lines = [x for x in _value.split("\\") if x]
             if any(_lines):
                 _calcoffset = i.Raw.find(_lines[0])
