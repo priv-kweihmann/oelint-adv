@@ -1,7 +1,9 @@
 from oelint_adv.cls_rule import Rule
 from oelint_adv.cls_item import *
 from oelint_adv.const_func import FUNC_ORDER
+from anytree import Node, LoopError, TreeError, RenderTree
 import os
+import re
 
 
 class TaskCustomOrder(Rule):
@@ -10,23 +12,59 @@ class TaskCustomOrder(Rule):
                          severity="error",
                          message="<FOO>")
 
+    def __getNodeFromException(self, msg):
+        m = re.match(r"^.*Node\(\'(?P<path>.*)\'\)\.$", msg)
+        if m:
+            return [x for x in m.group("path").split("/") if x]
+        return []
+
     def check(self, _file, stash):
         res = []
-        items = stash.GetItemsFor(
-            filename=_file, classifier=TaskAdd.CLASSIFIER)
+        items = stash.GetItemsFor(filename=_file, classifier=TaskAdd.CLASSIFIER)
+        _nodes = []
         for item in items:
-            _before = item.Before
-            _after = item.After
-            for _a in _after:
-                if not _a in FUNC_ORDER:
-                    continue
-                _ai = FUNC_ORDER.index(_a)
-                for _b in _before:
-                    if not _b in FUNC_ORDER:
-                        continue
-                    _bi = FUNC_ORDER.index(_b)
-                    if _ai > _bi:
-                        self.OverrideMsg(
-                            "after '{}' and before '{}' breaks ordering cylce".format(_a, _b))
-                        res += self.finding(item.Origin, item.InFileLine)
+            for t in item.After:
+                _n = None
+                _m = None
+                try:
+                    _t = [y for y in _nodes if y.name == t]
+                    if not any(_t):
+                        _n = Node(t)
+                        _nodes.append(_n)
+                    else:
+                        _n = _t[0]
+                    _t = [y for y in _nodes if y.name == item.FuncName]
+                    if not any(_t):
+                        _m = Node(item.FuncName)
+                        _nodes.append(_m)
+                    else:
+                        _m = _t[0]
+                    if not _m in _n.children:
+                        _n.children += (_m,)
+                except LoopError as e:
+                    _path = self.__getNodeFromException(str(e)) + [t]
+                    self.OverrideMsg("Assignment creates a cyclic dependency - Path={}".format("->".join(_path)))
+                    res += self.finding(item.Origin, item.InFileLine)
+            for t in item.Before:
+                try:
+                    _n = None
+                    _t = [y for y in _nodes if y.name == item.FuncName]
+                    if not any(_t):
+                        _n = Node(item.FuncName)
+                        _nodes.append(_n)
+                    else:
+                        _n = _t[0]
+                    _t = [y for y in _nodes if y.name == t]
+                    _m = None
+                    if not any(_t):
+                        _m = Node(t)
+                        _nodes.append(_m)
+                    else:
+                        _m = _t[0]
+                    if not _m in _n.children:
+                        _n.children += (_m,)
+                except LoopError as e:
+                    _path = self.__getNodeFromException(str(e)) + [t]
+                    self.OverrideMsg("Assignment creates a cyclic dependency - Path={}".format("->".join(_path)))
+                    res += self.finding(item.Origin, item.InFileLine)
         return res

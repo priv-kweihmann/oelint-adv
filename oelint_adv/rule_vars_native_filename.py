@@ -13,7 +13,7 @@ class VarNativeFilename(Rule):
         items = [x for x in
                  stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                    attribute=Variable.ATTR_VAR, attributeValue="inherit")
-                 if x.VarValue.strip() == "native"]
+                 if x.VarValueStripped == "native"]
         if any(items):
             if _file.find("-native") == -1:
                 res += self.finding(_file, 0)

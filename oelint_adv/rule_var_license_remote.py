@@ -1,7 +1,6 @@
 from oelint_adv.cls_rule import Rule
 from oelint_adv.cls_item import *
 from oelint_adv.helper_files import get_scr_components
-from urllib.parse import urlparse
 import os
 
 
@@ -16,9 +15,8 @@ class VarLicenseRemoteFile(Rule):
         _items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                    attribute=Variable.ATTR_VAR, attributeValue="LIC_FILES_CHKSUM")
         for i in _items:
-            components = get_scr_components(i.VarValue)
-            if any(components) and components["proto"] == "file":
-                if "name" in components:
-                    if "${" in components["name"]:
-                        res += self.finding(i.Origin, i.InFileLine)
+            components = get_scr_components(i.VarValueStripped)
+            if any(components) and components["scheme"] == "file":
+                if "${" in components["src"]:
+                    res += self.finding(i.Origin, i.InFileLine)
         return res

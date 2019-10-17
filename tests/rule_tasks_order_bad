@@ -1,0 +1,34 @@
+#!/bin/sh
+TESTFILE="/tmp/oelint_adv_test.bb"
+trap "rm -f ${TESTFILE}" EXIT
+TESTID="oelint.task.order"
+TESTOCC="7"
+cat > ${TESTFILE} << EOF
+do_package() {
+    :
+}
+do_populate_sysroot() {
+    :
+}
+do_install() {
+    :
+}
+do_compile() {
+    :
+}
+do_configure() {
+    :
+}
+do_patch() {
+    :
+}
+do_unpack() {
+    :
+}
+do_fetch() {
+    :
+}
+EOF
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+echo "Test for ${0} failed"
+exit 1

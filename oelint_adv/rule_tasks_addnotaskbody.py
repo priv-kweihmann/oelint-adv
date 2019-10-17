@@ -20,4 +20,6 @@ class TaskAddNoTaskBody(Rule):
                                     attribute="FuncName", attributeValue=item.FuncName)
             if not any(_ta):
                 res += self.finding(item.Origin, item.InFileLine)
+            elif not any([x for x in _ta if x.FuncBodyStripped]):
+                res += self.finding(item.Origin, item.InFileLine)
         return res

@@ -1,0 +1,14 @@
+#!/bin/sh
+TESTFILE="/tmp/oelint_adv_test.bb"
+trap "rm -f ${TESTFILE}" EXIT
+TESTID="oelint.vars.multilineident"
+TESTOCC="0"
+cat > ${TESTFILE} << EOF
+A = "a \\
+     b \\
+     e \\
+    "
+EOF
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+echo "Test for ${0} failed"
+exit 1

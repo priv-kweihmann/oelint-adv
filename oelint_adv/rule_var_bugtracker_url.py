@@ -1,6 +1,6 @@
 from oelint_adv.cls_rule import Rule
 from oelint_adv.cls_item import *
-from urllib.parse import urlparse
+from oelint_adv.helper_files import get_scr_components
 
 
 class VarBugtrackerIsUrl(Rule):
@@ -14,10 +14,10 @@ class VarBugtrackerIsUrl(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue="BUGTRACKER")
         for i in items:
-            val = i.VarValue.replace("\"", "").strip()
+            val = i.VarValueStripped
             try:
-                result = urlparse(val)
-                if not result.scheme or not result.netloc:
+                result = get_scr_components(val)
+                if not result["scheme"] or not result["src"]:
                     raise Exception()
             except:
                 res += self.finding(i.Origin, i.InFileLine)

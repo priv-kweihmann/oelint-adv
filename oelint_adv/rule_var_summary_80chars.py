@@ -13,7 +13,7 @@ class VarSummary80Chars(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue="SUMMARY")
         for i in items:
-            val = i.VarValue.strip()
+            val = i.VarValueStripped
             if len(val) > 80:
                 res += self.finding(i.Origin, i.InFileLine)
         return res

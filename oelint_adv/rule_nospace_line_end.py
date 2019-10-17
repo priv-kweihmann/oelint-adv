@@ -1,4 +1,5 @@
 from oelint_adv.cls_rule import Rule
+from copy import deepcopy
 import re
 
 
@@ -14,15 +15,17 @@ class NoSpaceTrailingRule(Rule):
         for i in items:
             _linecnt = 0
             for line in i.Raw.split("\n"):
-                if line.endswith("  "):
-                    res.append(i)
+                if line.endswith(" "):
+                    _i = deepcopy(i)
+                    _i.Line = i.Line + _linecnt
+                    res.append(_i)
                 _linecnt += 1
         return res
 
     def check(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):
-            res += self.finding(i.Origin, i.InFileLine + _linecnt)
+            res += self.finding(i.Origin, i.InFileLine)
         return res
 
     def fix(self, _file, stash):

@@ -1,7 +1,10 @@
-import os
 import glob
-from oelint_adv.cls_item import *
+import importlib
+import inspect
+import os
+import pkgutil
 
+from oelint_adv.cls_item import *
 
 class Rule():
     def __init__(self, id="", severity="", message=""):
@@ -28,22 +31,25 @@ class Rule():
         self.Msg = newmsg
 
 
-def load_rules():
+def load_rules(add_rules=[]):
     res = []
-    for file in glob.glob(os.path.join(os.path.dirname(os.path.abspath(__file__)), "rule_*.py")):
-        name = os.path.splitext(os.path.basename(file))[0]
-        for m in ["oelint_adv." + name]:  # , "." + name, name]:
-            try:
-                module = __import__(name)
-                for member in dir(module):
-                    try:
-                        if issubclass(getattr(module, member), Rule):
-                            inst = getattr(module, member)()
-                            if inst.ID:
-                                res.append(inst)
-                    except:
-                        pass
-                break
-            except Exception as e:
-                pass
+    _path_list = {
+        "base": os.path.dirname(os.path.abspath(__file__))
+    }
+    for ar in add_rules:
+        _path_list[ar] = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rule_{}".format(ar))
+    for k,v in _path_list.items():
+        packages = pkgutil.walk_packages(path=[v])
+        for importer, name, is_package in packages:
+            if k != "base":
+                name = os.path.basename(v) + "." + name
+            mod = importlib.import_module(name)
+            for m in inspect.getmembers(mod, inspect.isclass):
+                try:
+                    if issubclass(m[1], Rule):
+                        inst = m[1]()
+                        if inst.ID:
+                            res.append(inst)
+                except Exception as ex:
+                    print("{} -> {}".format(name, ex))
     return res
