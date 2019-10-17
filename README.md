@@ -15,20 +15,22 @@ The tool does handle includes/requires automatically so you don't have to pass t
 ```shell
 oelint-adv
 usage: __main__.py [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix]
-                   [--nobackup]
+                   [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
                    files [files ...]
 
 Advanced OELint - Check bitbake recipes against OECore styleguide
 
 positional arguments:
-  files                File to parse
+  files                 File to parse
 
 optional arguments:
-  -h, --help           show this help message and exit
-  --suppress SUPPRESS  Rules to suppress
-  --output OUTPUT      Where to flush the findings (default: stderr)
-  --fix                Automatically try to fix the issues
-  --nobackup           Don't create backup file when auto fixing
+  -h, --help            show this help message and exit
+  --suppress SUPPRESS   Rules to suppress
+  --output OUTPUT       Where to flush the findings (default: stderr)
+  --fix                 Automatically try to fix the issues
+  --nobackup            Don't create backup file when auto fixing
+  --addrules ADDRULES [ADDRULES ...]
+                        Additional non-default rulessets to add
 ```
 
 ## Output
@@ -95,3 +97,19 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.vars.summary80chars - SUMMARY should max. be 80 characters long
 * oelint.vars.summarylinebreaks - No line breaks in SUMMARY
 * oelint.vars.valuequoted - Variable values should be properly quoted
+* oelint.vars.dependsordered - [R]DEPENDS entries should be ordered alphabetically
+
+### Non-default rulesets
+
+To enable rulesets that are not part of the standard ruleset pass
+**--addrules \<ruleset-name\>** to CLI.
+
+These rules are sometimes contrary to OE-style-guide, so use them with caution
+
+#### jetm ruleset
+
+To enable pass **--addrules jetm** to CLI
+
+Rules marked with **[F]** are able to perform automatic fixing
+
+* oelint.jetm.vars.dependssingleline - Each [R]DEPENDS entry should be put into a single line
