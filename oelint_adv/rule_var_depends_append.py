@@ -2,7 +2,7 @@ from oelint_adv.cls_rule import Rule
 from oelint_adv.cls_item import *
 
 
-class VarHomepagePrefix(Rule):
+class VarDependsAppend(Rule):
     def __init__(self):
         super().__init__(id="oelint.vars.dependsappend",
                          severity="error",
