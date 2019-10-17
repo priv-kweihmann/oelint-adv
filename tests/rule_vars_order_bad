@@ -1,0 +1,37 @@
+#!/bin/sh
+TESTFILE="/tmp/oelint_adv_test.bb"
+trap "rm -f ${TESTFILE}" EXIT
+TESTID="oelint.var.order"
+TESTOCC="26"
+cat > ${TESTFILE} << EOF
+BBCLASSEXTEND = "foo"
+RCONFLICTS_\${PN} += "foo"
+RPROVIDES_\${PN} += "foo"
+RSUGGESTS_\${PN} += "foo"
+RRECOMMENDS_\${PN} += "foo"
+RDEPENDS_\${PN} += "foo"
+FILES_\${PN} += "foo"
+PACKAGES += "foo"
+PACKAGE_ARCH += "foo"
+EXTRA_OECONF += "foo"
+EXTRA_QMAKEVARS_POST += "foo"
+PACKAGECONFIG += "foo"
+inherit foo
+S += "foo"
+SRCREV += "foo"
+SRC_URI += "foo"
+PV += "foo"
+PROVIDES += "foo"
+DEPENDS += "foo"
+LIC_FILES_CHKSUM += "foo"
+LICENSE += "foo"
+SECTION += "foo"
+BUGTRACKER += "foo"
+HOMEPAGE += "foo"
+AUTHOR += "foo"
+DESCRIPTION += "foo"
+SUMMARY += "foo"
+EOF
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+echo "Test for ${0} failed"
+exit 1

@@ -1,0 +1,16 @@
+#!/bin/sh
+TESTFILE="/tmp/oelint_adv_test.bb"
+TESTPATCHFOLDER="/tmp/files"
+trap "rm -f ${TESTFILE} && rm -rf ${TESTPATCHFOLDER}" EXIT
+TESTID="oelint.file.upstreamstatus"
+TESTOCC="1"
+cat > ${TESTFILE} << EOF
+SRC_URI = "file://test.patch"
+EOF
+mkdir -p ${TESTPATCHFOLDER}
+cat > ${TESTPATCHFOLDER}/test.patch << EOF
+This is not a patch
+EOF
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+echo "Test for ${0} failed"
+exit 1

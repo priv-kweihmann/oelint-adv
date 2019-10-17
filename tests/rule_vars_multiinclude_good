@@ -1,0 +1,17 @@
+#!/bin/sh
+TESTFILE="/tmp/oelint_adv_test.bb"
+TESTPATCHFOLDER="/tmp"
+trap "rm -f ${TESTFILE} && rm ${TESTPATCHFOLDER}/abc.inc" EXIT
+TESTID="oelint.var.multiinclude"
+TESTOCC="0"
+cat > ${TESTFILE} << EOF
+include abc.inc
+B = "2"
+EOF
+mkdir -p ${TESTPATCHFOLDER}
+cat > ${TESTPATCHFOLDER}/abc.inc << EOF
+A = "1"
+EOF
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+echo "Test for ${0} failed"
+exit 1
