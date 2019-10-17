@@ -18,7 +18,7 @@ class FilePatchIsUpstreamStatus(Rule):
                                    attribute=Variable.ATTR_VAR, attributeValue="SRC_URI")
         for i in items:
             with open(i) as _input:
-                content = _input.readline()
+                content = _input.readlines()
                 if not any([x for x in content if x.startswith("Upstream-Status: ")]):
                     # Find matching SRC_URI assignment
                     _assign = [x for x in _items if x.VarValue.find(
