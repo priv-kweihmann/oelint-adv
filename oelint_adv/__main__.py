@@ -19,13 +19,15 @@ def create_argparser():
                         help="Automatically try to fix the issues")
     parser.add_argument("--nobackup", action="store_true", default=False,
                         help="Don't create backup file when auto fixing")
+    parser.add_argument("--addrules", nargs="+", default=[],
+                        help="Additional non-default rulessets to add")
     parser.add_argument("files", nargs='+', help="File to parse")
     return parser
 
 
 if __name__ == '__main__':
     args = create_argparser().parse_args()
-    rules = [x for x in load_rules() if str(x) not in args.suppress]
+    rules = [x for x in load_rules(add_rules=args.addrules) if str(x) not in args.suppress]
     print("Loaded rules: {}".format(",".join(sorted([str(x) for x in rules]))))
     stash = Stash()
     issues = []
