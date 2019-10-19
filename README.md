@@ -10,6 +10,13 @@ The tool does handle includes/requires automatically so you don't have to pass t
 
 **NOTE**: .bbappend-files have to be passed via CLI - these are NOT gathered automatically
 
+## Install
+
+From Arch Linux:
+```
+yay -S oelint-adv
+```
+
 ## Usage
 
 ```shell
