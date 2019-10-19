@@ -12,8 +12,15 @@ The tool does handle includes/requires automatically so you don't have to pass t
 
 ## Install
 
-From Arch Linux:
+With pip
+
+```shell
+pip3 install oelint_adv
 ```
+
+From Arch Linux:
+
+```shell
 yay -S oelint-adv
 ```
 
