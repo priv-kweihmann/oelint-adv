@@ -2,6 +2,12 @@
 
 Advanced oelint
 
+## Status
+
+| Build                                                                                                                                                    | PyPi                                                                                            |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| ![Build status](https://github.com/priv-kweihmann/oelint-adv/workflows/Python%20package/badge.svg) | [![PyPI version](https://badge.fury.io/py/oelint_adv.svg)](https://badge.fury.io/py/oelint_adv) |
+
 ## Purpose
 
 Based on the [OpenEmbedded Styleguide](https://www.openembedded.org/wiki/Styleguide) and work done by [oe-stylize-tool](https://github.com/openembedded/meta-openembedded/blob/master/contrib/oe-stylize.py) this module offers a (nearly) complete linter for bitbake-recipes.
