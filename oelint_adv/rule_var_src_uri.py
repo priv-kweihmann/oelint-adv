@@ -1,6 +1,7 @@
+from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import *
 from oelint_adv.helper_files import get_scr_components
+
 
 class VarSRCUriOptions(Rule):
     def __init__(self):
@@ -120,13 +121,15 @@ class VarSRCUriOptions(Rule):
     def __analyse(self, i, _input):
         _url = get_scr_components(_input)
         res = []
-        if not _url["scheme"] in self._valid_options.keys():
-            self.OverrideMsg("Fetcher '{}' is not known".format(_url["scheme"]))
+        if _url["scheme"] not in self._valid_options.keys():
+            self.OverrideMsg(
+                "Fetcher '{}' is not known".format(_url["scheme"]))
             res += self.finding(i.Origin, i.InFileLine)
         else:
-            for k,_ in _url["options"].items():
-                if not k in self._valid_options[_url["scheme"]] + self._general_options:
-                    self.OverrideMsg("Option '{}' is not known with this fetcher type".format(k))
+            for k, _ in _url["options"].items():
+                if k not in self._valid_options[_url["scheme"]] + self._general_options:
+                    self.OverrideMsg(
+                        "Option '{}' is not known with this fetcher type".format(k))
                     res += self.finding(i.Origin, i.InFileLine)
         return res
 

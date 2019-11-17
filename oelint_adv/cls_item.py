@@ -86,7 +86,9 @@ class Function(Item):
         if self.SubItem not in ["", "append", "remove", "class-target", "class-native"]:
             self.FuncName += "_" + self.SubItem
         self.FuncBody = body
-        self.FuncBodyStripped = body.replace("{", "").replace("}", "").replace("\n", "").strip()
+        self.FuncBodyStripped = body.replace(
+            "{", "").replace("}", "").replace("\n", "").strip()
+
 
 class PythonBlock(Item):
     ATTR_FUNCNAME = "FuncName"

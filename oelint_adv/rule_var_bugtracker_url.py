@@ -1,5 +1,5 @@
+from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import *
 from oelint_adv.helper_files import get_scr_components
 
 
@@ -19,6 +19,6 @@ class VarBugtrackerIsUrl(Rule):
                 result = get_scr_components(val)
                 if not result["scheme"] or not result["src"]:
                     raise Exception()
-            except:
+            except Exception:
                 res += self.finding(i.Origin, i.InFileLine)
         return res

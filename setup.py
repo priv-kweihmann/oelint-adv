@@ -4,7 +4,8 @@ import subprocess
 _long_description = "See https://github.com/priv-kweihmann/oelint-adv for documentation"
 _long_description_content_type = "text/plain"
 try:
-    _long_description = subprocess.check_output(["pandoc", "--from", "markdown", "--to", "rst", "README.md"]).decode("utf-8")
+    _long_description = subprocess.check_output(
+        ["pandoc", "--from", "markdown", "--to", "rst", "README.md"]).decode("utf-8")
     _long_description_content_type = "text/x-rst"
 except (subprocess.CalledProcessError, FileNotFoundError):
     pass

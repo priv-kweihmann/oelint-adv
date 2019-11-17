@@ -1,8 +1,9 @@
-import os
 import glob
-from oelint_adv.cls_stash import Stash
-from oelint_adv.cls_item import Comment, Function, Include, Item, PythonBlock, Variable
+import os
 from urllib.parse import urlparse
+
+from oelint_adv.cls_item import Variable
+
 
 def get_files(stash, _file, pattern):
     res = []
@@ -17,8 +18,9 @@ def get_files(stash, _file, pattern):
         res += glob.glob(item)
     return list(set(res))
 
+
 def get_scr_components(string):
-    """ 
+    """
         Parses an URL string
         returns a dict with
             scheme = protcol used
@@ -33,5 +35,5 @@ def get_scr_components(string):
         if not _path.endswith("/") and not _url.path.startswith("/"):
             _path += "/"
         _path += _url.path
-    _parsed_opt = {x.split("=")[0]:x.split("=")[1] for x in _options}
+    _parsed_opt = {x.split("=")[0]: x.split("=")[1] for x in _options}
     return {"scheme": _scheme, "src": _path, "options": _parsed_opt}

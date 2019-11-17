@@ -29,4 +29,3 @@ class NoSpaceRuleCont(Rule):
             i.Raw = re.sub(r"\\\s+\n", "\\\n", i.Raw)
             res.append(_file)
         return res
-

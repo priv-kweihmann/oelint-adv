@@ -1,7 +1,7 @@
+from oelint_adv.cls_item import Function
+from oelint_adv.cls_item import TaskAssignment
 from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import *
 from oelint_adv.const_func import FUNC_ORDER
-import os
 
 
 class TaskDocStrings(Rule):

@@ -1,6 +1,8 @@
-from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import *
 from copy import deepcopy
+
+from oelint_adv.cls_item import Variable
+from oelint_adv.cls_rule import Rule
+
 
 class VarDependsOrdered(Rule):
     def __init__(self):
@@ -18,7 +20,7 @@ class VarDependsOrdered(Rule):
         res = []
         for elem in ["DEPENDS", "RDEPENDS_${PN}"]:
             items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                    attribute=Variable.ATTR_VAR, attributeValue=elem)
+                                      attribute=Variable.ATTR_VAR, attributeValue=elem)
             items = sorted(items, key=lambda x: x.Line)
             _findings = []
             for i in items:
@@ -32,7 +34,7 @@ class VarDependsOrdered(Rule):
             _sorted = sorted(_findings, key=lambda tup: tup[1])
             for i in _sorted:
                 if self.__get_tuple_wildcard_index(_sorted, i[1]) != \
-                self.__get_tuple_wildcard_index(_findings, i[1]):
+                        self.__get_tuple_wildcard_index(_findings, i[1]):
                     print("{} -> {}".format(i[1], i[0].Line))
                     res += self.finding(i[0].Origin, i[0].InFileLine)
         return res

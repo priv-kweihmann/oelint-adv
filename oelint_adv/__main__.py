@@ -1,9 +1,9 @@
-from oelint_adv.cls_stash import Stash
-from oelint_adv.cls_rule import load_rules
+import argparse
 import os
 import sys
-import argparse
-import glob
+
+from oelint_adv.cls_rule import load_rules
+from oelint_adv.cls_stash import Stash
 
 sys.path.append(os.path.abspath(os.path.join(__file__, "..")))
 
@@ -27,7 +27,8 @@ def create_argparser():
 
 if __name__ == '__main__':
     args = create_argparser().parse_args()
-    rules = [x for x in load_rules(add_rules=args.addrules) if str(x) not in args.suppress]
+    rules = [x for x in load_rules(
+        add_rules=args.addrules) if str(x) not in args.suppress]
     print("Loaded rules: {}".format(",".join(sorted([str(x) for x in rules]))))
     stash = Stash()
     issues = []
@@ -45,12 +46,13 @@ if __name__ == '__main__':
             issues += r.check(f, stash)
     fixedfiles = list(set(fixedfiles))
     for f in fixedfiles:
-        items = sorted(stash.GetItemsFor(filename=f), key = lambda x: x.Line)
+        items = sorted(stash.GetItemsFor(filename=f), key=lambda x: x.Line)
         if not args.nobackup:
             os.rename(f, f + ".bak")
         with open(f, "w") as o:
             o.write("".join([x.Raw for x in items]))
-            print("{}:{}:{}".format(os.path.abspath(f), "debug", "Applied automatic fixes"))
+            print("{}:{}:{}".format(os.path.abspath(f),
+                                    "debug", "Applied automatic fixes"))
 
     issues = list(set(issues))
     if args.output != sys.stderr:

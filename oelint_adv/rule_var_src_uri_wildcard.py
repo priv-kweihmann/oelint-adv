@@ -1,7 +1,6 @@
+from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import *
 from oelint_adv.helper_files import get_scr_components
-import os
 
 
 class VarSRCURIWildcard(Rule):

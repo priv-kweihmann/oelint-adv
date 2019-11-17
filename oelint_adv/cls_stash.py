@@ -1,7 +1,7 @@
-from oelint_adv.cls_item import *
-from oelint_adv.parser import get_items
-import re
 import os
+import re
+
+from oelint_adv.parser import get_items
 
 
 class Stash():

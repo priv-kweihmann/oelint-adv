@@ -1,6 +1,7 @@
-from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import *
 import re
+
+from oelint_adv.cls_item import Variable
+from oelint_adv.cls_rule import Rule
 
 
 class VarMultiInherit(Rule):
@@ -20,5 +21,5 @@ class VarMultiInherit(Rule):
                     keys.append(y)
                 else:
                     res += self.finding(i.Origin, i.InFileLine,
-                                    self.Msg.replace("{INH}", y))
+                                        self.Msg.replace("{INH}", y))
         return res

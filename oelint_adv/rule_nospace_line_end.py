@@ -1,6 +1,7 @@
-from oelint_adv.cls_rule import Rule
-from copy import deepcopy
 import re
+from copy import deepcopy
+
+from oelint_adv.cls_rule import Rule
 
 
 class NoSpaceTrailingRule(Rule):

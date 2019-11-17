@@ -1,6 +1,7 @@
-from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import *
 from copy import deepcopy
+
+from oelint_adv.cls_item import Variable
+from oelint_adv.cls_rule import Rule
 
 
 class VarDependsSingleLine(Rule):
@@ -14,7 +15,7 @@ class VarDependsSingleLine(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue="DEPENDS")
         items += stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                  attribute=Variable.ATTR_VAR, attributeValue="RDEPENDS_${PN}")
+                                   attribute=Variable.ATTR_VAR, attributeValue="RDEPENDS_${PN}")
         for i in items:
             linenum = 0
             for line in i.VarValueStripped.split("\n"):

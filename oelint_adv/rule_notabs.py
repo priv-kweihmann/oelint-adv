@@ -7,7 +7,7 @@ class NoTabs(Rule):
         super().__init__(id="oelint.tabs.notabs",
                          severity="warning",
                          message="Don't use tabs use spaces")
-    
+
     def __getMatches(self, _file, stash):
         res = []
         items = stash.GetItemsFor(filename=_file)
@@ -21,7 +21,7 @@ class NoTabs(Rule):
         for i in self.__getMatches(_file, stash):
             res += self.finding(i.Origin, i.InFileLine)
         return res
-    
+
     def fix(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):

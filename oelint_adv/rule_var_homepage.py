@@ -1,5 +1,5 @@
+from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import *
 
 
 class VarHomepagePrefix(Rule):

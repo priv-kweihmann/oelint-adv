@@ -1,8 +1,8 @@
-from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import *
-from oelint_adv.helper_files import get_files
-from urllib.parse import urlparse
 import os
+
+from oelint_adv.cls_item import Variable
+from oelint_adv.cls_rule import Rule
+from oelint_adv.helper_files import get_files
 
 
 class FilePatchIsSignedOff(Rule):

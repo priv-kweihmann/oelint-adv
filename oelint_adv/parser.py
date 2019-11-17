@@ -1,7 +1,15 @@
-import re
 import collections
 import os
-from oelint_adv.cls_item import Item, Comment, Function, PythonBlock, Variable, Include, TaskAdd, TaskAssignment
+import re
+
+from oelint_adv.cls_item import Comment
+from oelint_adv.cls_item import Function
+from oelint_adv.cls_item import Include
+from oelint_adv.cls_item import Item
+from oelint_adv.cls_item import PythonBlock
+from oelint_adv.cls_item import TaskAdd
+from oelint_adv.cls_item import TaskAssignment
+from oelint_adv.cls_item import Variable
 
 
 def prepare_lines(_file, lineOffset=0):
@@ -38,10 +46,6 @@ def prepare_lines(_file, lineOffset=0):
     return []
 
 
-def split_filename_bb(_file):
-    __regex_version = r"(?P<recipe>[A-Za-z\-0-9]+)(_(?P<version>.*))*\.(?P<suffix>.*)"
-
-
 def get_items(stash, _file, lineOffset=0):
     res = []
     __regex_var = r"^.*?(?P<varname>([A-Z0-9a-z_-]|\$|\{|\})+)(\s*|\t*)(\+|\?)*=(\s*|\t*)(?P<varval>.*)"
@@ -74,7 +78,7 @@ def get_items(stash, _file, lineOffset=0):
                         res[-1].Raw += line["raw"]
                     else:
                         res.append(PythonBlock(
-                            _file, line["line"],  line["line"] - lineOffset, line["raw"], m.group("funcname")))
+                            _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("funcname")))
                 elif k == "vars":
                     res.append(Variable(
                         _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("varname"), m.group("varval")))

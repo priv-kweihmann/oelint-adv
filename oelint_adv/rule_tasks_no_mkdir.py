@@ -1,6 +1,5 @@
+from oelint_adv.cls_item import Function
 from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import *
-import os
 
 
 class TaskInstallNoMkdir(Rule):

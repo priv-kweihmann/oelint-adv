@@ -1,7 +1,6 @@
+from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import *
 from oelint_adv.const_vars import VAR_ORDER
-import os
 
 
 class VarsOrder(Rule):
@@ -19,7 +18,7 @@ class VarsOrder(Rule):
                 [x for x in items if x.Line < item.Line and x.VarName in VAR_ORDER], key=lambda x: x.Line, reverse=True)
             if any(_func_before):
                 _func_before = _func_before[0]
-                if not item.VarName in VAR_ORDER:
+                if item.VarName not in VAR_ORDER:
                     continue
                 if VAR_ORDER.index(item.VarName) < VAR_ORDER.index(_func_before.VarName):
                     self.OverrideMsg("'{}' should be placed before '{}'".format(

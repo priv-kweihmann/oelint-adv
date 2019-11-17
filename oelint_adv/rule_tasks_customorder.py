@@ -1,9 +1,9 @@
-from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import *
-from oelint_adv.const_func import FUNC_ORDER
-from anytree import Node, LoopError, TreeError, RenderTree
-import os
 import re
+
+from anytree import LoopError
+from anytree import Node
+from oelint_adv.cls_item import TaskAdd
+from oelint_adv.cls_rule import Rule
 
 
 class TaskCustomOrder(Rule):
@@ -20,7 +20,8 @@ class TaskCustomOrder(Rule):
 
     def check(self, _file, stash):
         res = []
-        items = stash.GetItemsFor(filename=_file, classifier=TaskAdd.CLASSIFIER)
+        items = stash.GetItemsFor(
+            filename=_file, classifier=TaskAdd.CLASSIFIER)
         _nodes = []
         for item in items:
             for t in item.After:
@@ -39,11 +40,12 @@ class TaskCustomOrder(Rule):
                         _nodes.append(_m)
                     else:
                         _m = _t[0]
-                    if not _m in _n.children:
+                    if _m not in _n.children:
                         _n.children += (_m,)
                 except LoopError as e:
                     _path = self.__getNodeFromException(str(e)) + [t]
-                    self.OverrideMsg("Assignment creates a cyclic dependency - Path={}".format("->".join(_path)))
+                    self.OverrideMsg(
+                        "Assignment creates a cyclic dependency - Path={}".format("->".join(_path)))
                     res += self.finding(item.Origin, item.InFileLine)
             for t in item.Before:
                 try:
@@ -61,10 +63,11 @@ class TaskCustomOrder(Rule):
                         _nodes.append(_m)
                     else:
                         _m = _t[0]
-                    if not _m in _n.children:
+                    if _m not in _n.children:
                         _n.children += (_m,)
                 except LoopError as e:
                     _path = self.__getNodeFromException(str(e)) + [t]
-                    self.OverrideMsg("Assignment creates a cyclic dependency - Path={}".format("->".join(_path)))
+                    self.OverrideMsg(
+                        "Assignment creates a cyclic dependency - Path={}".format("->".join(_path)))
                     res += self.finding(item.Origin, item.InFileLine)
         return res

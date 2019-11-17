@@ -1,5 +1,5 @@
+from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import *
 
 
 class VarDuplicates(Rule):
@@ -12,7 +12,7 @@ class VarDuplicates(Rule):
         res = []
         for c in ["DEPENDS", "RDEPENDS_${PN}"]:
             items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                    attribute=Variable.ATTR_VAR, attributeValue=c)
+                                      attribute=Variable.ATTR_VAR, attributeValue=c)
             _items = []
             for i in items:
                 for x in [y for y in i.VarValueStripped.split(" ") if y]:

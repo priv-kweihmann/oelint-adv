@@ -1,10 +1,8 @@
-import glob
 import importlib
 import inspect
 import os
 import pkgutil
 
-from oelint_adv.cls_item import *
 
 class Rule():
     def __init__(self, id="", severity="", message=""):
@@ -37,8 +35,9 @@ def load_rules(add_rules=[]):
         "base": os.path.dirname(os.path.abspath(__file__))
     }
     for ar in add_rules:
-        _path_list[ar] = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rule_{}".format(ar))
-    for k,v in _path_list.items():
+        _path_list[ar] = os.path.join(os.path.dirname(
+            os.path.abspath(__file__)), "rule_{}".format(ar))
+    for k, v in _path_list.items():
         packages = pkgutil.walk_packages(path=[v])
         for importer, name, is_package in packages:
             if k != "base":
