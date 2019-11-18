@@ -1,3 +1,6 @@
+import textwrap
+
+
 class Item():
     ATTR_LINE = "Line"
     ATTR_RAW = "Raw"
@@ -79,15 +82,17 @@ class Function(Item):
     ATTR_FUNCBODY = "FuncBody"
     CLASSIFIER = "Function"
 
-    def __init__(self, origin, line, infileline, rawtext, name, body):
+    def __init__(self, origin, line, infileline, rawtext, name, body, python=False, fakeroot=False):
         super().__init__(origin, line, infileline, rawtext)
-        self.FuncName, self.SubItem = self.extract_sub(
-            name[:name.find("{")].replace("(", "").replace(")", "").strip())
+        self.IsPython = python is not None
+        self.IsFakeroot = fakeroot is not None
+        self.FuncName, self.SubItem = self.extract_sub(name.strip())
         if self.SubItem not in ["", "append", "remove", "class-target", "class-native"]:
             self.FuncName += "_" + self.SubItem
         self.FuncBody = body
         self.FuncBodyStripped = body.replace(
             "{", "").replace("}", "").replace("\n", "").strip()
+        self.FuncBodyRaw = textwrap.dedent(rawtext[rawtext.find("{") + 1:].rstrip().rstrip("}"))
 
 
 class PythonBlock(Item):

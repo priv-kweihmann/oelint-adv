@@ -94,7 +94,9 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.task.multiappends - Multiple appends to the same function in the same file won't work in bitbake
 * oelint.task.nocopy - No cp usage in do_install
 * oelint.task.nomkdir - No mkdir usage in do_install
+* oelint.task.nopythonprefix - Tasks containing shell code should NOT be prefixed with 'python' in function header
 * oelint.task.order - Order of tasks
+* oelint.task.pythonprefix - Tasks containing python code should be prefixed with 'python' in function header
 * oelint.var.bbclassextend - Use BBCLASSEXTEND when possible
 * oelint.var.licenseremotefile - License shall be a file in remote source not a local file
 * oelint.var.mandatoryvar - Check for mandatory variables
@@ -107,6 +109,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.vars.autorev - The usage of 'AUTOREV' for SRCREV leads to not reproducible builds
 * oelint.vars.bugtrackerisurl - BUGTRACKER should be an URL
 * oelint.vars.dependsappend - DEPENDS should only be appended, not overwritten
+* oelint.vars.dependsordered - [R]DEPENDS entries should be ordered alphabetically
 * oelint.vars.duplicate - No duplicates in DEPENDS and RDEPENDS
 * oelint.vars.homepageprefix - HOMEPAGE should begin with https:// or http://
 * oelint.vars.multilineident - On a multiline assignment, line indent is desirable
@@ -116,7 +119,6 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.vars.summary80chars - SUMMARY should max. be 80 characters long
 * oelint.vars.summarylinebreaks - No line breaks in SUMMARY
 * oelint.vars.valuequoted - Variable values should be properly quoted
-* oelint.vars.dependsordered - [R]DEPENDS entries should be ordered alphabetically
 
 ### Non-default rulesets
 
