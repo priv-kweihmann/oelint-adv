@@ -16,9 +16,10 @@ class VarMultiLineIndent(Rule):
             if not i.IsMultiLine():
                 continue
             _rawclean = i.GetRawCleaned()
-            _needle = i.VarValue.lstrip('"')
-            if len(_needle) > 10:
-                _needle = _needle[:10]
+            if len(i.VarValue.lstrip('"')) > 10:
+                _needle = i.VarValue.lstrip('"')[:10]
+            else:
+                _needle = i.VarValue.lstrip('"')
             _value = _rawclean[_rawclean.find("=") + 1:]
             _value = _value.lstrip("+ ")
             _lines = [x for x in _value.split("\\") if x]

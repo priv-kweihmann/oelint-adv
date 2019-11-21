@@ -41,9 +41,7 @@ def prepare_lines(_file, lineOffset=0):
                         break
             prep_lines.append({"line": num + 1 + lineOffset, "raw": raw_line,
                                "cnt": raw_line.replace("\n", "").replace("\\", "")})
-        # print(prep_lines)
         return prep_lines
-    return []
 
 
 def get_items(stash, _file, lineOffset=0):

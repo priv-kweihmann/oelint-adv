@@ -21,7 +21,7 @@ class VarDependsSingleLine(Rule):
             for line in i.VarValueStripped.split("\n"):
                 _ent = [x for x in line.strip("\\").split(" ") if x.strip()]
                 if len(_ent) > 1:
-                    for ent in _ent[1:]:
+                    for _ in _ent[1:]:
                         _i = deepcopy(i)
                         _i.Line = i.Line + linenum
                         res += self.finding(_i.Origin, _i.InFileLine)
