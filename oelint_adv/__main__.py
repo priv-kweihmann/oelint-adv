@@ -58,4 +58,6 @@ if __name__ == '__main__':
     if args.output != sys.stderr:
         args.output = open(args.output, "w")
     args.output.write("\n".join(sorted(issues)) + "\n")
+    if args.output != sys.stderr:
+        args.output.close()
     sys.exit(len(issues))
