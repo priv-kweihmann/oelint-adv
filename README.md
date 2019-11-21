@@ -4,6 +4,7 @@
 [![PyPI version](https://badge.fury.io/py/oelint_adv.svg)](https://badge.fury.io/py/oelint_adv)
 [![Python version](https://img.shields.io/pypi/pyversions/oelint_adv)](https://img.shields.io/pypi/pyversions/oelint_adv)
 [![Downloads](https://img.shields.io/pypi/dm/oelint_adv)](https://img.shields.io/pypi/dm/oelint_adv)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/priv-kweihmann/oelint-adv.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/priv-kweihmann/oelint-adv/context:python)
 
 Advanced oelint
 
