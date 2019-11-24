@@ -10,6 +10,10 @@ try:
 except (subprocess.CalledProcessError, FileNotFoundError):
     pass
 
+requirements = []
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
+
 setuptools.setup(
     name="oelint_adv",
     version="1.8.0",
@@ -21,10 +25,7 @@ setuptools.setup(
     url="https://github.com/priv-kweihmann/oelint-adv",
     packages=setuptools.find_packages(),
     scripts=['bin/oelint-adv'],
-    install_requires=[
-        'urllib3>=1.21.1',
-        'anytree>=2.7.0'
-    ],
+    install_requires=requirements,
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
