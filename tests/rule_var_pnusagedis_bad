@@ -1,0 +1,14 @@
+#!/bin/sh
+TESTFILE="/tmp/oelint_adv_test.bb"
+trap "rm -f ${TESTFILE}" EXIT
+TESTID="oelint.vars.pnusagediscouraged"
+TESTOCC="4"
+cat > ${TESTFILE} << EOF
+HOMEPAGE = "http://\${PN}.com"
+BUGTRACKER = "http://\${PN}.com"
+SUMMARY = "http://\${PN}.com"
+DESCRIPTION = "http://\${PN}.com"
+EOF
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+echo "Test for ${0} failed"
+exit 1
