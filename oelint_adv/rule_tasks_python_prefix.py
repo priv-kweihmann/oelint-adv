@@ -14,7 +14,6 @@ class TaskPythonPrefix(Rule):
         res = []
         for item in stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER):
             try:
-                print(item.FuncBodyRaw)
                 ast.parse(item.FuncBodyRaw, "tempfile")
                 if not item.IsPython:
                     res += self.finding(item.Origin, item.InFileLine)
