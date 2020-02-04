@@ -50,5 +50,6 @@ def load_rules(add_rules=[]):
                         if inst.ID:
                             res.append(inst)
                 except Exception as ex:
-                    print("{} -> {}".format(name, ex))
+                    pass
+                    # print("{} -> {}".format(name, ex))
     return res
