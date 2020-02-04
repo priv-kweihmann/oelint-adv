@@ -110,10 +110,16 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.vars.autorev - The usage of 'AUTOREV' for SRCREV leads to not reproducible builds
 * oelint.vars.bugtrackerisurl - BUGTRACKER should be an URL
 * oelint.vars.dependsappend - DEPENDS should only be appended, not overwritten
-* oelint.vars.dependsordered - [R]DEPENDS entries should be ordered alphabetically
+* oelint.vars.dependsordered - RDEPENDS entries should be ordered alphabetically
 * oelint.vars.duplicate - No duplicates in DEPENDS and RDEPENDS
+* oelint.vars.fileextrapaths - 'FILESEXTRAPATHS' shouldn't be used in a bb file
 * oelint.vars.homepageprefix - HOMEPAGE should begin with https:// or http://
+* oelint.vars.inconspaces - Inconsistent use of spaces on append operation
+* oelint.vars.insaneskip - INSANE_SKIP should be avoided at any cost
+* oelint.vars.mispell - Possible typo detected
 * oelint.vars.multilineident - On a multiline assignment, line indent is desirable
+* oelint.vars.pnbpnusage - ${BPN} should be used instead of ${PN}
+* oelint.vars.pnusagediscouraged - Variable shouldn't contain ${PN} or ${BPN}
 * oelint.vars.sectionlowercase - SECTION should be lowercase only **[F]**
 * oelint.vars.spacesassignment - ' = ' should be correct variable assignment
 * oelint.vars.srcurioptions - Fetcher should only valid options
