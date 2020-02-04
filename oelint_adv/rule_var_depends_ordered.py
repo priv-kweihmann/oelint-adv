@@ -35,6 +35,5 @@ class VarDependsOrdered(Rule):
             for i in _sorted:
                 if self.__get_tuple_wildcard_index(_sorted, i[1]) != \
                         self.__get_tuple_wildcard_index(_findings, i[1]):
-                    print("{} -> {}".format(i[1], i[0].Line))
                     res += self.finding(i[0].Origin, i[0].InFileLine)
         return res
