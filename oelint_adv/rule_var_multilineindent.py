@@ -15,19 +15,17 @@ class VarMultiLineIndent(Rule):
         for i in items:
             if not i.IsMultiLine():
                 continue
-            _rawclean = i.GetRawCleaned()
-            if len(i.VarValue.lstrip('"')) > 10:
-                _needle = i.VarValue.lstrip('"')[:10]
-            else:
-                _needle = i.VarValue.lstrip('"')
-            _value = _rawclean[_rawclean.find("=") + 1:]
-            _value = _value.lstrip("+ ")
-            _lines = [x for x in _value.split("\\") if x]
+            _rawclean = i.Raw
+            _startoffset = _rawclean.find("= \"") + 3
+            _value = _rawclean[_startoffset:]
+            _lines = [x for x in _value.split("\\\n") if x]
             if any(_lines):
-                _calcoffset = i.Raw.find(_lines[0])
                 for _line in _lines[1:]:
-                    _thisline = (len(_line) - len(_line.lstrip(" "))) - 1
-                    if _thisline < _calcoffset:
+                    _linestripped = _line.lstrip('"').strip().lstrip('"').strip()
+                    _thisline = (len(_line) - len(_line.lstrip(" ")))
+                    if _thisline < 0 or not _linestripped:
+                        continue
+                    if _thisline < _startoffset:
                         res += self.finding(i.Origin, i.InFileLine + _lines.index(
-                            _line), self.FormatMsg(_thisline, _calcoffset))
+                            _line), self.FormatMsg(_thisline, _startoffset))
         return res
