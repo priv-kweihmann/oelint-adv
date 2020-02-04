@@ -1,0 +1,13 @@
+#!/bin/sh
+TESTFILE="/tmp/oelint_adv_test.bbappend"
+trap "rm -f ${TESTFILE}" EXIT
+TESTID="oelint.vars.fileextrapaths"
+TESTOCC="0"
+cat > ${TESTFILE} << EOF
+FILESEXTRAPATHS_prepend := "\${THISDIR}/file"
+FILESEXTRAPATHS_append := "\${THISDIR}/file"
+FILESEXTRAPATHS += "\${THISDIR}/file"
+EOF
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+echo "Test for ${0} failed"
+exit 1
