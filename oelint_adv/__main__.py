@@ -36,8 +36,8 @@ if __name__ == '__main__':
     for f in args.files:
         try:
             stash.AddFile(f)
-        except FileNotFoundError:
-            print("Can't open/read {}".format(f))
+        except FileNotFoundError as e:
+            print("Can't open/read: {}".format(e))
 
     for f in stash.GetRecipes():
         for r in rules:
