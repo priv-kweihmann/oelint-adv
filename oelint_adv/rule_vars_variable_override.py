@@ -18,12 +18,13 @@ class VarOverride(Rule):
             if v == "inherit":
                 # This will be done by another rule
                 continue
-            items = stash.GetItemsFor(
-                filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue=v)
+            items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue=v)
             items = sorted(items, key=lambda x: x.Line, reverse=False)
-            if len(items) > 1:
-                if all([not x.IsAppend() for x in items]):
+            for sub in [x.SubItem for x in items]:
+                _items = [x for x in items if x.SubItem == sub and not x.IsAppend()]
+                if len(_items) > 1:
+                    _files = list(set([os.path.basename(x.Origin) for x in _items]))
                     self.OverrideMsg("Variable '{}' is set by {}".format(
-                        v, ",".join([os.path.basename(x.Origin) for x in items])))
-                    res += self.finding(items[0].Origin, items[0].InFileLine)
+                        v, ",".join(_files)))
+                    res += self.finding(_items[0].Origin, _items[0].InFileLine)
         return res
