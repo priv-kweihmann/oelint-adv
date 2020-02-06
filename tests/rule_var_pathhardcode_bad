@@ -1,0 +1,31 @@
+#!/bin/sh
+TESTFILE="/tmp/oelint_adv_test.bb"
+trap "rm -f ${TESTFILE}" EXIT
+TESTID="oelint.vars.pathhardcode"
+TESTOCC="23"
+cat > ${TESTFILE} << EOF
+VAR = "/usr/lib/systemd/user"
+VAR = "/lib/systemd/system"
+VAR = "/usr/share/doc"
+VAR = "/usr/share/info"
+VAR = "/usr/share/man"
+VAR = "/usr/libexec"
+VAR = "/lib/systemd"
+VAR = "/usr/lib"
+VAR = "/usr/bin"
+VAR = "/usr/share"
+VAR = "/usr/include"
+VAR = "/var"
+VAR = "/lib"
+VAR = "/usr/lib"
+VAR = "/usr/include"
+VAR = "/usr/sbin"
+VAR = "/srv"
+VAR = "/com"
+VAR = "/etc"
+VAR = "/etc/ajjsjj"
+VAR = "/usr/bin*"
+EOF
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+echo "Test for ${0} failed"
+exit 1

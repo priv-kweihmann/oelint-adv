@@ -1,0 +1,29 @@
+#!/bin/sh
+TESTFILE="/tmp/oelint_adv_test.bb"
+trap "rm -f ${TESTFILE}" EXIT
+TESTID="oelint.vars.pathhardcode"
+TESTOCC="0"
+cat > ${TESTFILE} << EOF
+VAR = "${systemd_user_unitdir}"
+VAR = "${systemd_system_unitdir}"
+VAR = "${docdir}"
+VAR = "${infodir}"
+VAR = "${mandir}"
+VAR = "${libexecdir}"
+VAR = "${systemd_unitdir}"
+VAR = "${libdir}"
+VAR = "${bindir}"
+VAR = "${datadir}"
+VAR = "${includedir}"
+VAR = "${localstatedir}"
+VAR = "${nonarch_base_libdir}"
+VAR = "${nonarch_libdir}"
+VAR = "${oldincludedir}"
+VAR = "${sbindir}"
+VAR = "${servicedir}"
+VAR = "${sharedstatedir}"
+VAR = "${sysconfdir}"
+EOF
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+echo "Test for ${0} failed"
+exit 1
