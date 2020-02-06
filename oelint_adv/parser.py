@@ -27,16 +27,24 @@ def prepare_lines(_file, lineOffset=0):
                 raw_line += line
             elif re.match(__func_start_regexp__, raw_line):
                 _, line = _iter.__next__()
-                while line.strip() != "}":
+                stopiter = False
+                while line.strip() != "}" and not stopiter:
                     raw_line += line
-                    _, line = _iter.__next__()
+                    try:
+                        _, line = _iter.__next__()
+                    except StopIteration:
+                        stopiter = True
                 if line.strip() == "}":
                     raw_line += line
             elif raw_line.strip().startswith("def "):
                 _, line = _iter.__next__()
-                while (line.startswith(" ") or line.startswith("\t")):
+                stopiter = False
+                while (line.startswith(" ") or line.startswith("\t")) and not stopiter:
                     raw_line += line
-                    _, line = _iter.__next__()
+                    try:
+                        _, line = _iter.__next__()
+                    except StopIteration:
+                        stopiter = True
                     if not line.strip():
                         break
             prep_lines.append({"line": num + 1 + lineOffset, "raw": raw_line,

@@ -86,6 +86,7 @@ class Function(Item):
         super().__init__(origin, line, infileline, rawtext)
         self.IsPython = python is not None
         self.IsFakeroot = fakeroot is not None
+        name = name or ""
         self.FuncName, self.SubItem = self.extract_sub(name.strip())
         if self.SubItem not in ["", "append", "remove", "class-target", "class-native"]:
             self.FuncName += "_" + self.SubItem
