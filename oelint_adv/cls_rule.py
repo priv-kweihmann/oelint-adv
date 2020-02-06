@@ -32,16 +32,15 @@ class Rule():
 def load_rules(add_rules=[]):
     res = []
     _path_list = {
-        "base": os.path.dirname(os.path.abspath(__file__))
+        "base": { "path": "rule_base" }
     }
     for ar in add_rules:
-        _path_list[ar] = os.path.join(os.path.dirname(
-            os.path.abspath(__file__)), "rule_{}".format(ar))
-    for k, v in _path_list.items():
-        packages = pkgutil.walk_packages(path=[v])
-        for importer, name, is_package in packages:
-            if k != "base":
-                name = os.path.basename(v) + "." + name
+        _path_list[ar] = { "path": "rule_{}".format(ar) }
+    for _, v in _path_list.items():
+        _searchpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), v["path"])
+        packages = pkgutil.walk_packages(path=[_searchpath])
+        for _, name, _ in packages:
+            name = v["path"] + "." + name
             mod = importlib.import_module(name)
             for m in inspect.getmembers(mod, inspect.isclass):
                 try:
@@ -49,7 +48,6 @@ def load_rules(add_rules=[]):
                         inst = m[1]()
                         if inst.ID:
                             res.append(inst)
-                except Exception as ex:
+                except Exception:
                     pass
-                    # print("{} -> {}".format(name, ex))
     return res
