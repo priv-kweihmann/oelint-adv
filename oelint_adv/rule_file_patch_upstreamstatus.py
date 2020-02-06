@@ -18,14 +18,17 @@ class FilePatchIsUpstreamStatus(Rule):
                                    attribute=Variable.ATTR_VAR, attributeValue="SRC_URI")
         for i in items:
             with open(i) as _input:
-                content = _input.readlines()
-                if not any([x for x in content if x.startswith("Upstream-Status: ")]):
-                    # Find matching SRC_URI assignment
-                    _assign = [x for x in _items if x.VarValue.find(
-                        os.path.basename(i)) != -1]
-                    if any(_assign):
-                        self.OverrideMsg(self.Msg.replace(
-                            "{FILE}", os.path.basename(i)))
-                        res += self.finding(_assign[0].Origin,
-                                            _assign[0].InFileLine)
+                try:
+                    content = _input.readlines()
+                    if not any([x for x in content if x.startswith("Upstream-Status: ")]):
+                        # Find matching SRC_URI assignment
+                        _assign = [x for x in _items if x.VarValue.find(
+                            os.path.basename(i)) != -1]
+                        if any(_assign):
+                            self.OverrideMsg(self.Msg.replace(
+                                "{FILE}", os.path.basename(i)))
+                            res += self.finding(_assign[0].Origin,
+                                                _assign[0].InFileLine)
+                except UnicodeDecodeError:
+                    pass
         return res
