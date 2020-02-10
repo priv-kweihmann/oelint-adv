@@ -84,6 +84,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.comments.notrailing - No trailing comments allowed, comments should be on a single line
 * oelint.file.includenotfound - File to be included not found
 * oelint.file.patchsignedoff - Patches should contain a Signed-Of-By entry
+* oelint.file.requireinclude - Require should be used instead of include
 * oelint.file.requirenotfound - File to be required not found
 * oelint.file.upstreamstatus - Patches should contain a Upstream-Status entry
 * oelint.spaces.emptyline - Empty line should not contain spaces or tabs **[F]**

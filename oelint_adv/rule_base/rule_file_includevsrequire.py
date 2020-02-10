@@ -1,0 +1,19 @@
+from oelint_adv.cls_item import Variable
+from oelint_adv.cls_item import Include
+from oelint_adv.cls_rule import Rule
+
+
+class FileIncludeVsRequire(Rule):
+    def __init__(self):
+        super().__init__(id="oelint.file.requireinclude",
+                         severity="warning",
+                         message="Use 'require {FILE}' instead of 'include {FILE}'")
+    
+    def check(self, _file, stash):
+        res = []
+        for item in stash.GetItemsFor(filename=_file, 
+                                      classifier=Include.CLASSIFIER):
+            if item.Statement == "include":
+                self.OverrideMsg(self.Msg.replace("{FILE}", item.IncName))
+                res += self.finding(item.Origin, item.InFileLine)
+        return res
