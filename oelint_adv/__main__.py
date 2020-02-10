@@ -5,6 +5,7 @@ import json
 
 from oelint_adv.cls_rule import load_rules
 from oelint_adv.cls_stash import Stash
+from oelint_adv.color import set_color
 from oelint_adv.rule_file import set_rulefile
 
 sys.path.append(os.path.abspath(os.path.join(__file__, "..")))
@@ -25,6 +26,8 @@ def create_argparser():
                         help="Additional non-default rulessets to add")
     parser.add_argument("--rulefile", default=None,
                         help="Rulefile")
+    parser.add_argument("--color", action="store_true", default=False,
+                        help="Add color to the output based on the severity")
     parser.add_argument("files", nargs='+', help="File to parse")
 
     args = parser.parse_args()
@@ -35,6 +38,9 @@ def create_argparser():
                 set_rulefile(json.load(i))
         except (FileNotFoundError, json.JSONDecodeError):
             raise argparse.ArgumentTypeError("'rulefile' is not a valid file")
+
+    if args.color:
+        set_color(True)
     return args
 
 
@@ -67,10 +73,11 @@ if __name__ == '__main__':
             print("{}:{}:{}".format(os.path.abspath(f),
                                     "debug", "Applied automatic fixes"))
 
-    issues = list(set(issues))
+    issues = sorted(list(set(issues)))
+
     if args.output != sys.stderr:
         args.output = open(args.output, "w")
-    args.output.write("\n".join(sorted(issues)) + "\n")
+    args.output.write("\n".join(issues) + "\n")
     if args.output != sys.stderr:
         args.output.close()
     sys.exit(len(issues))

@@ -3,6 +3,9 @@ import inspect
 import os
 import pkgutil
 
+from colorama import Fore, Style
+
+from oelint_adv.color import get_color
 from oelint_adv.rule_file import get_rulefile
 
 
@@ -19,11 +22,20 @@ class Rule():
         return []
 
     def finding(self, _file, _line, override_msg=None):
+        if override_msg is None:
+            override_msg=self.Msg
         _severity = self.Severity
         _rule_file = get_rulefile()
         if _rule_file and self.ID in _rule_file:
             _severity = _rule_file[self.ID] or self.Severity
-        return ["{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, _severity, self.ID, override_msg or self.Msg)]
+        if get_color():
+            if _severity == "error":
+                return ["{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.RED, _line, _severity, self.ID, override_msg, Style.RESET_ALL)]
+            elif _severity == "warning":
+                return ["{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.YELLOW, _line, _severity, self.ID, override_msg, Style.RESET_ALL)]
+            else:
+                return ["{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.GREEN, _line, _severity, self.ID, override_msg, Style.RESET_ALL)]
+        return ["{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, _severity, self.ID, override_msg)]
 
     def __repr__(self):
         return "{}".format(self.ID)
