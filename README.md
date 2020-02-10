@@ -82,7 +82,9 @@ As long as you don't pass **--nobackup** a backup copy (filename + .bak) will be
 Rules marked with **[F]** are able to perform automatic fixing
 
 * oelint.comments.notrailing - No trailing comments allowed, comments should be on a single line
+* oelint.file.includenotfound - File to be included not found
 * oelint.file.patchsignedoff - Patches should contain a Signed-Of-By entry
+* oelint.file.requirenotfound - File to be required not found
 * oelint.file.upstreamstatus - Patches should contain a Upstream-Status entry
 * oelint.spaces.emptyline - Empty line should not contain spaces or tabs **[F]**
 * oelint.spaces.linebeginning - No space at a line beginning **[F]**

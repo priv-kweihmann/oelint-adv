@@ -6,6 +6,7 @@ from oelint_adv.cls_item import Comment
 from oelint_adv.cls_item import Function
 from oelint_adv.cls_item import Include
 from oelint_adv.cls_item import Item
+from oelint_adv.cls_item import MissingFile
 from oelint_adv.cls_item import PythonBlock
 from oelint_adv.cls_item import TaskAdd
 from oelint_adv.cls_item import TaskAssignment
@@ -14,42 +15,45 @@ from oelint_adv.cls_item import Variable
 
 def prepare_lines(_file, lineOffset=0):
     __func_start_regexp__ = r".*(((?P<py>python)|(?P<fr>fakeroot))\s*)*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{"
-    with open(_file) as i:
+    try:
         prep_lines = []
-        _iter = enumerate(i.readlines())
-        for num, line in _iter:
-            raw_line = line
-            if raw_line.find("\\\n") != -1:
-                _, line = _iter.__next__()
-                while line.find("\\\n") != -1:
-                    raw_line += line
+        with open(_file) as i:
+            _iter = enumerate(i.readlines())
+            for num, line in _iter:
+                raw_line = line
+                if raw_line.find("\\\n") != -1:
                     _, line = _iter.__next__()
-                raw_line += line
-            elif re.match(__func_start_regexp__, raw_line):
-                _, line = _iter.__next__()
-                stopiter = False
-                while line.strip() != "}" and not stopiter:
-                    raw_line += line
-                    try:
+                    while line.find("\\\n") != -1:
+                        raw_line += line
                         _, line = _iter.__next__()
-                    except StopIteration:
-                        stopiter = True
-                if line.strip() == "}":
                     raw_line += line
-            elif raw_line.strip().startswith("def "):
-                _, line = _iter.__next__()
-                stopiter = False
-                while (line.startswith(" ") or line.startswith("\t")) and not stopiter:
-                    raw_line += line
-                    try:
-                        _, line = _iter.__next__()
-                    except StopIteration:
-                        stopiter = True
-                    if not line.strip():
-                        break
-            prep_lines.append({"line": num + 1 + lineOffset, "raw": raw_line,
-                               "cnt": raw_line.replace("\n", "").replace("\\", "")})
-        return prep_lines
+                elif re.match(__func_start_regexp__, raw_line):
+                    _, line = _iter.__next__()
+                    stopiter = False
+                    while line.strip() != "}" and not stopiter:
+                        raw_line += line
+                        try:
+                            _, line = _iter.__next__()
+                        except StopIteration:
+                            stopiter = True
+                    if line.strip() == "}":
+                        raw_line += line
+                elif raw_line.strip().startswith("def "):
+                    _, line = _iter.__next__()
+                    stopiter = False
+                    while (line.startswith(" ") or line.startswith("\t")) and not stopiter:
+                        raw_line += line
+                        try:
+                            _, line = _iter.__next__()
+                        except StopIteration:
+                            stopiter = True
+                        if not line.strip():
+                            break
+                prep_lines.append({"line": num + 1 + lineOffset, "raw": raw_line,
+                                "cnt": raw_line.replace("\n", "").replace("\\", "")})
+    except FileNotFoundError:
+        pass
+    return prep_lines
 
 
 def get_items(stash, _file, lineOffset=0):
@@ -59,7 +63,7 @@ def get_items(stash, _file, lineOffset=0):
     __regex_inherit = r"^.*?inherit(\s+|\t+)(?P<inhname>.+)"
     __regex_comments = r"^.*?#+(?P<body>.*)"
     __regex_python = r"^(\s*|\t*)def(\s+|\t+)(?P<funcname>[a-z0-9_]+)(\s*|\t*)\:.+"
-    __regex_include = r"^(\s*|\t*)(include|require)(\s+|\t+)(?P<incname>[A-za-z0-9\-\.]+)"
+    __regex_include = r"^(\s*|\t*)(?P<statement>include|require)(\s+|\t+)(?P<incname>[A-za-z0-9\-\.]+)"
     __regex_addtask = r"^(\s*|\t*)addtask\s+(?P<func>\w+)\s*((before\s*(?P<before>((.*(?=after))|(.*))))|(after\s*(?P<after>((.*(?=before))|(.*)))))*"
     __regex_taskass = r"^(\s*|\t*)(?P<func>\w+)\[(?P<ident>\w+)\](\s+|\t+)=(\s+|\t+)(?P<varval>.*)"
 
@@ -115,12 +119,16 @@ def get_items(stash, _file, lineOffset=0):
                     res.append(TaskAdd(
                         _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("func"), _b, _a))
                 elif k == "include":
-                    tmp = stash.AddFile(os.path.abspath(os.path.join(os.path.dirname(
-                        _file), m.group("incname"))), lineOffset=line["line"], forcedLink=_file)
+                    _path = os.path.abspath(os.path.join(os.path.dirname(_file), m.group("incname")))
+                    if os.path.exists(_path):
+                        tmp = stash.AddFile(os.path.abspath(os.path.join(os.path.dirname(
+                            _file), m.group("incname"))), lineOffset=line["line"], forcedLink=_file)
+                        if any(tmp):
+                            lineOffset += max([x.InFileLine for x in tmp])
+                    else:
+                        res.append(MissingFile(_file, line["line"], line["line"] - lineOffset, m.group("incname"), m.group("statement")))
                     res.append(Include(
-                        _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("incname")))
-                    if any(tmp):
-                        lineOffset += max([x.InFileLine for x in tmp])
+                        _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("incname"), m.group("statement")))
                 good = True
             if good:
                 break

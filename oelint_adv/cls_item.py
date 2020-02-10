@@ -71,10 +71,12 @@ class Comment(Item):
 class Include(Item):
     CLASSIFIER = "Include"
     ATTR_INCNAME = "IncName"
+    ATTR_STATEMENT = "Statement"
 
-    def __init__(self, origin, line, infileline, rawtext, incname):
+    def __init__(self, origin, line, infileline, rawtext, incname, statement):
         super().__init__(origin, line, infileline, rawtext)
         self.IncName = incname
+        self.Statement = statement
 
 
 class Function(Item):
@@ -129,3 +131,14 @@ class TaskAdd(Item):
         self.FuncName = name
         self.Before = [x for x in (before or "").split(" ") if x]
         self.After = [x for x in (after or "").split(" ") if x]
+
+
+class MissingFile(Item):
+    ATTR_FILENAME = "Filename"
+    ATTR_STATEMENT = "Statement"
+    CLASSIFIER = "MissingFile"
+
+    def __init__(self, origin, line, infileline, filename, statement):
+        super().__init__(origin, line, infileline, "")
+        self.Filename = filename
+        self.Statement = statement

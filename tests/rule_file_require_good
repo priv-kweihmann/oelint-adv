@@ -1,0 +1,15 @@
+#!/bin/sh
+TESTFILE="/tmp/oelint_adv_test.bb"
+TESTFILEINC="/tmp/oelint_adv_test.inc"
+trap "rm -f ${TESTFILE} && rm -f ${TESTFILEINC}" EXIT
+TESTID="oelint.file.requirenotfound"
+TESTOCC="0"
+cat > ${TESTFILEINC} << EOF
+VAR = "a"
+EOF
+cat > ${TESTFILE} << EOF
+require oelint_adv_test.inc
+EOF
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+echo "Test for ${0} failed"
+exit 1
