@@ -40,7 +40,7 @@ def load_rules(add_rules=[]):
         _searchpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), v["path"])
         packages = pkgutil.walk_packages(path=[_searchpath])
         for _, name, _ in packages:
-            name = v["path"] + "." + name
+            name = __name__.split(".")[0] + "." + v["path"] + "." + name
             mod = importlib.import_module(name)
             for m in inspect.getmembers(mod, inspect.isclass):
                 try:
