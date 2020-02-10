@@ -3,6 +3,8 @@ import inspect
 import os
 import pkgutil
 
+from oelint_adv.rule_file import get_rulefile
+
 
 class Rule():
     def __init__(self, id="", severity="", message=""):
@@ -17,7 +19,14 @@ class Rule():
         return []
 
     def finding(self, _file, _line, override_msg=None):
-        return ["{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, self.Severity, self.ID, override_msg or self.Msg)]
+        _severity = self.Severity
+        try:
+            _rule_file = get_rulefile()
+            if _rule_file and self.ID in _rule_file:
+                _severity = _rule_file[self.ID] or self.Severity
+        except:
+            pass
+        return ["{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, _severity, self.ID, override_msg or self.Msg)]
 
     def __repr__(self):
         return "{}".format(self.ID)
@@ -31,6 +40,7 @@ class Rule():
 
 def load_rules(add_rules=[]):
     res = []
+    _rule_file = get_rulefile()
     _path_list = {
         "base": { "path": "rule_base" }
     }
@@ -47,6 +57,8 @@ def load_rules(add_rules=[]):
                     if issubclass(m[1], Rule):
                         inst = m[1]()
                         if inst.ID:
+                            if _rule_file and inst.ID not in _rule_file:
+                                continue
                             res.append(inst)
                 except Exception:
                     pass

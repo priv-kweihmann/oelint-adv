@@ -1,9 +1,11 @@
 import argparse
 import os
 import sys
+import json
 
 from oelint_adv.cls_rule import load_rules
 from oelint_adv.cls_stash import Stash
+from oelint_adv.rule_file import set_rulefile
 
 sys.path.append(os.path.abspath(os.path.join(__file__, "..")))
 
@@ -21,12 +23,23 @@ def create_argparser():
                         help="Don't create backup file when auto fixing")
     parser.add_argument("--addrules", nargs="+", default=[],
                         help="Additional non-default rulessets to add")
+    parser.add_argument("--rulefile", default=None,
+                        help="Rulefile")
     parser.add_argument("files", nargs='+', help="File to parse")
-    return parser
+
+    args = parser.parse_args()
+
+    if args.rulefile:
+        try:
+            with open(args.rulefile) as i:
+                set_rulefile(json.load(i))
+        except (FileNotFoundError, json.JSONDecodeError):
+            argparse.ArgumentTypeError("'rulefile' is not a vaid file")
+    return args
 
 
 if __name__ == '__main__':
-    args = create_argparser().parse_args()
+    args = create_argparser()
     rules = [x for x in load_rules(
         add_rules=args.addrules) if str(x) not in args.suppress]
     print("Loaded rules: {}".format(",".join(sorted([str(x) for x in rules]))))

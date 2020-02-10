@@ -36,6 +36,7 @@ yay -S oelint-adv
 oelint-adv
 usage: __main__.py [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix]
                    [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
+                   [--rulefile RULEFILE]
                    files [files ...]
 
 Advanced OELint - Check bitbake recipes against OECore styleguide
@@ -51,6 +52,7 @@ optional arguments:
   --nobackup            Don't create backup file when auto fixing
   --addrules ADDRULES [ADDRULES ...]
                         Additional non-default rulessets to add
+  --rulefile RULEFILE   Rulefile
 ```
 
 ## Output
@@ -145,3 +147,37 @@ To enable pass **--addrules jetm** to CLI
 Rules marked with **[F]** are able to perform automatic fixing
 
 * oelint.jetm.vars.dependssingleline - Each [R]DEPENDS entry should be put into a single line
+
+## Defining a ruleset
+
+If you pass the option `--rulefile` you could define the rules to be checked and their severity via a simple json file.
+
+The rule file could look like this
+
+```json
+{
+  "<rule>": "<severity>"
+}
+```
+
+to override the severity, or
+
+```json
+{
+  "<rule>": ""
+}
+```
+
+to keep the original severity.
+
+### Example
+
+```json
+{
+  "oelint.file.includenotfound": "",
+  "oelint.file.requirenotfound": "warning"
+}
+```
+
+would enable the two rules `oelint.file.includenotfound` and `oelint.file.requirenotfound`.
+The severity of `oelint.file.includenotfound` will be the default of the tool, while `oelint.file.requirenotfound` will report `warning` instead of the original suggested severity
