@@ -18,6 +18,19 @@ def get_files(stash, _file, pattern):
         res += glob.glob(item)
     return list(set(res))
 
+def find_local_or_in_layer(name, localdir):
+    if os.path.exists(os.path.join(localdir, name)):
+        return os.path.join(localdir, name)
+    _curdir = localdir
+    while os.path.isdir(_curdir):
+        _curdir = os.path.dirname(_curdir)
+        if os.path.exists(os.path.join(_curdir, "conf/layer.conf")):
+            if os.path.exists(os.path.join(_curdir, name)):
+                return os.path.join(_curdir, name)
+            else:
+                break
+    return None
+
 
 def get_scr_components(string):
     """

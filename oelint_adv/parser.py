@@ -11,6 +11,7 @@ from oelint_adv.cls_item import PythonBlock
 from oelint_adv.cls_item import TaskAdd
 from oelint_adv.cls_item import TaskAssignment
 from oelint_adv.cls_item import Variable
+from oelint_adv.helper_files import find_local_or_in_layer
 
 
 def prepare_lines(_file, lineOffset=0):
@@ -63,7 +64,7 @@ def get_items(stash, _file, lineOffset=0):
     __regex_inherit = r"^.*?inherit(\s+|\t+)(?P<inhname>.+)"
     __regex_comments = r"^.*?#+(?P<body>.*)"
     __regex_python = r"^(\s*|\t*)def(\s+|\t+)(?P<funcname>[a-z0-9_]+)(\s*|\t*)\:.+"
-    __regex_include = r"^(\s*|\t*)(?P<statement>include|require)(\s+|\t+)(?P<incname>[A-za-z0-9\-\.]+)"
+    __regex_include = r"^(\s*|\t*)(?P<statement>include|require)(\s+|\t+)(?P<incname>[A-za-z0-9\-\./]+)"
     __regex_addtask = r"^(\s*|\t*)addtask\s+(?P<func>\w+)\s*((before\s*(?P<before>((.*(?=after))|(.*))))|(after\s*(?P<after>((.*(?=before))|(.*)))))*"
     __regex_taskass = r"^(\s*|\t*)(?P<func>\w+)\[(?P<ident>\w+)\](\s+|\t+)=(\s+|\t+)(?P<varval>.*)"
 
@@ -119,10 +120,9 @@ def get_items(stash, _file, lineOffset=0):
                     res.append(TaskAdd(
                         _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("func"), _b, _a))
                 elif k == "include":
-                    _path = os.path.abspath(os.path.join(os.path.dirname(_file), m.group("incname")))
-                    if os.path.exists(_path):
-                        tmp = stash.AddFile(os.path.abspath(os.path.join(os.path.dirname(
-                            _file), m.group("incname"))), lineOffset=line["line"], forcedLink=_file)
+                    _path = find_local_or_in_layer(m.group("incname"), os.path.dirname(_file))
+                    if _path:
+                        tmp = stash.AddFile(_path, lineOffset=line["line"], forcedLink=_file)
                         if any(tmp):
                             lineOffset += max([x.InFileLine for x in tmp])
                     else:
