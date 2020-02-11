@@ -23,6 +23,8 @@ def find_local_or_in_layer(name, localdir):
         return os.path.join(localdir, name)
     _curdir = localdir
     while os.path.isdir(_curdir):
+        if _curdir == "/":
+            break
         _curdir = os.path.dirname(_curdir)
         if os.path.exists(os.path.join(_curdir, "conf/layer.conf")):
             if os.path.exists(os.path.join(_curdir, name)):
