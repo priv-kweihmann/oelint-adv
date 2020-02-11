@@ -23,5 +23,5 @@ class VarsOrder(Rule):
                 if VAR_ORDER.index(item.VarName) < VAR_ORDER.index(_func_before.VarName):
                     res += self.finding(item.Origin, item.InFileLine,
                                         "'{}' should be placed before '{}'".format(
-                                        item.VarName, _func_before.VarName))
+                                            item.VarName, _func_before.VarName))
         return res

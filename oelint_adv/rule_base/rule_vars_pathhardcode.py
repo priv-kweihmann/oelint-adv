@@ -1,4 +1,3 @@
-from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
 
 from collections import OrderedDict
@@ -27,8 +26,6 @@ class VarsPathHardcode(Rule):
             "/usr/include": "${includedir}",
             "/var": "${localstatedir}",
             "/lib": "${nonarch_base_libdir}",
-            "/usr/lib": "${nonarch_libdir}",
-            "/usr/include": "${oldincludedir}",
             "/usr/sbin": "${sbindir}",
             "/srv": "${servicedir}",
             "/com": "${sharedstatedir}",

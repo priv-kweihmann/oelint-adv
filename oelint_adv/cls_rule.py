@@ -20,12 +20,9 @@ class Rule():
 
     def finding(self, _file, _line, override_msg=None):
         _severity = self.Severity
-        try:
-            _rule_file = get_rulefile()
-            if _rule_file and self.ID in _rule_file:
-                _severity = _rule_file[self.ID] or self.Severity
-        except:
-            pass
+        _rule_file = get_rulefile()
+        if _rule_file and self.ID in _rule_file:
+            _severity = _rule_file[self.ID] or self.Severity
         return ["{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, _severity, self.ID, override_msg or self.Msg)]
 
     def __repr__(self):
@@ -34,16 +31,18 @@ class Rule():
     def FormatMsg(self, *args):
         return self.Msg.format(*args)
 
+
 def load_rules(add_rules=[]):
     res = []
     _rule_file = get_rulefile()
     _path_list = {
-        "base": { "path": "rule_base" }
+        "base": {"path": "rule_base"}
     }
     for ar in add_rules:
-        _path_list[ar] = { "path": "rule_{}".format(ar) }
+        _path_list[ar] = {"path": "rule_{}".format(ar)}
     for _, v in _path_list.items():
-        _searchpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), v["path"])
+        _searchpath = os.path.join(os.path.dirname(
+            os.path.abspath(__file__)), v["path"])
         packages = pkgutil.walk_packages(path=[_searchpath])
         for _, name, _ in packages:
             name = __name__.split(".")[0] + "." + v["path"] + "." + name

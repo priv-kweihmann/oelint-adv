@@ -34,7 +34,7 @@ def create_argparser():
             with open(args.rulefile) as i:
                 set_rulefile(json.load(i))
         except (FileNotFoundError, json.JSONDecodeError):
-            argparse.ArgumentTypeError("'rulefile' is not a vaid file")
+            raise argparse.ArgumentTypeError("'rulefile' is not a valid file")
     return args
 
 

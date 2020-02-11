@@ -55,7 +55,8 @@ class Variable(Item):
         self.VarValueStripped = self.VarValue.strip().lstrip('"').rstrip('"')
 
     def IsAppend(self):
-        return any([x for x in Variable.VARIABLE_APPEND_NEEDLES if self.Raw.find(x) != -1]) or self.Raw.find("_append") != -1
+        return any([x for x in Variable.VARIABLE_APPEND_NEEDLES if self.Raw.find(x) != -1]) \
+               or self.Raw.find("_append") != -1
 
     def IsMultiLine(self):
         return "\\" in self.Raw
@@ -95,7 +96,8 @@ class Function(Item):
         self.FuncBody = body
         self.FuncBodyStripped = body.replace(
             "{", "").replace("}", "").replace("\n", "").strip()
-        self.FuncBodyRaw = textwrap.dedent(rawtext[rawtext.find("{") + 1:].rstrip().rstrip("}"))
+        self.FuncBodyRaw = textwrap.dedent(
+            rawtext[rawtext.find("{") + 1:].rstrip().rstrip("}"))
 
 
 class PythonBlock(Item):

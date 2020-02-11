@@ -23,5 +23,5 @@ class TaskOrder(Rule):
                 if FUNC_ORDER.index(item.FuncName) < FUNC_ORDER.index(_func_before.FuncName):
                     res += self.finding(item.Origin, item.InFileLine,
                                         "'{}' should be placed before '{}'".format(
-                                        item.FuncName, _func_before.FuncName))
+                                            item.FuncName, _func_before.FuncName))
         return res

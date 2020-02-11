@@ -9,9 +9,10 @@ class VarMisspell(Rule):
         super().__init__(id="oelint.vars.mispell",
                          severity="warning",
                          message="<FOO>")
-    
+
     def get_best_match(self, item, _list, minconfidence=0.8):
-        _dict = sorted([(SequenceMatcher(None, item, k).ratio(), k) for k in _list], key=lambda x: x[0], reverse=True)
+        _dict = sorted([(SequenceMatcher(None, item, k).ratio(), k)
+                        for k in _list], key=lambda x: x[0], reverse=True)
         if _dict and _dict[0][0] >= minconfidence:
             return _dict[0][1]
         return ""
@@ -20,7 +21,7 @@ class VarMisspell(Rule):
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR)
-        
+
         for i in items:
             if i.VarName in KNOWN_VARS:
                 continue
@@ -28,5 +29,5 @@ class VarMisspell(Rule):
             if _bestmatch:
                 res += self.finding(i.Origin, i.InFileLine,
                                     "'{}' is unknown, maybe you mean '{}'".format(
-                                    i.VarName, _bestmatch))
+                                        i.VarName, _bestmatch))
         return res

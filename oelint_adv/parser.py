@@ -51,7 +51,7 @@ def prepare_lines(_file, lineOffset=0):
                         if not line.strip():
                             break
                 prep_lines.append({"line": num + 1 + lineOffset, "raw": raw_line,
-                                "cnt": raw_line.replace("\n", "").replace("\\", "")})
+                                   "cnt": raw_line.replace("\n", "").replace("\\", "")})
     except FileNotFoundError:
         pass
     return prep_lines
@@ -95,7 +95,8 @@ def get_items(stash, _file, lineOffset=0):
                         _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("varname"), m.group("varval")))
                 elif k == "func":
                     res.append(Function(
-                        _file, line["line"], line["line"] - lineOffset, line["raw"],
+                        _file, line["line"], line["line"] -
+                        lineOffset, line["raw"],
                         m.group("func"), m.group("funcbody"),
                         m.group("py"), m.group("fr")))
                 elif k == "comment":
@@ -120,13 +121,16 @@ def get_items(stash, _file, lineOffset=0):
                     res.append(TaskAdd(
                         _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("func"), _b, _a))
                 elif k == "include":
-                    _path = find_local_or_in_layer(m.group("incname"), os.path.dirname(_file))
+                    _path = find_local_or_in_layer(
+                        m.group("incname"), os.path.dirname(_file))
                     if _path:
-                        tmp = stash.AddFile(_path, lineOffset=line["line"], forcedLink=_file)
+                        tmp = stash.AddFile(
+                            _path, lineOffset=line["line"], forcedLink=_file)
                         if any(tmp):
                             lineOffset += max([x.InFileLine for x in tmp])
                     else:
-                        res.append(MissingFile(_file, line["line"], line["line"] - lineOffset, m.group("incname"), m.group("statement")))
+                        res.append(MissingFile(
+                            _file, line["line"], line["line"] - lineOffset, m.group("incname"), m.group("statement")))
                     res.append(Include(
                         _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("incname"), m.group("statement")))
                 good = True

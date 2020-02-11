@@ -18,6 +18,7 @@ def get_files(stash, _file, pattern):
         res += glob.glob(item)
     return list(set(res))
 
+
 def find_local_or_in_layer(name, localdir):
     if os.path.exists(os.path.join(localdir, name)):
         return os.path.join(localdir, name)
