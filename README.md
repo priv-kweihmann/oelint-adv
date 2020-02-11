@@ -104,6 +104,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.task.order - Order of tasks
 * oelint.task.pythonprefix - Tasks containing python code should be prefixed with 'python' in function header
 * oelint.var.bbclassextend - Use BBCLASSEXTEND when possible
+* oelint.var.improperinherit - Warn about improperly named inherits
 * oelint.var.licenseremotefile - License shall be a file in remote source not a local file
 * oelint.var.mandatoryvar - Check for mandatory variables
 * oelint.var.multiinclude - Warn on including the same file more than once
