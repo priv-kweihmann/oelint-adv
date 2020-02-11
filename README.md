@@ -53,6 +53,7 @@ optional arguments:
   --addrules ADDRULES [ADDRULES ...]
                         Additional non-default rulessets to add
   --rulefile RULEFILE   Rulefile
+  --color               Add color to the output based on the severity
 ```
 
 ## Output
