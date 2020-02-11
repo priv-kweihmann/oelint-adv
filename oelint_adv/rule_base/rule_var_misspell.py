@@ -26,7 +26,7 @@ class VarMisspell(Rule):
                 continue
             _bestmatch = self.get_best_match(i.VarName, KNOWN_VARS)
             if _bestmatch:
-                self.OverrideMsg("'{}' is unknown, maybe you mean '{}'".format(
-                        i.VarName, _bestmatch))
-                res += self.finding(i.Origin, i.InFileLine)
+                res += self.finding(i.Origin, i.InFileLine,
+                                    "'{}' is unknown, maybe you mean '{}'".format(
+                                    i.VarName, _bestmatch))
         return res

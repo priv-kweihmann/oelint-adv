@@ -39,8 +39,8 @@ class VarsPathHardcode(Rule):
             for k, v in _map.items():
                 for ext in [" ", "/", "\""]:
                     if k + ext in i.Raw and k not in _matches:
-                        self.OverrideMsg("'{}' should be used instead of '{}'".format(v, k))
-                        res += self.finding(i.Origin, i.InFileLine)
+                        res += self.finding(i.Origin, i.InFileLine,
+                                            "'{}' should be used instead of '{}'".format(v, k))
                         _parts = [x for x in k.split("/") if x]
                         for x in range(0, len(_parts)):
                             _matches.append("/" + "/".join(_parts[0:x]))

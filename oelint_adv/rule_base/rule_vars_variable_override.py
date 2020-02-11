@@ -24,7 +24,7 @@ class VarOverride(Rule):
                 _items = [x for x in items if x.SubItem == sub and not x.IsAppend()]
                 if len(_items) > 1:
                     _files = list(set([os.path.basename(x.Origin) for x in _items]))
-                    self.OverrideMsg("Variable '{}' is set by {}".format(
-                        v, ",".join(_files)))
-                    res += self.finding(_items[0].Origin, _items[0].InFileLine)
+                    res += self.finding(_items[0].Origin, _items[0].InFileLine,
+                                        "Variable '{}' is set by {}".format(
+                                        v, ",".join(_files)))
         return res

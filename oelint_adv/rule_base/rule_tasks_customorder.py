@@ -44,9 +44,8 @@ class TaskCustomOrder(Rule):
                         _n.children += (_m,)
                 except LoopError as e:
                     _path = self.__getNodeFromException(str(e)) + [t]
-                    self.OverrideMsg(
-                        "Assignment creates a cyclic dependency - Path={}".format("->".join(_path)))
-                    res += self.finding(item.Origin, item.InFileLine)
+                    res += self.finding(item.Origin, item.InFileLine,
+                                        "Assignment creates a cyclic dependency - Path={}".format("->".join(_path)))
             for t in item.Before:
                 try:
                     _n = None
@@ -67,7 +66,5 @@ class TaskCustomOrder(Rule):
                         _n.children += (_m,)
                 except LoopError as e:
                     _path = self.__getNodeFromException(str(e)) + [t]
-                    self.OverrideMsg(
-                        "Assignment creates a cyclic dependency - Path={}".format("->".join(_path)))
-                    res += self.finding(item.Origin, item.InFileLine)
+                    res += self.finding(item.Origin, item.InFileLine, "Assignment creates a cyclic dependency - Path={}".format("->".join(_path)))
         return res

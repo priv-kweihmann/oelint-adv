@@ -17,9 +17,8 @@ class VarDuplicates(Rule):
             for i in items:
                 for x in [y for y in i.VarValueStripped.split(" ") if y]:
                     if x in _items:
-                        self.OverrideMsg(
-                            "Item '{}' was added multiple time to {}".format(x, c))
-                        res += self.finding(i.Origin, i.InFileLine)
+                        res += self.finding(i.Origin, i.InFileLine,
+                                            "Item '{}' was added multiple time to {}".format(x, c))
                     else:
                         _items.append(x)
         return res

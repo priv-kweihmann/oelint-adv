@@ -21,7 +21,7 @@ class VarsOrder(Rule):
                 if item.VarName not in VAR_ORDER:
                     continue
                 if VAR_ORDER.index(item.VarName) < VAR_ORDER.index(_func_before.VarName):
-                    self.OverrideMsg("'{}' should be placed before '{}'".format(
-                        item.VarName, _func_before.VarName))
-                    res += self.finding(item.Origin, item.InFileLine)
+                    res += self.finding(item.Origin, item.InFileLine,
+                                        "'{}' should be placed before '{}'".format(
+                                        item.VarName, _func_before.VarName))
         return res

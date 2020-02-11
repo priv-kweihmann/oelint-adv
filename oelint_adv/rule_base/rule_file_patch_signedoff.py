@@ -25,10 +25,9 @@ class FilePatchIsSignedOff(Rule):
                         _assign = [x for x in _items if x.VarValue.find(
                             os.path.basename(i)) != -1]
                         if any(_assign):
-                            self.OverrideMsg(self.Msg.replace(
-                                "{FILE}", os.path.basename(i)))
                             res += self.finding(_assign[0].Origin,
-                                                _assign[0].InFileLine)
+                                                _assign[0].InFileLine, 
+                                                self.Msg.replace("{FILE}", os.path.basename(i)))
                 except UnicodeDecodeError:
                     pass
         return res

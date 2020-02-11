@@ -34,10 +34,6 @@ class Rule():
     def FormatMsg(self, *args):
         return self.Msg.format(*args)
 
-    def OverrideMsg(self, newmsg):
-        self.Msg = newmsg
-
-
 def load_rules(add_rules=[]):
     res = []
     _rule_file = get_rulefile()

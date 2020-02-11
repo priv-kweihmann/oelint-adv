@@ -122,15 +122,12 @@ class VarSRCUriOptions(Rule):
         _url = get_scr_components(_input)
         res = []
         if _url["scheme"] not in self._valid_options.keys():
-            self.OverrideMsg(
-                "Fetcher '{}' is not known".format(_url["scheme"]))
-            res += self.finding(i.Origin, i.InFileLine)
+            res += self.finding(i.Origin, i.InFileLine, "Fetcher '{}' is not known".format(_url["scheme"]))
         else:
             for k, _ in _url["options"].items():
                 if k not in self._valid_options[_url["scheme"]] + self._general_options:
-                    self.OverrideMsg(
-                        "Option '{}' is not known with this fetcher type".format(k))
-                    res += self.finding(i.Origin, i.InFileLine)
+                    res += self.finding(i.Origin, i.InFileLine, 
+                                        "Option '{}' is not known with this fetcher type".format(k))
         return res
 
     def check(self, _file, stash):

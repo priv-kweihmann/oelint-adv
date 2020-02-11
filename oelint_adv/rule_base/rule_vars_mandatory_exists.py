@@ -15,6 +15,5 @@ class VarMandatoryExists(Rule):
             items = stash.GetItemsFor(
                 filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue=var)
             if not any(items):
-                self.OverrideMsg("Variable '{}' should be set".format(var))
-                res += self.finding(_file, 0)
+                res += self.finding(_file, 0, "Variable '{}' should be set".format(var))
         return res

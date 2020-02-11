@@ -21,7 +21,7 @@ class TaskOrder(Rule):
                 if item.FuncName not in FUNC_ORDER:
                     continue
                 if FUNC_ORDER.index(item.FuncName) < FUNC_ORDER.index(_func_before.FuncName):
-                    self.OverrideMsg("'{}' should be placed before '{}'".format(
-                        item.FuncName, _func_before.FuncName))
-                    res += self.finding(item.Origin, item.InFileLine)
+                    res += self.finding(item.Origin, item.InFileLine,
+                                        "'{}' should be placed before '{}'".format(
+                                        item.FuncName, _func_before.FuncName))
         return res
