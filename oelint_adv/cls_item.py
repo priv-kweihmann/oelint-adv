@@ -31,7 +31,7 @@ class Item():
     
     def extract_sub_func(self, name):
         chunks = name.split("_")
-        _marker = ["append", "prepend", "class-native", "class-cross", "class-target"]
+        _marker = ["append", "prepend", "class-native", "class-cross", "class-target", "remove"]
         _suffix = []
         _var = []
         for i in chunks:
@@ -91,6 +91,10 @@ class Variable(Item):
             res.append(self.VarOp)
         if "append" in self.SubItems:
             res.append("append")
+        if "prepend" in self.SubItems:
+            res.append("prepend")
+        if "remove" in self.SubItems:
+            res.append("remove")
         return res
 
     def IsMultiLine(self):
