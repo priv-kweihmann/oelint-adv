@@ -28,6 +28,9 @@ class Rule():
         _rule_file = get_rulefile()
         if _rule_file and self.ID in _rule_file:
             _severity = _rule_file[self.ID] or self.Severity
+        if _line <= 0:
+            # Fix those issues, that don't come with a line
+            _line = 1
         if get_color():
             if _severity == "error":
                 return ["{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.RED, _line, _severity, self.ID, override_msg, Style.RESET_ALL)]
