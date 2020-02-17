@@ -1,4 +1,5 @@
 from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_item import Variable
 
 from collections import OrderedDict
 
@@ -32,6 +33,9 @@ class VarsPathHardcode(Rule):
             "/etc": "${sysconfdir}",
         })
         for i in items:
+            if isinstance(i, Variable) and \
+               i.VarName in ["SUMMARY", "DESCRIPTION", "HOMEPAGE", "AUTHOR", "BUGTRACKER"]:
+                continue
             _matches = []
             for k, v in _map.items():
                 for pre in ["'", "\"", " ", "${D}", "="]:

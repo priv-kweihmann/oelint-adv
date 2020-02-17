@@ -24,6 +24,11 @@ VAR = "${servicedir}"
 VAR = "${sharedstatedir}"
 VAR = "${sysconfdir}"
 VAR = "/some/other/dir/${sysconfdir}"
+SUMMARY = "/usr/datadir"
+DESCRIPTION = "/usr/datadir"
+HOMEPAGE = "/usr/datadir"
+AUTHOR = "/usr/datadir"
+BUGTRACKER = "/usr/datadir"
 EOF
 [ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
