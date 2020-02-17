@@ -15,6 +15,17 @@ SUGGESTED_VARS = [
     "CVE_PRODUCT"
 ]
 
+KNOWN_MIRRORS = {
+    "${DEBIAN_MIRROR}": "http://snapshot.debian.org/archive/debian/20180310T215105Z/pool",
+    "${GNU_MIRROR}": "https://mirrors.kernel.org/gnu",
+    "${KERNELORG_MIRROR}": "http://www.kernel.org/pub",
+    "${GNUPG_MIRROR}": "ftp://ftp.gnupg.org/gcrypt",
+    "${APACHE_MIRROR}": "http://www.us.apache.org/dist",
+    "${SAVANNAH_GNU_MIRROR}": "http://download-mirror.savannah.gnu.org/releases",
+    "${SAVANNAH_NONGNU_MIRROR}": "http://download-mirror.savannah.nongnu.org/releases",
+    "${CPAN_MIRROR}": "http://cpan.metacpan.org/",
+}
+
 VAR_ORDER = [
     "SUMMARY",
     "DESCRIPTION",

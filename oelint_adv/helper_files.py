@@ -4,6 +4,7 @@ import re
 from urllib.parse import urlparse
 
 from oelint_adv.cls_item import Variable
+from oelint_adv.const_vars import KNOWN_MIRRORS
 
 
 def get_files(stash, _file, pattern):
@@ -35,6 +36,14 @@ def find_local_or_in_layer(name, localdir):
                 break
     return None
 
+def _replace_with_known_mirrors(_in):
+    """
+    Replace the known mirror configuration items
+    with 
+    """
+    for k, v in KNOWN_MIRRORS.items():
+        _in = _in.replace(k, v)
+    return _in
 
 def get_scr_components(string):
     """
@@ -44,7 +53,7 @@ def get_scr_components(string):
             src = path to call
             options = dict with options added to URL
     """
-    _url = urlparse(string)
+    _url = urlparse(_replace_with_known_mirrors(string))
     _scheme = _url.scheme
     _options = _url.netloc.split(";")[1:]
     _path = _url.netloc.split(";")[0]
