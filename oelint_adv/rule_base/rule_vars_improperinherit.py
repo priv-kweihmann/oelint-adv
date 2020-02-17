@@ -16,7 +16,7 @@ class VarImproperInherit(Rule):
                                   attribute=Variable.ATTR_VAR, attributeValue="inherit")
         for i in items:
             for subi in [x for x in i.VarValue.split(" ") if x]:
-                if not re.match(r"^[A-Za-z0-9_-]+$", subi):
+                if not re.match(r"^[A-Za-z0-9_.-]+$", subi):
                     res += self.finding(i.Origin, i.InFileLine,
                                         self.Msg.replace("{INH}", subi))
         return res

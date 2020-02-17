@@ -6,6 +6,7 @@ TESTOCC="0"
 cat > ${TESTFILE} << EOF
 inherit abc def
 inherit A0_a
+inherit update-rc.d
 EOF
 [ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
