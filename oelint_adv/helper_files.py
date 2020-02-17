@@ -1,5 +1,6 @@
 import glob
 import os
+import re
 from urllib.parse import urlparse
 
 from oelint_adv.cls_item import Variable
@@ -53,3 +54,6 @@ def get_scr_components(string):
         _path += _url.path
     _parsed_opt = {x.split("=")[0]: x.split("=")[1] for x in _options}
     return {"scheme": _scheme, "src": _path, "options": _parsed_opt}
+
+def safe_linesplit(string):
+    return re.split(r"\s|\t|\x1b", string)

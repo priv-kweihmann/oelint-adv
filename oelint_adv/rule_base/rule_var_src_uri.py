@@ -1,6 +1,6 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.helper_files import get_scr_components
+from oelint_adv.helper_files import get_scr_components, safe_linesplit
 
 
 class VarSRCUriOptions(Rule):
@@ -139,6 +139,6 @@ class VarSRCUriOptions(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue="SRC_URI")
         for i in items:
-            for x in [y for y in i.VarValueStripped.split(" ") if y]:
+            for x in [y for y in safe_linesplit(i.VarValueStripped) if y]:
                 res += self.__analyse(i, x)
         return res
