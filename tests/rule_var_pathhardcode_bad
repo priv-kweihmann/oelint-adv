@@ -2,7 +2,7 @@
 TESTFILE="/tmp/oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.vars.pathhardcode"
-TESTOCC="23"
+TESTOCC="22"
 cat > ${TESTFILE} << EOF
 VAR = "/usr/lib/systemd/user"
 VAR = "/lib/systemd/system"
@@ -25,6 +25,7 @@ VAR = "/com"
 VAR = "/etc"
 VAR = "/etc/ajjsjj"
 VAR = "/usr/bin*"
+VAR = "${D}/usr/bin"
 EOF
 [ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
