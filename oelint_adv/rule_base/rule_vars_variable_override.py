@@ -15,7 +15,7 @@ class VarOverride(Rule):
         __varnames = [x.VarName for x in stash.GetItemsFor(
             filename=_file, classifier=Variable.CLASSIFIER)]
         for v in __varnames:
-            if v == "inherit":
+            if v == "inherit" or not v:
                 # This will be done by another rule
                 continue
             items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue=v)
