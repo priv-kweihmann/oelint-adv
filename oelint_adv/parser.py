@@ -51,7 +51,7 @@ def prepare_lines(_file, lineOffset=0):
                         if not line.strip():
                             break
                 prep_lines.append({"line": num + 1 + lineOffset, "raw": raw_line,
-                                   "cnt": raw_line.replace("\n", "").replace("\\", "")})
+                                   "cnt": raw_line.replace("\n", "").replace("\\", "\n")})
     except FileNotFoundError:
         pass
     return prep_lines
@@ -59,7 +59,7 @@ def prepare_lines(_file, lineOffset=0):
 
 def get_items(stash, _file, lineOffset=0):
     res = []
-    __regex_var = r"^.*?(?P<varname>([A-Z0-9a-z_-]|\$|\{|\})+)(\s*|\t*)(\+|\?)*(:)*=(\s*|\t*)(?P<varval>.*)"
+    __regex_var = r"^.*?(?P<varname>([A-Z0-9a-z_-]|\$|\{|\})+)(?P<varop>(\s|\t)*(\+|\?|\:|\.)*=(\+)*(\s|\t)*)(?P<varval>.*)"
     __regex_func = r"^((?P<py>python)\s+|(?P<fr>fakeroot\s+))*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{(?P<funcbody>.*)\s*\}"
     __regex_inherit = r"^.*?inherit(\s+|\t+)(?P<inhname>.+)"
     __regex_comments = r"^.*?#+(?P<body>.*)"
@@ -92,7 +92,8 @@ def get_items(stash, _file, lineOffset=0):
                             _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("funcname")))
                 elif k == "vars":
                     res.append(Variable(
-                        _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("varname"), m.group("varval")))
+                        _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("varname"), m.group("varval"),
+                        m.group("varop")))
                 elif k == "func":
                     res.append(Function(
                         _file, line["line"], line["line"] -
@@ -104,7 +105,8 @@ def get_items(stash, _file, lineOffset=0):
                         Comment(_file, line["line"], line["line"] - lineOffset, line["raw"]))
                 elif k == "inherit":
                     res.append(Variable(
-                        _file, line["line"], line["line"] - lineOffset, line["raw"], "inherit", m.group("inhname")))
+                        _file, line["line"], line["line"] - lineOffset, line["raw"], "inherit", m.group("inhname"), 
+                        ""))
                 elif k == "taskassign":
                     res.append(TaskAssignment(_file, line["line"], line["line"] - lineOffset, line["raw"], m.group(
                         "func"), m.group("ident"), m.group("varval")))

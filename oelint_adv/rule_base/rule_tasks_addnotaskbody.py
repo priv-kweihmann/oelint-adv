@@ -8,7 +8,7 @@ class TaskAddNoTaskBody(Rule):
     def __init__(self):
         super().__init__(id="oelint.task.addnotaskbody",
                          severity="warning",
-                         message="The added task is not existing or has no body")
+                         message="The added task '{FUNC}' is not existing or has no body")
 
     def check(self, _file, stash):
         res = []
@@ -20,12 +20,11 @@ class TaskAddNoTaskBody(Rule):
                 # not for builtin types - probed for missing prefix
                 continue
             _ta = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER,
-                                    attribute="FuncName", attributeValue=item.FuncName)
-            # probe for do_-prefix as well
-            _ta += stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER,
-                                    attribute="FuncName", attributeValue="do_" + item.FuncName)
-            if not any(_ta):
-                res += self.finding(item.Origin, item.InFileLine)
-            elif not any([x for x in _ta if x.FuncBodyStripped]):
-                res += self.finding(item.Origin, item.InFileLine)
+                                    attribute="FuncName")
+            _filt = [x for x in _ta or [] if not isinstance(x, str) and x.FuncName == item.FuncName]
+            _filt += [x for x in _ta or [] if not isinstance(x, str) and x.FuncName == "do_" + item.FuncName]
+            if not any(_filt):
+                res += self.finding(item.Origin, item.InFileLine, self.Msg.replace("{FUNC}", item.FuncName))
+            elif not any([x for x in _filt if x.FuncBodyStripped]):
+                res += self.finding(item.Origin, item.InFileLine, self.Msg.replace("{FUNC}", item.FuncName))
         return res

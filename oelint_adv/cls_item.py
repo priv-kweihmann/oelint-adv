@@ -1,4 +1,5 @@
 import textwrap
+import re
 
 
 class Item():
@@ -17,9 +18,30 @@ class Item():
 
     def extract_sub(self, name):
         chunks = name.split("_")
-        if len(chunks) > 2 and chunks[-1].islower():
-            return ("_".join(chunks[:-1]), chunks[-1])
-        return ("_".join(chunks), "")
+        _suffix = []
+        _var = []
+        for i in chunks:
+            if re.match("^[A-Z0-9{}$]+$", i):
+                _var.append(i)
+            else:
+                _suffix.append(i)
+        _var = [x for x in _var if x]
+        _suffix = [x for x in _suffix if x]
+        return ("_".join(_var), "_".join(_suffix))
+    
+    def extract_sub_func(self, name):
+        chunks = name.split("_")
+        _marker = ["append", "prepend", "class-native", "class-cross", "class-target"]
+        _suffix = []
+        _var = []
+        for i in chunks:
+            if i in _marker:
+                _suffix.append(i)
+            else:
+                _var.append(i)
+        _var = [x for x in _var if x]
+        _suffix = [x for x in _suffix if x]
+        return ("_".join(_var), "_".join(_suffix))
 
     def IsFromAppend(self):
         return self.Origin.endswith(".bbappend")
@@ -46,17 +68,30 @@ class Variable(Item):
     ATTR_VARVAL = "VarValue"
     ATTR_VARVALSTRIPPED = "VarValueStripped"
     CLASSIFIER = "Variable"
-    VARIABLE_APPEND_NEEDLES = ["+="]
+    VAR_VALID_OPERATOR = [" = ", " += ", " ?= ", " ??= ", " := ", " .= ", " =+ "]
 
-    def __init__(self, origin, line, infileline, rawtext, name, value):
+    def __init__(self, origin, line, infileline, rawtext, name, value, operator):
         super().__init__(origin, line, infileline, rawtext)
-        self.VarName, self.SubItem = self.extract_sub(name)
+        if "inherit" != name:
+            self.VarName, self.SubItem = self.extract_sub(name)
+        else:
+            self.VarName = name
+            self.SubItem = ""
+        self.SubItems = self.SubItem.split("_")
         self.VarValue = value
+        self.VarOp = operator
         self.VarValueStripped = self.VarValue.strip().lstrip('"').rstrip('"')
 
     def IsAppend(self):
-        return any([x for x in Variable.VARIABLE_APPEND_NEEDLES if self.Raw.find(x) != -1]) \
-               or self.Raw.find("_append") != -1
+        return self.VarOp in [" += "] or "append" in self.SubItems
+    
+    def AppendOperation(self):
+        res = []
+        if self.VarOp in [" += "]:
+            res.append(self.VarOp)
+        if "append" in self.SubItems:
+            res.append("append")
+        return res
 
     def IsMultiLine(self):
         return "\\" in self.Raw
@@ -90,9 +125,7 @@ class Function(Item):
         self.IsPython = python is not None
         self.IsFakeroot = fakeroot is not None
         name = name or ""
-        self.FuncName, self.SubItem = self.extract_sub(name.strip())
-        if self.SubItem not in ["", "append", "remove", "class-target", "class-native"]:
-            self.FuncName += "_" + self.SubItem
+        self.FuncName, self.SubItem = self.extract_sub_func(name.strip())
         self.FuncBody = body
         self.FuncBodyStripped = body.replace(
             "{", "").replace("}", "").replace("\n", "").strip()

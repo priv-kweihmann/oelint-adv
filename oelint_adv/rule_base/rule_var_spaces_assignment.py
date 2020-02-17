@@ -15,7 +15,6 @@ class VarSpacesOnAssignment(Rule):
         for i in items:
             if i.VarName == "inherit":
                 continue
-            needles = [" = ", " ?= ", " ??= ", " := ", " += "]
-            if not any([x for x in needles if i.Raw.find(x) != -1]):
+            if not i.VarOp in Variable.VAR_VALID_OPERATOR:
                 res += self.finding(i.Origin, i.InFileLine)
         return res

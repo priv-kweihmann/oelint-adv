@@ -13,10 +13,11 @@ class VarInconSpaces(Rule):
         items = stash.GetItemsFor(
             filename=_file, classifier=Variable.CLASSIFIER)
         for i in items:
-            if " += " in i.Raw and i.VarValueStripped.startswith(" "):
+            app_operation = i.AppendOperation()
+            if " += " in app_operation and i.VarValueStripped.startswith(" "):
                 res += self.finding(i.Origin, i.InFileLine,
                                     "Assignment should be 'VAR += \"foo\"' not 'VAR += \" foo\"'")
-            if "_append " in i.Raw and not i.VarValueStripped.startswith(" "):
+            if "append" in app_operation and not i.VarValueStripped.startswith(" "):
                 res += self.finding(i.Origin, i.InFileLine,
                                     "Assignment should be 'VAR_append = \" foo\"' not 'VAR_append = \"foo\"'")
         return res

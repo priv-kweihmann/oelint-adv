@@ -4,9 +4,9 @@ trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.var.srcuriwildcard"
 TESTOCC="2"
 cat > ${TESTFILE} << EOF
-SRC_URI = "file://\*"
+SRC_URI = "file://*"
 SRC_URI += "git://foo.org;tag=\${PV} \
-           file://somedir/\*"
+           file://somedir/*"
 EOF
 [ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"

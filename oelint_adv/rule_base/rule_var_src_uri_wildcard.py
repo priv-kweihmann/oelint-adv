@@ -1,6 +1,7 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
 from oelint_adv.helper_files import get_scr_components
+import re
 
 
 class VarSRCURIWildcard(Rule):
@@ -14,7 +15,7 @@ class VarSRCURIWildcard(Rule):
         _items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                    attribute=Variable.ATTR_VAR, attributeValue="SRC_URI")
         for i in _items:
-            for f in [x for x in i.VarValueStripped.split(" ") if x]:
+            for f in [x for x in re.split(r'\s|\t|\n', i.VarValueStripped) if x]:
                 components = get_scr_components(f)
                 if components["scheme"] == "file":
                     if any([x for x in ["*"] if x in components["src"]]):
