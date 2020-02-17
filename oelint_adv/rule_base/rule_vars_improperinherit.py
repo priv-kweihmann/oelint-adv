@@ -15,7 +15,7 @@ class VarImproperInherit(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue="inherit")
         for i in items:
-            for subi in [x for x in re.split(r"\s|\t|\n", i.VarValueStripped) if x]:
+            for subi in [x for x in re.split(r"\s|\t|\x1b", i.VarValueStripped) if x]:
                 if not re.match(r"^[A-Za-z0-9_.-]+$", subi):
                     res += self.finding(i.Origin, i.InFileLine,
                                         self.Msg.replace("{INH}", subi))

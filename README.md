@@ -125,6 +125,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.vars.insaneskip - INSANE_SKIP should be avoided at any cost
 * oelint.vars.mispell - Possible typo detected
 * oelint.vars.multilineident - On a multiline assignment, line indent is desirable
+* oelint.vars.notneededspace - Space at the beginning of the var is not needed **[F]**
 * oelint.vars.pathhardcode - Warn about the usage of hardcoded paths
 * oelint.vars.pnbpnusage - ${BPN} should be used instead of ${PN}
 * oelint.vars.pnusagediscouraged - Variable shouldn't contain ${PN} or ${BPN}

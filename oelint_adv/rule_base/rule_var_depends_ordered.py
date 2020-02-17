@@ -25,7 +25,7 @@ class VarDependsOrdered(Rule):
             _findings = []
             for i in items:
                 linenum = 0
-                for line in i.VarValueStripped.replace("\\", "").split("\n"):
+                for line in i.VarValueStripped.replace(chr(0x1b), "").split("\n"):
                     for x in [x for x in line.split(" ") if x]:
                         _i = deepcopy(i)
                         _i.Line += linenum

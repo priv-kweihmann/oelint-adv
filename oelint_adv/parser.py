@@ -51,7 +51,7 @@ def prepare_lines(_file, lineOffset=0):
                         if not line.strip():
                             break
                 prep_lines.append({"line": num + 1 + lineOffset, "raw": raw_line,
-                                   "cnt": raw_line.replace("\n", "").replace("\\", "\n")})
+                                   "cnt": raw_line.replace("\n", "").replace("\\", chr(0x1b))})
     except FileNotFoundError:
         pass
     return prep_lines
