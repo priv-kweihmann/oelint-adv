@@ -16,8 +16,14 @@ class TaskAddNoTaskBody(Rule):
             if item.FuncName in FUNC_ORDER:
                 # not for builtin types
                 continue
+            if item.FuncName in [x.replace("do_", "", 1) for x in FUNC_ORDER]:
+                # not for builtin types - probed for missing prefix
+                continue
             _ta = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER,
                                     attribute="FuncName", attributeValue=item.FuncName)
+            # probe for do_-prefix as well
+            _ta += stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER,
+                                    attribute="FuncName", attributeValue="do_" + item.FuncName)
             if not any(_ta):
                 res += self.finding(item.Origin, item.InFileLine)
             elif not any([x for x in _ta if x.FuncBodyStripped]):

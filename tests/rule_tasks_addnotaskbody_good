@@ -8,6 +8,10 @@ do_foo() {
     :
 }
 addtask do_foo
+
+addtask build
+
+addtask foo
 EOF
 [ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"

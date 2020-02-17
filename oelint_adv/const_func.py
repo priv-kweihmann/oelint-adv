@@ -6,5 +6,6 @@ FUNC_ORDER = [
     "do_compile",
     "do_install",
     "do_populate_sysroot",
+    "do_build",
     "do_package"
 ]
