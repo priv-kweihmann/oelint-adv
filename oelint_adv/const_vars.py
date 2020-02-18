@@ -16,14 +16,26 @@ SUGGESTED_VARS = [
 ]
 
 KNOWN_MIRRORS = {
-    "${DEBIAN_MIRROR}": "http://snapshot.debian.org/archive/debian/20180310T215105Z/pool",
-    "${GNU_MIRROR}": "https://mirrors.kernel.org/gnu",
-    "${KERNELORG_MIRROR}": "http://www.kernel.org/pub",
-    "${GNUPG_MIRROR}": "ftp://ftp.gnupg.org/gcrypt",
     "${APACHE_MIRROR}": "http://www.us.apache.org/dist",
+    "${CPAN_MIRROR}": "http://cpan.metacpan.org/",
+    "${DEBIAN_MIRROR}": "http://snapshot.debian.org/archive/debian/20180310T215105Z/pool",
+    "${E_CVS}": "cvs://anonymous@anoncvs.enlightenment.org/var/cvs/e",
+    "${E_URI}": "http://enlightenment.freedesktop.org/files",
+    "${FREEBSD_MIRROR}": "ftp://ftp.freebsd.org/pub/FreeBSD/",
+    "${FREEDESKTOP_CVS}": "cvs://anoncvs:anoncvs@anoncvs.freedesktop.org/cvs",
+    "${GENTOO_MIRROR}": "http://distro.ibiblio.org/pub/linux/distributions/gentoo/distfiles",
+    "${GNOME_MIRROR}": "http://ftp.gnome.org/pub/GNOME/sources",
+    "${GNU_MIRROR}": "https://mirrors.kernel.org/gnu",
+    "${GNUPG_MIRROR}": "ftp://ftp.gnupg.org/gcrypt",
+    "${GPE_MIRROR}": "http://gpe.linuxtogo.org/download/source",
+    "${GPE_SVN}": "svn://projects.linuxtogo.org/svn/gpe/trunk/base;module=${PN}",
+    "${HANDHELDS_CVS}": "cvs://anoncvs:anoncvs@anoncvs.handhelds.org/cvs",
+    "${KERNELORG_MIRROR}": "http://www.kernel.org/pub",
     "${SAVANNAH_GNU_MIRROR}": "http://download-mirror.savannah.gnu.org/releases",
     "${SAVANNAH_NONGNU_MIRROR}": "http://download-mirror.savannah.nongnu.org/releases",
-    "${CPAN_MIRROR}": "http://cpan.metacpan.org/",
+    "${SOURCEFORGE_MIRROR}": "http://heanet.dl.sourceforge.net/sourceforge",
+    "${XLIBS_MIRROR}": "http://xlibs.freedesktop.org/release",
+    "${XORG_MIRROR}": "http://xorg.freedesktop.org/releases"
 }
 
 VAR_ORDER = [
