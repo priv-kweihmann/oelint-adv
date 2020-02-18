@@ -1,5 +1,5 @@
 from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import Variable
+from oelint_adv.cls_item import Variable, Comment
 
 from collections import OrderedDict
 
@@ -34,7 +34,9 @@ class VarsPathHardcode(Rule):
         })
         for i in items:
             if isinstance(i, Variable) and \
-               i.VarName in ["SUMMARY", "DESCRIPTION", "HOMEPAGE", "AUTHOR", "BUGTRACKER"]:
+               i.VarName in ["SUMMARY", "DESCRIPTION", "HOMEPAGE", "AUTHOR", "BUGTRACKER", "FILES", "FILES_${PN}"]:
+                continue
+            if isinstance(i, Comment):
                 continue
             _matches = []
             for k, v in _map.items():
