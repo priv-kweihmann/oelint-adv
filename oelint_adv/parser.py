@@ -59,14 +59,14 @@ def prepare_lines(_file, lineOffset=0):
 
 def get_items(stash, _file, lineOffset=0):
     res = []
-    __regex_var = r"^.*?(?P<varname>([A-Z0-9a-z_-]|\$|\{|\})+)(?P<varop>(\s|\t)*(\+|\?|\:|\.)*=(\+)*(\s|\t)*)(?P<varval>.*)"
+    __regex_var = r"^.*?(?P<varname>([A-Z0-9a-z_-]|\$|\{|\})+(\[\w+\]+)*)(?P<varop>(\s|\t)*(\+|\?|\:|\.)*=(\+)*(\s|\t)*)(?P<varval>.*)"
     __regex_func = r"^((?P<py>python)\s+|(?P<fr>fakeroot\s+))*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{(?P<funcbody>.*)\s*\}"
     __regex_inherit = r"^.*?inherit(\s+|\t+)(?P<inhname>.+)"
     __regex_comments = r"^.*?#+(?P<body>.*)"
     __regex_python = r"^(\s*|\t*)def(\s+|\t+)(?P<funcname>[a-z0-9_]+)(\s*|\t*)\:.+"
     __regex_include = r"^(\s*|\t*)(?P<statement>include|require)(\s+|\t+)(?P<incname>[A-za-z0-9\-\./]+)"
     __regex_addtask = r"^(\s*|\t*)addtask\s+(?P<func>\w+)\s*((before\s*(?P<before>((.*(?=after))|(.*))))|(after\s*(?P<after>((.*(?=before))|(.*)))))*"
-    __regex_taskass = r"^(\s*|\t*)(?P<func>\w+)\[(?P<ident>\w+)\](\s+|\t+)=(\s+|\t+)(?P<varval>.*)"
+    __regex_taskass = r"^(\s*|\t*)(?P<func>[a-z0-9_-]+)\[(?P<ident>\w+)\](\s+|\t+)=(\s+|\t+)(?P<varval>.*)"
 
     _order = collections.OrderedDict([
         ("comment", __regex_comments),
