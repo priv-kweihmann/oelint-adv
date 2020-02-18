@@ -13,6 +13,11 @@ class TaskPythonPrefix(Rule):
     def check(self, _file, stash):
         res = []
         for item in stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER):
+            # Don't make assumptions about functions that consist of single
+            # line only
+            if len([x for x in item.FuncBodyRaw.split("\n") if x.strip()]) < 2:
+                continue
+            print(item) 
             try:
                 ast.parse(item.FuncBodyRaw, "tempfile")
                 if not item.IsPython:

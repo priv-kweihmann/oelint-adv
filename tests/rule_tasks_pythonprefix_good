@@ -12,6 +12,9 @@ do_bar() {
     import os
     bb.warn("dsjkdjdsdjk")
 }
+do_configure() {
+    oe_runconf
+}
 EOF
 [ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
