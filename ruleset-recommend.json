@@ -17,6 +17,7 @@
     "oelint.vars.mispell": "",
     "oelint.vars.notneededspace": "",
     "oelint.vars.pathhardcode": "",
+    "oelint.vars.pkgspecific": "",
     "oelint.vars.pnbpnusage": "",
     "oelint.vars.pnusagediscouraged": "",
     "oelint.vars.spacesassignment": "",

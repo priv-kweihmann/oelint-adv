@@ -27,6 +27,10 @@ class Item():
                 _suffix.append(i)
         _var = [x for x in _var if x]
         _suffix = [x for x in _suffix if x]
+        if not _var and _suffix:
+            # special case for pkg-functions
+            _var = _suffix
+            _suffix = []
         return ("_".join(_var), "_".join(_suffix))
     
     def extract_sub_func(self, name):
