@@ -7,6 +7,9 @@ cat > ${TESTFILE} << EOF
 A = "a"
 A += "b"
 PACKAGECONFIG[foo] = "-DFOO=ON,-DFOO=OFF,"
+EXTRA_OECMAKE += "\
+    -DBUILD_TESTS=OFF \
+"
 EOF
 [ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
