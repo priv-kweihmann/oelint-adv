@@ -11,7 +11,7 @@ class Stash():
 
     def AddFile(self, _file, lineOffset=0, forcedLink=None):
         print("Parsing {}".format(_file))
-        res = get_items(self, _file)
+        res = get_items(self, _file, lineOffset=lineOffset)
         if forcedLink:
             for item in [x for x in res if x.Origin == _file]:
                 item.AddLink(forcedLink)
