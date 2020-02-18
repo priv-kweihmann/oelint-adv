@@ -6,7 +6,8 @@ TESTOCC="0"
 cat > ${TESTFILE} << EOF
 SRC_URI = "file://\${BPN}.patch \
            git://\${BPN}.com/\${BPN}.git \
-           https://foo.org/\${BPN}"
+           https://foo.org/\${BPN} \
+           git://foo.org/bar.git;name=\${PN}" \
 EOF
 [ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
