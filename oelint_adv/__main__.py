@@ -65,13 +65,15 @@ if __name__ == '__main__':
             issues += r.check(f, stash)
     fixedfiles = list(set(fixedfiles))
     for f in fixedfiles:
-        items = sorted(stash.GetItemsFor(filename=f), key=lambda x: x.Line)
-        if not args.nobackup:
-            os.rename(f, f + ".bak")
-        with open(f, "w") as o:
-            o.write("".join([x.Raw for x in items]))
-            print("{}:{}:{}".format(os.path.abspath(f),
-                                    "debug", "Applied automatic fixes"))
+        _items = [f] + stash.GetLinksForFile(f)
+        for i in _items:
+            items = sorted(stash.GetItemsFor(filename=i, nolink=True), key=lambda x: x.Line)
+            if not args.nobackup:
+                os.rename(i, i + ".bak")
+            with open(i, "w") as o:
+                o.write("".join([x.Raw for x in items]))
+                print("{}:{}:{}".format(os.path.abspath(i),
+                                        "debug", "Applied automatic fixes"))
 
     issues = sorted(list(set(issues)))
 

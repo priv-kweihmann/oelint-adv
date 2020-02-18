@@ -30,13 +30,13 @@ class Stash():
     def GetRecipes(self):
         return list(set([x.Origin for x in self.__list if x.Origin.endswith(".bb")]))
 
-    def __is_linked_to(self, item, filename):
-        return filename in item.Links or filename == item.Origin
+    def __is_linked_to(self, item, filename, nolink=False):
+        return (filename in item.Links and not nolink) or filename == item.Origin
 
-    def __get_items_by_file(self, items, filename):
+    def __get_items_by_file(self, items, filename, nolink=False):
         if not filename:
             return items
-        return [x for x in items if self.__is_linked_to(x, filename)]
+        return [x for x in items if self.__is_linked_to(x, filename, nolink=nolink)]
 
     def __get_items_by_classifier(self, items, classifier):
         if not classifier:
@@ -53,9 +53,14 @@ class Stash():
             ).keys() and x.GetAttributes()[attname] == attvalue)]
         return res
 
-    def GetItemsFor(self, filename=None, classifier=None, attribute=None, attributeValue=None):
+    def GetLinksForFile(self, filename):
+        if not filename:
+            return []
+        return [x.Origin for x in self.__get_items_by_file(self.__list, filename) if x.Origin != filename]
+
+    def GetItemsFor(self, filename=None, classifier=None, attribute=None, attributeValue=None, nolink=False):
         res = self.__list
-        res = self.__get_items_by_file(res, filename)
+        res = self.__get_items_by_file(res, filename, nolink=nolink)
         res = self.__get_items_by_classifier(res, classifier)
         res = self.__get_items_by_attribute(res, attribute, attributeValue)
         return list(set(res))
