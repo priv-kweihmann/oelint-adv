@@ -7,7 +7,8 @@ class VarSuggestedExists(Rule):
     def __init__(self):
         super().__init__(id="oelint.var.suggestedvar",
                          severity="info",
-                         message="<FOO>")
+                         message="<FOO>",
+                         onappend=False)
 
     def check(self, _file, stash):
         res = []

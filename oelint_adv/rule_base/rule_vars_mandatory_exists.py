@@ -7,7 +7,8 @@ class VarMandatoryExists(Rule):
     def __init__(self):
         super().__init__(id="oelint.var.mandatoryvar",
                          severity="error",
-                         message="<FOO>")
+                         message="<FOO>",
+                         onappend=False)
 
     def check(self, _file, stash):
         res = []

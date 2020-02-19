@@ -58,8 +58,10 @@ if __name__ == '__main__':
         except FileNotFoundError as e:
             print("Can't open/read: {}".format(e))
 
-    for f in stash.GetRecipes():
+    for f in list(set(stash.GetRecipes() + stash.GetLoneAppends())):
         for r in rules:
+            if not r.OnAppend and f.endswith(".bbappend"):
+                continue
             if args.fix:
                 fixedfiles += r.fix(f, stash)
             issues += r.check(f, stash)

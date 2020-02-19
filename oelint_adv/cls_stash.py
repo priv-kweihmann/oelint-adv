@@ -29,6 +29,16 @@ class Stash():
 
     def GetRecipes(self):
         return list(set([x.Origin for x in self.__list if x.Origin.endswith(".bb")]))
+    
+    def GetLoneAppends(self):
+        __linked_appends = []
+        __appends = []
+        for x in self.__list:
+            if x.Origin.endswith(".bbappend"):
+                __appends.append(x)
+            else:
+                __linked_appends += x.Links
+        return list(set([x.Origin for x in __appends if x not in __linked_appends]))
 
     def __is_linked_to(self, item, filename, nolink=False):
         return (filename in item.Links and not nolink) or filename == item.Origin
