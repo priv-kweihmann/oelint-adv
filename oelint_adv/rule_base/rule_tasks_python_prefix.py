@@ -17,7 +17,6 @@ class TaskPythonPrefix(Rule):
             # line only
             if len([x for x in item.FuncBodyRaw.split("\n") if x.strip()]) < 2:
                 continue
-            print(item) 
             try:
                 ast.parse(item.FuncBodyRaw, "tempfile")
                 if not item.IsPython:
