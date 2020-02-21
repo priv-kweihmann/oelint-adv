@@ -134,6 +134,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.vars.pnusagediscouraged - Variable shouldn't contain ${PN} or ${BPN}
 * oelint.vars.sectionlowercase - SECTION should be lowercase only **[F]**
 * oelint.vars.spacesassignment - ' = ' should be correct variable assignment
+* oelint.vars.srcuridomains - Recipe is pulling from different domains, this will likely cause issues
 * oelint.vars.srcurioptions - Fetcher should only valid options
 * oelint.vars.summary80chars - SUMMARY should max. be 80 characters long
 * oelint.vars.summarylinebreaks - No line breaks in SUMMARY
