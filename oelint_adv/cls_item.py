@@ -104,6 +104,12 @@ class Variable(Item):
     def IsMultiLine(self):
         return "\\" in self.Raw
 
+    def GetMachineEntry(self):
+        for x in self.SubItems:
+            if x not in ["append", "prepend", "class-native", "class-cross", "class-target", "remove", "machine"]:
+                return x
+        return ""
+
 
 class Comment(Item):
     CLASSIFIER = "Comment"
@@ -139,6 +145,12 @@ class Function(Item):
             "{", "").replace("}", "").replace("\n", "").strip()
         self.FuncBodyRaw = textwrap.dedent(
             rawtext[rawtext.find("{") + 1:].rstrip().rstrip("}"))
+
+    def GetMachineEntry(self):
+        for x in self.SubItems:
+            if x not in ["append", "prepend", "class-native", "class-cross", "class-target", "remove", "machine"]:
+                return x
+        return ""
 
 
 class PythonBlock(Item):

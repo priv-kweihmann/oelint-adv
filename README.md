@@ -140,6 +140,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.vars.summary80chars - SUMMARY should max. be 80 characters long
 * oelint.vars.summarylinebreaks - No line breaks in SUMMARY
 * oelint.vars.valuequoted - Variable values should be properly quoted
+* oelint.vars.machinespecific - Variable is machine specific but no matching COMPATIBLE_MACHINE was found
 
 ### Non-default rulesets
 
