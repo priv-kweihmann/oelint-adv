@@ -21,6 +21,5 @@ class VarSRCUriOptions(Rule):
                 if _url["scheme"] and _url["scheme"] not in ["file"]:
                     _domains.add(_url["src"].split("/")[0])
         if len(_domains) > 1:
-            print(_domains)
             res += self.finding(i.Origin, i.InFileLine)
         return res
