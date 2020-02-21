@@ -27,7 +27,6 @@ class VarSectionLowercase(Rule):
     def fix(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):
-            _tmp = ""
             i.Raw = re.sub(r"\"\s+", "\"", i.Raw) + "\n"
             i.VarValue = re.sub(r"\"\s+", "\"", i.VarValue) + "\n"
             res.append(_file)

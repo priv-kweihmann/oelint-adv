@@ -29,7 +29,7 @@ class Stash():
 
     def GetRecipes(self):
         return list(set([x.Origin for x in self.__list if x.Origin.endswith(".bb")]))
-    
+
     def GetLoneAppends(self):
         __linked_appends = []
         __appends = []

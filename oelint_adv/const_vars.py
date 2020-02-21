@@ -1,18 +1,21 @@
 from oelint_adv.rule_file import get_rulefile
 
+
 def __get_const_and_rulefile(l, key):
     res = l
     _rulefile = get_rulefile()
-    if key in _rulefile.keys() and isinstance(_rulefile[v], list):
+    if key in _rulefile.keys() and isinstance(_rulefile[key], list):
         res += _rulefile[key]
     return res
+
 
 def __get_const_and_rulefile_dict(l, key):
     res = l
     _rulefile = get_rulefile()
-    if key in _rulefile.keys() and isinstance(_rulefile[v], dict):
+    if key in _rulefile.keys() and isinstance(_rulefile[key], dict):
         res = {**res, **_rulefile[key]}
     return res
+
 
 MANDATORY_VARS = [
     "SUMMARY",
@@ -24,8 +27,10 @@ MANDATORY_VARS = [
     "SRC_URI"
 ]
 
+
 def get_mandatory_vars():
     return __get_const_and_rulefile(MANDATORY_VARS, "mandatory_vars")
+
 
 SUGGESTED_VARS = [
     "BUGTRACKER",
@@ -33,8 +38,10 @@ SUGGESTED_VARS = [
     "CVE_PRODUCT"
 ]
 
+
 def get_suggested_vars():
     return __get_const_and_rulefile(SUGGESTED_VARS, "suggested_vars")
+
 
 KNOWN_MIRRORS = {
     "${APACHE_MIRROR}": "http://www.us.apache.org/dist",
@@ -59,8 +66,10 @@ KNOWN_MIRRORS = {
     "${XORG_MIRROR}": "http://xorg.freedesktop.org/releases"
 }
 
+
 def get_known_mirrors():
     return __get_const_and_rulefile_dict(KNOWN_MIRRORS, "known_mirrors")
+
 
 VAR_PROTECTED = [
     "BB_CONSOLELOG",
@@ -138,8 +147,10 @@ VAR_PROTECTED = [
     "TOPDIR"
 ]
 
+
 def get_protected_vars():
     return __get_const_and_rulefile(VAR_PROTECTED, "protected_vars")
+
 
 VAR_PROTECTED_APPEND = [
     "PV",
@@ -149,8 +160,10 @@ VAR_PROTECTED_APPEND = [
     "LIC_FILES_CHKSUM"
 ]
 
+
 def get_protected_append_vars():
     return __get_const_and_rulefile(VAR_PROTECTED_APPEND, "protected_append_vars")
+
 
 VAR_ORDER = [
     "SUMMARY",
@@ -1036,7 +1049,7 @@ KNOWN_VARS = [
     "TOOLCHAIN",
     "TOOLCHAINEXT_OUTPUTNAME",
     "TOPDIR",
-    "TOPDIR",    
+    "TOPDIR",
     "TRANSLATED_TARGET_ARCH",
     "TUNE_ARCH",
     "TUNE_ASARGS",
@@ -1097,6 +1110,7 @@ KNOWN_VARS = [
     "XZ_INTEGRITY_CHECK",
     "ZIP_COMPRESSION_LEVEL"
 ]
+
 
 def get_known_vars():
     return __get_const_and_rulefile(KNOWN_VARS, "known_vars")

@@ -3,6 +3,7 @@ import re
 
 from oelint_adv.const_func import KNOWN_FUNCS
 
+
 class Item():
     ATTR_LINE = "Line"
     ATTR_RAW = "Raw"
@@ -33,10 +34,11 @@ class Item():
             _var = _suffix
             _suffix = []
         return ("_".join(_var), "_".join(_suffix))
-    
+
     def extract_sub_func(self, name):
         chunks = name.split("_")
-        _marker = ["append", "prepend", "class-native", "class-cross", "class-target", "remove"]
+        _marker = ["append", "prepend", "class-native",
+                   "class-cross", "class-target", "remove"]
         _suffix = []
         _var = []
         for i in chunks:
@@ -74,7 +76,8 @@ class Variable(Item):
     ATTR_VARVAL = "VarValue"
     ATTR_VARVALSTRIPPED = "VarValueStripped"
     CLASSIFIER = "Variable"
-    VAR_VALID_OPERATOR = [" = ", " += ", " ?= ", " ??= ", " := ", " .= ", " =+ "]
+    VAR_VALID_OPERATOR = [" = ", " += ",
+                          " ?= ", " ??= ", " := ", " .= ", " =+ "]
 
     def __init__(self, origin, line, infileline, rawtext, name, value, operator):
         super().__init__(origin, line, infileline, rawtext)
@@ -90,7 +93,7 @@ class Variable(Item):
 
     def IsAppend(self):
         return self.VarOp in [" += "] or "append" in self.SubItems
-    
+
     def AppendOperation(self):
         res = []
         if self.VarOp in [" += "]:

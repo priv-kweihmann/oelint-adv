@@ -29,7 +29,7 @@ class Rule():
         if self.OnlyAppend and not _file.endswith(".bbappend"):
             return
         if override_msg is None:
-            override_msg=self.Msg
+            override_msg = self.Msg
         _severity = self.Severity
         _rule_file = get_rulefile()
         if _rule_file and self.ID in _rule_file:

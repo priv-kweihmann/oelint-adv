@@ -36,14 +36,15 @@ def find_local_or_in_layer(name, localdir):
                 break
     return None
 
+
 def _replace_with_known_mirrors(_in):
     """
     Replace the known mirror configuration items
-    with 
     """
     for k, v in get_known_mirrors().items():
         _in = _in.replace(k, v)
     return _in
+
 
 def get_scr_components(string):
     """
@@ -63,6 +64,7 @@ def get_scr_components(string):
         _path += _url.path
     _parsed_opt = {x.split("=")[0]: x.split("=")[1] for x in _options}
     return {"scheme": _scheme, "src": _path, "options": _parsed_opt}
+
 
 def safe_linesplit(string):
     return re.split(r"\s|\t|\x1b", string)

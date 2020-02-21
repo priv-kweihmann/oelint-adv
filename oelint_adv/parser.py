@@ -94,11 +94,14 @@ def get_items(stash, _file, lineOffset=0):
                             _file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"], m.group("funcname")))
                 elif k == "vars":
                     res.append(Variable(
-                        _file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"], m.group("varname"), m.group("varval"),
+                        _file, line["line"] + includeOffset, line["line"] -
+                        lineOffset, line["raw"], m.group(
+                            "varname"), m.group("varval"),
                         m.group("varop")))
                 elif k == "func":
                     res.append(Function(
-                        _file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"],
+                        _file, line["line"] + includeOffset, line["line"] -
+                        lineOffset, line["raw"],
                         m.group("func"), m.group("funcbody"),
                         m.group("py"), m.group("fr")))
                 elif k == "comment":
@@ -106,7 +109,8 @@ def get_items(stash, _file, lineOffset=0):
                         Comment(_file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"]))
                 elif k == "inherit":
                     res.append(Variable(
-                        _file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"], "inherit", m.group("inhname"), 
+                        _file, line["line"] + includeOffset, line["line"] -
+                        lineOffset, line["raw"], "inherit", m.group("inhname"),
                         ""))
                 elif k == "taskassign":
                     res.append(TaskAssignment(_file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"], m.group(

@@ -19,11 +19,14 @@ class VarPnBpnUsage(Rule):
             if not _machine:
                 continue
             _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                  attribute=Variable.ATTR_VAR, attributeValue="COMPATIBLE_MACHINE")
+                                      attribute=Variable.ATTR_VAR, attributeValue="COMPATIBLE_MACHINE")
             if not any(_comp):
-                res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.format(i.VarName, _machine))
+                res += self.finding(i.Origin, i.InFileLine,
+                                    override_msg=self.Msg.format(i.VarName, _machine))
                 continue
-            _vals = [x.VarValueStripped.lstrip("|") for x in _comp if x.VarValueStripped]
+            _vals = [x.VarValueStripped.lstrip(
+                "|") for x in _comp if x.VarValueStripped]
             if not any(re.match(v, _machine) or (_machine == "qemuall" and "qemu" in v) for v in _vals):
-                res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.format(i.VarName, _machine))
+                res += self.finding(i.Origin, i.InFileLine,
+                                    override_msg=self.Msg.format(i.VarName, _machine))
         return res

@@ -15,6 +15,6 @@ class VarSpacesOnAssignment(Rule):
         for i in items:
             if i.VarName == "inherit":
                 continue
-            if not i.VarOp in Variable.VAR_VALID_OPERATOR:
+            if i.VarOp not in Variable.VAR_VALID_OPERATOR:
                 res += self.finding(i.Origin, i.InFileLine)
         return res
