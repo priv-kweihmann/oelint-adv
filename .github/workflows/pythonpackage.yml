@@ -36,3 +36,4 @@ jobs:
       run: python3 setup.py build
     - name: Test
       run: ./test.sh
+      shell: bash
