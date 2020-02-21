@@ -1,6 +1,6 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.const_vars import KNOWN_VARS
+from oelint_adv.const_vars import get_known_vars
 from difflib import SequenceMatcher
 
 
@@ -23,9 +23,9 @@ class VarMisspell(Rule):
                                   attribute=Variable.ATTR_VAR)
 
         for i in items:
-            if i.VarName in KNOWN_VARS:
+            if i.VarName in get_known_vars():
                 continue
-            _bestmatch = self.get_best_match(i.VarName, KNOWN_VARS)
+            _bestmatch = self.get_best_match(i.VarName, get_known_vars())
             if _bestmatch:
                 res += self.finding(i.Origin, i.InFileLine,
                                     "'{}' is unknown, maybe you mean '{}'".format(

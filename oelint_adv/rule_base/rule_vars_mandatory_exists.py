@@ -1,6 +1,6 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.const_vars import MANDATORY_VARS
+from oelint_adv.const_vars import get_mandatory_vars
 
 
 class VarMandatoryExists(Rule):
@@ -12,7 +12,7 @@ class VarMandatoryExists(Rule):
 
     def check(self, _file, stash):
         res = []
-        for var in MANDATORY_VARS:
+        for var in get_mandatory_vars():
             items = stash.GetItemsFor(
                 filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue=var)
             if not any(items):

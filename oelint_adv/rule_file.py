@@ -1,4 +1,4 @@
-_RULE_FILE = None
+_RULE_FILE = {}
 
 
 def get_rulefile():

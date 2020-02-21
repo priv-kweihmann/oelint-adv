@@ -4,7 +4,7 @@ import re
 from urllib.parse import urlparse
 
 from oelint_adv.cls_item import Variable
-from oelint_adv.const_vars import KNOWN_MIRRORS
+from oelint_adv.const_vars import get_known_mirrors
 
 
 def get_files(stash, _file, pattern):
@@ -41,7 +41,7 @@ def _replace_with_known_mirrors(_in):
     Replace the known mirror configuration items
     with 
     """
-    for k, v in KNOWN_MIRRORS.items():
+    for k, v in get_known_mirrors().items():
         _in = _in.replace(k, v)
     return _in
 

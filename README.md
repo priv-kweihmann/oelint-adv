@@ -189,3 +189,17 @@ to keep the original severity.
 
 would enable the two rules `oelint.file.includenotfound` and `oelint.file.requirenotfound`.
 The severity of `oelint.file.includenotfound` will be the default of the tool, while `oelint.file.requirenotfound` will report `warning` instead of the original suggested severity
+
+### Adding additional constants
+
+You can add e.g. known variable names, or known mirror replacements to the rulefile.
+Just add a key with the corresponding json type to the file.
+
+| key                   | type | description                                                                          |
+|-----------------------|------|--------------------------------------------------------------------------------------|
+| known_mirrors         | dict | Known mirror replacements. Key is the variable name surronded by ${}, value a string |
+| known_vars            | list | Known variable name, to avoid false positives at `oelint.vars.mispell`               |
+| mandatory_vars        | list | Additional mandatory variables that should be set in a recipe                        |
+| protected_append_vars | list | Variables that shouldn't be set in a bbappend                                        |
+| protected_vars        | list | Variables that shouldn't be set inside of a recipe                                   |
+| suggested_vars        | list | Additional suggested variable that should be set in a recipe                         |

@@ -1,6 +1,6 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.const_vars import VAR_PROTECTED
+from oelint_adv.const_vars import get_protected_vars
 
 
 class VarQuoted(Rule):
@@ -13,7 +13,7 @@ class VarQuoted(Rule):
         res = []
         items = stash.GetItemsFor(
             filename=_file, classifier=Variable.CLASSIFIER)
-        for i in [x for x in items if x.VarName in VAR_PROTECTED]:
+        for i in [x for x in items if x.VarName in get_protected_vars()]:
             if i.VarOp not in [" ??= ", " ?= "]:
                 res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.replace("{VAR}", i.VarName))
         return res
