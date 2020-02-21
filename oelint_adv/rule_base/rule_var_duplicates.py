@@ -19,7 +19,7 @@ class VarDuplicates(Rule):
                 for x in [y for y in safe_linesplit(i.VarValueStripped) if y]:
                     if x in _items:
                         res += self.finding(i.Origin, i.InFileLine,
-                                            "Item '{}' was added multiple time to {}".format(x, c))
+                                            "Item '{}' was added multiple timesto {}".format(x, c))
                     else:
                         _items.append(x)
         return res
