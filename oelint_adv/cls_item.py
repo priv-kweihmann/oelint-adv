@@ -1,6 +1,7 @@
 import textwrap
 import re
 
+from oelint_adv.const_func import KNOWN_FUNCS
 
 class Item():
     ATTR_LINE = "Line"
@@ -39,8 +40,9 @@ class Item():
         _suffix = []
         _var = []
         for i in chunks:
-            if i in _marker:
-                _suffix.append(i)
+            if i in _marker or "_".join(_var) in KNOWN_FUNCS:
+                _suffix = chunks[chunks.index(i):]
+                break
             else:
                 _var.append(i)
         _var = [x for x in _var if x]
@@ -140,6 +142,7 @@ class Function(Item):
         self.IsFakeroot = fakeroot is not None
         name = name or ""
         self.FuncName, self.SubItem = self.extract_sub_func(name.strip())
+        self.SubItems = self.SubItem.split("_")
         self.FuncBody = body
         self.FuncBodyStripped = body.replace(
             "{", "").replace("}", "").replace("\n", "").strip()

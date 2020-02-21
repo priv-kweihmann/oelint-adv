@@ -91,6 +91,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.file.requireinclude - Require should be used instead of include
 * oelint.file.requirenotfound - File to be required not found
 * oelint.file.upstreamstatus - Patches should contain a Upstream-Status entry
+* oelint.func.machinespecific - Function is machine specific but no matching COMPATIBLE_MACHINE was found
 * oelint.spaces.emptyline - Empty line should not contain spaces or tabs **[F]**
 * oelint.spaces.linebeginning - No space at a line beginning **[F]**
 * oelint.spaces.linecont - Safe line continuation **[F]**
@@ -126,6 +127,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.vars.homepageprefix - HOMEPAGE should begin with https:// or http://
 * oelint.vars.inconspaces - Inconsistent use of spaces on append operation
 * oelint.vars.insaneskip - INSANE_SKIP should be avoided at any cost
+* oelint.vars.machinespecific - Variable is machine specific but no matching COMPATIBLE_MACHINE was found
 * oelint.vars.mispell - Possible typo detected
 * oelint.vars.multilineident - On a multiline assignment, line indent is desirable
 * oelint.vars.notneededspace - Space at the beginning of the var is not needed **[F]**
@@ -140,7 +142,6 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.vars.summary80chars - SUMMARY should max. be 80 characters long
 * oelint.vars.summarylinebreaks - No line breaks in SUMMARY
 * oelint.vars.valuequoted - Variable values should be properly quoted
-* oelint.vars.machinespecific - Variable is machine specific but no matching COMPATIBLE_MACHINE was found
 
 ### Non-default rulesets
 

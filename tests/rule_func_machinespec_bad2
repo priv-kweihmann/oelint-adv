@@ -1,0 +1,17 @@
+#!/bin/sh
+TESTFILE="/tmp/oelint_adv_test.bb"
+trap "rm -f ${TESTFILE}" EXIT
+TESTID="oelint.func.machinespecific"
+TESTOCC="2"
+cat > ${TESTFILE} << EOF
+COMPATIBLE_MACHINE = "xyz"
+do_install_fooarch() {
+    abc
+}
+do_configure_append_bararch() {
+    abc
+}
+EOF
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+echo "Test for ${0} failed"
+exit 1
