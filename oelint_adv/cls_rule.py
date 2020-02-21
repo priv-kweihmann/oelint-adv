@@ -10,11 +10,12 @@ from oelint_adv.rule_file import get_rulefile
 
 
 class Rule():
-    def __init__(self, id="", severity="", message="", onappend=True):
+    def __init__(self, id="", severity="", message="", onappend=True, onlyappend=False):
         self.ID = id
         self.Severity = severity
         self.Msg = message
         self.OnAppend = onappend
+        self.OnlyAppend = onlyappend
 
     def check(self, _file, stash):
         return []
@@ -24,6 +25,8 @@ class Rule():
 
     def finding(self, _file, _line, override_msg=None):
         if not self.OnAppend and _file.endswith(".bbappend"):
+            return
+        if self.OnlyAppend and not _file.endswith(".bbappend"):
             return
         if override_msg is None:
             override_msg=self.Msg

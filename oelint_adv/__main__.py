@@ -62,6 +62,8 @@ if __name__ == '__main__':
         for r in rules:
             if not r.OnAppend and f.endswith(".bbappend"):
                 continue
+            if r.OnlyAppend and not f.endswith(".bbappend"):
+                continue
             if args.fix:
                 fixedfiles += r.fix(f, stash)
             issues += r.check(f, stash)

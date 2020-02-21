@@ -1,0 +1,15 @@
+#!/bin/sh
+TESTFILE="/tmp/oelint_adv_test.bbappend"
+trap "rm -f ${TESTFILE}" EXIT
+TESTID="oelint.append.protvars"
+TESTOCC="5"
+cat > ${TESTFILE} << EOF
+PV = "sdlsdsd"
+PR = "sdsd"
+SRCREV = "ksdhdhkdhk"
+LICENSE = "CLOSED"
+LIC_FILES_CHKSUM = "skddskda"
+EOF
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+echo "Test for ${0} failed"
+exit 1

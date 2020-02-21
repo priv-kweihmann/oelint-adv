@@ -114,6 +114,14 @@ VAR_PROTECTED = [
     "TOPDIR"
 ]
 
+VAR_PROTECTED_APPEND = [
+    "PV",
+    "PR",
+    "SRCREV",
+    "LICENSE",
+    "LIC_FILES_CHKSUM"
+]
+
 VAR_ORDER = [
     "SUMMARY",
     "DESCRIPTION",

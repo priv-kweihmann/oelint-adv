@@ -84,6 +84,7 @@ As long as you don't pass **--nobackup** a backup copy (filename + .bak) will be
 
 Rules marked with **[F]** are able to perform automatic fixing
 
+* oelint.append.protvars - Variables that shouldn't be set in a bbappend
 * oelint.comments.notrailing - No trailing comments allowed, comments should be on a single line
 * oelint.file.includenotfound - File to be included not found
 * oelint.file.patchsignedoff - Patches should contain a Signed-Of-By entry
