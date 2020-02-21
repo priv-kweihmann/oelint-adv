@@ -79,6 +79,8 @@ def get_items(stash, _file, lineOffset=0):
         ("vars", __regex_var)
     ])
 
+    includeOffset = 0
+
     for line in prepare_lines(_file, lineOffset):
         good = False
         for k, v in _order.items():
@@ -89,26 +91,25 @@ def get_items(stash, _file, lineOffset=0):
                         res[-1].Raw += line["raw"]
                     else:
                         res.append(PythonBlock(
-                            _file, line["line"] + lineOffset, line["line"], line["raw"], m.group("funcname")))
+                            _file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"], m.group("funcname")))
                 elif k == "vars":
                     res.append(Variable(
-                        _file, line["line"] + lineOffset, line["line"], line["raw"], m.group("varname"), m.group("varval"),
+                        _file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"], m.group("varname"), m.group("varval"),
                         m.group("varop")))
                 elif k == "func":
                     res.append(Function(
-                        _file, line["line"] +
-                        lineOffset, line["line"], line["raw"],
+                        _file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"],
                         m.group("func"), m.group("funcbody"),
                         m.group("py"), m.group("fr")))
                 elif k == "comment":
                     res.append(
-                        Comment(_file, line["line"] + lineOffset, line["line"], line["raw"]))
+                        Comment(_file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"]))
                 elif k == "inherit":
                     res.append(Variable(
-                        _file, line["line"] + lineOffset, line["line"], line["raw"], "inherit", m.group("inhname"), 
+                        _file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"], "inherit", m.group("inhname"), 
                         ""))
                 elif k == "taskassign":
-                    res.append(TaskAssignment(_file, line["line"] + lineOffset, line["line"], line["raw"], m.group(
+                    res.append(TaskAssignment(_file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"], m.group(
                         "func"), m.group("ident"), m.group("varval")))
                 elif k == "addtask":
                     # treat the following as variables
@@ -124,7 +125,7 @@ def get_items(stash, _file, lineOffset=0):
                     else:
                         _a = ""
                     res.append(TaskAdd(
-                        _file, line["line"] + lineOffset, line["line"], line["raw"], m.group("func"), _b, _a))
+                        _file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"], m.group("func"), _b, _a))
                 elif k == "include":
                     _path = find_local_or_in_layer(
                         m.group("incname"), os.path.dirname(_file))
@@ -132,16 +133,16 @@ def get_items(stash, _file, lineOffset=0):
                         tmp = stash.AddFile(
                             _path, lineOffset=line["line"], forcedLink=_file)
                         if any(tmp):
-                            lineOffset += max([x.InFileLine for x in tmp])
+                            includeOffset += max([x.InFileLine for x in tmp])
                     else:
                         res.append(MissingFile(
-                            _file, line["line"] + lineOffset, line["line"], m.group("incname"), m.group("statement")))
+                            _file, line["line"], line["line"] - lineOffset, m.group("incname"), m.group("statement")))
                     res.append(Include(
-                        _file, line["line"] + lineOffset, line["line"], line["raw"], m.group("incname"), m.group("statement")))
+                        _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("incname"), m.group("statement")))
                 good = True
             if good:
                 break
         if not good:
             res.append(
-                Item(_file, line["line"] + lineOffset, line["line"], line["raw"]))
+                Item(_file, line["line"], line["line"] - lineOffset, line["raw"]))
     return res
