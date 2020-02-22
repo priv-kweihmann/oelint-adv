@@ -12,6 +12,13 @@ Advanced oelint
 
 Based on the [OpenEmbedded Styleguide](https://www.openembedded.org/wiki/Styleguide) and work done by [oe-stylize-tool](https://github.com/openembedded/meta-openembedded/blob/master/contrib/oe-stylize.py) this module offers a (nearly) complete linter for bitbake-recipes.
 
+The tool should help anyone working with YOCTO/OpenEmbedded to write more clean, less 'magical' recipes, without the need to know all the internals of your used poky/OpenEmbedded version.
+
+It could also be used as part of a CI to avoid hard to debug issues slipping to your code base - be sure to checkout [rulefile](#defining-a-ruleset) for that use case.
+
+As every linter this tool is sometimes extra picky, but for the good of it, not just to bug people.
+Especially for novice users it might be a help to avoid the most common pitfalls of bitbake recipes.
+
 The tool does handle includes/requires automatically so you don't have to pass them via CLI.
 
 **NOTE**: .bbappend-files have to be passed via CLI - these are NOT gathered automatically
@@ -205,3 +212,13 @@ Just add a key with the corresponding json type to the file.
 | protected_append_vars | list | Variables that shouldn't be set in a bbappend                                        |
 | protected_vars        | list | Variables that shouldn't be set inside of a recipe                                   |
 | suggested_vars        | list | Additional suggested variable that should be set in a recipe                         |
+
+## Missing anything?
+
+You think there's something missing, wrong, 'improveable'...
+Just file an issue to get in contact.
+
+## Contribute
+
+Any sort of ideas, pull requests, bug reports, reports of false positives are welcome.
+This project is open to anyone - no pitfalls or legal inconveniences
