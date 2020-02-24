@@ -23,6 +23,10 @@ class Item():
         _suffix = []
         _var = []
         for i in chunks:
+            if "-" in i:
+                # just use the prefix in case a dash is found
+                # that addresses things like FILES_${PN}-dev
+                i = i.split("-")[0]
             if re.match("^[A-Z0-9{}$]+$", i):
                 _var.append(i)
             else:
