@@ -24,11 +24,7 @@ setuptools.setup(
     long_description_content_type=_long_description_content_type,
     url="https://github.com/priv-kweihmann/oelint-adv",
     packages=setuptools.find_packages(),
-    entry_points={
-        "console_scripts": [
-            "oelint-adv = oelint_adv.__main__:main",
-        ]
-    },
+    scripts=['bin/oelint-adv'],
     install_requires=requirements,
     classifiers=[
         "Development Status :: 4 - Beta",
