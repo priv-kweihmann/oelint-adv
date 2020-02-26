@@ -83,7 +83,7 @@ class Variable(Item):
     VAR_VALID_OPERATOR = [" = ", " += ",
                           " ?= ", " ??= ", " := ", " .= ", " =+ "]
 
-    def __init__(self, origin, line, infileline, rawtext, name, value, operator):
+    def __init__(self, origin, line, infileline, rawtext, name, value, operator, flag):
         super().__init__(origin, line, infileline, rawtext)
         if "inherit" != name:
             self.VarName, self.SubItem = self.extract_sub(name)
@@ -93,6 +93,7 @@ class Variable(Item):
         self.SubItems = self.SubItem.split("_")
         self.VarValue = value
         self.VarOp = operator
+        self.Flag = flag
         self.VarValueStripped = self.VarValue.strip().lstrip('"').rstrip('"')
 
     def IsAppend(self):
