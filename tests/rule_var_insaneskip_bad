@@ -8,6 +8,6 @@ INSANE_SKIP_${PN} = "a"
 INSANE_SKIP_bla = "a"
 INSANE_SKIP_bla_class-native = "a"
 EOF
-[ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
 exit 1

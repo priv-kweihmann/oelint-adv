@@ -8,6 +8,6 @@ COMPATIBLE_MACHINE = "xyz"
 A_append_fooarch = " abc"
 B_bararch += "abc"
 EOF
-[ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
 exit 1
