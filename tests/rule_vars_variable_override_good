@@ -6,6 +6,8 @@ TESTOCC="0"
 cat > ${TESTFILE} << EOF
 A = "1"
 A += "1"
+FILESEXTRAPATH_prepend := "a:"
+FILESEXTRAPATH_prepend := "b:"
 EOF
 [ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
