@@ -1,9 +1,9 @@
-from oelint_adv.rule_file import get_rulefile
+from oelint_adv.rule_file import get_rulefile, get_constantfile
 
 
 def __get_const_and_rulefile(l, key):
     res = l
-    _rulefile = get_rulefile()
+    _rulefile = {**get_rulefile(), **get_constantfile()}
     if key in _rulefile.keys() and isinstance(_rulefile[key], list):
         res += _rulefile[key]
     return res
@@ -11,7 +11,7 @@ def __get_const_and_rulefile(l, key):
 
 def __get_const_and_rulefile_dict(l, key):
     res = l
-    _rulefile = get_rulefile()
+    _rulefile = {**get_rulefile(), **get_constantfile()}
     if key in _rulefile.keys() and isinstance(_rulefile[key], dict):
         res = {**res, **_rulefile[key]}
     return res

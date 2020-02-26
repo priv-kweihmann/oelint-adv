@@ -6,7 +6,7 @@ import json
 from oelint_adv.cls_rule import load_rules
 from oelint_adv.cls_stash import Stash
 from oelint_adv.color import set_color
-from oelint_adv.rule_file import set_rulefile
+from oelint_adv.rule_file import set_rulefile, set_constantfile
 
 sys.path.append(os.path.abspath(os.path.join(__file__, "..")))
 
@@ -26,6 +26,7 @@ def create_argparser():
                         help="Additional non-default rulessets to add")
     parser.add_argument("--rulefile", default=None,
                         help="Rulefile")
+    parser.add_argument("--constantfile", default=None, help="Constantfile")
     parser.add_argument("--color", action="store_true", default=False,
                         help="Add color to the output based on the severity")
     parser.add_argument("files", nargs='+', help="File to parse")
@@ -38,6 +39,13 @@ def create_argparser():
                 set_rulefile(json.load(i))
         except (FileNotFoundError, json.JSONDecodeError):
             raise argparse.ArgumentTypeError("'rulefile' is not a valid file")
+    
+    if args.constantfile:
+        try:
+            with open(args.constantfile) as i:
+                set_constantfile(json.load(i))
+        except (FileNotFoundError, json.JSONDecodeError):
+            raise argparse.ArgumentTypeError("'constantfile' is not a valid file")
 
     if args.color:
         set_color(True)

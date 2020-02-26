@@ -43,7 +43,8 @@ yay -S oelint-adv
 oelint-adv
 usage: __main__.py [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix]
                    [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
-                   [--rulefile RULEFILE]
+                   [--rulefile RULEFILE] [--constantfile CONSTANTFILE]
+                   [--color]
                    files [files ...]
 
 Advanced OELint - Check bitbake recipes against OECore styleguide
@@ -60,6 +61,8 @@ optional arguments:
   --addrules ADDRULES [ADDRULES ...]
                         Additional non-default rulessets to add
   --rulefile RULEFILE   Rulefile
+  --constantfile CONSTANTFILE
+                        Constantfile
   --color               Add color to the output based on the severity
 ```
 
@@ -201,7 +204,7 @@ The severity of `oelint.file.includenotfound` will be the default of the tool, w
 
 ### Adding additional constants
 
-You can add e.g. known variable names, or known mirror replacements to the rulefile.
+You can add e.g. known variable names, or known mirror replacements to the rulefile (or the constantfile).
 Just add a key with the corresponding json type to the file.
 
 | key                   | type | description                                                                          |
