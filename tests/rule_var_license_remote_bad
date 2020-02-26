@@ -6,6 +6,6 @@ TESTOCC="1"
 cat > ${TESTFILE} << EOF
 LIC_FILES_CHKSUM = "file://\${COMMON_LIC_DIR}/MIT;md5=sjdjasdjhddh"
 EOF
-[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+[ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
 exit 1
