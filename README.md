@@ -125,6 +125,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.var.nativefilename - Native only recipes should be named -native
 * oelint.var.order - Variable order
 * oelint.var.override - Check if include/append is overriding a variable
+* oelint.var.srcuriwildcard - 'SRC_URI' should not contain any wildcards
 * oelint.var.suggestedvar - Notice on suggested variables
 * oelint.vars.autorev - The usage of 'AUTOREV' for SRCREV leads to not reproducible builds
 * oelint.vars.bbvars - Variables that shouldn't be altered in recipe scope
