@@ -52,7 +52,7 @@ def create_argparser():
     return args
 
 
-if __name__ == '__main__':
+def main():
     args = create_argparser()
     rules = [x for x in load_rules(
         add_rules=args.addrules) if str(x) not in args.suppress]
@@ -95,3 +95,6 @@ if __name__ == '__main__':
     if args.output != sys.stderr:
         args.output.close()
     sys.exit(len(issues))
+
+if __name__ == '__main__':
+    main()

@@ -21,6 +21,6 @@ SRC_URI_append_libc-musl = " file://musl.cfg "
 SRC_URI[tarball.md5sum] = "0a367e19cdfd157e8258d87f893ee516"
 SRC_URI[tarball.sha256sum] = "97648636e579462296478e0218e65e4bc1e9cd69089a3b1aeb810bff7621efb7"
 EOF
-[ $(oelint-adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+[ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
 exit 1
