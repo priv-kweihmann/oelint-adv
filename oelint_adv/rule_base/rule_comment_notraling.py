@@ -1,4 +1,5 @@
 from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_item import PythonBlock, Function
 
 
 class NoCommentsTrailing(Rule):
@@ -11,9 +12,12 @@ class NoCommentsTrailing(Rule):
         res = []
         items = stash.GetItemsFor(filename=_file)
         for i in items:
+            if isinstance(i, PythonBlock) or isinstance(i, Function):
+                continue
             if i.Raw:
-                for line in i.Raw.split("\n"):
-                    line = line.strip()
-                    if "#" in line and line.find("#") > 0:
-                        res += self.finding(i.Origin, i.InFileLine)
+                lines = i.Raw.split("\n")
+                for line in lines:
+                    _line = line.strip()
+                    if "#" in _line and _line.find("#") > 0:
+                        res += self.finding(i.Origin, i.InFileLine + lines.index(line))
         return res

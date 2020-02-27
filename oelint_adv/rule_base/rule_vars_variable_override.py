@@ -24,7 +24,7 @@ class VarOverride(Rule):
                 # Get all entries but not the only that do immediate expansion,
                 # as these will be handled during parse time
                 # and apply to different rules
-                _items = [x for x in items if x.SubItem == sub and not x.IsAppend() and x.VarOp != " := "]
+                _items = [x for x in items if x.SubItem == sub and not x.IsAppend() and x.VarOp != " := " and not x.Flag]
                 if len(_items) > 1:
                     _files = list(set([os.path.basename(x.Origin) for x in _items]))
                     res += self.finding(_items[0].Origin, _items[0].InFileLine,

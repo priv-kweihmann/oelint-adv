@@ -1,7 +1,7 @@
 from oelint_adv.cls_item import Function
 from oelint_adv.cls_item import TaskAssignment
 from oelint_adv.cls_rule import Rule
-from oelint_adv.const_func import FUNC_ORDER
+from oelint_adv.const_func import KNOWN_FUNCS
 
 
 class TaskDocStrings(Rule):
@@ -13,8 +13,12 @@ class TaskDocStrings(Rule):
     def check(self, _file, stash):
         res = []
         for item in stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER):
-            if item.FuncName in FUNC_ORDER:
-                # Skip for buildin tasks
+            if item.FuncName in KNOWN_FUNCS or not item.FuncName:
+                # Skip for buildin tasks or anonymous python functions
+                continue
+            if item.IsAppend():
+                # In case it's an append operation, there has to be an original
+                # so don't raise any warnings here                
                 continue
             _ta = stash.GetItemsFor(filename=_file, classifier=TaskAssignment.CLASSIFIER,
                                     attribute="FuncName", attributeValue=item.FuncName)

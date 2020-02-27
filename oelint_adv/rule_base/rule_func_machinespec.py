@@ -19,6 +19,11 @@ class VarPnBpnUsage(Rule):
             _machine = i.GetMachineEntry()
             if not _machine:
                 continue
+            if i.FuncName in ['pkg_preinst', 'pkg_postinst', 'pkg_prerm', 'pkg_postrm'] and _machine.startswith("${PN}"):
+                continue
+            if _machine in ["ptest"]:
+                # known exceptions
+                continue
             _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                       attribute=Variable.ATTR_VAR, attributeValue="COMPATIBLE_MACHINE")
             if not any(_comp):

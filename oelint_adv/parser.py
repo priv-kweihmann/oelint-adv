@@ -13,45 +13,64 @@ from oelint_adv.cls_item import TaskAssignment
 from oelint_adv.cls_item import Variable
 from oelint_adv.helper_files import find_local_or_in_layer
 
+def prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=None):
+    __func_start_regexp__ = r".*(((?P<py>python)|(?P<fr>fakeroot))\s*)*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{"
+    res = []
+    raw_line = raw_line or line
+    if "${@" in raw_line:
+        # ignore line with inline processing for now
+        try:
+            num, line = _iter.__next__()
+            raw_line = line
+        except StopIteration:
+            raw_line = ""
+    if raw_line.find("\\\n") != -1:
+        _, line = _iter.__next__()
+        while line.find("\\\n") != -1:
+            if "${@" not in line:
+                # ignore line with inline processing for now
+                raw_line += line
+            _, line = _iter.__next__()
+        raw_line += line
+    elif re.match(__func_start_regexp__, raw_line):
+        _, line = _iter.__next__()
+        stopiter = False
+        while line.strip() != "}" and not stopiter:
+            if "${@" not in line:
+                # ignore line with inline processing for now
+                raw_line += line
+            try:
+                _, line = _iter.__next__()
+            except StopIteration:
+                stopiter = True
+        if line.strip() == "}":
+            raw_line += line
+    elif raw_line.strip().startswith("def "):
+        #_, line = _iter.__next__()
+        stopiter = False
+        while not stopiter:
+            try:
+                _, line = _iter.__next__()
+            except StopIteration:
+                stopiter = True
+            if line.startswith("def ") or line.startswith("#"):
+                raw_line = line
+                res += prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=raw_line)
+                break
+            if not line.startswith(" ") and not line.startswith("\t"):
+                break
+            raw_line += line
+    res.append({"line": num + 1 + lineOffset, "raw": raw_line,
+                        "cnt": raw_line.replace("\n", "").replace("\\", chr(0x1b))})
+    return res
 
 def prepare_lines(_file, lineOffset=0):
-    __func_start_regexp__ = r".*(((?P<py>python)|(?P<fr>fakeroot))\s*)*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{"
     try:
         prep_lines = []
         with open(_file) as i:
             _iter = enumerate(i.readlines())
             for num, line in _iter:
-                raw_line = line
-                if raw_line.find("\\\n") != -1:
-                    _, line = _iter.__next__()
-                    while line.find("\\\n") != -1:
-                        raw_line += line
-                        _, line = _iter.__next__()
-                    raw_line += line
-                elif re.match(__func_start_regexp__, raw_line):
-                    _, line = _iter.__next__()
-                    stopiter = False
-                    while line.strip() != "}" and not stopiter:
-                        raw_line += line
-                        try:
-                            _, line = _iter.__next__()
-                        except StopIteration:
-                            stopiter = True
-                    if line.strip() == "}":
-                        raw_line += line
-                elif raw_line.strip().startswith("def "):
-                    _, line = _iter.__next__()
-                    stopiter = False
-                    while (line.startswith(" ") or line.startswith("\t")) and not stopiter:
-                        raw_line += line
-                        try:
-                            _, line = _iter.__next__()
-                        except StopIteration:
-                            stopiter = True
-                        if not line.strip():
-                            break
-                prep_lines.append({"line": num + 1 + lineOffset, "raw": raw_line,
-                                   "cnt": raw_line.replace("\n", "").replace("\\", chr(0x1b))})
+                prep_lines += prepare_lines_subparser(_iter, lineOffset, num, line)
     except FileNotFoundError:
         pass
     return prep_lines
@@ -62,8 +81,8 @@ def get_items(stash, _file, lineOffset=0):
     __regex_var = r"^.*?(?P<varname>([A-Z0-9a-z_-]|\$|\{|\})+)(\[(?P<ident>\w+)\]+)*(?P<varop>(\s|\t)*(\+|\?|\:|\.)*=(\+)*(\s|\t)*)(?P<varval>.*)"
     __regex_func = r"^((?P<py>python)\s+|(?P<fr>fakeroot\s+))*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{(?P<funcbody>.*)\s*\}"
     __regex_inherit = r"^.*?inherit(\s+|\t+)(?P<inhname>.+)"
-    __regex_comments = r"^.*?#+(?P<body>.*)"
-    __regex_python = r"^(\s*|\t*)def(\s+|\t+)(?P<funcname>[a-z0-9_]+)(\s*|\t*)\:.+"
+    __regex_comments = r"^(\s|\t)*#+\s*(?P<body>.*)"
+    __regex_python = r"^(\s*|\t*)def(\s+|\t+)(?P<funcname>[a-z0-9_]+)(\s*|\t*)\(.*\)\:"
     __regex_include = r"^(\s*|\t*)(?P<statement>include|require)(\s+|\t+)(?P<incname>[A-za-z0-9\-\./]+)"
     __regex_addtask = r"^(\s*|\t*)addtask\s+(?P<func>\w+)\s*((before\s*(?P<before>((.*(?=after))|(.*))))|(after\s*(?P<after>((.*(?=before))|(.*)))))*"
     __regex_taskass = r"^(\s*|\t*)(?P<func>[a-z0-9_-]+)\[(?P<ident>\w+)\](\s+|\t+)=(\s+|\t+)(?P<varval>.*)"
@@ -84,37 +103,48 @@ def get_items(stash, _file, lineOffset=0):
     for line in prepare_lines(_file, lineOffset):
         good = False
         for k, v in _order.items():
+            if good:
+                break
             m = re.match(v, line["cnt"], re.MULTILINE)
             if m:
                 if k == "python":
-                    if any(res) and isinstance(res[-1], PythonBlock):
-                        res[-1].Raw += line["raw"]
-                    else:
-                        res.append(PythonBlock(
-                            _file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"], m.group("funcname")))
+                    res.append(PythonBlock(
+                        _file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"], m.group("funcname")))
+                    good = True
+                    break
                 elif k == "vars":
                     res.append(Variable(
                         _file, line["line"] + includeOffset, line["line"] -
                         lineOffset, line["raw"], m.group(
                             "varname"), m.group("varval"),
                         m.group("varop"), m.group("ident")))
+                    good = True
+                    break
                 elif k == "func":
                     res.append(Function(
                         _file, line["line"] + includeOffset, line["line"] -
                         lineOffset, line["raw"],
                         m.group("func"), m.group("funcbody"),
                         m.group("py"), m.group("fr")))
+                    good = True
+                    break
                 elif k == "comment":
                     res.append(
                         Comment(_file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"]))
+                    good = True
+                    break
                 elif k == "inherit":
                     res.append(Variable(
                         _file, line["line"] + includeOffset, line["line"] -
                         lineOffset, line["raw"], "inherit", m.group("inhname"),
                         "", ""))
+                    good = True
+                    break
                 elif k == "taskassign":
                     res.append(TaskAssignment(_file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"], m.group(
                         "func"), m.group("ident"), m.group("varval")))
+                    good = True
+                    break
                 elif k == "addtask":
                     # treat the following as variables
                     if any([m.group("func").startswith(x) for x in ['pkg_preinst', 'pkg_postinst', 'pkg_prerm', 'pkg_postrm']]):
@@ -130,6 +160,7 @@ def get_items(stash, _file, lineOffset=0):
                         _a = ""
                     res.append(TaskAdd(
                         _file, line["line"] + includeOffset, line["line"] - lineOffset, line["raw"], m.group("func"), _b, _a))
+                    break
                 elif k == "include":
                     _path = find_local_or_in_layer(
                         m.group("incname"), os.path.dirname(_file))
@@ -143,9 +174,8 @@ def get_items(stash, _file, lineOffset=0):
                             _file, line["line"], line["line"] - lineOffset, m.group("incname"), m.group("statement")))
                     res.append(Include(
                         _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("incname"), m.group("statement")))
-                good = True
-            if good:
-                break
+                    good = True
+                    break
         if not good:
             res.append(
                 Item(_file, line["line"], line["line"] - lineOffset, line["raw"]))

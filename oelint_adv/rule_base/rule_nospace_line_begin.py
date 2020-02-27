@@ -1,4 +1,5 @@
 from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_item import PythonBlock, Function
 
 
 class NoSpaceBeginningRule(Rule):
@@ -24,6 +25,8 @@ class NoSpaceBeginningRule(Rule):
     def fix(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):
+            if isinstance(i, PythonBlock) or isinstance(i, Function):
+                continue
             i.Raw = i.Raw.lstrip(" ")
             res.append(_file)
         return res

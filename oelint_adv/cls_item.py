@@ -22,22 +22,24 @@ class Item():
         chunks = name.split("_")
         _suffix = []
         _var = []
+        _pkgspec = []
         for i in chunks:
             if "-" in i:
                 # just use the prefix in case a dash is found
                 # that addresses things like FILES_${PN}-dev
+                _pkgspec.append("-".join(i.split("-")[1:]))
                 i = i.split("-")[0]
-            if re.match("^[A-Z0-9{}$]+$", i):
-                _var.append(i)
-            else:
+            if re.match("^[a-z0-9{}$]+$", i):
                 _suffix.append(i)
+            else:
+                _var.append(i)
         _var = [x for x in _var if x]
         _suffix = [x for x in _suffix if x]
         if not _var and _suffix:
             # special case for pkg-functions
             _var = _suffix
             _suffix = []
-        return ("_".join(_var), "_".join(_suffix))
+        return ("_".join(_var), "_".join(_suffix), _pkgspec)
 
     def extract_sub_func(self, name):
         chunks = name.split("_")
@@ -86,14 +88,16 @@ class Variable(Item):
     def __init__(self, origin, line, infileline, rawtext, name, value, operator, flag):
         super().__init__(origin, line, infileline, rawtext)
         if "inherit" != name:
-            self.VarName, self.SubItem = self.extract_sub(name)
+            self.VarName, self.SubItem, self.PkgSpec = self.extract_sub(name)
+            self.SubItem += " ".join(self.PkgSpec)
         else:
             self.VarName = name
             self.SubItem = ""
-        self.SubItems = self.SubItem.split("_")
+            self.PkgSpec = []
+        self.SubItems = [x for x in self.SubItem.split("_") + self.PkgSpec if x]
         self.VarValue = value
         self.VarOp = operator
-        self.Flag = flag
+        self.Flag = flag or ""
         self.VarValueStripped = self.VarValue.strip().lstrip('"').rstrip('"')
 
     def IsAppend(self):
@@ -116,8 +120,9 @@ class Variable(Item):
 
     def GetMachineEntry(self):
         for x in self.SubItems:
-            if x not in ["append", "prepend", "class-native", "class-cross", "class-target", "remove", "machine"]:
-                return x
+            if x not in ["append", "prepend", "class-native", "class-cross", "class-target", "remove", "machine"] + self.PkgSpec:
+                if not x.startswith("libc"):
+                    return x
         return ""
 
 
@@ -162,6 +167,9 @@ class Function(Item):
             if x not in ["append", "prepend", "class-native", "class-cross", "class-target", "remove", "machine"]:
                 return x
         return ""
+
+    def IsAppend(self):
+        return any([x in ["append", "prepend"] for x in self.SubItems])
 
 
 class PythonBlock(Item):
