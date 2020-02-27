@@ -135,6 +135,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.vars.doublemodify - Multiple modifiers of append/prepend/remove/+= found in one operation
 * oelint.vars.duplicate - No duplicates in DEPENDS and RDEPENDS
 * oelint.vars.fileextrapaths - 'FILESEXTRAPATHS' shouldn't be used in a bb file
+* oelint.vars.fileextrapathsop - 'FILESEXTRAPATHS' should only be used in combination with ' := '
 * oelint.vars.homepageprefix - HOMEPAGE should begin with https:// or http://
 * oelint.vars.inconspaces - Inconsistent use of spaces on append operation
 * oelint.vars.insaneskip - INSANE_SKIP should be avoided at any cost
