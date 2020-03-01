@@ -39,13 +39,14 @@ def create_argparser():
                 set_rulefile(json.load(i))
         except (FileNotFoundError, json.JSONDecodeError):
             raise argparse.ArgumentTypeError("'rulefile' is not a valid file")
-    
+
     if args.constantfile:
         try:
             with open(args.constantfile) as i:
                 set_constantfile(json.load(i))
         except (FileNotFoundError, json.JSONDecodeError):
-            raise argparse.ArgumentTypeError("'constantfile' is not a valid file")
+            raise argparse.ArgumentTypeError(
+                "'constantfile' is not a valid file")
 
     if args.color:
         set_color(True)
@@ -79,7 +80,8 @@ def main():
     for f in fixedfiles:
         _items = [f] + stash.GetLinksForFile(f)
         for i in _items:
-            items = sorted(stash.GetItemsFor(filename=i, nolink=True), key=lambda x: x.Line)
+            items = sorted(stash.GetItemsFor(
+                filename=i, nolink=True), key=lambda x: x.Line)
             if not args.nobackup:
                 os.rename(i, i + ".bak")
             with open(i, "w") as o:
@@ -95,6 +97,7 @@ def main():
     if args.output != sys.stderr:
         args.output.close()
     sys.exit(len(issues))
+
 
 if __name__ == '__main__':
     main()

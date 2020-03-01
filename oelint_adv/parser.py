@@ -13,6 +13,7 @@ from oelint_adv.cls_item import TaskAssignment
 from oelint_adv.cls_item import Variable
 from oelint_adv.helper_files import find_local_or_in_layer
 
+
 def prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=None):
     __func_start_regexp__ = r".*(((?P<py>python)|(?P<fr>fakeroot))\s*)*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{"
     res = []
@@ -46,7 +47,6 @@ def prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=None):
         if line.strip() == "}":
             raw_line += line
     elif raw_line.strip().startswith("def "):
-        #_, line = _iter.__next__()
         stopiter = False
         while not stopiter:
             try:
@@ -55,14 +55,16 @@ def prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=None):
                 stopiter = True
             if line.startswith("def ") or line.startswith("#"):
                 raw_line = line
-                res += prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=raw_line)
+                res += prepare_lines_subparser(_iter,
+                                               lineOffset, num, line, raw_line=raw_line)
                 break
             if not line.startswith(" ") and not line.startswith("\t"):
                 break
             raw_line += line
     res.append({"line": num + 1 + lineOffset, "raw": raw_line,
-                        "cnt": raw_line.replace("\n", "").replace("\\", chr(0x1b))})
+                "cnt": raw_line.replace("\n", "").replace("\\", chr(0x1b))})
     return res
+
 
 def prepare_lines(_file, lineOffset=0):
     try:
@@ -70,7 +72,8 @@ def prepare_lines(_file, lineOffset=0):
         with open(_file) as i:
             _iter = enumerate(i.readlines())
             for num, line in _iter:
-                prep_lines += prepare_lines_subparser(_iter, lineOffset, num, line)
+                prep_lines += prepare_lines_subparser(
+                    _iter, lineOffset, num, line)
     except FileNotFoundError:
         pass
     return prep_lines
@@ -103,8 +106,6 @@ def get_items(stash, _file, lineOffset=0):
     for line in prepare_lines(_file, lineOffset):
         good = False
         for k, v in _order.items():
-            if good:
-                break
             m = re.match(v, line["cnt"], re.MULTILINE)
             if m:
                 if k == "python":

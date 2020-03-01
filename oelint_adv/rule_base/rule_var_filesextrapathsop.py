@@ -1,5 +1,3 @@
-import os
-
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
 

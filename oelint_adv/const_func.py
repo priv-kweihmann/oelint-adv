@@ -136,8 +136,8 @@ KNOWN_FUNCS = [
     "do_warn_musl",
     "do_write_config",
     "do_write_qemuboot_conf",
-    "pkg_preinst", 
-    "pkg_postinst", 
+    "pkg_preinst",
+    "pkg_postinst",
     "pkg_postrm",
     "pkg_prerm"
 ]

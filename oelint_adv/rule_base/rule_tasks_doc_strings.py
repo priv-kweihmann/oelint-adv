@@ -18,7 +18,7 @@ class TaskDocStrings(Rule):
                 continue
             if item.IsAppend():
                 # In case it's an append operation, there has to be an original
-                # so don't raise any warnings here                
+                # so don't raise any warnings here
                 continue
             _ta = stash.GetItemsFor(filename=_file, classifier=TaskAssignment.CLASSIFIER,
                                     attribute="FuncName", attributeValue=item.FuncName)
