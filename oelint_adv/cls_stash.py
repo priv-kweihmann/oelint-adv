@@ -73,4 +73,4 @@ class Stash():
         res = self.__get_items_by_file(res, filename, nolink=nolink)
         res = self.__get_items_by_classifier(res, classifier)
         res = self.__get_items_by_attribute(res, attribute, attributeValue)
-        return sorted(list(set(res)), key=lambda x: x.Line )
+        return sorted(list(set(res)), key=lambda x: x.Line)

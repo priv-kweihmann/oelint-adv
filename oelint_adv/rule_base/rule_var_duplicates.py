@@ -18,7 +18,8 @@ class VarDuplicates(Rule):
             for i in items:
                 for x in [y for y in safe_linesplit(i.VarValueStripped) if y]:
                     machine_mods = i.SubItems
-                    machine_mods_cleaned = "_".join(sorted([x for x in machine_mods if x not in ["append", "prepend", "remove"]]))
+                    machine_mods_cleaned = "_".join(
+                        sorted([x for x in machine_mods if x not in ["append", "prepend", "remove"]]))
                     if not machine_mods_cleaned in _items:
                         _items[machine_mods_cleaned] = []
                     _operations = i.AppendOperation()

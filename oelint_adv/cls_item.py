@@ -95,7 +95,8 @@ class Variable(Item):
             self.VarName = name
             self.SubItem = ""
             self.PkgSpec = []
-        self.SubItems = [x for x in self.SubItem.split("_") + self.PkgSpec if x]
+        self.SubItems = [x for x in self.SubItem.split(
+            "_") + self.PkgSpec if x]
         self.VarValue = value
         self.VarOp = operator
         self.Flag = flag or ""
