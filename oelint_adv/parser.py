@@ -81,7 +81,7 @@ def prepare_lines(_file, lineOffset=0):
 
 def get_items(stash, _file, lineOffset=0):
     res = []
-    __regex_var = r"^.*?(?P<varname>([A-Z0-9a-z_-]|\$|\{|\})+)(\[(?P<ident>\w+)\]+)*(?P<varop>(\s|\t)*(\+|\?|\:|\.)*=(\+)*(\s|\t)*)(?P<varval>.*)"
+    __regex_var = r"^(?P<varname>([A-Z0-9a-z_-]|\$|\{|\})+?)(\[(?P<ident>(\w|-)+)\])*(?P<varop>(\s|\t)*(\+|\?|\:|\.)*=(\+)*(\s|\t)*)(?P<varval>.*)"
     __regex_func = r"^((?P<py>python)\s+|(?P<fr>fakeroot\s+))*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{(?P<funcbody>.*)\s*\}"
     __regex_inherit = r"^.*?inherit(\s+|\t+)(?P<inhname>.+)"
     __regex_comments = r"^(\s|\t)*#+\s*(?P<body>.*)"
