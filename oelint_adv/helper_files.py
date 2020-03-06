@@ -56,15 +56,41 @@ def get_scr_components(string):
     """
     _url = urlparse(_replace_with_known_mirrors(string))
     _scheme = _url.scheme
-    _options = _url.netloc.split(";")[1:]
-    _path = _url.netloc.split(";")[0]
+    _tmp = _url.netloc
     if _url.path:
-        if not _path.endswith("/") and not _url.path.startswith("/"):
-            _path += "/"
-        _path += _url.path
+        _tmp += "/" + _url.path.lstrip("/")
+    _path = _tmp.split(";")[0]
+    _options = _tmp.split(";")[1:]
     _parsed_opt = {x.split("=")[0]: x.split("=")[1] for x in _options}
     return {"scheme": _scheme, "src": _path, "options": _parsed_opt}
 
 
 def safe_linesplit(string):
     return re.split(r"\s|\t|\x1b", string)
+
+def guess_recipe_name(_file):
+    _name, _ext = os.path.splitext(os.path.basename(_file))
+    return _name.split("_")[0] 
+
+def get_valid_package_names(stash, _file):
+    res = set()
+    _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                              attribute=Variable.ATTR_VAR, attributeValue="PACKAGES")
+    _recipe_name = guess_recipe_name(_file)
+    for item in _comp:
+        for pkg in [x for x in safe_linesplit(item.VarValueStripped) if x]:
+            _pkg = pkg.replace("${PN}", _recipe_name)
+            res.add(_pkg)
+    return res
+
+def get_valid_named_resources(stash, _file):
+    res = set()
+    _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                              attribute=Variable.ATTR_VAR, attributeValue="SRC_URI")
+    _recipe_name = guess_recipe_name(_file)
+    for item in _comp:
+        for name in [x for x in safe_linesplit(item.VarValueStripped) if x]:
+            _url = get_scr_components(name)
+            if "name" in _url["options"]:
+                res.add(_url["options"]["name"].replace("${PN}", _recipe_name))
+    return res

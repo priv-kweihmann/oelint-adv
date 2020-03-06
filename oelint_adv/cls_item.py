@@ -24,15 +24,16 @@ class Item():
         _var = []
         _pkgspec = []
         for i in chunks:
+            tmp = ""
             if "-" in i:
                 # just use the prefix in case a dash is found
                 # that addresses things like FILES_${PN}-dev
-                _pkgspec.append("-".join(i.split("-")[1:]))
+                tmp = "-" + "-".join(i.split("-")[1:])
                 i = i.split("-")[0]
             if re.match("^[a-z0-9{}$]+$", i):
-                _suffix.append(i)
+                _suffix.append(i + tmp)
             else:
-                _var.append(i)
+                _var.append(i + tmp)
         _var = [x for x in _var if x]
         _suffix = [x for x in _suffix if x]
         if not _var and _suffix:
@@ -120,7 +121,7 @@ class Variable(Item):
 
     def GetMachineEntry(self):
         for x in self.SubItems:
-            if x not in ["append", "prepend", "class-native", "class-cross", "class-target", "remove", "machine"] + self.PkgSpec:
+            if x not in ["append", "prepend", "class-native", "class-nativesdk", "class-cross", "class-target", "remove", "machine"] + self.PkgSpec:
                 if not x.startswith("libc"):
                     return x
         return ""

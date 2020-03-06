@@ -7,7 +7,11 @@ cat > ${TESTFILE} << EOF
 SRC_URI = "file://\${BPN}.patch \
            git://\${BPN}.com/\${BPN}.git \
            https://foo.org/\${BPN} \
-           git://foo.org/bar.git;name=\${PN}" \
+           git://foo.org/bar.git;name=\${PN}"
+SRC_URI = "\
+    git://foo.org/baz.git;name=\${PN}-super \
+    git://foo.org/\${BPN}.git;name=\${PN}-ultra \
+"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
