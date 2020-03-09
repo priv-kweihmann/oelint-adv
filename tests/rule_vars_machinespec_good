@@ -40,6 +40,11 @@ PACKAGES =+ "libpulsecore libpulsecommon libpulse libpulse-simple libpulse-mainl
              pulseaudio-server pulseaudio-misc \${@bb.utils.contains('PACKAGECONFIG', 'dbus', 'pulseaudio-module-console-kit', '', d)}"
 
 DEPENDS_pulseaudio-server = "foo-bar"
+
+DEPENDS_clang = "Unknown"
+DEPENDS_linux = "Linux"
+DEPENDS_darwin = "Darwin"
+DEPENDS_mingw32 = "Windows"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
