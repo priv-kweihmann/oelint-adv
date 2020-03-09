@@ -68,7 +68,6 @@ def prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=None):
         raw_line = raw_line.replace(repl, "")
     res.append({"line": num + 1 + lineOffset, "raw": raw_line,
                 "cnt": raw_line.replace("\n", "").replace("\\", chr(0x1b))})
-    print(res[-1])
     return res
 
 
