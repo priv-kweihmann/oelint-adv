@@ -35,6 +35,11 @@ SRCREV_super = "2a76ac0ff0e702a7f553b6d7135a1089e9c3b469"
 SRCREV_ultra = "7533c21ba6c06a513eaa9500a06ae780249b9834"
 
 PACKAGECONFIG_class-nativesdk ??= "${PACKAGECONFIG_class-native}"
+
+PACKAGES =+ "libpulsecore libpulsecommon libpulse libpulse-simple libpulse-mainloop-glib \
+             pulseaudio-server pulseaudio-misc \${@bb.utils.contains('PACKAGECONFIG', 'dbus', 'pulseaudio-module-console-kit', '', d)}"
+
+DEPENDS_pulseaudio-server = "foo-bar"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"

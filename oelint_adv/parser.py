@@ -13,33 +13,34 @@ from oelint_adv.cls_item import TaskAssignment
 from oelint_adv.cls_item import Variable
 from oelint_adv.helper_files import find_local_or_in_layer
 
+def get_full_scope(_string, offset, _sstart, _send):
+    scopelevel = 0
+    pos = 0
+    for c in _string[offset:]:
+        if c == _sstart:
+            scopelevel += 1
+        elif c == _send:
+            scopelevel -= 1
+        pos += 1
+        if scopelevel < 0:
+            break
+    return _string[:pos+offset]
 
 def prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=None):
     __func_start_regexp__ = r".*(((?P<py>python)|(?P<fr>fakeroot))\s*)*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{"
     res = []
     raw_line = raw_line or line
-    if "${@" in raw_line:
-        # ignore line with inline processing for now
-        try:
-            num, line = _iter.__next__()
-            raw_line = line
-        except StopIteration:
-            raw_line = ""
     if raw_line.find("\\\n") != -1:
         _, line = _iter.__next__()
         while line.find("\\\n") != -1:
-            if "${@" not in line:
-                # ignore line with inline processing for now
-                raw_line += line
+            raw_line += line
             _, line = _iter.__next__()
         raw_line += line
     elif re.match(__func_start_regexp__, raw_line):
         _, line = _iter.__next__()
         stopiter = False
         while line.strip() != "}" and not stopiter:
-            if "${@" not in line:
-                # ignore line with inline processing for now
-                raw_line += line
+            raw_line += line
             try:
                 _, line = _iter.__next__()
             except StopIteration:
@@ -61,8 +62,13 @@ def prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=None):
             if not line.startswith(" ") and not line.startswith("\t"):
                 break
             raw_line += line
+    _inline_block = raw_line.find("${@")
+    if _inline_block != -1:
+        repl = get_full_scope(raw_line[_inline_block:], len("${@"), "{", "}")
+        raw_line = raw_line.replace(repl, "")
     res.append({"line": num + 1 + lineOffset, "raw": raw_line,
                 "cnt": raw_line.replace("\n", "").replace("\\", chr(0x1b))})
+    print(res[-1])
     return res
 
 
