@@ -9,7 +9,7 @@ class FilePatchIsUpstreamStatus(Rule):
     def __init__(self):
         super().__init__(id="oelint.file.upstreamstatus",
                          severity="info",
-                         message="Patch '{FILE}' should should contain a Upstream-Status entry")
+                         message="Patch '{FILE}' should contain an Upstream-Status entry")
 
     def check(self, _file, stash):
         res = []
