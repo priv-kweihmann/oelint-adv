@@ -8,24 +8,44 @@ class Stash():
 
     def __init__(self):
         self.__list = []
+        self.__map = {}
 
     def AddFile(self, _file, lineOffset=0, forcedLink=None):
         print("Parsing {}".format(_file))
         res = get_items(self, _file, lineOffset=lineOffset)
         if forcedLink:
-            for item in [x for x in res if x.Origin == _file]:
-                item.AddLink(forcedLink)
+            if _file not in self.__map:
+                self.__map[_file] = []
+            self.__map[_file].append(forcedLink)
+            if forcedLink not in self.__map:
+                self.__map[forcedLink] = []
+            self.__map[forcedLink].append(_file)
         # Match bbappends to bbs
         if _file.endswith(".bbappend"):
             bn_this = os.path.basename(_file).replace(
                 ".bbappend", "").replace("%", ".*")
             for item in self.__list:
                 if re.match(bn_this, os.path.basename(item.Origin).replace(".bb", "")):
-                    item.AddLink(_file)
-                    for r in res:
-                        r.AddLink(item.Origin)
+                    if _file not in self.__map:
+                        self.__map[_file] = []
+                    self.__map[_file].append(item.Origin)
+                    if item.Origin not in self.__map:
+                        self.__map[item.Origin] = []
+                    self.__map[item.Origin].append(_file)
+                    break
         self.__list += res
         return res
+
+    def Finalize(self):
+        # cross link all the files
+        for k in self.__map.keys():
+            for l in self.__map[k]:
+                self.__map[k] += [x for x in self.__map[l] if x != k]
+                self.__map[k] = list(set(self.__map[k]))
+        for k, v in self.__map.items():
+            for item in [x for x in self.__list if x.Origin == k]:
+                for link in v:
+                    item.AddLink(link)
 
     def GetRecipes(self):
         return list(set([x.Origin for x in self.__list if x.Origin.endswith(".bb")]))

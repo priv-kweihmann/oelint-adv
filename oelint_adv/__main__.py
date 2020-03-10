@@ -67,6 +67,8 @@ def main():
         except FileNotFoundError as e:
             print("Can't open/read: {}".format(e))
 
+    stash.Finalize()
+
     for f in list(set(stash.GetRecipes() + stash.GetLoneAppends())):
         for r in rules:
             if not r.OnAppend and f.endswith(".bbappend"):
