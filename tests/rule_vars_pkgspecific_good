@@ -16,6 +16,8 @@ pkg_postinst_\${PN} = "foo"
 pkg_prerm_\${PN} = "foo"
 pkg_postrm_\${PN} = "foo"
 ALLOW_EMPTY_\${PN} = "foo"
+PACKAGES += "abc-foo"
+RDEPENDS_abc-foo += "bar"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
