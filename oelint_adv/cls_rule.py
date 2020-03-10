@@ -25,9 +25,9 @@ class Rule():
 
     def finding(self, _file, _line, override_msg=None):
         if not self.OnAppend and _file.endswith(".bbappend"):
-            return
+            return []
         if self.OnlyAppend and not _file.endswith(".bbappend"):
-            return
+            return []
         if override_msg is None:
             override_msg = self.Msg
         _severity = self.Severity
