@@ -2,7 +2,7 @@
 TESTFILE="/tmp/oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.var.mandatoryvar"
-TESTOCC="7"
+TESTOCC="6"
 cat > ${TESTFILE} << EOF
 A = "1"
 EOF

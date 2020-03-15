@@ -6,7 +6,6 @@ TESTOCC="0"
 cat > ${TESTFILE} << EOF
 SUMMARY = "foo"
 DESCRIPTION = "foo"
-AUTHOR = "foo"
 HOMEPAGE = "foo"
 SECTION = "foo"
 LICENSE = "foo"

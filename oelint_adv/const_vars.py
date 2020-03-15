@@ -20,7 +20,6 @@ def __get_const_and_rulefile_dict(l, key):
 MANDATORY_VARS = [
     "SUMMARY",
     "DESCRIPTION",
-    "AUTHOR",
     "HOMEPAGE",
     "SECTION",
     "LICENSE",
@@ -33,6 +32,7 @@ def get_mandatory_vars():
 
 
 SUGGESTED_VARS = [
+    "AUTHOR",
     "BUGTRACKER",
     "BBCLASSEXTEND",
     "CVE_PRODUCT"
