@@ -127,6 +127,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.var.override - Check if include/append is overriding a variable
 * oelint.var.srcuriwildcard - 'SRC_URI' should not contain any wildcards
 * oelint.var.suggestedvar - Notice on suggested variables
+* oelint.vars.appendop - Use '_append' instead of ' += '
 * oelint.vars.autorev - The usage of 'AUTOREV' for SRCREV leads to not reproducible builds
 * oelint.vars.bbvars - Variables that shouldn't be altered in recipe scope
 * oelint.vars.bugtrackerisurl - BUGTRACKER should be an URL
