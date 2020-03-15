@@ -21,9 +21,18 @@ class VarMisspell(Rule):
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR)
-
+        _all = stash.GetItemsFor(filename=_file)
         for i in items:
             if i.VarName in get_known_vars():
+                continue
+            _used = False
+            for a in _all:
+                if a == i:
+                    continue
+                if "${{{}}}".format(i.VarName) in a.Raw or "getVar(\"{}\"".format(i.VarName) in a.Raw:
+                    _used = True
+                    break
+            if _used:
                 continue
             _bestmatch = self.get_best_match(i.VarName, get_known_vars())
             if _bestmatch:

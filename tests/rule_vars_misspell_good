@@ -7,6 +7,17 @@ cat > ${TESTFILE} << EOF
 RDEPENDS_\${PN} = "foo"
 PACKAGECONFIG[foo] = "a"
 GOPATH = "abc"
+PACKAGECONFIG_A = "a"
+PACKAGECONFIG_B = "c"
+
+do_configure() {
+    ./configure \${PACKAGECONFIG_A}
+}
+
+python do_foo() {
+    d.getVar("PACKAGECONFIG_B")
+}
+
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
