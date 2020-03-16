@@ -16,7 +16,7 @@ class VarMultiInherit(Rule):
                                   attribute=Variable.ATTR_VAR, attributeValue="inherit")
         keys = []
         for i in items:
-            for y in [x.strip() for x in re.split(r"\s|,", i.VarValue) if x]:
+            for y in [x.strip() for x in re.split(r"\s|,|\t|\x1b", i.VarValue) if x]:
                 if y not in keys:
                     keys.append(y)
                 else:
