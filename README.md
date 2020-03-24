@@ -145,6 +145,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.vars.multilineident - On a multiline assignment, line indent is desirable
 * oelint.vars.notneededspace - Space at the beginning of the var is not needed **[F]**
 * oelint.vars.pathhardcode - Warn about the usage of hardcoded paths
+* oelint.vars.pbpusage - ${BP} should be used instead of ${P}
 * oelint.vars.pkgspecific - Variable is package-specific, but isn't set in that way
 * oelint.vars.pnbpnusage - ${BPN} should be used instead of ${PN}
 * oelint.vars.pnusagediscouraged - Variable shouldn't contain ${PN} or ${BPN}
