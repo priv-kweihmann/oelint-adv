@@ -2,9 +2,12 @@
 TESTFILE="/tmp/oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.vars.appendop"
-TESTOCC="1"
+TESTOCC="2"
 cat > ${TESTFILE} << EOF
-A += "b"
+A ?= "1"
+A += "2"
+B ??= "A"
+B += "B"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"

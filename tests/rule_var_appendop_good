@@ -4,7 +4,14 @@ trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.vars.appendop"
 TESTOCC="0"
 cat > ${TESTFILE} << EOF
-A_append = " b"
+A ?= "1"
+A_append = " 2"
+B ??= "A"
+B_append = " B"
+C = "1"
+C += "2"
+D := "1"
+D += "2"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
