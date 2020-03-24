@@ -1,0 +1,11 @@
+#!/bin/sh
+TESTFILE="/tmp/oelint_adv_test.bb"
+trap "rm -f ${TESTFILE}" EXIT
+TESTID="oelint.vars.homepageping"
+TESTOCC="1"
+cat > ${TESTFILE} << EOF
+HOMEPAGE = "abc-def-ghi"
+EOF
+[ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+echo "Test for ${0} failed"
+exit 1
