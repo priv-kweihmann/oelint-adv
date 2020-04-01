@@ -33,7 +33,8 @@ class VarDuplicates(Rule):
                         if any([x in ["append", "prepend", " += ", " =+ "] for x in _operations]):
                             _items[machine_mods_cleaned].append(x)
                         elif "remove" in _operations:
-                            _items[machine_mods_cleaned].remove(x)
+                            if x in _items[machine_mods_cleaned]:
+                                _items[machine_mods_cleaned].remove(x)
                         else:
                             _items[machine_mods_cleaned] = [x]
         return res
