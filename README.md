@@ -133,6 +133,8 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.vars.bugtrackerisurl - BUGTRACKER should be an URL
 * oelint.vars.dependsappend - DEPENDS should only be appended, not overwritten
 * oelint.vars.dependsordered - RDEPENDS entries should be ordered alphabetically
+* oelint.vars.descriptionsame - 'DESCRIPTION' is the same a 'SUMMARY' - it can be removed then
+* oelint.vars.descriptiontoobrief - 'DESCRIPTION' is the shorter than 'SUMMARY'
 * oelint.vars.doublemodify - Multiple modifiers of append/prepend/remove/+= found in one operation
 * oelint.vars.duplicate - No duplicates in DEPENDS and RDEPENDS
 * oelint.vars.fileextrapaths - 'FILESEXTRAPATHS' shouldn't be used in a bb file
