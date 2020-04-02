@@ -17,5 +17,5 @@ class FileIncludeNotFound(Rule):
             if item.Statement == "include":
                 _path = expand_term(stash, _file, item.IncName)
                 if not find_local_or_in_layer(_path, os.path.dirname(_file)):
-                    res += self.finding(item.Origin, item.InFileLine, self.Msg.replace("{FILE}", item.Filename))
+                    res += self.finding(item.Origin, item.InFileLine, self.Msg.replace("{FILE}", item.IncName))
         return res
