@@ -61,7 +61,7 @@ def get_scr_components(string):
         _tmp += "/" + _url.path.lstrip("/")
     _path = _tmp.split(";")[0]
     _options = _tmp.split(";")[1:]
-    _parsed_opt = {x.split("=")[0]: x.split("=")[1] for x in _options}
+    _parsed_opt = {x.split("=")[0]: x.split("=")[1] for x in _options if "=" in x}
     return {"scheme": _scheme, "src": _path, "options": _parsed_opt}
 
 
