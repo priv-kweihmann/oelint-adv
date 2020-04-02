@@ -20,7 +20,7 @@ class VarDuplicates(Rule):
                     machine_mods = i.SubItems
                     machine_mods_cleaned = "_".join(
                         sorted([x for x in machine_mods if x not in ["append", "prepend", "remove"]]))
-                    if not machine_mods_cleaned in _items:
+                    if machine_mods_cleaned not in _items:
                         _items[machine_mods_cleaned] = []
                     _operations = i.AppendOperation()
                     if x in _items[machine_mods_cleaned]:

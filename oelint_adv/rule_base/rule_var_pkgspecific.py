@@ -2,7 +2,8 @@ from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
 from oelint_adv.helper_files import get_valid_package_names
 
-class VarQuoted(Rule):
+
+class VarPkgSpecific(Rule):
     def __init__(self):
         super().__init__(id="oelint.vars.pkgspecific",
                          severity="error",
@@ -21,5 +22,6 @@ class VarQuoted(Rule):
             if i.VarName in needles:
                 _machine = i.GetMachineEntry()
                 if not _machine or _machine not in _packages:
-                    res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.replace("{VAR}", i.VarName))
+                    res += self.finding(i.Origin, i.InFileLine,
+                                        override_msg=self.Msg.replace("{VAR}", i.VarName))
         return res

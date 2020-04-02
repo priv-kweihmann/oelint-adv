@@ -17,7 +17,7 @@ class VarHomepagePrefix(Rule):
                                   attribute=Variable.ATTR_VAR, attributeValue="HOMEPAGE")
         for i in items:
             try:
-                req = Request(i.VarValueStripped) 
+                req = Request(i.VarValueStripped)
                 try:
                     urlopen(req, timeout=4)
                 except HTTPError as e:

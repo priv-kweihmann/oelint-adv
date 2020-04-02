@@ -11,7 +11,8 @@ class NewLineConsecutive(Rule):
         res = {}
         items = stash.GetItemsFor(filename=_file)
         for _uniqname in set(x.Origin for x in items):
-            res[_uniqname] = sorted(stash.GetItemsFor(filename=_uniqname, nolink=True), key=lambda x: x.InFileLine)
+            res[_uniqname] = sorted(stash.GetItemsFor(
+                filename=_uniqname, nolink=True), key=lambda x: x.InFileLine)
         return res
 
     def check(self, _file, stash):

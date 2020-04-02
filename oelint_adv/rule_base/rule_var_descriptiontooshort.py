@@ -1,6 +1,5 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.helper_files import get_scr_components
 
 
 class VarDescSameTooBrief(Rule):
@@ -14,9 +13,10 @@ class VarDescSameTooBrief(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue="DESCRIPTION")
         items_sum = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                  attribute=Variable.ATTR_VAR, attributeValue="SUMMARY")
+                                      attribute=Variable.ATTR_VAR, attributeValue="SUMMARY")
         for i in items:
-            _same = [x for x in items_sum if len(x.VarValueStripped) > len(i.VarValueStripped)]
+            _same = [x for x in items_sum if len(
+                x.VarValueStripped) > len(i.VarValueStripped)]
             if any(_same):
                 res += self.finding(i.Origin, i.InFileLine)
         return res

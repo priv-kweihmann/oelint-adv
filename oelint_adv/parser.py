@@ -12,6 +12,7 @@ from oelint_adv.cls_item import TaskAssignment
 from oelint_adv.cls_item import Variable
 from oelint_adv.helper_files import find_local_or_in_layer, expand_term
 
+
 def get_full_scope(_string, offset, _sstart, _send):
     scopelevel = 0
     pos = 0
@@ -24,6 +25,7 @@ def get_full_scope(_string, offset, _sstart, _send):
         if scopelevel < 0:
             break
     return _string[:pos+offset]
+
 
 def prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=None):
     __func_start_regexp__ = r".*(((?P<py>python)|(?P<fr>fakeroot))\s*)*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{"
@@ -61,7 +63,7 @@ def prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=None):
             if not line.startswith(" ") and not line.startswith("\t"):
                 break
             raw_line += line
-    
+
     while raw_line.find("${@") != -1:
         _inline_block = raw_line.find("${@")
         repl = get_full_scope(raw_line[_inline_block:], len("${@"), "{", "}")
