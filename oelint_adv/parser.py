@@ -61,10 +61,11 @@ def prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=None):
             if not line.startswith(" ") and not line.startswith("\t"):
                 break
             raw_line += line
-    _inline_block = raw_line.find("${@")
-    if _inline_block != -1:
+    
+    while raw_line.find("${@") != -1:
+        _inline_block = raw_line.find("${@")
         repl = get_full_scope(raw_line[_inline_block:], len("${@"), "{", "}")
-        raw_line = raw_line.replace(repl, "")
+        raw_line = raw_line.replace(repl, "!!!inlineblock!!!")
     res.append({"line": num + 1 + lineOffset, "raw": raw_line,
                 "cnt": raw_line.replace("\n", "").replace("\\", chr(0x1b))})
     return res

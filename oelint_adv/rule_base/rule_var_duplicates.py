@@ -24,6 +24,8 @@ class VarDuplicates(Rule):
                         _items[machine_mods_cleaned] = []
                     _operations = i.AppendOperation()
                     if x in _items[machine_mods_cleaned]:
+                        if x == "!!!inlineblock!!!":
+                            continue
                         if not any([x in ["append", "prepend", " += ", " =+ "] for x in _operations]):
                             _items[machine_mods_cleaned] = [x]
                         else:
