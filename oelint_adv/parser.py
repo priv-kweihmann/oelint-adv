@@ -6,12 +6,11 @@ from oelint_adv.cls_item import Comment
 from oelint_adv.cls_item import Function
 from oelint_adv.cls_item import Include
 from oelint_adv.cls_item import Item
-from oelint_adv.cls_item import MissingFile
 from oelint_adv.cls_item import PythonBlock
 from oelint_adv.cls_item import TaskAdd
 from oelint_adv.cls_item import TaskAssignment
 from oelint_adv.cls_item import Variable
-from oelint_adv.helper_files import find_local_or_in_layer
+from oelint_adv.helper_files import find_local_or_in_layer, expand_term
 
 def get_full_scope(_string, offset, _sstart, _send):
     scopelevel = 0
@@ -91,7 +90,7 @@ def get_items(stash, _file, lineOffset=0):
     __regex_inherit = r"^.*?inherit(\s+|\t+)(?P<inhname>.+)"
     __regex_comments = r"^(\s|\t)*#+\s*(?P<body>.*)"
     __regex_python = r"^(\s*|\t*)def(\s+|\t+)(?P<funcname>[a-z0-9_]+)(\s*|\t*)\(.*\)\:"
-    __regex_include = r"^(\s*|\t*)(?P<statement>include|require)(\s+|\t+)(?P<incname>[A-za-z0-9\-\./]+)"
+    __regex_include = r"^(\s*|\t*)(?P<statement>include|require)(\s+|\t+)(?P<incname>[A-za-z0-9\-\./\$\{\}]+)"
     __regex_addtask = r"^(\s*|\t*)addtask\s+(?P<func>\w+)\s*((before\s*(?P<before>((.*(?=after))|(.*))))|(after\s*(?P<after>((.*(?=before))|(.*)))))*"
     __regex_taskass = r"^(\s*|\t*)(?P<func>[a-z0-9_-]+)\[(?P<ident>\w+)\](\s+|\t+)=(\s+|\t+)(?P<varval>.*)"
 
@@ -169,15 +168,12 @@ def get_items(stash, _file, lineOffset=0):
                     break
                 elif k == "include":
                     _path = find_local_or_in_layer(
-                        m.group("incname"), os.path.dirname(_file))
+                        expand_term(stash, _file, m.group("incname")), os.path.dirname(_file))
                     if _path:
                         tmp = stash.AddFile(
                             _path, lineOffset=line["line"], forcedLink=_file)
                         if any(tmp):
                             includeOffset += max([x.InFileLine for x in tmp])
-                    else:
-                        res.append(MissingFile(
-                            _file, line["line"], line["line"] - lineOffset, m.group("incname"), m.group("statement")))
                     res.append(Include(
                         _file, line["line"], line["line"] - lineOffset, line["raw"], m.group("incname"), m.group("statement")))
                     good = True

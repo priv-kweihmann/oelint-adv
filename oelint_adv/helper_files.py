@@ -70,7 +70,25 @@ def safe_linesplit(string):
 
 def guess_recipe_name(_file):
     _name, _ext = os.path.splitext(os.path.basename(_file))
-    return _name.split("_")[0] 
+    return _name.split("_")[0]
+
+def guess_recipe_version(_file):
+    _name, _ext = os.path.splitext(os.path.basename(_file))
+    return _name.split("_")[-1]
+
+def expand_term(stash, _file, value):
+    pattern = r"\$\{(.+?)\}"
+    res = str(value)
+    for m in re.finditer(pattern, value):
+        _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                                  attribute=Variable.ATTR_VAR, attributeValue=m.group(1))
+        if any(_comp):
+            res = res.replace(m.group(0), expand_term(stash, _file, _comp[0].VarValueStripped))
+        elif m.group(1) in ["PN", "BPN"]:
+            res = res.replace(m.group(0), guess_recipe_name(_file))
+        elif m.group(1) in ["PV"]:
+            res = res.replace(m.group(0), guess_recipe_version(_file))
+    return res
 
 def get_valid_package_names(stash, _file):
     res = set()
