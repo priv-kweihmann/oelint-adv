@@ -102,6 +102,8 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.file.requirenotfound - File to be required not found
 * oelint.file.upstreamstatus - Patches should contain a Upstream-Status entry
 * oelint.func.machinespecific - Function is machine specific but no matching COMPATIBLE_MACHINE was found
+* oelint.newline.consecutive - Consecutive blank lines should be avoided **[F]**
+* oelint.newline.eof - File shall end on a newline **[F]**
 * oelint.spaces.emptyline - Empty line should not contain spaces or tabs **[F]**
 * oelint.spaces.linebeginning - No space at a line beginning **[F]**
 * oelint.spaces.linecont - Safe line continuation **[F]**

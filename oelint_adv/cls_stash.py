@@ -36,6 +36,9 @@ class Stash():
         self.__list += res
         return res
 
+    def Remove(self, item):
+        self.__list.remove(item)
+
     def Finalize(self):
         # cross link all the files
         for k in self.__map.keys():
