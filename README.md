@@ -225,6 +225,10 @@ Just add a key with the corresponding json type to the file.
 | protected_vars        | list | Variables that shouldn't be set inside of a recipe                                   |
 | suggested_vars        | list | Additional suggested variable that should be set in a recipe                         |
 
+## vscode extension
+
+Find the extension in the [marketplace](https://marketplace.visualstudio.com/items?itemName=kweihmann.oelint-vscode), or search for `oelint-vscode`
+
 ## Missing anything?
 
 You think there's something missing, wrong, 'improveable'...
