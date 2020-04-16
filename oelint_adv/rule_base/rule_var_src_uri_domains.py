@@ -1,6 +1,6 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.helper_files import get_scr_components, safe_linesplit
+from oelint_adv.helper_files import get_scr_components
 
 
 class VarSRCUriOptions(Rule):
@@ -16,7 +16,7 @@ class VarSRCUriOptions(Rule):
 
         _domains = set()
         for i in items:
-            for u in [x.strip() for x in safe_linesplit(i.VarValueStripped)]:
+            for u in [x.strip('"').strip() for x in i.get_items()]:
                 _url = get_scr_components(u)
                 if _url["scheme"] and _url["scheme"] not in ["file"]:
                     _domains.add(_url["src"].split("/")[0])

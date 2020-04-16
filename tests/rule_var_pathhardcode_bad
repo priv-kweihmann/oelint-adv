@@ -25,7 +25,7 @@ VAR = "/com"
 VAR = "/etc"
 VAR = "/etc/ajjsjj"
 VAR = "/usr/bin*"
-VAR = "${D}/usr/bin"
+VAR = "\${D}/usr/bin"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"

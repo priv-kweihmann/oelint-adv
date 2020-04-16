@@ -18,6 +18,12 @@ class Item():
         self.Origin = origin
         self.InFileLine = infileline
 
+    def _safe_linesplit(self, string):
+        return re.split(r"\s|\t|\x1b", string)
+    
+    def get_items(self):
+        return self._safe_linesplit(self.Raw)
+
     def extract_sub(self, name):
         chunks = name.split("_")
         _suffix = []
@@ -116,6 +122,9 @@ class Variable(Item):
         if "remove" in self.SubItems:
             res.append("remove")
         return res
+    
+    def get_items(self):
+        return self._safe_linesplit(self.VarValue)
 
     def IsMultiLine(self):
         return "\\" in self.Raw
@@ -133,7 +142,9 @@ class Comment(Item):
 
     def __init__(self, origin, line, infileline, rawtext):
         super().__init__(origin, line, infileline, rawtext)
-
+    
+    def get_items(self):
+        return self.Raw.split("\n")
 
 class Include(Item):
     CLASSIFIER = "Include"
@@ -144,6 +155,9 @@ class Include(Item):
         super().__init__(origin, line, infileline, rawtext)
         self.IncName = incname
         self.Statement = statement
+    
+    def get_items(self):
+        return [self.IncName, self.Statement]
 
 
 class Function(Item):
@@ -173,6 +187,9 @@ class Function(Item):
     def IsAppend(self):
         return any([x in ["append", "prepend"] for x in self.SubItems])
 
+    def get_items(self):
+        return self.FuncBodyRaw.split("\n")
+
 
 class PythonBlock(Item):
     ATTR_FUNCNAME = "FuncName"
@@ -181,6 +198,9 @@ class PythonBlock(Item):
     def __init__(self, origin, line, infileline, rawtext, name):
         super().__init__(origin, line, infileline, rawtext)
         self.FuncName = name
+    
+    def get_items(self):
+        return self.Raw.split("\n")
 
 
 class TaskAssignment(Item):
@@ -194,6 +214,9 @@ class TaskAssignment(Item):
         self.FuncName = name
         self.VarName = ident
         self.VarValue = value
+    
+    def get_items(self):
+        return [self.FuncName, self.VarName, self.VarValue]
 
 
 class TaskAdd(Item):
@@ -208,6 +231,8 @@ class TaskAdd(Item):
         self.Before = [x for x in (before or "").split(" ") if x]
         self.After = [x for x in (after or "").split(" ") if x]
 
+    def get_items(self):
+        return [self.FuncName] + self.Before + self.After
 
 class MissingFile(Item):
     ATTR_FILENAME = "Filename"
@@ -218,3 +243,6 @@ class MissingFile(Item):
         super().__init__(origin, line, infileline, "")
         self.Filename = filename
         self.Statement = statement
+
+    def get_items(self):
+        return [self.Filename, self.Statement]

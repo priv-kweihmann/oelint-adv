@@ -1,6 +1,5 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.helper_files import safe_linesplit
 
 
 class VarDuplicates(Rule):
@@ -16,7 +15,7 @@ class VarDuplicates(Rule):
                                       attribute=Variable.ATTR_VAR, attributeValue=c)
             _items = {}
             for i in items:
-                for x in [y for y in safe_linesplit(i.VarValueStripped) if y]:
+                for x in [y for y in i.get_items() if y]:
                     machine_mods = i.SubItems
                     machine_mods_cleaned = "_".join(
                         sorted([x for x in machine_mods if x not in ["append", "prepend", "remove"]]))

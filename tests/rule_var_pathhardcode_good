@@ -31,6 +31,10 @@ AUTHOR = "/usr/datadir"
 BUGTRACKER = "/usr/datadir"
 # Here we can talk freely about /usr/lib and /usr/bin
 FILES_${PN} += "/usr/lib/totally.valid.file"
+do_install_append() {
+    #To remove the default files from /etc/somefolder
+    rm -f \${D}\${sysconfdir}/somefolder/*
+}
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"

@@ -1,6 +1,6 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.helper_files import get_scr_components, safe_linesplit
+from oelint_adv.helper_files import get_scr_components
 
 
 class VarPnBpnUsage(Rule):
@@ -15,7 +15,7 @@ class VarPnBpnUsage(Rule):
                                   attribute=Variable.ATTR_VAR)
         needles = ["SRC_URI", "S"]
         for i in [x for x in items if x.VarName in needles]:
-            for x in safe_linesplit(i.VarValueStripped):
+            for x in i.get_items():
                 if i.VarName == "SRC_URI":
                     _haystack = get_scr_components(x)["src"]
                 else:

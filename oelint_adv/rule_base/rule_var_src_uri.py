@@ -1,6 +1,6 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.helper_files import get_scr_components, safe_linesplit
+from oelint_adv.helper_files import get_scr_components
 
 
 class VarSRCUriOptions(Rule):
@@ -142,7 +142,7 @@ class VarSRCUriOptions(Rule):
             if any([i.Flag.endswith(x) for x in ["md5sum", "sha256sum"]]):
                 # These are just the hashes
                 continue
-            lines = [y for y in safe_linesplit(i.VarValueStripped) if y]
+            lines = [y.strip('"') for y in i.get_items() if y]
             for x in lines:
                 res += self.__analyse(i, x, lines.index(x))
         return res

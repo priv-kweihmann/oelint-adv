@@ -1,6 +1,6 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.helper_files import get_scr_components, safe_linesplit
+from oelint_adv.helper_files import get_scr_components
 
 
 class VarPnBpnUsage(Rule):
@@ -15,7 +15,7 @@ class VarPnBpnUsage(Rule):
                                   attribute=Variable.ATTR_VAR)
         needles = ["SRC_URI"]
         for i in [x for x in items if x.VarName in needles]:
-            for x in safe_linesplit(i.VarValue):
+            for x in i.get_items():
                 _comp = get_scr_components(x)
                 if "${PN}" in _comp["src"]:
                     res += self.finding(i.Origin, i.InFileLine)
