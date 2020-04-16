@@ -16,5 +16,5 @@ class VarQuoted(Rule):
             filename=_file, classifier=Variable.CLASSIFIER)
         for i in [x for x in items if x.VarName in get_protected_append_vars()]:
             if i.VarOp not in [" ??= ", " ?= "]:
-                res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.replace("{VAR}", i.VarName))
+                res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.replace("{VAR}", i.VarName), appendix=i.VarName)
         return res

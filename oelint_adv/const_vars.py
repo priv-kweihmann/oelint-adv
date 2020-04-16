@@ -324,6 +324,7 @@ KNOWN_VARS = [
     "CCACHE_DISABLE",
     "CCACHE",
     "CCLD",
+    "CFLAGS",
     "CGO_CFLAGS",
     "CGO_CPPFLAGS",
     "CGO_CXXFLAGS",

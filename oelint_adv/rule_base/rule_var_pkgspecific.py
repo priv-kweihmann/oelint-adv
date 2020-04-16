@@ -23,5 +23,5 @@ class VarPkgSpecific(Rule):
                 _machine = i.GetMachineEntry()
                 if not _machine or _machine not in _packages:
                     res += self.finding(i.Origin, i.InFileLine,
-                                        override_msg=self.Msg.replace("{VAR}", i.VarName))
+                                        override_msg=self.Msg.replace("{VAR}", i.VarName), appendix=i.VarName)
         return res

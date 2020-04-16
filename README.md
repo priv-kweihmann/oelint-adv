@@ -74,13 +74,13 @@ Example:
 
 ```shell
 /disk/meta-some/cppcheck-native/cppcheck.inc:26:error:oelint.task.nomkdir:'mkdir' shall not be used in do_install. Use 'install'
-/disk/meta-some/cppcheck-native/cppcheck-native_1.87.bb:0:error:oelint.var.mandatoryvar:Variable 'SECTION' should be set
+/disk/meta-some/cppcheck-native/cppcheck-native_1.87.bb:0:error:oelint.var.mandatoryvar.SECTION:Variable 'SECTION' should be set
 /disk/meta-some/cppcheck-native/cppcheck.inc:1:warning:oelint.vars.summary80chars:'SUMMARY' should not be longer than 80 characters
 /disk/meta-some/cppcheck-native/cppcheck.inc:4:warning:oelint.vars.homepageprefix:'HOMEPAGE' should start with 'http://' or 'https://'
 /disk/meta-some/cppcheck-native/cppcheck.inc:28:warning:oelint.spaces.lineend:Line shall not end with a space
-/disk/meta-some/cppcheck-native/cppcheck-native_1.87.bb:0:error:oelint.var.mandatoryvar:Variable 'AUTHOR' should be set
+/disk/meta-some/cppcheck-native/cppcheck-native_1.87.bb:0:error:oelint.var.mandatoryvar.AUTHOR:Variable 'AUTHOR' should be set
 /disk/meta-some/cppcheck-native/cppcheck.inc:26:error:oelint.task.nocopy:'cp' shall not be used in do_install. Use 'install'
-/disk/meta-some/cppcheck-native/cppcheck.inc:12:warning:oelint.var.order:'DEPENDS' should be placed before 'inherit'
+/disk/meta-some/cppcheck-native/cppcheck.inc:12:warning:oelint.var.order.DEPENDS:'DEPENDS' should be placed before 'inherit'
 ```
 
 ## Apply automatic fixing
@@ -93,8 +93,9 @@ As long as you don't pass **--nobackup** a backup copy (filename + .bak) will be
 ## Available rules
 
 Rules marked with **[F]** are able to perform automatic fixing
+Rules marked with **[S]** can have multiple sub-IDs
 
-* oelint.append.protvars - Variables that shouldn't be set in a bbappend
+* oelint.append.protvars - Variables that shouldn't be set in a bbappend **[S]**
 * oelint.comments.notrailing - No trailing comments allowed, comments should be on a single line
 * oelint.file.includenotfound - File to be included not found
 * oelint.file.patchsignedoff - Patches should contain a Signed-Of-By entry
@@ -110,28 +111,28 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.spaces.lineend - No spaces at line end **[F]**
 * oelint.tabs.notabs - No tabs allowed **[F]**
 * oelint.task.addnotaskbody - Task added by addtask cannot be found
-* oelint.task.customorder - order of custom tasks added via addtask
+* oelint.task.customorder - order of custom tasks added via addtask **[S]**
 * oelint.task.docstrings - Custom tasks should have docstrings
 * oelint.task.multiappends - Multiple appends to the same function in the same file won't work in bitbake
 * oelint.task.nocopy - No cp usage in do_install
 * oelint.task.nomkdir - No mkdir usage in do_install
 * oelint.task.nopythonprefix - Tasks containing shell code should NOT be prefixed with 'python' in function header
-* oelint.task.order - Order of tasks
+* oelint.task.order - Order of tasks **[S]**
 * oelint.task.pythonprefix - Tasks containing python code should be prefixed with 'python' in function header
 * oelint.var.bbclassextend - Use BBCLASSEXTEND when possible
 * oelint.var.improperinherit - Warn about improperly named inherits
 * oelint.var.licenseremotefile - License shall be a file in remote source not a local file
-* oelint.var.mandatoryvar - Check for mandatory variables
+* oelint.var.mandatoryvar - Check for mandatory variables **[S]**
 * oelint.var.multiinclude - Warn on including the same file more than once
 * oelint.var.multiinherit - Warn on inherit the same file more than once
 * oelint.var.nativefilename - Native only recipes should be named -native
-* oelint.var.order - Variable order
+* oelint.var.order - Variable order **[S]**
 * oelint.var.override - Check if include/append is overriding a variable
 * oelint.var.srcuriwildcard - 'SRC_URI' should not contain any wildcards
-* oelint.var.suggestedvar - Notice on suggested variables
+* oelint.var.suggestedvar - Notice on suggested variables **[S]**
 * oelint.vars.appendop - Use '_append' instead of ' += '
 * oelint.vars.autorev - The usage of 'AUTOREV' for SRCREV leads to not reproducible builds
-* oelint.vars.bbvars - Variables that shouldn't be altered in recipe scope
+* oelint.vars.bbvars - Variables that shouldn't be altered in recipe scope **[S]**
 * oelint.vars.bugtrackerisurl - BUGTRACKER should be an URL
 * oelint.vars.dependsappend - DEPENDS should only be appended, not overwritten
 * oelint.vars.dependsordered - RDEPENDS entries should be ordered alphabetically
@@ -149,9 +150,9 @@ Rules marked with **[F]** are able to perform automatic fixing
 * oelint.vars.mispell - Possible typo detected
 * oelint.vars.multilineident - On a multiline assignment, line indent is desirable
 * oelint.vars.notneededspace - Space at the beginning of the var is not needed **[F]**
-* oelint.vars.pathhardcode - Warn about the usage of hardcoded paths
+* oelint.vars.pathhardcode - Warn about the usage of hardcoded paths **[S]**
 * oelint.vars.pbpusage - ${BP} should be used instead of ${P}
-* oelint.vars.pkgspecific - Variable is package-specific, but isn't set in that way
+* oelint.vars.pkgspecific - Variable is package-specific, but isn't set in that way **[S]**
 * oelint.vars.pnbpnusage - ${BPN} should be used instead of ${PN}
 * oelint.vars.pnusagediscouraged - Variable shouldn't contain ${PN} or ${BPN}
 * oelint.vars.sectionlowercase - SECTION should be lowercase only **[F]**

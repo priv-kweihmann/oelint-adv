@@ -23,7 +23,7 @@ class Rule():
     def fix(self, _file, stash):
         return []
 
-    def finding(self, _file, _line, override_msg=None):
+    def finding(self, _file, _line, override_msg=None, appendix=None):
         if not self.OnAppend and _file.endswith(".bbappend"):
             return []
         if self.OnlyAppend and not _file.endswith(".bbappend"):
@@ -32,6 +32,9 @@ class Rule():
             override_msg = self.Msg
         _severity = self.Severity
         _rule_file = get_rulefile()
+        _id = self.ID
+        if appendix:
+            _id += "." + appendix
         if _rule_file and self.ID in _rule_file:
             _severity = _rule_file[self.ID] or self.Severity
         if _line <= 0:
@@ -39,12 +42,12 @@ class Rule():
             _line = 1
         if get_color():
             if _severity == "error":
-                return ["{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.RED, _line, _severity, self.ID, override_msg, Style.RESET_ALL)]
+                return ["{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.RED, _line, _severity, _id, override_msg, Style.RESET_ALL)]
             elif _severity == "warning":
-                return ["{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.YELLOW, _line, _severity, self.ID, override_msg, Style.RESET_ALL)]
+                return ["{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.YELLOW, _line, _severity, _id, override_msg, Style.RESET_ALL)]
             else:
-                return ["{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.GREEN, _line, _severity, self.ID, override_msg, Style.RESET_ALL)]
-        return ["{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, _severity, self.ID, override_msg)]
+                return ["{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.GREEN, _line, _severity, _id, override_msg, Style.RESET_ALL)]
+        return ["{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, _severity, _id, override_msg)]
 
     def __repr__(self):
         return "{}".format(self.ID)

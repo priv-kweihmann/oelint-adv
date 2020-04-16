@@ -16,5 +16,5 @@ class VarSuggestedExists(Rule):
             items = stash.GetItemsFor(
                 filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue=var)
             if not any(items):
-                res += self.finding(_file, 0, "Variable '{}' should be set".format(var))
+                res += self.finding(_file, 0, "Variable '{}' should be set".format(var), appendix=var)
         return res

@@ -1,7 +1,7 @@
 #!/bin/sh
 TESTFILE="/tmp/oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
-TESTID="oelint.vars.pathhardcode"
+TESTID="oelint.vars.pathhardcode.*"
 TESTOCC="0"
 cat > ${TESTFILE} << EOF
 VAR = "${systemd_user_unitdir}"
