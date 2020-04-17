@@ -45,7 +45,11 @@ class VarsPathHardcode(Rule):
                         for line in i.get_items():
                             if line.strip().startswith("#"):
                                 continue
-                            if pre + k + ext in line and k not in _matches:
+                            _match = pre + k + ext in line
+                            _match |= pre + k in line
+                            _match |= k + ext in line
+                            _match |= k == line.strip()
+                            if _match and k not in _matches:
                                 _cleanapp = v.strip("$").strip("{").strip("}")
                                 res += self.finding(i.Origin, i.InFileLine,
                                                     "'{}' should be used instead of '{}'".format(v, k), appendix=_cleanapp)

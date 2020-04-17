@@ -124,7 +124,7 @@ class Variable(Item):
         return res
     
     def get_items(self):
-        return self._safe_linesplit(self.VarValue)
+        return self._safe_linesplit(self.VarValue.strip('"'))
 
     def IsMultiLine(self):
         return "\\" in self.Raw

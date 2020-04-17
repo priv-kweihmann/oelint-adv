@@ -8,6 +8,7 @@ DEPENDS += "foo"
 DEPENDS = "foo"
 DEPENDS += "bar"
 DEPENDS_class-native += "foo"
+DEPENDS += " a "
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
