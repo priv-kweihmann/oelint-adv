@@ -1,9 +1,9 @@
 # oelint-adv
 
 ![Build status](https://github.com/priv-kweihmann/oelint-adv/workflows/Python%20package/badge.svg)
-[![PyPI version](https://badge.fury.io/py/oelint_adv.svg)](https://badge.fury.io/py/oelint_adv)
-[![Python version](https://img.shields.io/pypi/pyversions/oelint_adv)](https://img.shields.io/pypi/pyversions/oelint_adv)
-[![Downloads](https://img.shields.io/pypi/dm/oelint_adv)](https://img.shields.io/pypi/dm/oelint_adv)
+[![PyPI version](https://badge.fury.io/py/oelint-adv.svg)](https://badge.fury.io/py/oelint-adv)
+[![Python version](https://img.shields.io/pypi/pyversions/oelint-adv)](https://img.shields.io/pypi/pyversions/oelint-adv)
+[![Downloads](https://img.shields.io/pypi/dm/oelint-adv)](https://img.shields.io/pypi/dm/oelint-adv)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/priv-kweihmann/oelint-adv.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/priv-kweihmann/oelint-adv/context:python)
 
 Advanced oelint
