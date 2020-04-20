@@ -13,9 +13,13 @@ class VarLicenseRemoteFile(Rule):
         res = []
         _items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                    attribute=Variable.ATTR_VAR, attributeValue="LIC_FILES_CHKSUM")
+        _var_whitelist = ["${WORKDIR}", "${S}", "${B}"]
         for i in _items:
             components = get_scr_components(i.VarValueStripped)
             if any(components) and components["scheme"] == "file":
-                if "${" in components["src"]:
+                _clean = components["src"]
+                for x in _var_whitelist:
+                    _clean = _clean.replace(x, "")
+                if "${" in _clean:
                     res += self.finding(i.Origin, i.InFileLine)
         return res
