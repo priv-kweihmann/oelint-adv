@@ -13,6 +13,6 @@ class VarDependsAppend(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue="DEPENDS")
         for i in items:
-            if not i.IsAppend():
+            if not i.AppendOperation():
                 res += self.finding(i.Origin, i.InFileLine)
         return res
