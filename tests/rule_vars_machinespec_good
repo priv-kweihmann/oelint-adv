@@ -45,6 +45,7 @@ DEPENDS_clang = "Unknown"
 DEPENDS_linux = "Linux"
 DEPENDS_darwin = "Darwin"
 DEPENDS_mingw32 = "Windows"
+A_oelint = "foo"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"

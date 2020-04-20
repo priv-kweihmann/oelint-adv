@@ -69,11 +69,11 @@ def safe_linesplit(string):
     return re.split(r"\s|\t|\x1b", string)
 
 def guess_recipe_name(_file):
-    _name, _ext = os.path.splitext(os.path.basename(_file))
+    _name, _ = os.path.splitext(os.path.basename(_file))
     return _name.split("_")[0]
 
 def guess_recipe_version(_file):
-    _name, _ext = os.path.splitext(os.path.basename(_file))
+    _name, _ = os.path.splitext(os.path.basename(_file))
     return _name.split("_")[-1]
 
 def expand_term(stash, _file, value):
@@ -95,6 +95,7 @@ def get_valid_package_names(stash, _file):
     _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                               attribute=Variable.ATTR_VAR, attributeValue="PACKAGES")
     _recipe_name = guess_recipe_name(_file)
+    res.add(_recipe_name)
     for item in _comp:
         for pkg in [x for x in safe_linesplit(item.VarValueStripped) if x]:
             _pkg = pkg.replace("${PN}", _recipe_name)
@@ -106,6 +107,7 @@ def get_valid_named_resources(stash, _file):
     _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                               attribute=Variable.ATTR_VAR, attributeValue="SRC_URI")
     _recipe_name = guess_recipe_name(_file)
+    res.add(_recipe_name)
     for item in _comp:
         for name in [x for x in safe_linesplit(item.VarValueStripped) if x]:
             _url = get_scr_components(name)
