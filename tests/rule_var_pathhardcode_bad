@@ -2,7 +2,7 @@
 TESTFILE="/tmp/oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.vars.pathhardcode.*"
-TESTOCC="23"
+TESTOCC="22"
 cat > ${TESTFILE} << EOF
 VAR = "/usr/lib/systemd/user"
 VAR = "/lib/systemd/system"
