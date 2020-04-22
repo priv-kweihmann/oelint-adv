@@ -2,6 +2,7 @@ import importlib
 import inspect
 import os
 import pkgutil
+import sys
 
 from colorama import Fore, Style
 
@@ -101,11 +102,12 @@ class Rule():
         return self.Msg.format(*args)
 
 
-def load_rules(add_rules=[]):
+def load_rules(add_rules=[], add_dirs=[]):
     """Load rules from set directories
 
     Keyword Arguments:
         add_rules {list} -- Additional builtin rulesets to be loaded (default: {[]})
+        add_dirs {list} -- Additional directories to parse for rules (default: {[]})
 
     Returns:
         list -- Class instances of loaded rules
@@ -113,16 +115,25 @@ def load_rules(add_rules=[]):
     res = []
     _rule_file = get_rulefile()
     _path_list = {
-        "base": {"path": "rule_base"}
+        "base": {"path": "rule_base", "builtin": True}
     }
     for ar in add_rules:
-        _path_list[ar] = {"path": "rule_{}".format(ar)}
+        _path_list[ar] = {"path": "rule_{}".format(ar), "builtin": True}
+    for ar in add_dirs:
+        _path_list["additional_{}".format(os.path.basename(ar))] = {"path": ar, "builtin": False}
     for _, v in _path_list.items():
-        _searchpath = os.path.join(os.path.dirname(
-            os.path.abspath(__file__)), v["path"])
+        if v["builtin"]:
+            _searchpath = os.path.join(os.path.dirname(
+                os.path.abspath(__file__)), v["path"])
+        else:
+            _searchpath = os.path.join(v["path"])
+            sys.path.append(v["path"])
         packages = pkgutil.walk_packages(path=[_searchpath])
         for _, name, _ in packages:
-            name = __name__.split(".")[0] + "." + v["path"] + "." + name
+            if v["builtin"]:
+                name = __name__.split(".")[0] + "." + v["path"] + "." + name
+            else:
+                name = os.path.basename(v["path"]) + "." + name
             mod = importlib.import_module(name)
             for m in inspect.getmembers(mod, inspect.isclass):
                 try:

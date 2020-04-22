@@ -24,6 +24,8 @@ def create_argparser():
                         help="Don't create backup file when auto fixing")
     parser.add_argument("--addrules", nargs="+", default=[],
                         help="Additional non-default rulessets to add")
+    parser.add_argument("--customrules", nargs="+", default=[],
+                        help="Additional directories to parse for rulessets")
     parser.add_argument("--rulefile", default=None,
                         help="Rulefile")
     parser.add_argument("--constantfile", default=None, help="Constantfile")
@@ -56,7 +58,7 @@ def create_argparser():
 def main():
     args = create_argparser()
     rules = [x for x in load_rules(
-        add_rules=args.addrules) if str(x) not in args.suppress]
+        add_rules=args.addrules, add_dirs=args.customrules) if str(x) not in args.suppress]
     print("Loaded rules: {}".format(",".join(sorted([str(x) for x in rules]))))
     stash = Stash()
     issues = []

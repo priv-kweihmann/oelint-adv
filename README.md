@@ -43,6 +43,7 @@ yay -S oelint-adv
 oelint-adv
 usage: __main__.py [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix]
                    [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
+                   [--customrules CUSTOMRULES [CUSTOMRULES ...]]
                    [--rulefile RULEFILE] [--constantfile CONSTANTFILE]
                    [--color]
                    files [files ...]
@@ -60,6 +61,8 @@ optional arguments:
   --nobackup            Don't create backup file when auto fixing
   --addrules ADDRULES [ADDRULES ...]
                         Additional non-default rulessets to add
+  --customrules CUSTOMRULES [CUSTOMRULES ...]
+                        Additional directories to parse for rulessets
   --rulefile RULEFILE   Rulefile
   --constantfile CONSTANTFILE
                         Constantfile
@@ -177,6 +180,33 @@ To enable pass **--addrules jetm** to CLI
 Rules marked with **[F]** are able to perform automatic fixing
 
 * oelint.jetm.vars.dependssingleline - Each [R]DEPENDS entry should be put into a single line
+  
+### Writing your own additional rules
+
+By passing `--customrules` via CLI you could add additional rules to be checked.
+The argument should point to a directory - every class derived from `Rule` will be automatically loaded.
+Please use the the following as a template for your own
+
+```python
+from oelint_adv.cls_rule import Rule
+
+
+class FooMagicRule(Rule):
+    def __init__(self):
+        super().__init__(id="foocorp.foo.magic",
+                         severity="error",
+                         message="Too much foo happening here")
+
+    def check(self, _file, stash):
+        res = []
+        items = stash.GetItemsFor(filename=_file)
+        for i in items:
+            if "Foo" in i.Raw:
+                res += self.finding(i.Origin, i.InFileLine)
+        return res
+```
+
+for more details please see the function docstrings of the API
 
 ## Defining a ruleset
 
