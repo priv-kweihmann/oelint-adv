@@ -40,8 +40,8 @@ class VarsPathHardcode(Rule):
                 continue
             _matches = []
             for k, v in _map.items():
-                for pre in ["^", "'", "\"", " ", "\$\{D\}", "="]:
-                    for ext in [" ", "/", "\"", "\*", "$"]:
+                for pre in ["^", "'", "\"", " ", r"\$\{D\}", "="]:
+                    for ext in [" ", "/", "\"", r"\*", "$"]:
                         for line in i.get_items():
                             if line.strip().startswith("#"):
                                 continue
