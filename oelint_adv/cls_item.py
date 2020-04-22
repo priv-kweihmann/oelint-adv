@@ -12,6 +12,14 @@ class Item():
     ATTR_SUB = "SubItem"
 
     def __init__(self, origin, line, infileline, rawtext):
+        """constructor
+
+        Arguments:
+            origin {str} -- Full path of origin file
+            line {int} -- Overall line counter
+            infileline {int} -- Line number in file
+            rawtext {str} -- Raw input string
+        """
         self.Line = line
         self.Raw = rawtext
         self.Links = []
@@ -22,9 +30,22 @@ class Item():
         return re.split(r"\s|\t|\x1b", string)
     
     def get_items(self):
+        """Return single items
+
+        Returns:
+            list -- lines of raw input
+        """
         return self._safe_linesplit(self.Raw)
 
     def extract_sub(self, name):
+        """Extract modifiers
+
+        Arguments:
+            name {str} -- input string
+
+        Returns:
+            tuple -- clean variable name, modifiers, package specific modifiers
+        """
         chunks = name.split("_")
         _suffix = []
         _var = []
@@ -49,6 +70,14 @@ class Item():
         return ("_".join(_var), "_".join(_suffix), _pkgspec)
 
     def extract_sub_func(self, name):
+        """Extract modifiers for functions
+
+        Arguments:
+            name {str} -- input value
+
+        Returns:
+            tuple -- clean function name, modifiers
+        """
         chunks = name.split("_")
         _marker = ["append", "prepend", "class-native",
                    "class-cross", "class-target", "remove"]
@@ -65,20 +94,29 @@ class Item():
         return ("_".join(_var), "_".join(_suffix))
 
     def IsFromAppend(self):
+        """Item originates from a bbappend
+
+        Returns:
+            bool -- True if coming from a bbappend
+        """
         return self.Origin.endswith(".bbappend")
 
     def AddLink(self, _file):
+        """Links files to each other in stash
+
+        Arguments:
+            _file {str} -- Full path of file to link against
+        """
         self.Links.append(_file)
         self.Links = list(set(self.Links))
 
     def GetAttributes(self):
-        return {k: v for k, v in self.__dict__.items() if not k.startswith("_")}
+        """Get all public attributes of this class
 
-    def GetRawCleaned(self, chars="\t\n\r"):
-        res = self.Raw
-        for c in chars:
-            res = res.replace(c, " ")
-        return res
+        Returns:
+            dict -- all public attributes and their values
+        """
+        return {k: v for k, v in self.__dict__.items() if not k.startswith("_")}
 
     def __repr__(self):
         return "{} -- {}\n".format(self.__class__.__name__, self.GetAttributes())
@@ -93,6 +131,18 @@ class Variable(Item):
                           " ?= ", " ??= ", " := ", " .= ", " =+ "]
 
     def __init__(self, origin, line, infileline, rawtext, name, value, operator, flag):
+        """constructor
+
+        Arguments:
+            origin {str} -- Full path to file of origin
+            line {int} -- Overall line counter
+            infileline {int} -- Line counter in the particular file
+            rawtext {str} -- Raw string
+            name {str} -- Variable name
+            value {str} -- Variable value
+            operator {str} -- Operation performed to the variable
+            flag {str} -- Optional variable flag
+        """
         super().__init__(origin, line, infileline, rawtext)
         if "inherit" != name:
             self.VarName, self.SubItem, self.PkgSpec = self.extract_sub(name)
@@ -109,9 +159,19 @@ class Variable(Item):
         self.VarValueStripped = self.VarValue.strip().lstrip('"').rstrip('"')
 
     def IsAppend(self):
+        """Check if operation is an append
+
+        Returns:
+            bool -- True is variable is appended
+        """
         return self.VarOp in [" += "] or "append" in self.SubItems
 
     def AppendOperation(self):
+        """Get variable modifiers
+
+        Returns:
+            list -- list could contain any combination of 'append', ' += ', 'prepend' and 'remove'
+        """
         res = []
         if self.VarOp in [" += "]:
             res.append(self.VarOp)
@@ -124,12 +184,27 @@ class Variable(Item):
         return res
     
     def get_items(self):
+        """Get items of variable value
+
+        Returns:
+            list -- clean list of items in variable value
+        """
         return self._safe_linesplit(self.VarValue.strip('"'))
 
     def IsMultiLine(self):
+        """Check if variable has a multiline assignment
+
+        Returns:
+            bool -- True if multiline
+        """
         return "\\" in self.Raw
 
     def GetMachineEntry(self):
+        """Get machine specific entries in variable
+
+        Returns:
+            str -- machine specific modifier of variable or ""
+        """
         for x in self.SubItems:
             if x not in ["append", "prepend", "class-native", "class-nativesdk", "class-cross", "class-target", "remove", "machine"] + self.PkgSpec:
                 if not any([x.startswith(y) for y in ["libc", "mingw", "clang", "linux", "darwin"]]):
@@ -141,9 +216,22 @@ class Comment(Item):
     CLASSIFIER = "Comment"
 
     def __init__(self, origin, line, infileline, rawtext):
+        """constructor
+
+        Arguments:
+            origin {str} -- Full path to file of origin
+            line {int} -- Overall line counter
+            infileline {int} -- Line counter in the particular file
+            rawtext {str} -- Raw string
+        """
         super().__init__(origin, line, infileline, rawtext)
     
     def get_items(self):
+        """Get single lines of block
+
+        Returns:
+            list -- single lines of comment block
+        """
         return self.Raw.split("\n")
 
 class Include(Item):
@@ -152,11 +240,26 @@ class Include(Item):
     ATTR_STATEMENT = "Statement"
 
     def __init__(self, origin, line, infileline, rawtext, incname, statement):
+        """constructor
+
+        Arguments:
+            origin {str} -- Full path to file of origin
+            line {int} -- Overall line counter
+            infileline {int} -- Line counter in the particular file
+            rawtext {str} -- Raw string
+            incname {str} -- raw name of the include file
+            statement {str} -- either include or require
+        """
         super().__init__(origin, line, infileline, rawtext)
         self.IncName = incname
         self.Statement = statement
     
     def get_items(self):
+        """Get items
+
+        Returns:
+            list -- include name, include statement
+        """
         return [self.IncName, self.Statement]
 
 
@@ -166,6 +269,20 @@ class Function(Item):
     CLASSIFIER = "Function"
 
     def __init__(self, origin, line, infileline, rawtext, name, body, python=False, fakeroot=False):
+        """[summary]
+
+        Arguments:
+            origin {str} -- Full path to file of origin
+            line {int} -- Overall line counter
+            infileline {int} -- Line counter in the particular file
+            rawtext {str} -- Raw string
+            name {str} -- Raw function name
+            body {str} -- Function body
+
+        Keyword Arguments:
+            python {bool} -- python function according to parser (default: {False})
+            fakeroot {bool} -- uses fakeroot (default: {False})
+        """
         super().__init__(origin, line, infileline, rawtext)
         self.IsPython = python is not None
         self.IsFakeroot = fakeroot is not None
@@ -179,15 +296,30 @@ class Function(Item):
             rawtext[rawtext.find("{") + 1:].rstrip().rstrip("}"))
 
     def GetMachineEntry(self):
+        """Get machine specific modifiers
+
+        Returns:
+            str -- machine specific modifier or ""
+        """
         for x in self.SubItems:
             if x not in ["append", "prepend", "class-native", "class-cross", "class-target", "remove", "machine"]:
                 return x
         return ""
 
     def IsAppend(self):
+        """Return if function appends another function
+
+        Returns:
+            bool -- True is append or prepend operation
+        """
         return any([x in ["append", "prepend"] for x in self.SubItems])
 
     def get_items(self):
+        """Get items of function body
+
+        Returns:
+            list -- single lines of function body
+        """
         return self.FuncBodyRaw.split("\n")
 
 
@@ -196,10 +328,24 @@ class PythonBlock(Item):
     CLASSIFIER = "PythonBlock"
 
     def __init__(self, origin, line, infileline, rawtext, name):
+        """constructor
+
+        Arguments:
+            origin {str} -- Full path to file of origin
+            line {int} -- Overall line counter
+            infileline {int} -- Line counter in the particular file
+            rawtext {str} -- Raw string
+            name {str} -- Function name
+        """
         super().__init__(origin, line, infileline, rawtext)
         self.FuncName = name
     
     def get_items(self):
+        """Get lines of function body
+
+        Returns:
+            list -- lines of function body
+        """
         return self.Raw.split("\n")
 
 
@@ -210,12 +356,28 @@ class TaskAssignment(Item):
     CLASSIFIER = "TaskAssignment"
 
     def __init__(self, origin, line, infileline, rawtext, name, ident, value):
+        """constructor
+
+        Arguments:
+            origin {str} -- Full path to file of origin
+            line {int} -- Overall line counter
+            infileline {int} -- Line counter in the particular file
+            rawtext {str} -- Raw string
+            name {str} -- name of task to be modified
+            ident {str} -- task flag
+            value {str} -- value of modification
+        """
         super().__init__(origin, line, infileline, rawtext)
         self.FuncName = name
         self.VarName = ident
         self.VarValue = value
     
     def get_items(self):
+        """Get items
+
+        Returns:
+            list -- function name, flag, modification value
+        """
         return [self.FuncName, self.VarName, self.VarValue]
 
 
@@ -226,12 +388,30 @@ class TaskAdd(Item):
     CLASSIFIER = "TaskAdd"
 
     def __init__(self, origin, line, infileline, rawtext, name, before="", after=""):
+        """constructor
+
+        Arguments:
+            origin {str} -- Full path to file of origin
+            line {int} -- Overall line counter
+            infileline {int} -- Line counter in the particular file
+            rawtext {str} -- Raw string
+            name {str} -- name of task to be executed
+
+        Keyword Arguments:
+            before {str} -- before statement (default: {""})
+            after {str} -- after statement (default: {""})
+        """
         super().__init__(origin, line, infileline, rawtext)
         self.FuncName = name
         self.Before = [x for x in (before or "").split(" ") if x]
         self.After = [x for x in (after or "").split(" ") if x]
 
     def get_items(self):
+        """get items
+
+        Returns:
+            list -- function name, all before statements, all after statements
+        """
         return [self.FuncName] + self.Before + self.After
 
 class MissingFile(Item):
@@ -240,6 +420,15 @@ class MissingFile(Item):
     CLASSIFIER = "MissingFile"
 
     def __init__(self, origin, line, infileline, filename, statement):
+        """constructor
+
+        Arguments:
+            origin {str} -- Full path to file of origin
+            line {int} -- Overall line counter
+            infileline {int} -- Line counter in the particular file
+            filename {str} -- filename of the file that can't be found
+            statement {str} -- either include or require
+        """
         super().__init__(origin, line, infileline, "")
         self.Filename = filename
         self.Statement = statement

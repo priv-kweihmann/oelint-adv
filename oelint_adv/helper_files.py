@@ -8,6 +8,16 @@ from oelint_adv.const_vars import get_known_mirrors
 
 
 def get_files(stash, _file, pattern):
+    """Get files matching SRC_URI entries
+
+    Arguments:
+        stash {oelint_adv.cls_stash.Stash} -- current stash
+        _file {str} -- Full path to filename
+        pattern {str} -- glob pattern to apply
+
+    Returns:
+        list -- list of files matching pattern
+    """
     res = []
     src_uris = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                  attribute=Variable.ATTR_VAR, attributeValue="SRC_URI")
@@ -22,6 +32,15 @@ def get_files(stash, _file, pattern):
 
 
 def find_local_or_in_layer(name, localdir):
+    """Find file in local dir or in layer
+
+    Arguments:
+        name {str} -- filename
+        localdir {str} -- path to local dir
+
+    Returns:
+        str -- path to found file or None
+    """
     if os.path.exists(os.path.join(localdir, name)):
         return os.path.join(localdir, name)
     _curdir = localdir
@@ -47,12 +66,13 @@ def _replace_with_known_mirrors(_in):
 
 
 def get_scr_components(string):
-    """
-        Parses an URL string
-        returns a dict with
-            scheme = protcol used
-            src = path to call
-            options = dict with options added to URL
+    """Return SRC_URI components
+
+    Arguments:
+        string {str} -- raw string
+
+    Returns:
+        dict -- scheme: protocol used, src: source URI, options: parsed options
     """
     _url = urlparse(_replace_with_known_mirrors(string))
     _scheme = _url.scheme
@@ -66,17 +86,51 @@ def get_scr_components(string):
 
 
 def safe_linesplit(string):
+    """Split line in a safe manner 
+
+    Arguments:
+        string {str} -- raw input
+
+    Returns:
+        list -- safely split input
+    """
     return re.split(r"\s|\t|\x1b", string)
 
 def guess_recipe_name(_file):
+    """Get the recipe name from filename
+
+    Arguments:
+        _file {str} -- filename
+
+    Returns:
+        str -- recipe name
+    """
     _name, _ = os.path.splitext(os.path.basename(_file))
     return _name.split("_")[0]
 
 def guess_recipe_version(_file):
+    """Get recipe version from filename
+
+    Arguments:
+        _file {str} -- filename
+
+    Returns:
+        str -- recipe version
+    """
     _name, _ = os.path.splitext(os.path.basename(_file))
     return _name.split("_")[-1]
 
 def expand_term(stash, _file, value):
+    """Expand a variable (replacing all variables by known content)
+
+    Arguments:
+        stash {oelint_adv.cls_stash.Stash} -- current stash
+        _file {str} -- Full path to file
+        value {str} -- Variable value to expand
+
+    Returns:
+        str -- expanded value
+    """
     pattern = r"\$\{(.+?)\}"
     res = str(value)
     for m in re.finditer(pattern, value):
@@ -91,6 +145,15 @@ def expand_term(stash, _file, value):
     return res
 
 def get_valid_package_names(stash, _file):
+    """Get known valid names for packages
+
+    Arguments:
+        stash {oelint_adv.cls_stash.Stash} -- current stash
+        _file {str} -- Full path to file
+
+    Returns:
+        list -- list of valid package names
+    """
     res = set()
     _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                               attribute=Variable.ATTR_VAR, attributeValue="PACKAGES")
@@ -103,6 +166,15 @@ def get_valid_package_names(stash, _file):
     return res
 
 def get_valid_named_resources(stash, _file):
+    """Get list of valid SRCREV resource names
+
+    Arguments:
+        stash {oelint_adv.cls_stash.Stash} -- current stash
+        _file {str} -- Full path to file
+
+    Returns:
+        list -- list of valid SRCREV resource names
+    """
     res = set()
     _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                               attribute=Variable.ATTR_VAR, attributeValue="SRC_URI")

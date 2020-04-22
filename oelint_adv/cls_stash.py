@@ -7,10 +7,24 @@ from oelint_adv.parser import get_items
 class Stash():
 
     def __init__(self):
+        """constructor
+        """
         self.__list = []
         self.__map = {}
 
     def AddFile(self, _file, lineOffset=0, forcedLink=None):
+        """Adds a file to the stash
+
+        Arguments:
+            _file {str} -- Full path to file
+
+        Keyword Arguments:
+            lineOffset {int} -- Line offset from the file that include this file (default: {0})
+            forcedLink {[type]} -- Force link against a file (default: {None})
+
+        Returns:
+            list -- List of {oelint_adv.cls_item.Item}
+        """
         print("Parsing {}".format(_file))
         res = get_items(self, _file, lineOffset=lineOffset)
         if forcedLink:
@@ -51,9 +65,19 @@ class Stash():
                     item.AddLink(link)
 
     def GetRecipes(self):
+        """Get bb files in stash
+
+        Returns:
+            list -- List of bb files in stash
+        """
         return list(set([x.Origin for x in self.__list if x.Origin.endswith(".bb")]))
 
     def GetLoneAppends(self):
+        """Get bbappend without a matching bb
+
+        Returns:
+            list -- list of bbappend without a matching bb
+        """
         __linked_appends = []
         __appends = []
         for x in self.__list:
@@ -87,11 +111,31 @@ class Stash():
         return res
 
     def GetLinksForFile(self, filename):
+        """Get file which this file is linked against
+
+        Arguments:
+            filename {str} -- full path to file
+
+        Returns:
+            list -- list of full paths the file is linked against
+        """
         if not filename:
             return []
         return [x.Origin for x in self.__get_items_by_file(self.__list, filename) if x.Origin != filename]
 
     def GetItemsFor(self, filename=None, classifier=None, attribute=None, attributeValue=None, nolink=False):
+        """Get items for filename
+
+        Keyword Arguments:
+            filename {str} -- Full path to file (default: {None})
+            classifier {str} -- class specifier (e.g. Variable) (default: {None})
+            attribute {str} -- class attribute name (default: {None})
+            attributeValue {str} -- value of the class attribute name (default: {None})
+            nolink {bool} -- Consider linked files (default: {False})
+
+        Returns:
+            [type] -- [description]
+        """
         res = self.__list
         res = self.__get_items_by_file(res, filename, nolink=nolink)
         res = self.__get_items_by_classifier(res, classifier)

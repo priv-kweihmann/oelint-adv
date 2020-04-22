@@ -11,6 +11,15 @@ from oelint_adv.rule_file import get_rulefile
 
 class Rule():
     def __init__(self, id="", severity="", message="", onappend=True, onlyappend=False):
+        """constructor
+
+        Keyword Arguments:
+            id {str} -- ID of the rule (default: {""})
+            severity {str} -- severity of the rule (default: {""})
+            message {str} -- Rule message (default: {""})
+            onappend {bool} -- true if rule shoult be run on bbappends (default: {True})
+            onlyappend {bool} -- true if rule applies to bbappends only (default: {False})
+        """
         self.ID = id
         self.Severity = severity
         self.Msg = message
@@ -18,12 +27,43 @@ class Rule():
         self.OnlyAppend = onlyappend
 
     def check(self, _file, stash):
+        """Stub for running check - is overridden by each rule
+
+        Arguments:
+            _file {str} -- File to be parsed
+            stash {oelint_adv.cls_stash.Stash} -- Parsed stash
+
+        Returns:
+            list -- List of findings
+        """
         return []
 
     def fix(self, _file, stash):
+        """Stub for fix function - can be overridden by each rule
+
+        Arguments:
+            _file {str} -- File to be parsed
+            stash {oelint_adv.cls_stash.Stash} -- Parsed stash
+
+        Returns:
+            list -- list of changed files
+        """
         return []
 
     def finding(self, _file, _line, override_msg=None, appendix=None):
+        """Called by rule to indicate a finding
+
+        Arguments:
+            _file {str} -- Full path to file or origin
+            _line {int} -- Line number in file
+
+        Keyword Arguments:
+            override_msg {str} -- Optional string which overrides the set standard message (default: {None})
+            appendix {str} -- Optional appendix to rule ID (default: {None})
+
+        Returns:
+            str -- Human readable finding (possibly with color codes)
+        """
         if not self.OnAppend and _file.endswith(".bbappend"):
             return []
         if self.OnlyAppend and not _file.endswith(".bbappend"):
@@ -53,10 +93,23 @@ class Rule():
         return "{}".format(self.ID)
 
     def FormatMsg(self, *args):
+        """Format message
+
+        Returns:
+            str -- formatted message
+        """
         return self.Msg.format(*args)
 
 
 def load_rules(add_rules=[]):
+    """Load rules from set directories
+
+    Keyword Arguments:
+        add_rules {list} -- Additional builtin rulesets to be loaded (default: {[]})
+
+    Returns:
+        list -- Class instances of loaded rules
+    """
     res = []
     _rule_file = get_rulefile()
     _path_list = {
