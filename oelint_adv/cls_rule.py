@@ -127,22 +127,25 @@ def load_rules(add_rules=[], add_dirs=[]):
                 os.path.abspath(__file__)), v["path"])
         else:
             _searchpath = os.path.join(v["path"])
-            sys.path.append(v["path"])
+            sys.path.append(os.path.dirname(v["path"]))
         packages = pkgutil.walk_packages(path=[_searchpath])
         for _, name, _ in packages:
             if v["builtin"]:
                 name = __name__.split(".")[0] + "." + v["path"] + "." + name
             else:
                 name = os.path.basename(v["path"]) + "." + name
-            mod = importlib.import_module(name)
-            for m in inspect.getmembers(mod, inspect.isclass):
-                try:
-                    if issubclass(m[1], Rule):
-                        inst = m[1]()
-                        if inst.ID:
-                            if _rule_file and inst.ID not in _rule_file:
-                                continue
-                            res.append(inst)
-                except Exception:
-                    pass
+            try:
+                mod = importlib.import_module(name)
+                for m in inspect.getmembers(mod, inspect.isclass):
+                    try:
+                        if issubclass(m[1], Rule):
+                            inst = m[1]()
+                            if inst.ID:
+                                if _rule_file and inst.ID not in _rule_file:
+                                    continue
+                                res.append(inst)
+                    except Exception:
+                        pass
+            except:
+                print("Can't load rule {}".format(name))
     return res
