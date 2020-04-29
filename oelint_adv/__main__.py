@@ -84,8 +84,7 @@ def main():
     for f in fixedfiles:
         _items = [f] + stash.GetLinksForFile(f)
         for i in _items:
-            items = sorted(stash.GetItemsFor(
-                filename=i, nolink=True), key=lambda x: x.Line)
+            items = stash.GetItemsFor(filename=i, nolink=True)
             if not args.nobackup:
                 os.rename(i, i + ".bak")
             with open(i, "w") as o:
@@ -93,11 +92,11 @@ def main():
                 print("{}:{}:{}".format(os.path.abspath(i),
                                         "debug", "Applied automatic fixes"))
 
-    issues = sorted(list(set(issues)))
+    issues = sorted(set(issues), key=lambda x: x[0])
 
     if args.output != sys.stderr:
         args.output = open(args.output, "w")
-    args.output.write("\n".join(issues) + "\n")
+    args.output.write("\n".join([x[1] for x in issues]) + "\n")
     if args.output != sys.stderr:
         args.output.close()
     sys.exit(len(issues))

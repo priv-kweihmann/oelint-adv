@@ -83,12 +83,12 @@ class Rule():
             _line = 1
         if get_color():
             if _severity == "error":
-                return ["{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.RED, _line, _severity, _id, override_msg, Style.RESET_ALL)]
+                return [(_line, "{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.RED, _line, _severity, _id, override_msg, Style.RESET_ALL))]
             elif _severity == "warning":
-                return ["{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.YELLOW, _line, _severity, _id, override_msg, Style.RESET_ALL)]
+                return [(_line, "{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.YELLOW, _line, _severity, _id, override_msg, Style.RESET_ALL))]
             else:
-                return ["{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.GREEN, _line, _severity, _id, override_msg, Style.RESET_ALL)]
-        return ["{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, _severity, _id, override_msg)]
+                return [(_line, "{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.GREEN, _line, _severity, _id, override_msg, Style.RESET_ALL))]
+        return [(_line, "{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, _severity, _id, override_msg))]
 
     def __repr__(self):
         return "{}".format(self.ID)
