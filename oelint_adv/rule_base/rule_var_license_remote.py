@@ -1,6 +1,6 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.helper_files import get_scr_components
+from oelint_adv.helper_files import get_scr_components, expand_term
 
 
 class VarLicenseRemoteFile(Rule):
@@ -15,7 +15,7 @@ class VarLicenseRemoteFile(Rule):
                                    attribute=Variable.ATTR_VAR, attributeValue="LIC_FILES_CHKSUM")
         _var_whitelist = ["${WORKDIR}", "${S}", "${B}"]
         for i in _items:
-            components = get_scr_components(i.VarValueStripped)
+            components = get_scr_components(expand_term(stash, _file, i.VarValueStripped))
             if any(components) and components["scheme"] == "file":
                 _clean = components["src"]
                 for x in _var_whitelist:

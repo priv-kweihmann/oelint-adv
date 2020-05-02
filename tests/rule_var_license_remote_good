@@ -8,6 +8,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=sjdjasdjhddh"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/LICENSE;md5=sjdjasdjhddh"
 LIC_FILES_CHKSUM = "file://${S}/LICENSE;md5=sjdjasdjhddh"
 LIC_FILES_CHKSUM = "file://${B}/LICENSE;md5=sjdjasdjhddh"
+LIC_FILES_CHKSUM = "file://${A}/LICENSE;md5=sjdjasdjhddh"
+A = "${WORKDIR}"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
