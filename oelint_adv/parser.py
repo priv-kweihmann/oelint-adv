@@ -12,6 +12,7 @@ from oelint_adv.cls_item import TaskAssignment
 from oelint_adv.cls_item import Variable
 from oelint_adv.helper_files import find_local_or_in_layer, expand_term
 
+INLINE_BLOCK = "!!!inlineblock!!!"
 
 def get_full_scope(_string, offset, _sstart, _send):
     scopelevel = 0
@@ -70,7 +71,7 @@ def prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=None):
     while raw_line.find("${@") != -1:
         _inline_block = raw_line.find("${@")
         repl = get_full_scope(raw_line[_inline_block:], len("${@"), "{", "}")
-        raw_line = raw_line.replace(repl, "!!!inlineblock!!!")
+        raw_line = raw_line.replace(repl, INLINE_BLOCK)
     res.append({"line": num + 1 + lineOffset, "raw": raw_line,
                 "cnt": raw_line.replace("\n", "").replace("\\", chr(0x1b))})
     return res

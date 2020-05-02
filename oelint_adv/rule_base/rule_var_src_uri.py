@@ -1,6 +1,7 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
 from oelint_adv.helper_files import get_scr_components
+from oelint_adv.parser import INLINE_BLOCK
 
 
 class VarSRCUriOptions(Rule):
@@ -144,5 +145,7 @@ class VarSRCUriOptions(Rule):
                 continue
             lines = [y.strip('"') for y in i.get_items() if y]
             for x in lines:
+                if x == INLINE_BLOCK:
+                    continue
                 res += self.__analyse(i, x, lines.index(x))
         return res

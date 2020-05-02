@@ -6,6 +6,7 @@ TESTOCC="0"
 cat > ${TESTFILE} << EOF
 SRC_URI += "git://abc.group.com/a.git"
 SRC_URI += "ftp://abc.group.com/some.patch"
+SRC_URI += "\${@["", "file://init.cfg"][(d.getVar('VIRTUAL-RUNTIME_init_manager') == 'busybox')]}"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 echo "Test for ${0} failed"
