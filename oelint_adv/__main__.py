@@ -31,6 +31,8 @@ def create_argparser():
     parser.add_argument("--constantfile", default=None, help="Constantfile")
     parser.add_argument("--color", action="store_true", default=False,
                         help="Add color to the output based on the severity")
+    parser.add_argument("--quiet", action="store_true", default=False,
+                        help="Print findings only")
     parser.add_argument("files", nargs='+', help="File to parse")
 
     args = parser.parse_args()
@@ -57,22 +59,24 @@ def create_argparser():
 
 def main():
     args = create_argparser()
-    rules = [x for x in load_rules(
+    rules = [x for x in load_rules(args,
         add_rules=args.addrules, add_dirs=args.customrules)]
     # filter out suppressions
     rules = [x for x in rules if not any(y in args.suppress for y in x.GetIDs())]
     _loadedIDs = []
     for r in rules:
         _loadedIDs += r.GetIDs()
-    print("Loaded rules:\n\t{}".format("\n\t".join(sorted(_loadedIDs))))
-    stash = Stash()
+    if not args.quiet:
+        print("Loaded rules:\n\t{}".format("\n\t".join(sorted(_loadedIDs))))
+    stash = Stash(args)
     issues = []
     fixedfiles = []
     for f in args.files:
         try:
             stash.AddFile(f)
         except FileNotFoundError as e:
-            print("Can't open/read: {}".format(e))
+            if not args.quiet:
+                print("Can't open/read: {}".format(e))
 
     stash.Finalize()
 
@@ -94,8 +98,9 @@ def main():
                 os.rename(i, i + ".bak")
             with open(i, "w") as o:
                 o.write("".join([x.Raw for x in items]))
-                print("{}:{}:{}".format(os.path.abspath(i),
-                                        "debug", "Applied automatic fixes"))
+                if not args.quiet:
+                    print("{}:{}:{}".format(os.path.abspath(i),
+                                            "debug", "Applied automatic fixes"))
 
     issues = sorted(set(issues), key=lambda x: x[0])
 

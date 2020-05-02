@@ -6,11 +6,12 @@ from oelint_adv.parser import get_items
 
 class Stash():
 
-    def __init__(self):
+    def __init__(self, args):
         """constructor
         """
         self.__list = []
         self.__map = {}
+        self.__args = args
 
     def AddFile(self, _file, lineOffset=0, forcedLink=None):
         """Adds a file to the stash
@@ -25,7 +26,8 @@ class Stash():
         Returns:
             list -- List of {oelint_adv.cls_item.Item}
         """
-        print("Parsing {}".format(_file))
+        if not self.__args.quiet:
+            print("Parsing {}".format(_file))
         res = get_items(self, _file, lineOffset=lineOffset)
         if forcedLink:
             if _file not in self.__map:

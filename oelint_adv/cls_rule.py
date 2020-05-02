@@ -106,7 +106,7 @@ class Rule():
         return self.Msg.format(*args)
 
 
-def load_rules(add_rules=[], add_dirs=[]):
+def load_rules(args, add_rules=[], add_dirs=[]):
     """Load rules from set directories
 
     Keyword Arguments:
@@ -151,5 +151,6 @@ def load_rules(add_rules=[], add_dirs=[]):
                     except Exception:
                         pass
             except:
-                print("Can't load rule {}".format(name))
+                if not args.quiet:
+                    print("Can't load rule {}".format(name))
     return res
