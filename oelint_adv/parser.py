@@ -55,12 +55,15 @@ def prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=None):
                 _, line = _iter.__next__()
             except StopIteration:
                 stopiter = True
-            if line.startswith("def ") or line.startswith("#"):
+            if re.match("^[A-Za-z0-9#]+", line) or stopiter:
+                if not stopiter:
+                    res += prepare_lines_subparser(_iter,
+                                                lineOffset, num, line)
+                break
+            if line.startswith("def "):
                 raw_line = line
                 res += prepare_lines_subparser(_iter,
                                                lineOffset, num, line, raw_line=raw_line)
-                break
-            if not line.startswith(" ") and not line.startswith("\t"):
                 break
             raw_line += line
 
