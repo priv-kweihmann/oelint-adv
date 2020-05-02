@@ -7,7 +7,8 @@ class TaskOrder(Rule):
     def __init__(self):
         super().__init__(id="oelint.task.order",
                          severity="warning",
-                         message="<FOO>")
+                         message="<FOO>",
+                         appendix=FUNC_ORDER)
 
     def check(self, _file, stash):
         res = []

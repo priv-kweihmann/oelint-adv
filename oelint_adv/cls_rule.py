@@ -11,7 +11,7 @@ from oelint_adv.rule_file import get_rulefile
 
 
 class Rule():
-    def __init__(self, id="", severity="", message="", onappend=True, onlyappend=False):
+    def __init__(self, id="", severity="", message="", onappend=True, onlyappend=False, appendix=[]):
         """constructor
 
         Keyword Arguments:
@@ -26,6 +26,7 @@ class Rule():
         self.Msg = message
         self.OnAppend = onappend
         self.OnlyAppend = onlyappend
+        self.Appendix = appendix
 
     def check(self, _file, stash):
         """Stub for running check - is overridden by each rule
@@ -92,6 +93,9 @@ class Rule():
 
     def __repr__(self):
         return "{}".format(self.ID)
+
+    def GetIDs(self):
+        return [self.ID] + ["{}.{}".format(self.ID, x) for x in self.Appendix]
 
     def FormatMsg(self, *args):
         """Format message

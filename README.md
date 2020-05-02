@@ -114,7 +114,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.spaces.lineend - No spaces at line end **[F]**
 * oelint.tabs.notabs - No tabs allowed **[F]**
 * oelint.task.addnotaskbody - Task added by addtask cannot be found
-* oelint.task.customorder - order of custom tasks added via addtask **[S]**
+* oelint.task.customorder - order of custom tasks added via addtask
 * oelint.task.docstrings - Custom tasks should have docstrings
 * oelint.task.multiappends - Multiple appends to the same function in the same file won't work in bitbake
 * oelint.task.nocopy - No cp usage in do_install

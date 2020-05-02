@@ -6,14 +6,7 @@ import re
 
 class VarsPathHardcode(Rule):
     def __init__(self):
-        super().__init__(id="oelint.vars.pathhardcode",
-                         severity="warning",
-                         message="<FOO>")
-
-    def check(self, _file, stash):
-        res = []
-        items = stash.GetItemsFor(filename=_file)
-        _map = OrderedDict({
+        self._map = OrderedDict({
             "/usr/lib/systemd/user": "${systemd_user_unitdir}",
             "/lib/systemd/system": "${systemd_system_unitdir}",
             "/usr/share/doc": "${docdir}",
@@ -32,6 +25,15 @@ class VarsPathHardcode(Rule):
             "/com": "${sharedstatedir}",
             "/etc": "${sysconfdir}",
         })
+        super().__init__(id="oelint.vars.pathhardcode",
+                         severity="warning",
+                         message="<FOO>",
+                         appendix=[v.strip("$").strip("{").strip("}") for v in self._map.values()])
+
+    def check(self, _file, stash):
+        res = []
+        items = stash.GetItemsFor(filename=_file)
+        
         for i in items:
             if isinstance(i, Variable) and \
                i.VarName in ["SUMMARY", "DESCRIPTION", "HOMEPAGE", "AUTHOR", "BUGTRACKER", "FILES", "FILES_${PN}"]:
@@ -39,7 +41,7 @@ class VarsPathHardcode(Rule):
             if isinstance(i, Comment):
                 continue
             _matches = []
-            for k, v in _map.items():
+            for k, v in self._map.items():
                 for pre in ["^", "'", "\"", " ", r"\$\{D\}", "="]:
                     for ext in [" ", "/", "\"", r"\*", "$"]:
                         for line in i.get_items():

@@ -8,7 +8,8 @@ class VarMandatoryExists(Rule):
         super().__init__(id="oelint.var.mandatoryvar",
                          severity="error",
                          message="<FOO>",
-                         onappend=False)
+                         onappend=False,
+                         appendix=get_mandatory_vars())
 
     def check(self, _file, stash):
         res = []

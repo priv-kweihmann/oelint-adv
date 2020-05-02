@@ -58,8 +58,13 @@ def create_argparser():
 def main():
     args = create_argparser()
     rules = [x for x in load_rules(
-        add_rules=args.addrules, add_dirs=args.customrules) if str(x) not in args.suppress]
-    print("Loaded rules: {}".format(",".join(sorted([str(x) for x in rules]))))
+        add_rules=args.addrules, add_dirs=args.customrules)]
+    # filter out suppressions
+    rules = [x for x in rules if not any(y in args.suppress for y in x.GetIDs())]
+    _loadedIDs = []
+    for r in rules:
+        _loadedIDs += r.GetIDs()
+    print("Loaded rules:\n\t{}".format("\n\t".join(sorted(_loadedIDs))))
     stash = Stash()
     issues = []
     fixedfiles = []

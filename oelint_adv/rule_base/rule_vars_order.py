@@ -7,7 +7,11 @@ class VarsOrder(Rule):
     def __init__(self):
         super().__init__(id="oelint.var.order",
                          severity="warning",
-                         message="<FOO>")
+                         message="<FOO>",
+                         appendix=[self.__cleanname(x) for x in VAR_ORDER])
+
+    def __cleanname(self, _input):
+        return _input.replace("$", "").replace("{", "").replace("}", "")
 
     def check(self, _file, stash):
         res = []
@@ -23,5 +27,5 @@ class VarsOrder(Rule):
                 if VAR_ORDER.index(item.VarName) < VAR_ORDER.index(_func_before.VarName):
                     res += self.finding(item.Origin, item.InFileLine,
                                         "'{}' should be placed before '{}'".format(
-                                            item.VarName, _func_before.VarName), appendix=item.VarName)
+                                            item.VarName, _func_before.VarName), appendix=self.__cleanname(item.VarName))
         return res

@@ -8,7 +8,8 @@ class VarQuoted(Rule):
         super().__init__(id="oelint.append.protvars",
                          severity="error",
                          message="Variable '{VAR}' shouldn't be set as part of a bbappend",
-                         onlyappend=True)
+                         onlyappend=True,
+                         appendix=get_protected_append_vars())
 
     def check(self, _file, stash):
         res = []
