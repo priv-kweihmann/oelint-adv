@@ -20,6 +20,7 @@ class Rule():
             message {str} -- Rule message (default: {""})
             onappend {bool} -- true if rule shoult be run on bbappends (default: {True})
             onlyappend {bool} -- true if rule applies to bbappends only (default: {False})
+            appendix {list} -- possible appendix to id
         """
         self.ID = id
         self.Severity = severity
@@ -95,6 +96,11 @@ class Rule():
         return "{}".format(self.ID)
 
     def GetIDs(self):
+        """Returns all possible IDs of the rule
+
+        Returns:
+            list -- possible IDS of the rule
+        """
         return [self.ID] + ["{}.{}".format(self.ID, x) for x in self.Appendix]
 
     def FormatMsg(self, *args):
