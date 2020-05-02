@@ -4,8 +4,6 @@ on: [push]
 
 jobs:
   build:
-    env:
-      REQUIREMENTS: urllib3 anytree 
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -21,7 +19,7 @@ jobs:
     - name: Install dependencies
       run: |
         python3 -m pip install --upgrade pip
-        pip install $REQUIREMENTS
+        pip install -r requirements.txt
     - name: Lint with flake8
       run: |
         pip install flake8

@@ -1,5 +1,5 @@
 #!/bin/sh
-TESTFILE="/tmp/oelint_adv_test.bb"
+TESTFILE="${TMP}oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.vars.spacesassignment"
 TESTOCC="0"
@@ -10,5 +10,7 @@ SRC_URI[a-b-c.md5sum] = "a95c4a842325689cad729e9ca1906233"
 SRC_URI[a-b-c.sha256sum] = "35dacbd4d39cb32fd7ec505c9823451dfd5b94dbb59f3ed146e7d361fcec3505"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
-echo "Test for ${0} failed"
+python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1
+_got=$(python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l)
+echo "Test for ${0} failed - got ${_got} expected ${TESTOCC}"
 exit 1

@@ -1,5 +1,5 @@
 #!/bin/sh
-TESTFILE="/tmp/oelint_adv_test.bb"
+TESTFILE="${TMP}oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.task.customorder"
 TESTOCC="1"

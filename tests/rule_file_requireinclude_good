@@ -1,6 +1,6 @@
 #!/bin/sh
-TESTFILE="/tmp/oelint_adv_test.bb"
-TESTFILEINC="/tmp/oelint_adv_test.inc"
+TESTFILE="${TMP}oelint_adv_test.bb"
+TESTFILEINC="${TMP}oelint_adv_test.inc"
 trap "rm -f ${TESTFILE} && rm -f ${TESTFILEINC}" EXIT
 TESTID="oelint.file.requireinclude"
 TESTOCC="0"
@@ -11,5 +11,7 @@ cat > ${TESTFILE} << EOF
 require oelint_adv_test.inc
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
-echo "Test for ${0} failed"
+python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1
+_got=$(python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l)
+echo "Test for ${0} failed - got ${_got} expected ${TESTOCC}"
 exit 1

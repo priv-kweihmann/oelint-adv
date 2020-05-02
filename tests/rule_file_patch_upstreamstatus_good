@@ -1,6 +1,6 @@
 #!/bin/sh
-TESTFILE="/tmp/oelint_adv_test.bb"
-TESTPATCHFOLDER="/tmp/files"
+TESTFILE="${TMP}oelint_adv_test.bb"
+TESTPATCHFOLDER="${TMP}files"
 trap "rm -f ${TESTFILE} && rm -rf ${TESTPATCHFOLDER}" EXIT
 TESTID="oelint.file.upstreamstatus"
 TESTOCC="0"
@@ -12,5 +12,7 @@ cat > ${TESTPATCHFOLDER}/test.patch << EOF
 Upstream-Status: BOGUS
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
-echo "Test for ${0} failed"
+python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1
+_got=$(python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l)
+echo "Test for ${0} failed - got ${_got} expected ${TESTOCC}"
 exit 1
