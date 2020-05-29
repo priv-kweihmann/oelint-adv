@@ -138,8 +138,10 @@ def expand_term(stash, _file, value):
                                   attribute=Variable.ATTR_VAR, attributeValue=m.group(1))
         if any(_comp):
             res = res.replace(m.group(0), expand_term(stash, _file, _comp[0].VarValueStripped))
-        elif m.group(1) in ["PN", "BPN"]:
+        elif m.group(1) in ["PN"]:
             res = res.replace(m.group(0), guess_recipe_name(_file))
+        elif m.group(1) in ["BPN"]:
+            res = res.replace(m.group(0), ''.join(guess_recipe_name(_file).rsplit('-native', 1)))
         elif m.group(1) in ["PV"]:
             res = res.replace(m.group(0), guess_recipe_version(_file))
     return res
