@@ -1,6 +1,6 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.helper_files import get_scr_components
+from oelint_adv.helper_files import get_scr_components, expand_term
 from oelint_adv.parser import INLINE_BLOCK
 
 
@@ -129,7 +129,7 @@ class VarSRCUriOptions(Rule):
         # For certain types of file:// url parsing fails
         # ignore those
         if _url["scheme"] not in self._valid_options.keys() and \
-           not _input.strip().startswith("file://"):
+           not _input.strip().startswith("file://") and _url["scheme"]:
             res += self.finding(i.Origin, i.InFileLine + _index,
                                 "Fetcher '{}' is not known".format(_url["scheme"]))
         else:
