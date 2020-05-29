@@ -108,6 +108,9 @@ class VarSRCUriOptions(Rule):
                 "noverify",
                 "version"
             ],
+            "npmsw": [
+                "dev",
+            ],
             "svn": [
                 "module",
                 "path_spec",
