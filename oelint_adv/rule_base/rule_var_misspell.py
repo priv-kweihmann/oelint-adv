@@ -1,6 +1,7 @@
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
 from oelint_adv.const_vars import get_known_vars
+from oelint_adv.helper_files import get_valid_package_names
 from difflib import SequenceMatcher
 
 
@@ -23,7 +24,13 @@ class VarMisspell(Rule):
                                   attribute=Variable.ATTR_VAR)
         _all = stash.GetItemsFor(filename=_file)
         for i in items:
-            if i.VarName in get_known_vars():
+            _cleanvarname = i.VarName
+            for pkg in get_valid_package_names(stash, _file, strippn=True):
+                if not pkg:
+                    continue
+                if _cleanvarname.endswith(pkg):
+                    _cleanvarname = ''.join(_cleanvarname.rsplit(pkg, 1))
+            if _cleanvarname in get_known_vars():
                 continue
             _used = False
             for a in _all:
@@ -34,9 +41,9 @@ class VarMisspell(Rule):
                     break
             if _used:
                 continue
-            _bestmatch = self.get_best_match(i.VarName, get_known_vars())
+            _bestmatch = self.get_best_match(_cleanvarname, get_known_vars())
             if _bestmatch:
                 res += self.finding(i.Origin, i.InFileLine,
                                     "'{}' is unknown, maybe you mean '{}'".format(
-                                        i.VarName, _bestmatch))
+                                        _cleanvarname, _bestmatch))
         return res

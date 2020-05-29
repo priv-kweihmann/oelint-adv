@@ -146,7 +146,7 @@ def expand_term(stash, _file, value):
             res = res.replace(m.group(0), guess_recipe_version(_file))
     return res
 
-def get_valid_package_names(stash, _file):
+def get_valid_package_names(stash, _file, strippn=False):
     """Get known valid names for packages
 
     Arguments:
@@ -163,7 +163,10 @@ def get_valid_package_names(stash, _file):
     res.add(_recipe_name)
     for item in _comp:
         for pkg in [x for x in safe_linesplit(item.VarValueStripped) if x]:
-            _pkg = pkg.replace("${PN}", _recipe_name)
+            if not strippn:
+                _pkg = pkg.replace("${PN}", _recipe_name)
+            else:
+                _pkg = pkg.replace("${PN}", "")
             res.add(_pkg)
     return res
 
