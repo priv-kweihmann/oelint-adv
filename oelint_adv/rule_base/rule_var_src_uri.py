@@ -74,7 +74,8 @@ class VarSRCUriOptions(Rule):
             "hg": [
                 "module",
                 "rev",
-                "scmdata"
+                "scmdata",
+                "protocol"
             ],
             "http": [
                 "downloadfilename"
