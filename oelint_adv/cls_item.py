@@ -164,7 +164,7 @@ class Variable(Item):
         Returns:
             bool -- True is variable is appended
         """
-        return self.VarOp in [" += "] or "append" in self.SubItems
+        return self.VarOp in [" += ", " =+ "] or "append" in self.SubItems
 
     def AppendOperation(self):
         """Get variable modifiers
