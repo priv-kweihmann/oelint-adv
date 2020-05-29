@@ -7,7 +7,7 @@ import sys
 from colorama import Fore, Style
 
 from oelint_adv.color import get_color
-from oelint_adv.rule_file import get_rulefile
+from oelint_adv.rule_file import get_rulefile, get_noinfo, get_nowarn
 
 
 class Rule():
@@ -80,6 +80,10 @@ class Rule():
             _id += "." + appendix
         if _rule_file and self.ID in _rule_file:
             _severity = _rule_file[self.ID] or self.Severity
+        if _severity == "info" and get_noinfo():
+            return []
+        if _severity == "warning" and get_nowarn():
+            return []
         if _line <= 0:
             # Fix those issues, that don't come with a line
             _line = 1

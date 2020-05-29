@@ -6,7 +6,7 @@ import json
 from oelint_adv.cls_rule import load_rules
 from oelint_adv.cls_stash import Stash
 from oelint_adv.color import set_color
-from oelint_adv.rule_file import set_rulefile, set_constantfile
+from oelint_adv.rule_file import set_rulefile, set_constantfile, set_nowarn, set_noinfo
 
 sys.path.append(os.path.abspath(os.path.join(__file__, "..")))
 
@@ -33,6 +33,10 @@ def create_argparser():
                         help="Add color to the output based on the severity")
     parser.add_argument("--quiet", action="store_true", default=False,
                         help="Print findings only")
+    parser.add_argument("--noinfo", action="store_true", default=False,
+                        help="Don't print information level findings")
+    parser.add_argument("--nowarn", action="store_true", default=False,
+                        help="Don't print warning level findings")
     parser.add_argument("files", nargs='+', help="File to parse")
 
     args = parser.parse_args()
@@ -54,6 +58,10 @@ def create_argparser():
 
     if args.color:
         set_color(True)
+    if args.nowarn:
+        set_nowarn(True)
+    if args.noinfo:
+        set_noinfo(True)
     return args
 
 
