@@ -160,6 +160,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.pnusagediscouraged - Variable shouldn't contain ${PN} or ${BPN}
 * oelint.vars.sectionlowercase - SECTION should be lowercase only **[F]**
 * oelint.vars.spacesassignment - ' = ' should be correct variable assignment
+* oelint.vars.srcuriappend - Use SRC_URI_append otherwise this will override weak defaults by inherit
 * oelint.vars.srcuridomains - Recipe is pulling from different domains, this will likely cause issues
 * oelint.vars.srcurifile - First item of SRC_URI should not be a file:// fetcher, if multiple fetcher are used
 * oelint.vars.srcurigittag - 'tag' in SRC_URI-options leads to not-reproducible builds
