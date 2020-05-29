@@ -21,7 +21,6 @@ MANDATORY_VARS = [
     "SUMMARY",
     "DESCRIPTION",
     "HOMEPAGE",
-    "SECTION",
     "LICENSE",
     "SRC_URI"
 ]
@@ -35,7 +34,8 @@ SUGGESTED_VARS = [
     "AUTHOR",
     "BUGTRACKER",
     "BBCLASSEXTEND",
-    "CVE_PRODUCT"
+    "CVE_PRODUCT",
+    "SECTION",
 ]
 
 
