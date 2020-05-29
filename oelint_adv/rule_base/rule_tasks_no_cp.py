@@ -1,3 +1,4 @@
+import re
 from oelint_adv.cls_item import Function
 from oelint_adv.cls_rule import Rule
 
@@ -12,6 +13,9 @@ class TaskInstallNoCp(Rule):
         res = []
         for item in stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER):
             if item.FuncName.startswith("do_install"):
-                if item.FuncBody.find(" cp ") != -1:
-                    res += self.finding(item.Origin, item.InFileLine)
+                for lineindex, line in enumerate(item.get_items()):
+                    if line.strip().startswith("#"):
+                        continue
+                    if re.search(r"\s*cp ", line) and not re.search(r"\s*cp\s+(-R|-r)", line):
+                        res += self.finding(item.Origin, item.InFileLine + lineindex)
         return res
