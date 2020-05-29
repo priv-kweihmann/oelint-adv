@@ -8,6 +8,7 @@ A_append = " a"
 A_prepend = "a "
 A_remove = "a"
 A += "a"
+A =+ "a"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1

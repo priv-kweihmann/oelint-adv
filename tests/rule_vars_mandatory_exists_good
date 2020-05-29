@@ -7,7 +7,6 @@ cat > ${TESTFILE} << EOF
 SUMMARY = "foo"
 DESCRIPTION = "foo"
 HOMEPAGE = "foo"
-SECTION = "foo"
 LICENSE = "foo"
 SRC_URI = "foo"
 EOF

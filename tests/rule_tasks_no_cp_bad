@@ -5,10 +5,10 @@ TESTID="oelint.task.nocopy"
 TESTOCC="2"
 cat > ${TESTFILE} << EOF
 do_install() {
-    cp -Ra * /tmp
+    cp * /tmp
 }
 do_install_append() {
-    cp -Ra * /tmp
+    cp * /tmp
 }
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
