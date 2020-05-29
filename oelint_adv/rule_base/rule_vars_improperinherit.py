@@ -2,6 +2,7 @@ import re
 
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
+from oelint_adv.parser import INLINE_BLOCK
 
 
 class VarImproperInherit(Rule):
@@ -15,7 +16,7 @@ class VarImproperInherit(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue="inherit")
         for i in items:
-            for subi in [x for x in i.get_items() if x]:
+            for subi in [x for x in i.get_items() if x and x != INLINE_BLOCK]:
                 if not re.match(r"^[A-Za-z0-9_.-]+$", subi):
                     res += self.finding(i.Origin, i.InFileLine,
                                         self.Msg.replace("{INH}", subi))
