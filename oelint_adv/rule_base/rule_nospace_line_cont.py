@@ -1,4 +1,5 @@
 from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_item import Comment
 import re
 
 
@@ -12,6 +13,8 @@ class NoSpaceRuleCont(Rule):
         res = []
         items = stash.GetItemsFor(filename=_file)
         for i in items:
+            if isinstance(i, Comment):
+                continue
             if i.Raw:
                 if i.Raw.find("\\ ") != -1:
                     res.append(i)
