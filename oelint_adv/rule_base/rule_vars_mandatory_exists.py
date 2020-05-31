@@ -13,7 +13,15 @@ class VarMandatoryExists(Rule):
 
     def check(self, _file, stash):
         res = []
+        _is_pkg_group = False
+        for i in stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER, 
+                                   attribute=Variable.ATTR_VAR, attributeValue="inherit"):
+            if any(x == "packagegroup" for x in i.get_items()):
+                _is_pkg_group = True
+                break
         for var in get_mandatory_vars():
+            if _is_pkg_group and var in ["LICENSE", "CVE_PRODUCT"]:
+                continue
             items = stash.GetItemsFor(
                 filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue=var)
             if not any(items):
