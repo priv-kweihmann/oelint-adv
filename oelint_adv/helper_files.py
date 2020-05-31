@@ -134,8 +134,8 @@ def expand_term(stash, _file, value):
     pattern = r"\$\{(.+?)\}"
     res = str(value)
     for m in re.finditer(pattern, value):
-        _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                  attribute=Variable.ATTR_VAR, attributeValue=m.group(1))
+        _comp = [x for x in stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                        attribute=Variable.ATTR_VAR, attributeValue=m.group(1)) if not x.AppendOperation()]
         if any(_comp):
             res = res.replace(m.group(0), expand_term(stash, _file, _comp[0].VarValueStripped))
         elif m.group(1) in ["PN"]:
