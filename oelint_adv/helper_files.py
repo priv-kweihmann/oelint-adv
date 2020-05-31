@@ -161,6 +161,7 @@ def get_valid_package_names(stash, _file, strippn=False):
                               attribute=Variable.ATTR_VAR, attributeValue="PACKAGES")
     _recipe_name = guess_recipe_name(_file)
     res.add(_recipe_name)
+    res.add("{}-ptest".format(_recipe_name))
     for item in _comp:
         for pkg in [x for x in safe_linesplit(item.VarValueStripped) if x]:
             if not strippn:
