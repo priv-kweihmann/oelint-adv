@@ -128,7 +128,7 @@ class Variable(Item):
     ATTR_VARVALSTRIPPED = "VarValueStripped"
     CLASSIFIER = "Variable"
     VAR_VALID_OPERATOR = [" = ", " += ",
-                          " ?= ", " ??= ", " := ", " .= ", " =+ "]
+                          " ?= ", " ??= ", " := ", " .= ", " =+ ", " =. "]
 
     def __init__(self, origin, line, infileline, rawtext, name, value, operator, flag):
         """constructor
@@ -164,7 +164,7 @@ class Variable(Item):
         Returns:
             bool -- True is variable is appended
         """
-        return self.VarOp in [" += ", " =+ "] or "append" in self.SubItems
+        return self.VarOp in [" += ", " =+ ", " =. ", " .= "] or "append" in self.SubItems
 
     def AppendOperation(self):
         """Get variable modifiers
@@ -173,7 +173,7 @@ class Variable(Item):
             list -- list could contain any combination of 'append', ' += ', 'prepend' and 'remove'
         """
         res = []
-        if self.VarOp in [" += "]:
+        if self.VarOp in [" += " , " .= ", " =+ ", " =. "]:
             res.append(self.VarOp)
         if "append" in self.SubItems:
             res.append("append")
