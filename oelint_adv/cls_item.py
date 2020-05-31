@@ -2,6 +2,7 @@ import textwrap
 import re
 
 from oelint_adv.const_func import KNOWN_FUNCS
+from oelint_adv.const_vars import get_known_machines
 
 
 class Item():
@@ -207,8 +208,7 @@ class Variable(Item):
         """
         for x in self.SubItems:
             if x not in ["append", "prepend", "class-native", "class-nativesdk", "class-cross", "class-target", "remove", "machine"] + self.PkgSpec:
-                if not any([x.startswith(y) for y in ["libc", "mingw", "clang", "linux", "darwin"]]):
-                    return x
+                return x
         return ""
 
 

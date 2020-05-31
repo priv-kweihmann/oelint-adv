@@ -5,6 +5,7 @@ from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
 from oelint_adv.helper_files import get_valid_package_names
 from oelint_adv.parser import INLINE_BLOCK
+from oelint_adv.const_vars import get_known_machines
 
 
 class VarPnBpnUsage(Rule):
@@ -23,7 +24,7 @@ class VarPnBpnUsage(Rule):
             _valid_funcs += ["{}-{}".format(b,p) for p in _packages if p.strip() and p != INLINE_BLOCK]
         for i in items:
             _machine = i.GetMachineEntry()
-            if not _machine:
+            if not _machine or _machine in get_known_machines():
                 continue
             if i.FuncName in _valid_funcs: # and _machine.startswith("${PN}"):
                 continue

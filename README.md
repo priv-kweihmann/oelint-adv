@@ -252,6 +252,7 @@ Just add a key with the corresponding json type to the file.
 
 | key                   | type | description                                                                          |
 |-----------------------|------|--------------------------------------------------------------------------------------|
+| known_machines        | list | Additional known machine identifiers                                                 |
 | known_mirrors         | dict | Known mirror replacements. Key is the variable name surronded by ${}, value a string |
 | known_vars            | list | Known variable name, to avoid false positives at `oelint.vars.mispell`               |
 | mandatory_vars        | list | Additional mandatory variables that should be set in a recipe                        |
