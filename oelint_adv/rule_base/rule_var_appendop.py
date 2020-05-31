@@ -17,7 +17,7 @@ class VarAppendOperation(Rule):
             _items = [x for x in items if x.VarName == name]
             if len(_items) > 1:
                 _operations = set([x.VarOp for x in _items])
-                if " += " in _operations and any(x in _operations for x in [" ?= " , " ??= "]):
+                if " += " in _operations and any(x in _operations for x in [" ??= "]):
                     for i in [x for x in _items if " += " in x.AppendOperation()]:
                         res += self.finding(i.Origin, i.InFileLine)
         return res

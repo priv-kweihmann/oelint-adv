@@ -4,7 +4,7 @@ trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.vars.appendop"
 TESTOCC="2"
 cat > ${TESTFILE} << EOF
-A ?= "1"
+A ??= "1"
 A += "2"
 B ??= "A"
 B += "B"

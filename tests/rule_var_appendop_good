@@ -5,6 +5,7 @@ TESTID="oelint.vars.appendop"
 TESTOCC="0"
 cat > ${TESTFILE} << EOF
 A ?= "1"
+A += "2"
 A_append = " 2"
 B ??= "A"
 B_append = " B"
