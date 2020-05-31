@@ -1,10 +1,13 @@
 #!/bin/sh
 TESTFILE="${TMP}oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
-TESTID="oelint.task.multiappends"
+TESTID="oelint.task.multifragments"
 TESTOCC="0"
 cat > ${TESTFILE} << EOF
 do_install_append() {
+    a
+}
+do_install_append_class-native() {
     a
 }
 EOF
