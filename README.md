@@ -99,7 +99,6 @@ Rules marked with **[F]** are able to perform automatic fixing
 Rules marked with **[S]** can have multiple sub-IDs
 
 * oelint.append.protvars - Variables that shouldn't be set in a bbappend **[S]**
-* oelint.comments.notrailing - No trailing comments allowed, comments should be on a single line
 * oelint.file.includenotfound - File to be included not found
 * oelint.file.patchsignedoff - Patches should contain a Signed-Of-By entry
 * oelint.file.requireinclude - Require should be used instead of include
