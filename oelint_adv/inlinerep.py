@@ -19,7 +19,7 @@ def oe_utils_conditional(_in):
     return None
 
 def oe_utils_ifelse(_in):
-    m = re.match(r"(.*)oe\.utils\.ifelse\(.*?,\s*(.*?),\s*.*?)", _in)
+    m = re.match(r"(.*)oe\.utils\.ifelse\(.*?,\s*(.*?),\s*.*?\)", _in)
     if m:
         return m.group(1) + m.group(2).strip("\"'")
     return None
