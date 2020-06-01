@@ -42,11 +42,18 @@ def prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=None):
     elif re.match(__func_start_regexp__, raw_line):
         _, line = _iter.__next__()
         stopiter = False
-        while line.strip() != "}" and not stopiter:
+        scope_level = 0
+        while not stopiter:
             raw_line += line
+            if "{" in line:
+                scope_level += 1
+            if "}" in line:
+                scope_level -= 1
             try:
                 _, line = _iter.__next__()
             except StopIteration:
+                stopiter = True
+            if line.strip() == "}" and not scope_level:
                 stopiter = True
         if line.strip() == "}":
             raw_line += line
@@ -190,4 +197,5 @@ def get_items(stash, _file, lineOffset=0):
         if not good:
             res.append(
                 Item(_file, line["line"], line["line"] - lineOffset, line["raw"]))
+    print(res)
     return res
