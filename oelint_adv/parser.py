@@ -197,5 +197,4 @@ def get_items(stash, _file, lineOffset=0):
         if not good:
             res.append(
                 Item(_file, line["line"], line["line"] - lineOffset, line["raw"]))
-    print(res)
     return res
