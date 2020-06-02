@@ -10,14 +10,17 @@ from oelint_adv.const_vars import get_known_machines
 
 class VarPnBpnUsage(Rule):
     def __init__(self):
-        super().__init__(id="oelint.func.machinespecific",
+        super().__init__(id="oelint.func.specific",
                          severity="error",
-                         message="'{}' is set machine specific ['{}'], but a matching COMPATIBLE_MACHINE entry is missing")
+                         message="'{}' is set specific to ['{}'], but isn't known from PACKAGES, MACHINE or resources")
 
     def check(self, _file, stash):
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER,
                                   attribute=Function.ATTR_FUNCNAME)
+        _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER, 
+                                  attribute=Variable.ATTR_VAR, 
+                                  attributeValue="COMPATIBLE_MACHINE")
         _packages = get_valid_package_names(stash, _file)
         _valid_funcs = ['pkg_preinst', 'pkg_postinst', 'pkg_prerm', 'pkg_postrm']
         for b in ['pkg_preinst', 'pkg_postinst', 'pkg_prerm', 'pkg_postrm']:
@@ -26,20 +29,12 @@ class VarPnBpnUsage(Rule):
             _machine = i.GetMachineEntry()
             if not _machine or _machine in get_known_machines():
                 continue
-            if i.FuncName in _valid_funcs: # and _machine.startswith("${PN}"):
+            if i.FuncName in _valid_funcs:
                 continue
             if _machine in ["ptest"]:
                 # known exceptions
                 continue
-            _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                      attribute=Variable.ATTR_VAR, attributeValue="COMPATIBLE_MACHINE")
-            if not any(_comp):
-                res += self.finding(i.Origin, i.InFileLine,
-                                    override_msg=self.Msg.format(i.FuncName, _machine))
+            if _comp and re.match("".join(x.VarValueStripped for x in _comp), _machine):
                 continue
-            _vals = [x.VarValueStripped.lstrip(
-                "|") for x in _comp if x.VarValueStripped]
-            if not any(re.match(v, _machine) or (_machine == "qemuall" and "qemu" in v) for v in _vals):
-                res += self.finding(i.Origin, i.InFileLine,
-                                    override_msg=self.Msg.format(i.FuncName, _machine))
+            res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.format(i.FuncName, _machine))
         return res

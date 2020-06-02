@@ -104,7 +104,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.file.requireinclude - Require should be used instead of include
 * oelint.file.requirenotfound - File to be required not found
 * oelint.file.upstreamstatus - Patches should contain a Upstream-Status entry
-* oelint.func.machinespecific - Function is machine specific but no matching COMPATIBLE_MACHINE was found
+* oelint.func.specific - Function is specific to an unknown identifier
 * oelint.newline.consecutive - Consecutive blank lines should be avoided **[F]**
 * oelint.newline.eof - File shall end on a newline **[F]**
 * oelint.spaces.emptyline - Empty line should not contain spaces or tabs **[F]**
@@ -148,7 +148,6 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.homepageprefix - HOMEPAGE should begin with https:// or http://
 * oelint.vars.inconspaces - Inconsistent use of spaces on append operation
 * oelint.vars.insaneskip - INSANE_SKIP should be avoided at any cost
-* oelint.vars.machinespecific - Variable is machine specific but no matching COMPATIBLE_MACHINE was found
 * oelint.vars.mispell - Possible typo detected
 * oelint.vars.multilineident - On a multiline assignment, line indent is desirable
 * oelint.vars.notneededspace - Space at the beginning of the var is not needed **[F]**
@@ -159,6 +158,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.pnusagediscouraged - Variable shouldn't contain ${PN} or ${BPN}
 * oelint.vars.sectionlowercase - SECTION should be lowercase only **[F]**
 * oelint.vars.spacesassignment - ' = ' should be correct variable assignment
+* oelint.vars.specific - Variable is specific to an unknown identifier
 * oelint.vars.srcuriappend - Use SRC_URI_append otherwise this will override weak defaults by inherit
 * oelint.vars.srcuridomains - Recipe is pulling from different domains, this will likely cause issues
 * oelint.vars.srcurifile - First item of SRC_URI should not be a file:// fetcher, if multiple fetcher are used

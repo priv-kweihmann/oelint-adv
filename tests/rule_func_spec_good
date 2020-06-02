@@ -1,11 +1,22 @@
 #!/bin/sh
 TESTFILE="${TMP}oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
-TESTID="oelint.vars.machinespecific"
-TESTOCC="2"
+TESTID="oelint.func.specific"
+TESTOCC="0"
 cat > ${TESTFILE} << EOF
-A_append_fooarch = " abc"
-B_bararch += "abc"
+COMPATIBLE_MACHINE = "foo"
+COMPATIBLE_MACHINE += "|bar"
+do_install_append_fooarch() {
+    abc
+}
+do_configure_append_bararch() {
+    abc
+}
+do_install_ptest () {
+ 	cp -r \${B}/testsuite \${D}\${PTEST_PATH}/
+ 	cp \${B}/.config      \${D}\${PTEST_PATH}/
+ 	ln -s /bin/busybox   \${D}\${PTEST_PATH}/busybox
+}
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1

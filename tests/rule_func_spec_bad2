@@ -1,12 +1,16 @@
 #!/bin/sh
 TESTFILE="${TMP}oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
-TESTID="oelint.vars.machinespecific"
+TESTID="oelint.func.specific"
 TESTOCC="2"
 cat > ${TESTFILE} << EOF
 COMPATIBLE_MACHINE = "xyz"
-A_append_fooarch = " abc"
-B_bararch += "abc"
+do_install_fooarch() {
+    abc
+}
+do_configure_append_bararch() {
+    abc
+}
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1

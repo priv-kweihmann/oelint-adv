@@ -1,14 +1,13 @@
 #!/bin/sh
 TESTFILE="${TMP}oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
-TESTID="oelint.func.machinespecific"
+TESTID="oelint.func.specific"
 TESTOCC="2"
 cat > ${TESTFILE} << EOF
-COMPATIBLE_MACHINE = "xyz"
-do_install_fooarch() {
+do_install_append_fooarch() {
     abc
 }
-do_configure_append_bararch() {
+do_configure_bararch() {
     abc
 }
 EOF

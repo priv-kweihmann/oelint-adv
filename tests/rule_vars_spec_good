@@ -1,7 +1,7 @@
 #!/bin/sh
 TESTFILE="${TMP}oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
-TESTID="oelint.vars.machinespecific"
+TESTID="oelint.vars.specific"
 TESTOCC="0"
 cat > ${TESTFILE} << EOF
 COMPATIBLE_MACHINE = "foo"
