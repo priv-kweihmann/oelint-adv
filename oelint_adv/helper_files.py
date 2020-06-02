@@ -120,7 +120,7 @@ def guess_recipe_version(_file):
     _name, _ = os.path.splitext(os.path.basename(_file))
     return _name.split("_")[-1]
 
-def expand_term(stash, _file, value):
+def expand_term(stash, _file, value, spare=[]):
     """Expand a variable (replacing all variables by known content)
 
     Arguments:
@@ -134,6 +134,8 @@ def expand_term(stash, _file, value):
     pattern = r"\$\{(.+?)\}"
     res = str(value)
     for m in re.finditer(pattern, value):
+        if m.group(1) in spare:
+            continue
         _comp = [x for x in stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                         attribute=Variable.ATTR_VAR, attributeValue=m.group(1)) if not x.AppendOperation()]
         if any(_comp):
@@ -164,7 +166,7 @@ def get_valid_package_names(stash, _file, strippn=False):
     res.add("{}-ptest".format(_recipe_name))
     res.update(["{}-{}".format(_recipe_name, x) for x in ["src", "dbg", "staticdev", "dev", "doc", "locale"]])
     for item in _comp:
-        for pkg in [x for x in safe_linesplit(item.VarValueStripped) if x]:
+        for pkg in [x for x in safe_linesplit(expand_term(stash, _file, item.VarValueStripped, spare=["PN"])) if x]:
             if not strippn:
                 _pkg = pkg.replace("${PN}", _recipe_name)
             else:
