@@ -2,12 +2,32 @@
 TESTFILE="${TMP}oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.vars.appendop"
-TESTOCC="2"
+TESTOCC="8"
 cat > ${TESTFILE} << EOF
 A ??= "1"
 A += "2"
-B ??= "A"
+
 B += "B"
+B ?= "A"
+
+C ??= "1"
+C .= "2"
+
+D .= "2"
+D ?= "1"
+
+F ??= "1"
+F =+ "2"
+
+G =+ "B"
+G ?= "A"
+
+H ??= "1"
+H =. "2"
+
+I =. "2"
+I ?= "1"
+
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1
