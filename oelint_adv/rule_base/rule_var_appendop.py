@@ -14,7 +14,6 @@ class VarAppendOperation(Rule):
             filename=_file, classifier=Variable.CLASSIFIER)
         _names = set([x.VarName for x in items if x.VarName != "inherit"])
         for name in _names:
-            print("probe {}".format(name))
             _weakest = [x for x in items if x.VarName == name and x.VarOp == " ??= "]
             _weak = [x for x in items if x.VarName == name and x.VarOp == " ?= "]
             _items = [x for x in items if x.VarName == name and x not in _weakest + _weak and x.VarOp in [" .= ", " += "]]
