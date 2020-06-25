@@ -2,7 +2,7 @@
 TESTFILE="${TMP}oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.vars.srcurioptions"
-TESTOCC="22"
+TESTOCC="23"
 cat > ${TESTFILE} << EOF
 SRC_URI += "abc://foo"
 SRC_URI += "file://foo;notexists=true"
@@ -26,6 +26,7 @@ SRC_URI += "sftp://foo;tag=true"
 SRC_URI += "npm://foo;tag=foo"
 SRC_URI += "npmsw://foo;tag=foo"
 SRC_URI += "svn://foo;downloadfilename=foo"
+SRC_URI += "https://foo.bar.org/${BP}.zip;dlfilename=foo"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1

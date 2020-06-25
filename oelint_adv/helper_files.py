@@ -74,13 +74,14 @@ def get_scr_components(string):
     Returns:
         dict -- scheme: protocol used, src: source URI, options: parsed options
     """
+    _raw = _replace_with_known_mirrors(string)
     _url = urlparse(_replace_with_known_mirrors(string))
     _scheme = _url.scheme
     _tmp = _url.netloc
     if _url.path:
         _tmp += "/" + _url.path.lstrip("/")
     _path = _tmp.split(";")[0]
-    _options = _tmp.split(";")[1:]
+    _options = _raw.split(";")[1:] if ";" in _raw else []
     _parsed_opt = {x.split("=")[0]: x.split("=")[1] for x in _options if "=" in x}
     return {"scheme": _scheme, "src": _path, "options": _parsed_opt}
 
