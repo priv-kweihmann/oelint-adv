@@ -148,6 +148,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.homepageprefix - HOMEPAGE should begin with https:// or http://
 * oelint.vars.inconspaces - Inconsistent use of spaces on append operation
 * oelint.vars.insaneskip - INSANE_SKIP should be avoided at any cost
+* oelint.vars.licfileprefix - Unnecessary prefix to LIC_FILES_CHKSUM detected
 * oelint.vars.mispell - Possible typo detected
 * oelint.vars.multilineident - On a multiline assignment, line indent is desirable
 * oelint.vars.notneededspace - Space at the beginning of the var is not needed **[F]**

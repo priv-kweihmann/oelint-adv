@@ -1,0 +1,14 @@
+#!/bin/sh
+TESTFILE="${TMP}oelint_adv_test.bb"
+trap "rm -f ${TESTFILE}" EXIT
+TESTID="oelint.vars.licfileprefix"
+TESTOCC="0"
+cat > ${TESTFILE} << EOF
+LIC_FILES_CHKSUM = "file://LICENSE;md5=a4a2bbea1db029f21b3a328c7a059172"
+LIC_FILES_CHKSUM = "file://${WORKDIR}/LICENSE;md5=a4a2bbea1db029f21b3a328c7a059172"
+EOF
+[ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1
+_got=$(python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l)
+echo "Test for ${0} failed - got ${_got} expected ${TESTOCC}"
+exit 1
