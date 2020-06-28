@@ -144,6 +144,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.duplicate - No duplicates in DEPENDS and RDEPENDS
 * oelint.vars.fileextrapaths - 'FILESEXTRAPATHS' shouldn't be used in a bb file
 * oelint.vars.fileextrapathsop - 'FILESEXTRAPATHS' should only be used in combination with ' := '
+* oelint.vars.filessetting - unnecessary FILES settings
 * oelint.vars.homepageping - 'HOMEPAGE' isn't reachable
 * oelint.vars.homepageprefix - HOMEPAGE should begin with https:// or http://
 * oelint.vars.inconspaces - Inconsistent use of spaces on append operation
