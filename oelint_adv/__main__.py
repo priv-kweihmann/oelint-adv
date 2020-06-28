@@ -67,61 +67,65 @@ def create_argparser():
 
 def main():
     args = create_argparser()
-    rules = [x for x in load_rules(args,
-        add_rules=args.addrules, add_dirs=args.customrules)]
-    # filter out suppressions
-    rules = [x for x in rules if not any(y in args.suppress for y in x.GetIDs())]
-    _loadedIDs = []
-    for r in rules:
-        _loadedIDs += r.GetIDs()
-    if not args.quiet:
-        print("Loaded rules:\n\t{}".format("\n\t".join(sorted(_loadedIDs))))
-    stash = Stash(args)
-    issues = []
-    fixedfiles = []
-    for f in args.files:
-        try:
-            stash.AddFile(f)
-        except FileNotFoundError as e:
-            if not args.quiet:
-                print("Can't open/read: {}".format(e))
-
-    stash.Finalize()
-
-    _files = list(set(stash.GetRecipes() + stash.GetLoneAppends()))
-    for index, f in enumerate(_files):
+    try:
+        rules = [x for x in load_rules(args,
+            add_rules=args.addrules, add_dirs=args.customrules)]
+        # filter out suppressions
+        rules = [x for x in rules if not any(y in args.suppress for y in x.GetIDs())]
+        _loadedIDs = []
         for r in rules:
-            if not r.OnAppend and f.endswith(".bbappend"):
-                continue
-            if r.OnlyAppend and not f.endswith(".bbappend"):
-                continue
-            if args.fix:
-                fixedfiles += r.fix(f, stash)
-            issues += r.check(f, stash)
+            _loadedIDs += r.GetIDs()
         if not args.quiet:
-            print("{}/{} files checked".format(index, len(_files)))
-    fixedfiles = list(set(fixedfiles))
-    for f in fixedfiles:
-        _items = [f] + stash.GetLinksForFile(f)
-        for i in _items:
-            items = stash.GetItemsFor(filename=i, nolink=True)
-            if not args.nobackup:
-                os.rename(i, i + ".bak")
-            with open(i, "w") as o:
-                o.write("".join([x.Raw for x in items]))
+            print("Loaded rules:\n\t{}".format("\n\t".join(sorted(_loadedIDs))))
+        stash = Stash(args)
+        issues = []
+        fixedfiles = []
+        for f in args.files:
+            try:
+                stash.AddFile(f)
+            except FileNotFoundError as e:
                 if not args.quiet:
-                    print("{}:{}:{}".format(os.path.abspath(i),
-                                            "debug", "Applied automatic fixes"))
+                    print("Can't open/read: {}".format(e))
 
-    issues = sorted(set(issues), key=lambda x: x[0])
+        stash.Finalize()
 
-    if args.output != sys.stderr:
-        args.output = open(args.output, "w")
-    args.output.write("\n".join([x[1] for x in issues]) + "\n")
-    if args.output != sys.stderr:
-        args.output.close()
-    sys.exit(len(issues))
+        _files = list(set(stash.GetRecipes() + stash.GetLoneAppends()))
+        for index, f in enumerate(_files):
+            for r in rules:
+                if not r.OnAppend and f.endswith(".bbappend"):
+                    continue
+                if r.OnlyAppend and not f.endswith(".bbappend"):
+                    continue
+                if args.fix:
+                    fixedfiles += r.fix(f, stash)
+                issues += r.check(f, stash)
+            if not args.quiet:
+                print("{}/{} files checked".format(index, len(_files)))
+        fixedfiles = list(set(fixedfiles))
+        for f in fixedfiles:
+            _items = [f] + stash.GetLinksForFile(f)
+            for i in _items:
+                items = stash.GetItemsFor(filename=i, nolink=True)
+                if not args.nobackup:
+                    os.rename(i, i + ".bak")
+                with open(i, "w") as o:
+                    o.write("".join([x.Raw for x in items]))
+                    if not args.quiet:
+                        print("{}:{}:{}".format(os.path.abspath(i),
+                                                "debug", "Applied automatic fixes"))
 
+        issues = sorted(set(issues), key=lambda x: x[0])
+
+        if args.output != sys.stderr:
+            args.output = open(args.output, "w")
+        args.output.write("\n".join([x[1] for x in issues]) + "\n")
+        if args.output != sys.stderr:
+            args.output.close()
+        sys.exit(len(issues))
+    except Exception as e:
+        import traceback
+        print("OOPS - That shouldn't happen - {}".format(args.files))
+        traceback.print_exc()
 
 if __name__ == '__main__':
     main()
