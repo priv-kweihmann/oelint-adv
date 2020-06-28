@@ -1274,3 +1274,18 @@ KNOWN_MACHINES = [
 
 def get_known_machines():
     return __get_const_and_rulefile(KNOWN_MACHINES, "known_machines")
+
+def get_base_varset():
+    return {
+        "FILES_${PN}": "${bindir} ${sbindir} ${libexecdir} ${libdir}/lib*${SOLIBS} ${sysconfdir} ${sharedstatedir} ${localstatedir} ${base_bindir} ${base_sbindir} ${base_libdir}/*${SOLIBS} ${base_prefix}/lib/udev ${prefix}/lib/udev ${base_libdir}/udev ${libdir}/udev ${datadir}/${BPN} ${libdir}/${BPN} ${datadir}/pixmaps ${datadir}/applications ${datadir}/idl ${datadir}/omf ${datadir}/sounds ${libdir}/bonobo/servers",
+        "FILES_${PN}-bin": "${bindir} ${sbindir}/*",
+        "FILES_${PN}-doc": "${docdir} ${mandir} ${infodir} ${datadir}/gtk-doc ${datadir}/gnome/help",
+        "FILES_${PN}-dev": "${includedir} ${base_libdir}/lib*${SOLIBSDEV} ${libdir}/lib*${SOLIBSDEV} ${libdir}/*.la ${libdir}/*.o ${libdir}/pkgconfig ${datadir}/pkgconfig ${datadir}/aclocal ${base_libdir}/*.o ${libdir}/${BPN}/*.la ${base_libdir}/*.la ${libdir}/cmake ${datadir}/cmake",
+        "FILES_${PN}-staticdev": "${libdir}/*.a ${base_libdir}/*.a ${libdir}/${BPN}/*.a",
+        "FILES_${PN}-dbg": "${libdir}/debug ${libdir}/debug-static /usr/src/debug",
+        "SOLIBS": ".so.*",
+        "SOLIBSDEV": ".so",
+        "PACKAGES": "${PN}-src ${PN}-dbg ${PN}-staticdev ${PN}-dev ${PN}-doc ${PN}-locale ${PACKAGE_BEFORE_PN} ${PN}",
+        "PACKAGE_BEFORE_PN": ""
+    }
+    
