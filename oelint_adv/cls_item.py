@@ -27,8 +27,12 @@ class Item():
         self.Origin = origin
         self.InFileLine = infileline
 
+    @staticmethod
+    def safe_linesplit(string):
+        return Item(None, None, None, None)._safe_linesplit(string)
+
     def _safe_linesplit(self, string):
-        return re.split(r"\s|\t|\x1b", string)
+        return [x for x in re.split(r"\s|\t|\x1b", string) if x]
     
     def get_items(self):
         """Return single items
@@ -117,7 +121,7 @@ class Item():
         Returns:
             dict -- all public attributes and their values
         """
-        return {k: v for k, v in self.__dict__.items() if not k.startswith("_")}
+        return {k: v for k, v in self.__dict__.items() if not (k or "").startswith("_")}
 
     def __repr__(self):
         return "{} -- {}\n".format(self.__class__.__name__, self.GetAttributes())
@@ -165,7 +169,7 @@ class Variable(Item):
         Returns:
             bool -- True is variable is appended
         """
-        return self.VarOp in [" += ", " =+ ", " =. ", " .= "] or "append" in self.SubItems
+        return self.VarOp in [" += ", " =+ ", " =. ", " .= "] or "append" in self.SubItems or "prepend" in self.SubItems
 
     def AppendOperation(self):
         """Get variable modifiers
