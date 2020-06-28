@@ -2,6 +2,9 @@ import os
 import re
 
 from oelint_adv.parser import get_items
+from oelint_adv.cls_item import Variable, Item
+from oelint_adv.helper_files import expand_term, guess_recipe_name, guess_recipe_version, guess_base_recipe_name
+from oelint_adv.const_vars import get_base_varset
 
 
 class Stash():
@@ -143,3 +146,96 @@ class Stash():
         res = self.__get_items_by_classifier(res, classifier)
         res = self.__get_items_by_attribute(res, attribute, attributeValue)
         return sorted(list(set(res)), key=lambda x: x.Line)
+
+    def ExpandVar(self, filename=None, attribute=None, attributeValue=None, nolink=False):
+        """Expand variable to dictionary
+
+        Args:
+            filename {str} -- Full path to file (default: {None})
+            attribute {str} -- class attribute name (default: {None})
+            attributeValue {str} -- value of the class attribute name (default: {None})
+            nolink {bool} -- Consider linked files (default: {False})
+
+        Returns:
+            {dict}: expanded variables from call + base set of variables
+        """
+        _res = self.GetItemsFor(filename=filename, 
+                                classifier=Variable.CLASSIFIER, 
+                                attribute=attribute, 
+                                attributeValue=attributeValue, 
+                                nolink=nolink)
+        _exp = {
+            "PN": guess_recipe_name(filename),
+            "PV": guess_recipe_version(filename),
+            "BPN": guess_base_recipe_name(filename)
+        }
+        _exp = {**_exp, **get_base_varset()}
+        for item in sorted(_res, key=lambda x: x.Line):
+            varop = item.VarOp
+            name = item.VarName
+            if item.Flag:
+                continue
+            if name not in _exp.keys():
+                _exp[name] = None
+            if varop in [" = ", " := "]:
+                if not item.IsAppend() and "remove" not in item.SubItems:
+                    _exp[name] = item.VarValueStripped
+            elif varop == " ?= " and _exp[name] is None:
+                _exp[name] = item.VarValueStripped
+            elif varop == " ??= " and _exp[name] is None:
+                _exp[name] = item.VarValueStripped
+            elif varop == " += ":
+                if _exp[name] is None:
+                    _exp[name] = ""
+                _exp[name] += " " + item.VarValueStripped
+            elif varop == " =+ ":
+                if _exp[name] is None:
+                    _exp[name] = ""
+                _exp[name] = item.VarValueStripped + " " + _exp[name]
+            elif varop in [" .= "]:
+                if _exp[name] is None:
+                    _exp[name] = ""
+                _exp[name] += item.VarValueStripped
+            elif varop in [" =. "]:
+                if _exp[name] is None:
+                    _exp[name] = ""
+                _exp[name] = item.VarValueStripped + _exp[name]
+        # and now for a second run with special
+        for item in sorted(_res, key=lambda x: x.Line):
+            varop = item.VarOp
+            name = item.VarName
+            if item.Flag:
+                continue
+            if name not in _exp.keys():
+                _exp[name] = None
+                if _exp[name] is None:
+                    _exp[name] = ""
+                _exp[name] += item.VarValueStripped
+            elif "append" in item.SubItems:
+                if _exp[name] is None:
+                    _exp[name] = ""
+                _exp[name] += item.VarValueStripped
+            elif "prepend" in item.SubItems:
+                if _exp[name] is None:
+                    _exp[name] = ""
+                _exp[name] = item.VarValueStripped + _exp[name]
+        # and now for the run with remove
+        for item in sorted(_res, key=lambda x: x.Line):
+            varop = item.VarOp
+            name = item.VarName
+            if item.Flag:
+                continue
+            if name not in _exp.keys():
+                _exp[name] = None
+            if "remove" in item.SubItems:
+                if _exp[name] is None:
+                    _exp[name] = ""
+                _exp[name] = _exp[name].replace(item.VarValueStripped, "")
+        # final run and explode the settings
+        _finalexp = {}
+        for k,v in _exp.items():
+            _newkey = expand_term(self, filename, k)
+            if _newkey not in _finalexp:
+                _finalexp[_newkey] = []
+            _finalexp[_newkey] += Item.safe_linesplit(expand_term(self, filename, v or ""))
+        return _finalexp
