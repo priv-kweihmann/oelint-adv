@@ -109,6 +109,20 @@ def guess_recipe_name(_file):
     _name, _ = os.path.splitext(os.path.basename(_file))
     return _name.split("_")[0]
 
+def guess_base_recipe_name(_file):
+    """Get the base recipe name from filename
+
+    Arguments:
+        _file {str} -- filename
+
+    Returns:
+        str -- recipe name
+    """
+    _name = guess_recipe_name(_file)
+    for x in ["-native", "-nativesdk", "-cross"]:
+        _name = ''.join(_name.rsplit(x, 1))
+    return _name
+
 def guess_recipe_version(_file):
     """Get recipe version from filename
 
@@ -121,7 +135,7 @@ def guess_recipe_version(_file):
     _name, _ = os.path.splitext(os.path.basename(_file))
     return _name.split("_")[-1]
 
-def expand_term(stash, _file, value, spare=[]):
+def expand_term(stash, _file, value, spare=[], seen={}):
     """Expand a variable (replacing all variables by known content)
 
     Arguments:
@@ -139,14 +153,23 @@ def expand_term(stash, _file, value, spare=[]):
             continue
         _comp = [x for x in stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                         attribute=Variable.ATTR_VAR, attributeValue=m.group(1)) if not x.AppendOperation()]
+
         if any(_comp):
-            res = res.replace(m.group(0), expand_term(stash, _file, _comp[0].VarValueStripped))
+            if m.group(1) in seen.keys():
+                _rpl = seen[m.group(1)]
+            else:
+                seen[m.group(1)] = ""
+                _rpl = expand_term(stash, _file, _comp[0].VarValueStripped, seen=seen)
+                seen[m.group(1)] = _rpl
+            res = res.replace(m.group(0), _rpl)
         elif m.group(1) in ["PN"]:
             res = res.replace(m.group(0), guess_recipe_name(_file))
         elif m.group(1) in ["BPN"]:
             res = res.replace(m.group(0), ''.join(guess_recipe_name(_file).rsplit('-native', 1)))
         elif m.group(1) in ["PV"]:
             res = res.replace(m.group(0), guess_recipe_version(_file))
+        elif not any(_comp):
+            continue
     return res
 
 def get_valid_package_names(stash, _file, strippn=False):
