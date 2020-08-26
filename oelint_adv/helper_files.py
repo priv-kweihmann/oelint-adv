@@ -185,6 +185,8 @@ def get_valid_package_names(stash, _file, strippn=False):
     res = set()
     _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                               attribute=Variable.ATTR_VAR, attributeValue="PACKAGES")
+    _comp += stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                              attribute=Variable.ATTR_VAR, attributeValue="PACKAGE_BEFORE_PN")
     _recipe_name = guess_recipe_name(_file)
     res.add(_recipe_name)
     res.add("{}-ptest".format(_recipe_name))
