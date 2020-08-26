@@ -130,6 +130,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.var.nativefilename - Native only recipes should be named -native
 * oelint.var.order - Variable order **[S]**
 * oelint.var.override - Check if include/append is overriding a variable
+* oelint.var.rootfspostcmd - ROOTFS_POSTPROCESS_COMMAND should not have trailing blanks
 * oelint.var.srcuriwildcard - 'SRC_URI' should not contain any wildcards
 * oelint.var.suggestedvar - Notice on suggested variables **[S]**
 * oelint.vars.appendop - Use '_append' instead of ' += '
