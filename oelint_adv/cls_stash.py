@@ -33,6 +33,8 @@ class Stash():
             print("Parsing {}".format(_file))
         res = get_items(self, _file, lineOffset=lineOffset)
         if forcedLink:
+            for r in res:
+                r.IncludedFrom = forcedLink
             if _file not in self.__map:
                 self.__map[_file] = []
             self.__map[_file].append(forcedLink)
@@ -51,6 +53,11 @@ class Stash():
                     if item.Origin not in self.__map:
                         self.__map[item.Origin] = []
                     self.__map[item.Origin].append(_file)
+                    # find maximum line number of the origin
+                    _maxline = max(x.Line for x in self.__list if x.Origin == item.Origin)
+                    for r in res:
+                        # pretend that we are adding the file to the end of the original
+                        r.Line += _maxline
                     break
         self.__list += res
         return res

@@ -26,6 +26,7 @@ class Item():
         self.Links = []
         self.Origin = origin
         self.InFileLine = infileline
+        self.IncludedFrom = []
 
     @staticmethod
     def safe_linesplit(string):
@@ -188,13 +189,13 @@ class Variable(Item):
             res.append("remove")
         return res
     
-    def get_items(self):
+    def get_items(self, override=""):
         """Get items of variable value
 
         Returns:
             list -- clean list of items in variable value
         """
-        return self._safe_linesplit(self.VarValue.strip('"'))
+        return self._safe_linesplit(override.strip('"') or self.VarValue.strip('"'))
 
     def IsMultiLine(self):
         """Check if variable has a multiline assignment
