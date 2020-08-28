@@ -2,7 +2,7 @@
 TESTFILE="${TMP}oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.vars.dependsordered"
-TESTOCC="6"
+TESTOCC="2"
 cat > ${TESTFILE} << EOF
 DEPENDS += "zzz \
             xyz"

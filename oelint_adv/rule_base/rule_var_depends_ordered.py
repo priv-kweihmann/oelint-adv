@@ -1,4 +1,5 @@
-from copy import deepcopy
+import os
+import re
 
 from oelint_adv.cls_item import Variable
 from oelint_adv.cls_rule import Rule
@@ -8,7 +9,7 @@ class VarDependsOrdered(Rule):
     def __init__(self):
         super().__init__(id="oelint.vars.dependsordered",
                          severity="warning",
-                         message="[R]DEPENDS entries should be ordered alphabetically")
+                         message="'{VAR}' entries should be ordered alphabetically")
 
     def __get_tuple_wildcard_index(self, _list, elem):
         for i in range(len(_list)):
@@ -18,22 +19,21 @@ class VarDependsOrdered(Rule):
 
     def check(self, _file, stash):
         res = []
-        for elem in ["DEPENDS", "RDEPENDS_${PN}"]:
-            items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                      attribute=Variable.ATTR_VAR, attributeValue=elem)
-            items = sorted(items, key=lambda x: x.Line)
-            _findings = []
-            for i in items:
-                linenum = 0
-                for line in i.VarValueStripped.replace(chr(0x1b), "").split("\n"):
-                    for x in [x for x in line.split(" ") if x]:
-                        _i = deepcopy(i)
-                        _i.Line += linenum
-                        _findings.append((_i, x))
-                    linenum += 1
-            _sorted = sorted(_findings, key=lambda tup: tup[1])
-            for i in _sorted:
-                if self.__get_tuple_wildcard_index(_sorted, i[1]) != \
-                        self.__get_tuple_wildcard_index(_findings, i[1]):
-                    res += self.finding(i[0].Origin, i[0].InFileLine)
+        items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                                  attribute=Variable.ATTR_VAR)
+        _keys = set(x.VarName for x in items if re.match(r"DEPENDS|RDEPENDS_.*", x.VarName))
+        _filegroups = set(x.Origin for x in items)
+
+        for _file in _filegroups:
+            _, _ext = os.path.splitext(_file)
+            if _ext not in [".bb", ".bbappend"]:
+                continue
+            for _key in _keys:
+                _raw_list = []
+                for item in sorted([x for x in items if (x.Origin == _file or _file in x.IncludedFrom) and x.VarName == _key], key=lambda x: x.Line):
+                    _raw_list += item.get_items()
+                    if _raw_list != sorted(_raw_list):
+                        res += self.finding(item.Origin, item.InFileLine, override_msg=self.Msg.format(VAR=_key))
+                        # quit on the first finding, as all following will be corrupted anyway
+                        break
         return res
