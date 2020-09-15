@@ -19,7 +19,7 @@ class VarListAppend(Rule):
                 continue
             ops = i.AppendOperation()
             if not i.VarValue.startswith("\" ") and any(x in ops for x in ["append", " .= "]):
-                res += self.finding(i.Origin, i.InFileLine, override_msg="Prepend to list should end with a blank")
+                res += self.finding(i.Origin, i.InFileLine, override_msg="Append to list should end with a blank")
             if not i.VarValue.endswith(" \"") and any(x in ops for x in ["prepend", " =. "]):
-                res += self.finding(i.Origin, i.InFileLine, override_msg="Append to list should start with a blank")
+                res += self.finding(i.Origin, i.InFileLine, override_msg="Prepend to list should start with a blank")
         return res
