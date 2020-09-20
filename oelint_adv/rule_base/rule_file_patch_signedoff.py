@@ -9,7 +9,7 @@ class FilePatchIsSignedOff(Rule):
     def __init__(self):
         super().__init__(id="oelint.file.patchsignedoff",
                          severity="warning",
-                         message="Patch '{FILE}' should contain a Signed-Off entry")
+                         message="Patch '{FILE}' should contain a Signed-off-by entry")
 
     def check(self, _file, stash):
         res = []
