@@ -14,6 +14,12 @@ class VarInconSpaces(Rule):
             filename=_file, classifier=Variable.CLASSIFIER)
         for i in items:
             app_operation = i.AppendOperation()
+            # allow 'spaceless' append to FILESEXTRAPATHS as there is 
+            # now operation which supports the combination of
+            # append + :=
+            if "append" in app_operation and not i.VarValueStripped.startswith(" ") and \
+               i.VarName in ["FILESEXTRAPATHS"]:
+               continue
             if " += " in app_operation and i.VarValueStripped.startswith(" "):
                 res += self.finding(i.Origin, i.InFileLine,
                                     "Assignment should be 'VAR += \"foo\"' not 'VAR += \" foo\"'")
