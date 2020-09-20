@@ -17,6 +17,6 @@ class FileRequireNotFound(Rule):
                                       classifier=Include.CLASSIFIER):
             if item.Statement == "require":
                 _path = expand_term(stash, _file, item.IncName)
-                if not find_local_or_in_layer(_path, os.path.dirname(_file)):
+                if not find_local_or_in_layer(_path, os.path.dirname(item.Origin)):
                     res += self.finding(item.Origin, item.InFileLine, self.Msg.replace("{FILE}", item.IncName))
         return res
