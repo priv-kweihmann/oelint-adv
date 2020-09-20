@@ -33,9 +33,9 @@ def prepare_lines_subparser(_iter, lineOffset, num, line, raw_line=None):
     __func_start_regexp__ = r".*(((?P<py>python)|(?P<fr>fakeroot))\s*)*(?P<func>[\w\.\-\+\{\}\$]+)?\s*\(\s*\)\s*\{"
     res = []
     raw_line = raw_line or line
-    if raw_line.find("\\\n") != -1:
+    if re.search(r"\\\s*\n", raw_line):
         _, line = _iter.__next__()
-        while line.find("\\\n") != -1:
+        while re.search(r"\\\s*\n", line):
             raw_line += line
             _, line = _iter.__next__()
         raw_line += line

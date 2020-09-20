@@ -16,7 +16,7 @@ class NoSpaceRuleCont(Rule):
             if isinstance(i, Comment):
                 continue
             if i.Raw:
-                if i.Raw.find("\\ ") != -1:
+                if re.search(r"\\\s+\n", i.Raw):
                     res.append(i)
         return res
 

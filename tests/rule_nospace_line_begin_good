@@ -13,7 +13,11 @@ def features_to_busybox_conf(d):
 def features_to_busybox_del(d):
     cnf, rem = features_to_busybox_settings(d)
     return rem
-
+DEPENDS += "\
+ a \
+ b \ 
+ c \
+"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1
