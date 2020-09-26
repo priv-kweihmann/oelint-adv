@@ -104,6 +104,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.file.patchsignedoff - Patches should contain a Signed-Of-By entry
 * oelint.file.requireinclude - Require should be used instead of include
 * oelint.file.requirenotfound - File to be required not found
+* oelint.file.underscore - Checks the correct usage of underscores in filename
 * oelint.file.upstreamstatus - Patches should contain a Upstream-Status entry
 * oelint.func.specific - Function is specific to an unknown identifier
 * oelint.newline.consecutive - Consecutive blank lines should be avoided **[F]**

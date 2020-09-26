@@ -1,0 +1,23 @@
+import os
+
+from oelint_adv.cls_item import Include
+from oelint_adv.cls_rule import Rule
+
+
+class FileNoSpaces(Rule):
+    def __init__(self):
+        super().__init__(id="oelint.file.underscores",
+                         severity="error",
+                         message="FOO")
+
+    def check(self, _file, stash):
+        res = []
+        _basename, _ext = os.path.splitext(os.path.basename(_file))
+        if _ext in [".bb", ".bbappend"]:
+            _sep = [x for x in _basename if x in ["_", "-"]]
+            _us = [x for x in _sep if x == "_"]
+            if len(_us) > 1:
+                res += self.finding(_file, 1, override_msg="Filename should not contain more than one '_'")
+            elif not _us or _sep[-1] != "_":
+                res += self.finding(_file, 1, override_msg="Filename should contain at least one '_'  in the end")
+        return res
