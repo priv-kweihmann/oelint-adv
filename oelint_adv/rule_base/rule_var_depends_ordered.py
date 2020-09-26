@@ -11,12 +11,6 @@ class VarDependsOrdered(Rule):
                          severity="warning",
                          message="'{VAR}' entries should be ordered alphabetically")
 
-    def __get_tuple_wildcard_index(self, _list, elem):
-        for i in range(len(_list)):
-            if _list[i][1] == elem:
-                return i
-        return -1
-
     def check(self, _file, stash):
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
@@ -29,11 +23,15 @@ class VarDependsOrdered(Rule):
             if _ext not in [".bb", ".bbappend"]:
                 continue
             for _key in _keys:
-                _raw_list = []
-                for item in sorted([x for x in items if (x.Origin == _file or _file in x.IncludedFrom) and x.VarName == _key], key=lambda x: x.Line):
-                    _raw_list += item.get_items()
-                    if _raw_list != sorted(_raw_list):
-                        res += self.finding(item.Origin, item.InFileLine, override_msg=self.Msg.format(VAR=_key))
-                        # quit on the first finding, as all following will be corrupted anyway
-                        break
+                _all_findings = sorted([x for x in items if (x.Origin == _file or _file in x.IncludedFrom) and x.VarName == _key], key=lambda x: x.Line)
+                _machines = set(x.GetMachineEntry() for x in _all_findings)
+                for _m in set(x.GetMachineEntry() for x in _all_findings):
+                    _raw_list = []
+                    _machine_findings = sorted([x for x in _all_findings if _m == x.GetMachineEntry()], key=lambda x: x.Line)
+                    for item in _machine_findings:
+                        _raw_list += item.get_items()
+                        if _raw_list != sorted(_raw_list):
+                            res += self.finding(item.Origin, item.InFileLine, override_msg=self.Msg.format(VAR=_key))
+                            # quit on the first finding, as all following will be corrupted anyway
+                            break
         return res
