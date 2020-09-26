@@ -100,6 +100,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 
 * oelint.append.protvars - Variables that shouldn't be set in a bbappend **[S]**
 * oelint.file.includenotfound - File to be included not found
+* oelint.file.nospaces - Path to file should not contain spaces
 * oelint.file.patchsignedoff - Patches should contain a Signed-Of-By entry
 * oelint.file.requireinclude - Require should be used instead of include
 * oelint.file.requirenotfound - File to be required not found

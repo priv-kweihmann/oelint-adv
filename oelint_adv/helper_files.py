@@ -30,6 +30,24 @@ def get_files(stash, _file, pattern):
         res += glob.glob(item)
     return list(set(res))
 
+def get_layer_root(name):
+    """Find the path to the layer root of a file
+
+    Arguments:
+        name {str} -- filename
+
+    Returns:
+        str -- path to layer root or empty string
+    """
+    _curdir = os.path.dirname(name) if os.path.isfile(name) else name
+    while os.path.isdir(_curdir):
+        if _curdir == "/":
+            break
+        _curdir = os.path.dirname(_curdir)
+        if os.path.exists(os.path.join(_curdir, "conf/layer.conf")):
+            return _curdir
+    return ""
+
 
 def find_local_or_in_layer(name, localdir):
     """Find file in local dir or in layer
