@@ -18,7 +18,7 @@ class Rule():
             id {str} -- ID of the rule (default: {""})
             severity {str} -- severity of the rule (default: {""})
             message {str} -- Rule message (default: {""})
-            onappend {bool} -- true if rule shoult be run on bbappends (default: {True})
+            onappend {bool} -- true if rule should be run on bbappends (default: {True})
             onlyappend {bool} -- true if rule applies to bbappends only (default: {False})
             appendix {list} -- possible appendix to id
         """
