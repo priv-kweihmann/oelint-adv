@@ -8,12 +8,13 @@ class FileNoSpaces(Rule):
     def __init__(self):
         super().__init__(id="oelint.file.underscores",
                          severity="error",
-                         message="FOO")
+                         message="FOO",
+                         onappend=False)
 
     def check(self, _file, stash):
         res = []
         _basename, _ext = os.path.splitext(os.path.basename(_file))
-        if _ext in [".bb", ".bbappend"]:
+        if _ext in [".bb"]:
             _sep = [x for x in _basename if x in ["_", "-"]]
             _us = [x for x in _sep if x == "_"]
             if len(_us) > 1:
