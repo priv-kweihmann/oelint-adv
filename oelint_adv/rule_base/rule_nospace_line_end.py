@@ -17,21 +17,20 @@ class NoSpaceTrailingRule(Rule):
             _linecnt = 0
             for line in i.Raw.split("\n"):
                 if line.endswith(" "):
-                    _i = deepcopy(i)
-                    _i.Line = i.Line + _linecnt
-                    res.append(_i)
+                    res.append((i, i.Line + _linecnt))
                 _linecnt += 1
         return res
 
     def check(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):
-            res += self.finding(i.Origin, i.InFileLine)
+            res += self.finding(i[0].Origin, i[1])
         return res
 
     def fix(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):
-            i.Raw = re.sub(r"\s{2,}\n", "\n", i.Raw)
+            i.RealRaw = re.sub(r"\s{2,}\n", "\n", i[0].RealRaw)
+            i.Raw = re.sub(r"\s{2,}\n", "\n", i[0].Raw)
             res.append(_file)
         return res

@@ -25,6 +25,7 @@ class NoTabs(Rule):
     def fix(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):
+            i.RealRaw = re.sub(r"\t", "    ", i.RealRaw)
             i.Raw = re.sub(r"\t", "    ", i.Raw)
             res.append(_file)
         return res

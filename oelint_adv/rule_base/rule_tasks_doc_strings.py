@@ -1,7 +1,7 @@
-from oelint_adv.cls_item import Function
-from oelint_adv.cls_item import TaskAssignment
+from oelint_parser.cls_item import Function
+from oelint_parser.cls_item import TaskAssignment
 from oelint_adv.cls_rule import Rule
-from oelint_adv.const_func import KNOWN_FUNCS
+from oelint_parser.const_func import KNOWN_FUNCS
 
 
 class TaskDocStrings(Rule):

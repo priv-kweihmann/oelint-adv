@@ -2,7 +2,7 @@ import re
 
 from anytree import LoopError
 from anytree import Node
-from oelint_adv.cls_item import TaskAdd
+from oelint_parser.cls_item import TaskAdd
 from oelint_adv.cls_rule import Rule
 
 

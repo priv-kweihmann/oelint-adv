@@ -1,6 +1,6 @@
-from oelint_adv.cls_item import Variable
+from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.const_vars import get_suggested_vars
+from oelint_parser.const_vars import get_suggested_vars
 
 
 class VarSuggestedExists(Rule):

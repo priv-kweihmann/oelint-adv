@@ -1,6 +1,6 @@
-from oelint_adv.cls_item import Variable
+from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.const_vars import VAR_ORDER
+from oelint_parser.const_vars import VAR_ORDER
 
 
 class VarsOrder(Rule):

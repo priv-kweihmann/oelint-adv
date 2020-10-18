@@ -1,3 +1,4 @@
 urllib3>=1.21.1
 anytree>=2.7.0
 colorama>=0.4.3
+oelint-parser>=1.0.4

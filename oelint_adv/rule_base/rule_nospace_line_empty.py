@@ -24,6 +24,7 @@ class NoSpaceEmptyLineRule(Rule):
     def fix(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):
+            i.RealRaw = "\n"
             i.Raw = "\n"
             res.append(_file)
         return res

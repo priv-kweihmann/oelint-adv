@@ -1,8 +1,8 @@
 import os
 
-from oelint_adv.cls_item import Include
+from oelint_parser.cls_item import Include
 from oelint_adv.cls_rule import Rule
-from oelint_adv.helper_files import get_layer_root
+from oelint_parser.helper_files import get_layer_root
 
 
 class FileNoSpaces(Rule):

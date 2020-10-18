@@ -1,5 +1,5 @@
 from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import Comment
+from oelint_parser.cls_item import Comment
 import re
 
 
@@ -29,6 +29,7 @@ class NoSpaceRuleCont(Rule):
     def fix(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):
+            i.RealRaw = re.sub(r"\\\s+\n", "\\\n", i.RealRaw)
             i.Raw = re.sub(r"\\\s+\n", "\\\n", i.Raw)
             res.append(_file)
         return res

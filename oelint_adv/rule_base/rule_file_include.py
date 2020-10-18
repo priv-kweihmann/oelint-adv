@@ -1,6 +1,6 @@
 import os
 
-from oelint_adv.cls_item import Include
+from oelint_parser.cls_item import Include
 from oelint_adv.cls_rule import Rule
 from oelint_adv.helper_files import find_local_or_in_layer, expand_term
 

@@ -1,6 +1,6 @@
 import ast
 
-from oelint_adv.cls_item import Function
+from oelint_parser.cls_item import Function
 from oelint_adv.cls_rule import Rule
 
 

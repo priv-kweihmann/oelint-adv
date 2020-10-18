@@ -1,8 +1,8 @@
 import fnmatch
 
-from oelint_adv.cls_item import Variable
+from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.helper_files import expand_term
+from oelint_parser.helper_files import expand_term
 
 
 class VarUnneededFilesSetting(Rule):

@@ -31,7 +31,7 @@ class NewLineConsecutive(Rule):
             for index, value in enumerate(v):
                 if index == 0:
                     continue
-                if value.Raw == "\n" and v[index - 1].Raw == "\n":
+                if value.RealRaw == "\n" and v[index - 1].RealRaw == "\n":
                     stash.Remove(value)
                     res.add(f)
         return list(res)

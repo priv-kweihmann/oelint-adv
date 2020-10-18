@@ -1,7 +1,7 @@
-from oelint_adv.cls_item import Variable
+from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_adv.const_vars import get_known_vars
-from oelint_adv.helper_files import get_valid_package_names
+from oelint_parser.const_vars import get_known_vars
+from oelint_parser.helper_files import get_valid_package_names
 from difflib import SequenceMatcher
 
 

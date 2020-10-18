@@ -4,7 +4,7 @@ import sys
 import json
 
 from oelint_adv.cls_rule import load_rules
-from oelint_adv.cls_stash import Stash
+from oelint_parser.cls_stash import Stash
 from oelint_adv.color import set_color
 from oelint_adv.rule_file import set_rulefile, set_constantfile, set_nowarn, set_noinfo
 
@@ -109,7 +109,7 @@ def main():
                 if not args.nobackup:
                     os.rename(i, i + ".bak")
                 with open(i, "w") as o:
-                    o.write("".join([x.Raw for x in items]))
+                    o.write("".join([x.RealRaw for x in items]))
                     if not args.quiet:
                         print("{}:{}:{}".format(os.path.abspath(i),
                                                 "debug", "Applied automatic fixes"))

@@ -1,7 +1,7 @@
-from oelint_adv.cls_item import Function
-from oelint_adv.cls_item import TaskAdd
+from oelint_parser.cls_item import Function
+from oelint_parser.cls_item import TaskAdd
 from oelint_adv.cls_rule import Rule
-from oelint_adv.const_func import FUNC_ORDER
+from oelint_parser.const_func import FUNC_ORDER
 
 
 class TaskAddNoTaskBody(Rule):

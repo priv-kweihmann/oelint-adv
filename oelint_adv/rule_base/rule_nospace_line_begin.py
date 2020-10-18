@@ -1,5 +1,5 @@
 from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import PythonBlock, Function
+from oelint_parser.cls_item import PythonBlock, Function
 
 
 class NoSpaceBeginningRule(Rule):
@@ -27,6 +27,7 @@ class NoSpaceBeginningRule(Rule):
         for i in self.__getMatches(_file, stash):
             if isinstance(i, PythonBlock) or isinstance(i, Function):
                 continue
+            i.RealRaw = i.RealRaw.lstrip(" ")
             i.Raw = i.Raw.lstrip(" ")
             res.append(_file)
         return res

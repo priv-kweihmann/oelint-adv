@@ -1,4 +1,4 @@
-from oelint_adv.cls_item import Variable
+from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
 
 
@@ -26,6 +26,7 @@ class VarSectionLowercase(Rule):
     def fix(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):
+            i.RealRaw = i.RealRaw.replace(i.VarValue, i.VarValue.lower())
             i.Raw = i.Raw.replace(i.VarValue, i.VarValue.lower())
             i.VarValue = i.VarValue.lower()
             res.append(_file)

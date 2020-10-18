@@ -25,7 +25,8 @@ class NewLineEOF(Rule):
     def fix(self, _file, stash):
         res = []
         for f, v in self.__getMatches(_file, stash).items():
-            if not v[-1].Raw.endswith("\n"):
+            if not v[-1].RealRaw.endswith("\n"):
+                v[-1].RealRaw += "\n"
                 v[-1].Raw += "\n"
                 res.append(f)
         return res

@@ -1,5 +1,5 @@
 from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_item import Variable, Comment
+from oelint_parser.cls_item import Variable, Comment
 
 from collections import OrderedDict
 import re
