@@ -24,7 +24,6 @@ class VarDependsOrdered(Rule):
                 continue
             for _key in _keys:
                 _all_findings = sorted([x for x in items if (x.Origin == _file or _file in x.IncludedFrom) and x.VarName == _key], key=lambda x: x.Line)
-                _machines = set(x.GetMachineEntry() for x in _all_findings)
                 for _m in set(x.GetMachineEntry() for x in _all_findings):
                     _raw_list = []
                     _machine_findings = sorted([x for x in _all_findings if _m == x.GetMachineEntry()], key=lambda x: x.Line)

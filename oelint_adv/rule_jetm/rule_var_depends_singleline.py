@@ -18,7 +18,6 @@ class VarDependsSingleLine(Rule):
                                    attribute=Variable.ATTR_VAR, attributeValue="RDEPENDS_${PN}")
         
         for i in items:
-            linenum = 0
             if len(i.get_items()) > 1:
                 res += self.finding(i.Origin, i.InFileLine)
         return res
