@@ -1,6 +1,5 @@
 import os
 
-from oelint_parser.cls_item import Include
 from oelint_adv.cls_rule import Rule
 
 
