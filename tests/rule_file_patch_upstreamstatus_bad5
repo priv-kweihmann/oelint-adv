@@ -3,26 +3,13 @@ TESTFILE="${TMP}oelint_adv_test.bb"
 TESTPATCHFOLDER="${TMP}files"
 trap "rm -f ${TESTFILE} && rm -rf ${TESTPATCHFOLDER}" EXIT
 TESTID="oelint.file.upstreamstatus"
-TESTOCC="0"
+TESTOCC="1"
 cat > ${TESTFILE} << EOF
 SRC_URI = "file://test.patch"
 EOF
 mkdir -p ${TESTPATCHFOLDER}
 cat > ${TESTPATCHFOLDER}/test.patch << EOF
-Upstream-Status: Accepted
-Upstream-Status: Backport
-Upstream-Status: Denied
-Upstream-Status: Inappropriate [bugfix this is a bugfix]
-Upstream-Status: Inappropriate [configuration]
-Upstream-Status: Inappropriate [disable feature]
-Upstream-Status: Inappropriate [embedded specific]
-Upstream-Status: Inappropriate [enable feature]
-Upstream-Status: Inappropriate [licensing]
-Upstream-Status: Inappropriate [native]
-Upstream-Status: Inappropriate [no upstream]
-Upstream-Status: Inappropriate [other]
-Upstream-Status: Pending
-Upstream-Status: Submitted [http://some.where]
+Upstream-Status: Inappropriate
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1
