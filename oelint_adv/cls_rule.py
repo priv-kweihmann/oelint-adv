@@ -160,7 +160,7 @@ def load_rules(args, add_rules=[], add_dirs=[]):
                                 res.append(inst)
                     except Exception:
                         pass
-            except:
+            except Exception as e:
                 if not args.quiet:
-                    print("Can't load rule {}".format(name))
+                    print("Can't load rule {} -> {}".format(name, e))
     return res
