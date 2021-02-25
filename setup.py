@@ -5,8 +5,8 @@ _long_description = "See https://github.com/priv-kweihmann/oelint-adv for docume
 _long_description_content_type = "text/plain"
 try:
     _long_description = subprocess.check_output(
-        ["pandoc", "--from", "markdown", "--to", "rst", "README.md"]).decode("utf-8")
-    _long_description_content_type = "text/x-rst"
+        ["pandoc", "--from", "markdown", "--to", "markdown", "README.md"]).decode("utf-8")
+    _long_description_content_type = "text/markdown"
 except (subprocess.CalledProcessError, FileNotFoundError):
     pass
 
@@ -16,7 +16,7 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name="oelint_adv",
-    version="2.1.0",
+    version="2.2.0",
     author="Konrad Weihmann",
     author_email="kweihmann@outlook.com",
     description="Advanced bitbake-recipe linter",
