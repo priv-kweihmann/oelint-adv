@@ -1,0 +1,23 @@
+#!/bin/sh
+TESTFILE="${TMP}oelint_adv_test.bb"
+trap "rm -f ${TESTFILE}" EXIT
+TESTID="oelint.var.filesoverride"
+TESTOCC="0"
+cat > ${TESTFILE} << EOF
+FILES_SOLIBSDEV = "abc"
+FILES_\${PN}_append = " foo"
+FILES_\${PN}_prepend = "foo "
+FILES_\${PN} += "foo"
+FILES_\${PN} =+ "foo"
+FILES_\${PN} .= " foo"
+FILES_\${PN} =. "foo "
+FILES_\${PN}-dev += "foo"
+FILES_\${PN}-dev =+ "foo"
+FILES_\${PN}-dev .= " foo"
+FILES_\${PN}-dev =. "foo "
+EOF
+[ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
+python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1
+_got=$(python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l)
+echo "Test for ${0} failed - got ${_got} expected ${TESTOCC}"
+exit 1

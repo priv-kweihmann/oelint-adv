@@ -124,6 +124,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.task.order - Order of tasks **[S]**
 * oelint.task.pythonprefix - Tasks containing python code should be prefixed with 'python' in function header
 * oelint.var.bbclassextend - Use BBCLASSEXTEND when possible
+* oelint.var.filesoverride - FILES_* variables should not be overriden
 * oelint.var.improperinherit - Warn about improperly named inherits
 * oelint.var.licenseremotefile - License shall be a file in remote source not a local file
 * oelint.var.mandatoryvar - Check for mandatory variables **[S]**
