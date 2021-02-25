@@ -4,6 +4,7 @@ trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.vars.srcurioptions"
 TESTOCC="0"
 cat > ${TESTFILE} << EOF
+SRC_URI += "az://foo"
 SRC_URI += "file://foo"
 SRC_URI += "file://foo;apply=true"
 SRC_URI += "file://foo;apply=false"

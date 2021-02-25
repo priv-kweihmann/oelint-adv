@@ -19,6 +19,7 @@ class VarSRCUriOptions(Rule):
             "unpack"
         ]
         self._valid_options = {
+            "az": [],
             "bzr": [
                 "protocol",
                 "scmdata"

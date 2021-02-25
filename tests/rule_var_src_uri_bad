@@ -2,8 +2,9 @@
 TESTFILE="${TMP}oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.vars.srcurioptions"
-TESTOCC="23"
+TESTOCC="24"
 cat > ${TESTFILE} << EOF
+SRC_URI += "az://foo;someunknownoption=abc"
 SRC_URI += "abc://foo"
 SRC_URI += "file://foo;notexists=true"
 SRC_URI += "file://foo;protocol=false"
