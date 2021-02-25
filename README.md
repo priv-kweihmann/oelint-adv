@@ -117,6 +117,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.task.addnotaskbody - Task added by addtask cannot be found
 * oelint.task.customorder - order of custom tasks added via addtask
 * oelint.task.docstrings - Custom tasks should have docstrings
+* oelint.task.heredocs - Usage of heredocs should be avoided. Use files instead
 * oelint.task.multifragments - Multiple fragments of the same function in the same file should be merged
 * oelint.task.nocopy - No cp usage in do_install
 * oelint.task.nomkdir - No mkdir usage in do_install
