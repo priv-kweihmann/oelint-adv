@@ -1,6 +1,8 @@
-from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
+from oelint_parser.cls_item import Variable
 from oelint_parser.const_vars import get_mandatory_vars
+from oelint_parser.helper_files import is_image
+from oelint_parser.helper_files import is_packagegroup
 
 
 class VarMandatoryExists(Rule):
@@ -11,16 +13,27 @@ class VarMandatoryExists(Rule):
                          onappend=False,
                          appendix=get_mandatory_vars())
 
+    IMAGE_EXCLUDES = [
+        "CVE_PRODUCT",
+        "HOMEPAGE",
+        "SRC_URI",
+    ]
+
+    PACKAGEGRP_EXCLUDES = [
+        "CVE_PRODUCT",
+        "HOMEPAGE",
+        "LICENSE",
+        "SRC_URI",
+    ]
+
     def check(self, _file, stash):
         res = []
-        _is_pkg_group = False
-        for i in stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER, 
-                                   attribute=Variable.ATTR_VAR, attributeValue="inherit"):
-            if any(x == "packagegroup" for x in i.get_items()):
-                _is_pkg_group = True
-                break
+        _is_pkg_group = is_packagegroup(stash, _file)
+        _is_image = is_image(stash, _file)
         for var in get_mandatory_vars():
-            if _is_pkg_group and var in ["LICENSE", "CVE_PRODUCT"]:
+            if _is_pkg_group and var in VarMandatoryExists.PACKAGEGRP_EXCLUDES:
+                continue
+            if _is_image and var in VarMandatoryExists.IMAGE_EXCLUDES:
                 continue
             items = stash.GetItemsFor(
                 filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue=var)
