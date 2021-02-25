@@ -10,7 +10,8 @@ class VarPnBpnUsage(Rule):
     def __init__(self):
         super().__init__(id="oelint.vars.specific",
                          severity="error",
-                         message="'{}' is set specific to ['{}'], but isn't known from PACKAGES, MACHINE or resources")
+                         message="'{}' is set specific to ['{}'], but isn't known from PACKAGES, MACHINE or resources",
+                         onappend=False)
 
     def check(self, _file, stash):
         res = []
