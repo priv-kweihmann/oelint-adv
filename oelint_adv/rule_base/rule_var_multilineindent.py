@@ -1,4 +1,6 @@
-from oelint_parser.cls_item import Variable
+import re
+
+from oelint_parser.cls_item import Variable, Item
 from oelint_adv.cls_rule import Rule
 
 
@@ -6,7 +8,16 @@ class VarMultiLineIndent(Rule):
     def __init__(self):
         super().__init__(id="oelint.vars.multilineident",
                          severity="info",
-                         message="On a multiline assignment, line indent is desirable. Current {}/{}")
+                         message="On a multiline assignment, line indent is desirable. {} set, {} desirable")
+
+    def __line_stats(self, raw):
+        _map = {}
+        _lines = [x for x in re.split(r"\t|\x1b", raw) if x and x.strip()]
+        for index, value in enumerate(_lines):
+            _map[index] = len(value) - len(value.lstrip())
+        _distribution = {x:list(_map.values()).count(x) for x in set(_map.values())}
+
+        return (max(_distribution, key=lambda x: _distribution[x]), list(_map.values()))
 
     def check(self, _file, stash):
         res = []
@@ -15,17 +26,10 @@ class VarMultiLineIndent(Rule):
         for i in items:
             if not i.IsMultiLine():
                 continue
-            _rawclean = i.Raw
-            _startoffset = _rawclean.find("= \"") + 3
-            _value = _rawclean[_startoffset:]
-            _lines = [x for x in _value.split("\\\n") if x]
-            if any(_lines):
-                for _line in _lines[1:]:
-                    _linestripped = _line.lstrip('"').strip().lstrip('"').strip()
-                    _thisline = (len(_line) - len(_line.lstrip(" ")))
-                    if _thisline < 0 or not _linestripped:
-                        continue
-                    if _thisline < _startoffset:
-                        res += self.finding(i.Origin, i.InFileLine + _lines.index(
-                            _line), self.FormatMsg(_thisline, _startoffset))
+            _likeliest_indent, _indent_map = self.__line_stats(i.VarValueStripped)
+            _likeliest_indent = max(4, _likeliest_indent)
+            for index, value in enumerate(_indent_map):
+                if value != _likeliest_indent:
+                    res += self.finding(i.Origin, i.InFileLine + index,
+                                        self.FormatMsg(value, _likeliest_indent))
         return res

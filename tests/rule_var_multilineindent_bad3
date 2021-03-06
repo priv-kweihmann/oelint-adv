@@ -2,14 +2,12 @@
 TESTFILE="${TMP}oelint_adv_test.bb"
 trap "rm -f ${TESTFILE}" EXIT
 TESTID="oelint.vars.multilineident"
-TESTOCC="0"
+TESTOCC="1"
 cat > ${TESTFILE} << EOF
 A = "\\
-     a \\
-     b \\
-     e \\
+    a \\
+  b \\
 "
-UPSTREAM_CHECK_REGEX = "(?P<pver>12\.\d+\.\d+)"
 EOF
 [ $(python3 -m oelint_adv ${TESTFILE} 2>&1 | grep ":${TESTID}:" | wc -l) = "${TESTOCC}" ] && exit 0;
 python3 -m oelint_adv --addrules=jetm ${TESTFILE} 2>&1
