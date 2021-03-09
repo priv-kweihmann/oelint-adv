@@ -1,6 +1,7 @@
 import argparse
 import os
 import sys
+import re
 import json
 
 from oelint_adv.cls_rule import load_rules
@@ -65,6 +66,39 @@ def create_argparser():
     return args
 
 
+def group_files(files):
+    # in case multiple bb files are passed at once we might need to group them to
+    # avoid having multiple, potentially wrong hits of include files shared across
+    # the bb files in the stash
+    res = {}
+    for f in files:
+        _filename, _ext = os.path.splitext(f)
+        if _ext not in [".bb"]:
+            continue
+        _filename_key = "_".join(os.path.basename(_filename).split("_")[:-1]).replace("%", "")
+        if not _filename_key in res:
+            res[_filename_key] = set()
+        res[_filename_key].add(f)
+
+    # second round now for the bbappend files
+    for f in files:
+        _filename, _ext = os.path.splitext(f)
+        if _ext not in [".bbappend"]:
+            continue
+        _match = False
+        for k, v in res.items():
+            _needle = ".*/" + os.path.basename(_filename).replace("%", ".*")
+            if any(re.match(_needle, x) for x in v):
+                v.add(f)
+                _match = True
+                break
+        if not _match:
+            _filename_key = "_".join(os.path.basename(_filename).split("_")[:-1]).replace("%", "")
+            if not _filename_key in res:
+                res[_filename_key] = set()
+            res[_filename_key].add(f)
+    return res.values()
+
 def main():
     args = create_argparser()
     try:
@@ -77,42 +111,44 @@ def main():
             _loadedIDs += r.GetIDs()
         if not args.quiet:
             print("Loaded rules:\n\t{}".format("\n\t".join(sorted(_loadedIDs))))
-        stash = Stash(args)
         issues = []
         fixedfiles = []
-        for f in args.files:
-            try:
-                stash.AddFile(f)
-            except FileNotFoundError as e:
-                if not args.quiet:
-                    print("Can't open/read: {}".format(e))
-
-        stash.Finalize()
-
-        _files = list(set(stash.GetRecipes() + stash.GetLoneAppends()))
-        for index, f in enumerate(_files):
-            for r in rules:
-                if not r.OnAppend and f.endswith(".bbappend"):
-                    continue
-                if r.OnlyAppend and not f.endswith(".bbappend"):
-                    continue
-                if args.fix:
-                    fixedfiles += r.fix(f, stash)
-                issues += r.check(f, stash)
-            if not args.quiet:
-                print("{}/{} files checked".format(index, len(_files)))
-        fixedfiles = list(set(fixedfiles))
-        for f in fixedfiles:
-            _items = [f] + stash.GetLinksForFile(f)
-            for i in _items:
-                items = stash.GetItemsFor(filename=i, nolink=True)
-                if not args.nobackup:
-                    os.rename(i, i + ".bak")
-                with open(i, "w") as o:
-                    o.write("".join([x.RealRaw for x in items]))
+        groups = group_files(args.files)
+        for group in groups:
+            stash = Stash(args)
+            for f in group:
+                try:
+                    stash.AddFile(f)
+                except FileNotFoundError as e:
                     if not args.quiet:
-                        print("{}:{}:{}".format(os.path.abspath(i),
-                                                "debug", "Applied automatic fixes"))
+                        print("Can't open/read: {}".format(e))
+
+            stash.Finalize()
+
+            _files = list(set(stash.GetRecipes() + stash.GetLoneAppends()))
+            for index, f in enumerate(_files):
+                for r in rules:
+                    if not r.OnAppend and f.endswith(".bbappend"):
+                        continue
+                    if r.OnlyAppend and not f.endswith(".bbappend"):
+                        continue
+                    if args.fix:
+                        fixedfiles += r.fix(f, stash)
+                    issues += r.check(f, stash)
+                if not args.quiet:
+                    print("{}/{} files checked".format(index, len(_files)))
+            fixedfiles = list(set(fixedfiles))
+            for f in fixedfiles:
+                _items = [f] + stash.GetLinksForFile(f)
+                for i in _items:
+                    items = stash.GetItemsFor(filename=i, nolink=True)
+                    if not args.nobackup:
+                        os.rename(i, i + ".bak")
+                    with open(i, "w") as o:
+                        o.write("".join([x.RealRaw for x in items]))
+                        if not args.quiet:
+                            print("{}:{}:{}".format(os.path.abspath(i),
+                                                    "debug", "Applied automatic fixes"))
 
         issues = sorted(set(issues), key=lambda x: x[0])
 
