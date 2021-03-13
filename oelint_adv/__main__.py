@@ -97,6 +97,12 @@ def group_files(files):
             if not _filename_key in res:
                 res[_filename_key] = set()
             res[_filename_key].add(f)
+    
+    # as sets are unordered, we convert them to sorted lists at this point
+    # order is like the files have been passed via CLI
+    for k, v in res.items():
+        res[k] = sorted(v, key=lambda index: files.index(index))
+
     return res.values()
 
 def main():
