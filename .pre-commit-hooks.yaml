@@ -1,0 +1,7 @@
+- id: oelint-adv
+  name: Advanced oelint
+  description: Based on the OpenEmbedded Styleguide and work done by oe-stylize-tool this module offers a (nearly) complete linter for bitbake-recipes.
+  entry: oelint-adv
+  language: python
+  language_version: python3
+  files: .*\.(bb)|(bbappend)$
