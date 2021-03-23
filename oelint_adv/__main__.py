@@ -141,8 +141,6 @@ def main():
                     if args.fix:
                         fixedfiles += r.fix(f, stash)
                     issues += r.check(f, stash)
-                if not args.quiet:
-                    print("{}/{} files checked".format(index, len(_files)))
             fixedfiles = list(set(fixedfiles))
             for f in fixedfiles:
                 _items = [f] + stash.GetLinksForFile(f)
