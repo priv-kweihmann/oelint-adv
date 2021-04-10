@@ -5,7 +5,7 @@ from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
 
 
-class VarHomepagePrefix(Rule):
+class VarHomepagePing(Rule):
     def __init__(self):
         super().__init__(id="oelint.vars.homepageping",
                          severity="warning",
