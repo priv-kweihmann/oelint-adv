@@ -14,7 +14,6 @@ class VarDependsOrdered(Rule):
     def __overrides(self, findings):
         res = set(f.GetMachineEntry() for f in findings)
         res.update(f.GetClassOverride() for f in findings)
-        print(res)
         return res
 
     def check(self, _file, stash):
