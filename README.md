@@ -119,6 +119,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.task.docstrings - Custom tasks should have docstrings
 * oelint.task.heredocs - Usage of heredocs should be avoided. Use files instead
 * oelint.task.multifragments - Multiple fragments of the same function in the same file should be merged
+* oelint.task.noanonpython - Avoid anonymous python functions
 * oelint.task.nocopy - No cp usage in do_install
 * oelint.task.nomkdir - No mkdir usage in do_install
 * oelint.task.nopythonprefix - Tasks containing shell code should NOT be prefixed with 'python' in function header
