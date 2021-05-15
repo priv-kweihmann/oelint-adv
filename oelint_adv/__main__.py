@@ -40,8 +40,13 @@ def create_argparser():
                         help="Don't print warning level findings")
     parser.add_argument("files", nargs='+', help="File to parse")
 
-    args = parser.parse_args()
+    return parser
 
+
+def parse_arguments():
+    return create_argparser().parse_args() # pragma: no cover
+
+def arguments_post(args):
     if args.rulefile:
         try:
             with open(args.rulefile) as i:
@@ -76,7 +81,7 @@ def group_files(files):
         if _ext not in [".bb"]:
             continue
         _filename_key = "_".join(os.path.basename(_filename).split("_")[:-1]).replace("%", "")
-        if not _filename_key in res:
+        if not _filename_key in res: # pragma: no cover
             res[_filename_key] = set()
         res[_filename_key].add(f)
 
@@ -94,7 +99,7 @@ def group_files(files):
                 break
         if not _match:
             _filename_key = "_".join(os.path.basename(_filename).split("_")[:-1]).replace("%", "")
-            if not _filename_key in res:
+            if not _filename_key in res: # pragma: no cover
                 res[_filename_key] = set()
             res[_filename_key].add(f)
     
@@ -105,8 +110,7 @@ def group_files(files):
 
     return res.values()
 
-def main():
-    args = create_argparser()
+def run(args):
     try:
         rules = [x for x in load_rules(args,
             add_rules=args.addrules, add_dirs=args.customrules)]
@@ -125,9 +129,9 @@ def main():
             for f in group:
                 try:
                     stash.AddFile(f)
-                except FileNotFoundError as e:
-                    if not args.quiet:
-                        print("Can't open/read: {}".format(e))
+                except FileNotFoundError as e: # pragma: no cover
+                    if not args.quiet: # pragma: no cover
+                        print("Can't open/read: {}".format(e)) # pragma: no cover
 
             stash.Finalize()
 
@@ -147,25 +151,31 @@ def main():
                 for i in _items:
                     items = stash.GetItemsFor(filename=i, nolink=True)
                     if not args.nobackup:
-                        os.rename(i, i + ".bak")
+                        os.rename(i, i + ".bak") # pragma: no cover
                     with open(i, "w") as o:
                         o.write("".join([x.RealRaw for x in items]))
                         if not args.quiet:
-                            print("{}:{}:{}".format(os.path.abspath(i),
+                            print("{}:{}:{}".format(os.path.abspath(i),  # pragma: no cover
                                                     "debug", "Applied automatic fixes"))
 
-        issues = sorted(set(issues), key=lambda x: x[0])
-
-        if args.output != sys.stderr:
-            args.output = open(args.output, "w")
-        args.output.write("\n".join([x[1] for x in issues]) + "\n")
-        if args.output != sys.stderr:
-            args.output.close()
-        sys.exit(len(issues))
+        return sorted(set(issues), key=lambda x: x[0])
     except Exception as e:
         import traceback
         print("OOPS - That shouldn't happen - {}".format(args.files))
         traceback.print_exc()
+    return []
+
+def main():  # pragma: no cover
+    args = arguments_post(parse_arguments())
+
+    issues = run(args)
+
+    if args.output != sys.stderr:
+        args.output = open(args.output, "w")
+    args.output.write("\n".join([x[1] for x in issues]) + "\n")
+    if args.output != sys.stderr:
+        args.output.close()
+    sys.exit(len(issues))
 
 if __name__ == '__main__':
-    main()
+    main()  # pragma: no cover
