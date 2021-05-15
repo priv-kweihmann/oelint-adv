@@ -1,0 +1,788 @@
+import os
+import sys
+
+import pytest
+
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+
+from base import TestBaseClass
+
+OPTIONS_AVAILABLE =  [
+    "apply",
+    "branch",
+    "date",
+    "destsuffix",
+    "dev",
+    "downloadfilename",
+    "fullpath",
+    "localdir",
+    "manifest",
+    "method",
+    "module",
+    "name",
+    "nobranch",
+    "nocheckout",
+    "norecurse",
+    "noverify",
+    "patchdir",
+    "path_spec",
+    "port",
+    "proto",
+    "protocol",
+    "rebaseable",
+    "rev",
+    "revision",
+    "rsh",
+    "scmdata",
+    "ssh",
+    "striplevel",
+    "subdir",
+    "subpath",
+    "tag",
+    "transportuser",
+    "unpack",
+    "usehead",
+    "version",
+    "vob",
+    "unknownoperation"
+]
+OPTION_MAPPING = {
+    "az": [
+        "apply",
+        "destsuffix",
+        "name",
+        "patchdir",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "bzr": [
+        "apply",
+        "destsuffix",
+        "name",
+        "patchdir",
+        "protocol",
+        "scmdata",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "crcc": [
+        "apply",
+        "destsuffix",
+        "module",
+        "name",
+        "patchdir",
+        "proto",
+        "striplevel",
+        "subdir",
+        "unpack",
+        "vob",
+    ],
+    "cvs": [
+        "apply",
+        "date",
+        "destsuffix",
+        "fullpath",
+        "localdir",
+        "method",
+        "module",
+        "name",
+        "norecurse",
+        "patchdir",
+        "port",
+        "rsh",
+        "scmdata",
+        "striplevel",
+        "subdir",
+        "tag",
+        "unpack",
+    ],
+    "file": [
+        "apply",
+        "destsuffix",
+        "downloadfilename",
+        "name",
+        "patchdir",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "ftp": [
+        "apply",
+        "destsuffix",
+        "downloadfilename",
+        "name",
+        "patchdir",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "git": [
+        "apply",
+        "branch",
+        "destsuffix",
+        "name",
+        "nobranch",
+        "nocheckout",
+        "patchdir",
+        "protocol",
+        "rebaseable",
+        "rev",
+        "striplevel",
+        "subdir",
+        "subpath",
+        "tag",
+        "unpack",
+        "usehead",
+    ],
+    "gitsm": [
+        "apply",
+        "branch",
+        "destsuffix",
+        "name",
+        "nobranch",
+        "nocheckout",
+        "patchdir",
+        "protocol",
+        "rebaseable",
+        "rev",
+        "striplevel",
+        "subdir",
+        "subpath",
+        "tag",
+        "unpack",
+        "usehead",
+    ],
+    "gitannex": [
+        "apply",
+        "destsuffix",
+        "name",
+        "patchdir",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "hg": [
+        "apply",
+        "destsuffix",
+        "module",
+        "name",
+        "patchdir",
+        "protocol",
+        "rev",
+        "scmdata",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "http": [
+        "apply",
+        "destsuffix",
+        "downloadfilename",
+        "name",
+        "patchdir",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "https": [
+        "apply",
+        "destsuffix",
+        "downloadfilename",
+        "name",
+        "patchdir",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "osc": [
+        "apply",
+        "destsuffix",
+        "module",
+        "name",
+        "patchdir",
+        "protocol",
+        "rev",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "p4": [
+        "apply",
+        "destsuffix",
+        "name",
+        "patchdir",
+        "revision",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "repo": [
+        "apply",
+        "branch",
+        "destsuffix",
+        "manifest",
+        "name",
+        "patchdir",
+        "protocol",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "ssh": [
+        "apply",
+        "destsuffix",
+        "name",
+        "patchdir",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "s3": [
+        "apply",
+        "destsuffix",
+        "downloadfilename",
+        "name",
+        "patchdir",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "sftp": [
+        "apply",
+        "destsuffix",
+        "downloadfilename",
+        "name",
+        "patchdir",
+        "protocol",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "npm": [
+        "apply",
+        "destsuffix",
+        "name",
+        "noverify",
+        "patchdir",
+        "striplevel",
+        "subdir",
+        "unpack",
+        "version",
+    ],
+    "npmsw": [
+        "apply",
+        "destsuffix",
+        "dev",
+        "name",
+        "patchdir",
+        "striplevel",
+        "subdir",
+        "unpack",
+    ],
+    "svn": [
+        "apply",
+        "destsuffix",
+        "module",
+        "name",
+        "patchdir",
+        "path_spec",
+        "protocol",
+        "rev",
+        "scmdata",
+        "ssh",
+        "striplevel",
+        "subdir",
+        "transportuser",
+        "unpack",
+    ]
+}
+
+class TestClassOelintVarsSRCURIOptions(TestBaseClass):
+
+    def __generate_sample_code(self, protocol, option):
+        if not option:
+            return '''
+                SRC_URI += "{protocol}://foo"
+                '''.format(protocol=protocol, option=option)
+        return '''
+            SRC_URI += "{protocol}://foo;{option}=1"
+            '''.format(protocol=protocol, option=option)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['az'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['az']])
+    def test_bad_az(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['az'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['az'])
+    def test_good_az(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['bzr'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['bzr']])
+    def test_bad_bzr(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['bzr'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['bzr'])
+    def test_good_bzr(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['crcc'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['crcc']])
+    def test_bad_crcc(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['crcc'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['crcc'])
+    def test_good_crcc(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['cvs'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['cvs']])
+    def test_bad_cvs(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['cvs'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['cvs'])
+    def test_good_cvs(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['file'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['file']])
+    def test_bad_file(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['file'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['file'])
+    def test_good_file(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['ftp'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['ftp']])
+    def test_bad_ftp(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['ftp'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['ftp'])
+    def test_good_ftp(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['git'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['git']])
+    def test_bad_git(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['git'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['git'])
+    def test_good_git(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['gitsm'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['gitsm']])
+    def test_bad_gitsm(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['gitsm'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['gitsm'])
+    def test_good_gitsm(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['gitannex'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['gitannex']])
+    def test_bad_gitannex(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['gitannex'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['gitannex'])
+    def test_good_gitannex(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['hg'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['hg']])
+    def test_bad_hg(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['hg'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['hg'])
+    def test_good_hg(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['http'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['http']])
+    def test_bad_http(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['http'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['http'])
+    def test_good_http(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['https'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['https']])
+    def test_bad_https(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['https'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['https'])
+    def test_good_https(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['osc'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['osc']])
+    def test_bad_osc(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['osc'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['osc'])
+    def test_good_osc(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['p4'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['p4']])
+    def test_bad_p4(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['p4'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['p4'])
+    def test_good_p4(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['repo'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['repo']])
+    def test_bad_repo(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['repo'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['repo'])
+    def test_good_repo(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['ssh'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['ssh']])
+    def test_bad_ssh(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['ssh'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['ssh'])
+    def test_good_ssh(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['s3'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['s3']])
+    def test_bad_s3(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['s3'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['s3'])
+    def test_good_s3(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['sftp'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['sftp']])
+    def test_bad_sftp(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['sftp'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['sftp'])
+    def test_good_sftp(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['npm'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['npm']])
+    def test_bad_npm(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['npm'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['npm'])
+    def test_good_npm(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['npmsw'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['npmsw']])
+    def test_bad_npmsw(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['npmsw'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['npmsw'])
+    def test_good_npmsw(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('protocol', ['svn'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['svn']])
+    def test_bad_svn(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('protocol', ['svn'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['svn'])
+    def test_good_svn(self, id, occurance, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)
+        }
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('input', 
+        [
+            {
+            'oelint_adv_test.bb':
+            '''
+            SRC_URI += "${@["", "file://init.cfg"][(d.getVar('VIRTUAL-RUNTIME_init_manager') == 'busybox')]}"
+            '''
+            }
+        ],
+    )
+    def test_good_conditionals(self, input, id, occurance):
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('input', 
+        [
+            {
+            'oelint_adv_test.bb':
+            '''
+            SRC_URI += "foo.bar.baz"
+            '''
+            },
+            {
+            'oelint_adv_test.bb':
+            '''
+            SRC_URI[md5sum] = "file://abc"
+            '''
+            },
+            {
+            'oelint_adv_test.bb':
+            '''
+            SRC_URI[sha256sum] = "file://abc"
+            '''
+            },
+        ],
+    )
+    def test_good_edgecases_good(self, input, id, occurance):
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('input', 
+        [
+            {
+            'oelint_adv_test.bb':
+            '''
+            SRC_URI += "abc://some.corp.com"
+            '''
+            }
+        ],
+    )
+    def test_good_edgecases_bad(self, input, id, occurance):
+        self.check_for_id(self._create_args(input), id, occurance)
