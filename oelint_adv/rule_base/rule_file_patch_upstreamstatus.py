@@ -37,7 +37,7 @@ class FilePatchIsUpstreamStatus(Rule):
                 if _recipe_match:
                     _recipe_match = _recipe_match[0]
                 else:
-                    continue
+                    continue # pragma: no cover
                 try:
                     for m in re.finditer(r"^Upstream-Status:\s*(?P<class>.*)", _input.read(), re.MULTILINE):
                         found = True
@@ -52,6 +52,6 @@ class FilePatchIsUpstreamStatus(Rule):
                         res += self.finding(_recipe_match.Origin,
                                             _recipe_match.InFileLine,
                                             self.Msg.replace("{FILE}", os.path.basename(i)))
-                except UnicodeDecodeError:
-                    pass
+                except UnicodeDecodeError: # pragma: no cover
+                    pass # pragma: no cover
         return res

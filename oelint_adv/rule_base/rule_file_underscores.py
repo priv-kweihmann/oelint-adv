@@ -15,7 +15,7 @@ class FileNoSpaces(Rule):
     def check(self, _file, stash):
         res = []
         _basename, _ext = os.path.splitext(os.path.basename(_file))
-        if _ext in [".bb"]:
+        if _ext in [".bb"]: # pragma: no cover
             _image_install = any(stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                 attribute=Variable.ATTR_VAR, attributeValue="IMAGE_INSTALL"))
             _inherits = set()

@@ -26,7 +26,7 @@ class NoSpaceBeginningRule(Rule):
         res = []
         for i in self.__getMatches(_file, stash):
             if isinstance(i, PythonBlock) or isinstance(i, Function):
-                continue
+                continue # pragma: no cover
             i.RealRaw = i.RealRaw.lstrip(" ")
             i.Raw = i.Raw.lstrip(" ")
             res.append(_file)

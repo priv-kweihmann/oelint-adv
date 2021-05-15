@@ -21,12 +21,12 @@ class VarHomepagePing(Rule):
                 try:
                     urlopen(req, timeout=4)
                 except HTTPError as e:
-                    if e.code == 404:
-                        res += self.finding(i.Origin, i.InFileLine)
+                    if e.code == 404: # pragma: no cover
+                        res += self.finding(i.Origin, i.InFileLine) # pragma: no cover
                 except URLError:
                     res += self.finding(i.Origin, i.InFileLine)
             except ValueError:
                 res += self.finding(i.Origin, i.InFileLine)
-            except Exception:
-                pass
+            except Exception: # pragma: no cover
+                pass # pragma: no cover
         return res

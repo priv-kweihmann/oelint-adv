@@ -15,7 +15,7 @@ class NoSpaceRuleCont(Rule):
         for i in items:
             if isinstance(i, Comment):
                 continue
-            if i.Raw:
+            if i.Raw: # pragma: no cover
                 if re.search(r"\\\s+\n", i.Raw):
                     res.append(i)
         return res

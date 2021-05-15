@@ -14,7 +14,7 @@ class VarUnneededFilesSetting(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue=variable)
         for i in items:
-            if needle in i.VarValue and "remove" not in i.SubItems:
+            if needle in i.VarValue and "remove" not in i.SubItems: # pragma: no cover
                 if (onappendonly and i.IsAppend()) or (not onappendonly):
                     res += self.finding(i.Origin, i.InFileLine, override_msg=msg, appendix=appendix)
         return res

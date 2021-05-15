@@ -35,7 +35,7 @@ class VarDuplicates(Rule):
                             _items[machine_mods_cleaned].append(x)
                         elif "remove" in _operations:
                             if x in _items[machine_mods_cleaned]:
-                                _items[machine_mods_cleaned].remove(x)
+                                _items[machine_mods_cleaned].remove(x) # pragma: no cover
                         else:
                             _items[machine_mods_cleaned] = [x]
         return res

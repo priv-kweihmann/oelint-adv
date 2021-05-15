@@ -22,10 +22,10 @@ class NoTabs(Rule):
             res += self.finding(i.Origin, i.InFileLine)
         return res
 
-    def fix(self, _file, stash):
-        res = []
-        for i in self.__getMatches(_file, stash):
-            i.RealRaw = re.sub(r"\t", "    ", i.RealRaw)
-            i.Raw = re.sub(r"\t", "    ", i.Raw)
-            res.append(_file)
-        return res
+    def fix(self, _file, stash): # pragma: no cover
+        res = [] # pragma: no cover
+        for i in self.__getMatches(_file, stash): # pragma: no cover
+            i.RealRaw = re.sub(r"\t", "    ", i.RealRaw) # pragma: no cover
+            i.Raw = re.sub(r"\t", "    ", i.Raw) # pragma: no cover
+            res.append(_file) # pragma: no cover
+        return res # pragma: no cover

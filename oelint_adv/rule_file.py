@@ -25,7 +25,7 @@ def get_rulefile():
 
 
 def get_constantfile():
-    return _CONST_FILE
+    return _CONST_FILE # pragma: no cover
 
 
 def set_rulefile(value):

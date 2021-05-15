@@ -12,16 +12,16 @@ class NoSpaceEmptyLineRule(Rule):
         items = stash.GetItemsFor(filename=_file)
         for i in items:
             if i.Raw.strip("\n") and not i.Raw.strip():
-                res.append(i)
+                res.append(i) # pragma: no cover
         return res
 
     def check(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):
-            res += self.finding(i.Origin, i.InFileLine)
+            res += self.finding(i.Origin, i.InFileLine) # pragma: no cover
         return res
 
-    def fix(self, _file, stash):
+    def fix(self, _file, stash): # pragma: no cover
         res = []
         for i in self.__getMatches(_file, stash):
             i.RealRaw = "\n"
