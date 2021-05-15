@@ -16,24 +16,26 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
+    - name: prepare
       run: |
         python3 -m pip install --upgrade pip
+        pip install --upgrade setuptools 
         pip install -r requirements.txt
-    - name: Lint with flake8
+        pip install -r requirements-dev.txt
+    - name: test (pytest)
+      run: pytest
+      shell: bash
+    - name: build
+      run: python3 setup.py build sdist
+      shell: bash
+    - name: install
+      run: python3 setup.py install --user
+      shell: bash
+    - name: test (installed)
       run: |
-        pip install flake8
-        cd oelint_adv
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Build
-      run: python3 setup.py build
-    - name: Install
-      run: python3 setup.py build
-    - name: Test
-      run: ./test.sh
+        oelint-adv --help
+        tar -tvf dist/oelint_adv-*.tar.gz | grep LICENSE
+        tar -tvf dist/oelint_adv-*.tar.gz | grep README.md
       shell: bash
     - if: matrix.python-version == 3.7
       name: Trigger nittymcpick-oelint
