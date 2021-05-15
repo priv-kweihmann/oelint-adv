@@ -30,6 +30,6 @@ class NoSpaceTrailingRule(Rule):
         res = []
         for i in self.__getMatches(_file, stash):
             i.RealRaw = re.sub(r"\s{2,}\n", "\n", i[0].RealRaw)
-            i.Raw = re.sub(r"\s{2,}\n", "\n", i[0].Raw)
-            res.append(_file)
-        return res
+            i.Raw = re.sub(r"\s{2,}\n", "\n", i[0].Raw) # pragma: no cover
+            res.append(_file) # pragma: no cover
+        return res # pragma: no cover

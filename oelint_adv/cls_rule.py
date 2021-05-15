@@ -39,7 +39,7 @@ class Rule():
         Returns:
             list -- List of findings
         """
-        return []
+        return [] # pragma: no cover
 
     def fix(self, _file, stash):
         """Stub for fix function - can be overridden by each rule
@@ -68,9 +68,9 @@ class Rule():
             str -- Human readable finding (possibly with color codes)
         """
         if not self.OnAppend and _file.endswith(".bbappend"):
-            return []
+            return [] # pragma: no cover
         if self.OnlyAppend and not _file.endswith(".bbappend"):
-            return []
+            return [] # pragma: no cover
         if override_msg is None:
             override_msg = self.Msg
         _severity = self.Severity
@@ -79,7 +79,7 @@ class Rule():
         if appendix:
             _id += "." + appendix
         if _rule_file and self.ID in _rule_file:
-            _severity = _rule_file[self.ID] or self.Severity
+            _severity = _rule_file[self.ID] or self.Severity # pragma: no cover
         if _severity == "info" and get_noinfo():
             return []
         if _severity == "warning" and get_nowarn():
@@ -97,7 +97,7 @@ class Rule():
         return [(_line, "{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, _severity, _id, override_msg))]
 
     def __repr__(self):
-        return "{}".format(self.ID)
+        return "{}".format(self.ID) # pragma: no cover
 
     def GetIDs(self):
         """Returns all possible IDs of the rule
@@ -134,20 +134,20 @@ def load_rules(args, add_rules=[], add_dirs=[]):
     for ar in add_rules:
         _path_list[ar] = {"path": "rule_{}".format(ar), "builtin": True}
     for ar in add_dirs:
-        _path_list["additional_{}".format(os.path.basename(ar))] = {"path": ar, "builtin": False}
+        _path_list["additional_{}".format(os.path.basename(ar))] = {"path": ar, "builtin": False} # pragma: no cover
     for _, v in _path_list.items():
         if v["builtin"]:
             _searchpath = os.path.join(os.path.dirname(
                 os.path.abspath(__file__)), v["path"])
         else:
-            _searchpath = os.path.join(v["path"])
-            sys.path.append(os.path.dirname(v["path"]))
+            _searchpath = os.path.join(v["path"]) # pragma: no cover
+            sys.path.append(os.path.dirname(v["path"])) # pragma: no cover
         packages = pkgutil.walk_packages(path=[_searchpath])
         for _, name, _ in packages:
             if v["builtin"]:
                 name = __name__.split(".")[0] + "." + v["path"] + "." + name
             else:
-                name = os.path.basename(v["path"]) + "." + name
+                name = os.path.basename(v["path"]) + "." + name # pragma: no cover
             try:
                 mod = importlib.import_module(name)
                 for m in inspect.getmembers(mod, inspect.isclass):
@@ -156,11 +156,11 @@ def load_rules(args, add_rules=[], add_dirs=[]):
                             inst = m[1]()
                             if inst.ID:
                                 if _rule_file and inst.ID not in _rule_file:
-                                    continue
+                                    continue # pragma: no cover
                                 res.append(inst)
-                    except Exception:
-                        pass
-            except Exception as e:
-                if not args.quiet:
-                    print("Can't load rule {} -> {}".format(name, e))
+                    except Exception: # pragma: no cover
+                        pass # pragma: no cover
+            except Exception as e: # pragma: no cover
+                if not args.quiet: # pragma: no cover
+                    print("Can't load rule {} -> {}".format(name, e)) # pragma: no cover
     return res

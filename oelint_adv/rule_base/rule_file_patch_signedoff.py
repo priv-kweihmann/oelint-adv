@@ -24,10 +24,10 @@ class FilePatchIsSignedOff(Rule):
                         # Find matching SRC_URI assignment
                         _assign = [x for x in _items if x.VarValue.find(
                             os.path.basename(i)) != -1]
-                        if any(_assign):
+                        if any(_assign): # pragma: no cover
                             res += self.finding(_assign[0].Origin,
                                                 _assign[0].InFileLine,
                                                 self.Msg.replace("{FILE}", os.path.basename(i)))
-                except UnicodeDecodeError:
-                    pass
+                except UnicodeDecodeError: # pragma: no cover
+                    pass # pragma: no cover
         return res

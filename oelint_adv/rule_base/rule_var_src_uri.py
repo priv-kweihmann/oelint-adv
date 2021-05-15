@@ -128,7 +128,7 @@ class VarSRCUriOptions(Rule):
         _url = get_scr_components(_input)
         res = []
         if "scheme" not in _url:
-            return res
+            return res # pragma: no cover
         # For certain types of file:// url parsing fails
         # ignore those
         if _url["scheme"] not in self._valid_options.keys() and \
@@ -138,7 +138,7 @@ class VarSRCUriOptions(Rule):
         else:
             for k, _ in _url["options"].items():
                 if _url["scheme"] not in self._valid_options:
-                    continue
+                    continue # pragma: no cover
                 if k not in self._valid_options[_url["scheme"]] + self._general_options:
                     res += self.finding(i.Origin, i.InFileLine + _index,
                                         "Option '{}' is not known with this fetcher type".format(k))

@@ -27,7 +27,7 @@ class VarMisspell(Rule):
             _cleanvarname = i.VarName
             for pkg in get_valid_package_names(stash, _file, strippn=True):
                 if not pkg:
-                    continue
+                    continue # pragma: no cover
                 if _cleanvarname.endswith(pkg):
                     _cleanvarname = ''.join(_cleanvarname.rsplit(pkg, 1))
             if _cleanvarname in get_known_vars():
