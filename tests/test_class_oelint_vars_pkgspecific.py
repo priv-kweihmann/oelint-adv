@@ -38,6 +38,30 @@ class TestClassOelintVarsPKGSpecific(TestBaseClass):
         self.check_for_id(self._create_args(input), id, occurance)
 
     @pytest.mark.parametrize('id', ['oelint.vars.pkgspecific'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('var', [
+        "RDEPENDS",
+        "RRECOMMENDS",
+        "RSUGGESTS",
+        "RCONFLICTS",
+        "RPROVIDES",
+        "RREPLACES",
+        "FILES",
+        "pkg_preinst",
+        "pkg_postinst",
+        "pkg_prerm",
+        "pkg_postrm",
+        "ALLOW_EMPTY",
+    ])
+    def test_bad_append_with_bb(self, id, occurance, var):
+        input = {
+            'oelint-adv-test_1.0.bb': 'VAR = "FOO"',
+            'oelint-adv-test_1.0.bbappend': self.__generate_sample_code(var),
+        }
+        id += '.{}'.format(var)
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.pkgspecific'])
     @pytest.mark.parametrize('occurance', [0])
     @pytest.mark.parametrize('var', [
         "RDEPENDS_${PN}",
@@ -56,6 +80,29 @@ class TestClassOelintVarsPKGSpecific(TestBaseClass):
     def test_good(self, id, occurance, var):
         input = {
             'oelint_adv_test.bb': self.__generate_sample_code(var)
+        }
+        id += '.{}'.format(var)
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.pkgspecific'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('var', [
+        "RDEPENDS_foo",
+        "RRECOMMENDS_foo",
+        "RSUGGESTS_foo",
+        "RCONFLICTS_foo",
+        "RPROVIDES_foo",
+        "RREPLACES_foo",
+        "FILES_foo",
+        "pkg_preinst_foo",
+        "pkg_postinst_foo",
+        "pkg_prerm_foo",
+        "pkg_postrm_foo",
+        "ALLOW_EMPTY_foo",
+    ])
+    def test_good_bbappend(self, id, occurance, var):
+        input = {
+            'oelint_adv_test_%.bbappend': self.__generate_sample_code(var)
         }
         id += '.{}'.format(var)
         self.check_for_id(self._create_args(input), id, occurance)

@@ -14,7 +14,10 @@ class VarPkgSpecific(Rule):
 
     def check(self, _file, stash):
         res = []
-        
+
+        if self.IsLoneAppend(stash, _file):
+            return res
+       
         _packages = get_valid_package_names(stash, _file)
         items = stash.GetItemsFor(
             filename=_file, classifier=Variable.CLASSIFIER)

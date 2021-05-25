@@ -115,6 +115,24 @@ class Rule():
         """
         return self.Msg.format(*args)
 
+    def IsLoneAppend(self, stash, file):
+        """Check if the file is a bbappend file without any matching
+           bb file
+
+        Args:
+            stash {oelint_parser.cls_stash.Stash} -- Parsed stash
+            file {str} -- Path to file
+
+        Returns:
+            bool: True if bbappend has no matches in stash
+        """
+        if not file.endswith('.bbappend'):
+            return False
+        for item in stash.GetItemsFor(filename=file):
+            if any(x.endswith('.bb') for x in item.Links):
+                return False
+        return True
+
 
 def load_rules(args, add_rules=[], add_dirs=[]):
     """Load rules from set directories
