@@ -135,6 +135,7 @@ OPTION_MAPPING = {
         "tag",
         "unpack",
         "usehead",
+        "user",
     ],
     "gitsm": [
         "apply",

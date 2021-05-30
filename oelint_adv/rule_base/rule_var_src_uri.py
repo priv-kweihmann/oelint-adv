@@ -57,7 +57,8 @@ class VarSRCUriOptions(Rule):
                 "rev",
                 "subpath",
                 "tag",
-                "usehead"
+                "usehead",
+                "user"
             ],
             "gitsm": [
                 "branch",
