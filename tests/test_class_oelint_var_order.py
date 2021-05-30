@@ -73,3 +73,28 @@ class TestClassOelintVarOrder(TestBaseClass):
         except:
             pass
 
+
+    @pytest.mark.parametrize('id', ['oelint.var.order.SRCREV'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('input',
+        [
+            {
+            'oelint_adv_test.inc':
+            '''
+            SUMMARY = "..."
+            DESCRIPTION = "...
+            AUTHOR = "..."
+            HOMEPAGE = "..."
+            BUGTRACKER = "..."
+            BBCLASSEXTEND += "nativesdk"
+            ''',
+            'oelint_adv_test.bb':
+            '''
+            require oelint_adv_test.inc
+            SRCREV = "..."
+            '''
+            }
+        ],
+    )
+    def test_single_file_scope(self, id, occurance, input):
+        self.check_for_id(self._create_args(input), id, occurance)

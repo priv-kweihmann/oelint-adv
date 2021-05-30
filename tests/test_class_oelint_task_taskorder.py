@@ -285,3 +285,30 @@ class TestClassOelintTaskOrder(TestBaseClass):
     )
     def test_good_pattern(self, input, id, occurance):
         self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.task.order.do_build'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('input',
+        [
+            {
+            'oelint_adv_test.inc':
+            '''
+            do_populate_sysroot() {
+                :
+            }
+            do_package() {
+                :
+            }
+            ''',
+            'oelint_adv_test.bb':
+            '''
+            require oelint_adv_test.inc
+            do_build() {
+                :
+            }
+            '''
+            }
+        ],
+    )
+    def test_single_file_scope(self, id, occurance, input):
+        self.check_for_id(self._create_args(input), id, occurance)
