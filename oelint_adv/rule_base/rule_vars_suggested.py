@@ -1,6 +1,6 @@
 from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_parser.const_vars import get_suggested_vars
+from oelint_parser.constants import CONSTANTS
 
 
 class VarSuggestedExists(Rule):
@@ -9,7 +9,7 @@ class VarSuggestedExists(Rule):
                          severity="info",
                          message="<FOO>",
                          onappend=False,
-                         appendix=get_suggested_vars())
+                         appendix=CONSTANTS.VariablesSuggested)
 
     def check(self, _file, stash):
         res = []
@@ -19,7 +19,7 @@ class VarSuggestedExists(Rule):
             if any(x == "packagegroup" for x in i.get_items()):
                 _is_pkg_group = True
                 break
-        for var in get_suggested_vars():
+        for var in CONSTANTS.VariablesSuggested:
             if _is_pkg_group and var in ["LICENSE", "CVE_PRODUCT"]:
                 continue
             items = stash.GetItemsFor(

@@ -71,7 +71,6 @@ class TestClassOelintVarsBBVars(TestBaseClass):
             "BITBAKE_UI",
             "BUILDNAME",
             "CACHE",
-            "DEFAULT_PREFERENCE",
             "DL_DIR",
             "FILE",
             "FILESDIR",

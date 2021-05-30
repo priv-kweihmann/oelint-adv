@@ -1,13 +1,17 @@
 import argparse
-import os
-import sys
-import re
 import json
+import os
+import re
+import sys
+
+from oelint_parser.cls_stash import Stash
+from oelint_parser.constants import CONSTANTS
 
 from oelint_adv.cls_rule import load_rules
-from oelint_parser.cls_stash import Stash
 from oelint_adv.color import set_color
-from oelint_adv.rule_file import set_rulefile, set_constantfile, set_nowarn, set_noinfo
+from oelint_adv.rule_file import set_noinfo
+from oelint_adv.rule_file import set_nowarn
+from oelint_adv.rule_file import set_rulefile
 
 sys.path.append(os.path.abspath(os.path.join(__file__, "..")))
 
@@ -38,6 +42,14 @@ def create_argparser():
                         help="Don't print information level findings")
     parser.add_argument("--nowarn", action="store_true", default=False,
                         help="Don't print warning level findings")
+    parser.add_argument("--constantmods", default=[], nargs='+',
+                        help="""
+                             Modifications to the constant db.
+                             prefix with:
+                             + - to add to DB,
+                             - - to remove from DB,
+                             None - to override DB
+                            """)
     parser.add_argument("files", nargs='+', help="File to parse")
 
     return parser
@@ -57,10 +69,24 @@ def arguments_post(args):
     if args.constantfile:
         try:
             with open(args.constantfile) as i:
-                set_constantfile(json.load(i))
+                CONSTANTS.AddFromConstantFile(json.load(i))
         except (FileNotFoundError, json.JSONDecodeError):
             raise argparse.ArgumentTypeError(
                 "'constantfile' is not a valid file")
+ 
+    for mod in args.constantmods:
+        try:
+            with open(mod.lstrip('+-')) as _in:
+                _cnt = json.load(_in)
+            if mod.startswith("+"):
+                CONSTANTS.AddConstants(_cnt)
+            elif mod.startswith("-"):
+                CONSTANTS.RemoveConstants(_cnt)
+            else:
+                CONSTANTS.OverrideConstants(_cnt)
+        except (FileNotFoundError, json.JSONDecodeError):
+            raise argparse.ArgumentTypeError(
+                "mod file '{file}' is not a valid file".format(file=mod))
 
     if args.color:
         set_color(True)

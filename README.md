@@ -257,18 +257,7 @@ The severity of `oelint.file.includenotfound` will be the default of the tool, w
 
 ### Adding additional constants
 
-You can add e.g. known variable names, or known mirror replacements to the rulefile (or the constantfile).
-Just add a key with the corresponding json type to the file.
-
-| key                   | type | description                                                                          |
-|-----------------------|------|--------------------------------------------------------------------------------------|
-| known_machines        | list | Additional known machine identifiers                                                 |
-| known_mirrors         | dict | Known mirror replacements. Key is the variable name surronded by ${}, value a string |
-| known_vars            | list | Known variable name, to avoid false positives at `oelint.vars.mispell`               |
-| mandatory_vars        | list | Additional mandatory variables that should be set in a recipe                        |
-| protected_append_vars | list | Variables that shouldn't be set in a bbappend                                        |
-| protected_vars        | list | Variables that shouldn't be set inside of a recipe                                   |
-| suggested_vars        | list | Additional suggested variable that should be set in a recipe                         |
+Please see [oelint-parser](https://github.com/priv-kweihmann/oelint-parser) for further details, how to add your own constants to the parser
 
 ## vscode extension
 

@@ -1,7 +1,7 @@
+from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Function
 from oelint_parser.cls_item import TaskAdd
-from oelint_adv.cls_rule import Rule
-from oelint_parser.const_func import FUNC_ORDER
+from oelint_parser.constants import CONSTANTS
 
 
 class TaskAddNoTaskBody(Rule):
@@ -13,10 +13,10 @@ class TaskAddNoTaskBody(Rule):
     def check(self, _file, stash):
         res = []
         for item in stash.GetItemsFor(filename=_file, classifier=TaskAdd.CLASSIFIER):
-            if item.FuncName in FUNC_ORDER:
+            if item.FuncName in CONSTANTS.FunctionsOrder:
                 # not for builtin types
                 continue
-            if item.FuncName in [x.replace("do_", "", 1) for x in FUNC_ORDER]:
+            if item.FuncName in [x.replace("do_", "", 1) for x in CONSTANTS.FunctionsOrder]:
                 # not for builtin types - probed for missing prefix
                 continue
             _ta = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER,

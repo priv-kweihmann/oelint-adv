@@ -1,6 +1,6 @@
 from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Variable
-from oelint_parser.const_vars import get_mandatory_vars
+from oelint_parser.constants import CONSTANTS
 from oelint_parser.helper_files import is_image
 from oelint_parser.helper_files import is_packagegroup
 
@@ -11,7 +11,7 @@ class VarMandatoryExists(Rule):
                          severity="error",
                          message="<FOO>",
                          onappend=False,
-                         appendix=get_mandatory_vars())
+                         appendix=CONSTANTS.VariablesMandatory)
 
     IMAGE_EXCLUDES = [
         "CVE_PRODUCT",
@@ -30,7 +30,7 @@ class VarMandatoryExists(Rule):
         res = []
         _is_pkg_group = is_packagegroup(stash, _file)
         _is_image = is_image(stash, _file)
-        for var in get_mandatory_vars():
+        for var in CONSTANTS.VariablesMandatory:
             if _is_pkg_group and var in VarMandatoryExists.PACKAGEGRP_EXCLUDES:
                 continue
             if _is_image and var in VarMandatoryExists.IMAGE_EXCLUDES:

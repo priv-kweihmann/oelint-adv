@@ -1,6 +1,6 @@
 from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_parser.const_vars import get_known_vars
+from oelint_parser.constants import CONSTANTS
 from oelint_parser.helper_files import get_valid_package_names
 from difflib import SequenceMatcher
 
@@ -30,7 +30,7 @@ class VarMisspell(Rule):
                     continue # pragma: no cover
                 if _cleanvarname.endswith(pkg):
                     _cleanvarname = ''.join(_cleanvarname.rsplit(pkg, 1))
-            if _cleanvarname in get_known_vars():
+            if _cleanvarname in CONSTANTS.VariablesKnown:
                 continue
             _used = False
             for a in _all:
@@ -41,7 +41,7 @@ class VarMisspell(Rule):
                     break
             if _used:
                 continue
-            _bestmatch = self.get_best_match(_cleanvarname, get_known_vars())
+            _bestmatch = self.get_best_match(_cleanvarname, CONSTANTS.VariablesKnown)
             if _bestmatch:
                 res += self.finding(i.Origin, i.InFileLine,
                                     "'{}' is unknown, maybe you mean '{}'".format(

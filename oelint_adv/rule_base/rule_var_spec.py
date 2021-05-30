@@ -3,7 +3,7 @@ import re
 from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
 from oelint_parser.helper_files import get_valid_package_names, get_valid_named_resources
-from oelint_parser.const_vars import get_known_machines
+from oelint_parser.constants import CONSTANTS
 
 
 class VarPnBpnUsage(Rule):
@@ -26,7 +26,7 @@ class VarPnBpnUsage(Rule):
             _machine = i.GetMachineEntry()
             if not _machine:
                 continue
-            if _machine in _packages or _machine in _named_res or _machine in get_known_machines():
+            if _machine in _packages or _machine in _named_res or _machine in CONSTANTS.MachinesKnown:
                 continue
             if _comp and re.match("".join(x.VarValueStripped for x in _comp), _machine):
                 continue

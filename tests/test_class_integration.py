@@ -1,4 +1,5 @@
 from argparse import ArgumentTypeError
+import argparse
 import os
 import sys
 
@@ -29,6 +30,114 @@ class TestClassIntegration(TestBaseClass):
         assert(any(Fore.RED in x for x in issues)), '{} expected in:\n{}'.format("red", '\n'.join(issues))
         assert(any(Fore.YELLOW in x for x in issues)), '{} expected in:\n{}'.format("yellow", '\n'.join(issues))
         assert(any(Fore.GREEN in x for x in issues)), '{} expected in:\n{}'.format("green", '\n'.join(issues))
+
+    @pytest.mark.parametrize('input',
+        [
+            {
+            'oelint adv-test.bb':
+            '''
+            VAR = "1"
+            '''
+            }
+        ],
+    )
+    def test_constmod_add(self, input):
+        from oelint_adv.__main__ import run
+        from oelint_parser.constants import CONSTANTS
+        __cnt = """
+        {
+            "functions": {
+                "known": [
+                    "do_foo_bar"
+                ]
+            }
+        }
+        """
+        _extra_opts = ["--constantmod=+{}".format(self._create_tempfile('constmod', __cnt))]
+        _args = self._create_args(input, extraopts=_extra_opts)
+
+        assert("do_foo_bar" in CONSTANTS.FunctionsKnown)
+
+
+    @pytest.mark.parametrize('input',
+        [
+            {
+            'oelint adv-test.bb':
+            '''
+            VAR = "1"
+            '''
+            }
+        ],
+    )
+    def test_constmod_remove(self, input):
+        from oelint_adv.__main__ import run
+        from oelint_parser.constants import CONSTANTS
+        __cnt = """
+        {
+            "functions": {
+                "known": [
+                    "do_ar_patched"
+                ]
+            }
+        }
+        """
+        _extra_opts = ["--constantmod=-{}".format(self._create_tempfile('constmod', __cnt))]
+        _args = self._create_args(input, extraopts=_extra_opts)
+
+        assert("do_ar_patched" not in CONSTANTS.FunctionsKnown)
+
+    @pytest.mark.parametrize('input',
+        [
+            {
+            'oelint adv-test.bb':
+            '''
+            VAR = "1"
+            '''
+            }
+        ],
+    )
+    def test_constmod_override(self, input):
+        from oelint_adv.__main__ import run
+        from oelint_parser.constants import CONSTANTS
+        __cnt = """
+        {
+            "functions": {
+                "known": [
+                    "do_ar_patched"
+                ]
+            }
+        }
+        """
+        _extra_opts = ["--constantmod={}".format(self._create_tempfile('constmod', __cnt))]
+        _args = self._create_args(input, extraopts=_extra_opts)
+
+        assert(["do_ar_patched"] == CONSTANTS.FunctionsKnown)
+
+    @pytest.mark.parametrize('input',
+        [
+            {
+            'oelint adv-test.bb':
+            '''
+            VAR = "1"
+            '''
+            }
+        ],
+    )
+    def test_constmod_corrupt(self, input):
+        from oelint_adv.__main__ import run
+        from oelint_parser.constants import CONSTANTS
+        __cnt = """
+        {
+            "functions": 
+                "known": [
+                    "do_ar_patched"
+                ]
+            }
+        }
+        """
+        _extra_opts = ["--constantmod={}".format(self._create_tempfile('constmod', __cnt))]
+        with pytest.raises(argparse.ArgumentTypeError):
+            _args = self._create_args(input, extraopts=_extra_opts)
 
     @pytest.mark.parametrize('id', ['oelint.var.override'])
     @pytest.mark.parametrize('occurance', [0])

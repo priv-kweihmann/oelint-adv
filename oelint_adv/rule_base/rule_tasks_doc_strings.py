@@ -1,7 +1,7 @@
 from oelint_parser.cls_item import Function
 from oelint_parser.cls_item import TaskAssignment
 from oelint_adv.cls_rule import Rule
-from oelint_parser.const_func import KNOWN_FUNCS
+from oelint_parser.constants import CONSTANTS
 
 
 class TaskDocStrings(Rule):
@@ -13,7 +13,7 @@ class TaskDocStrings(Rule):
     def check(self, _file, stash):
         res = []
         for item in stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER):
-            if item.FuncName in KNOWN_FUNCS or not item.FuncName:
+            if item.FuncName in CONSTANTS.FunctionsKnown or not item.FuncName:
                 # Skip for buildin tasks or anonymous python functions
                 continue
             if item.IsAppend():
