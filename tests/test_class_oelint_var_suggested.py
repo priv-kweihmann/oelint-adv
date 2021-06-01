@@ -31,6 +31,23 @@ class TestClassOelintVarSuggestedVar(TestBaseClass):
         id += '.{}'.format(var)
         self.check_for_id(self._create_args(input), id, occurance)
 
+    @pytest.mark.parametrize('id', ['oelint.var.suggestedvar.CVE_PRODUCT'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('input', 
+        [
+            {
+            'oelint-adv_test.bb':
+            '''
+            VAR = "a"
+            '''
+            },
+        ]
+    )
+    def test_suppress(self, id, occurance, input):
+        _x = self._create_args(input, extraopts=["--suppress", id])
+        self.check_for_id(_x, id, occurance)
+        self.check_for_id(_x, 'oelint.var.suggestedvar.BUGTRACKER', 1)
+
     @pytest.mark.parametrize('id', [
         'oelint.var.suggestedvar.AUTHOR',
         'oelint.var.suggestedvar.BUGTRACKER',

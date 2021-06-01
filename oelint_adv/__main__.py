@@ -12,6 +12,7 @@ from oelint_adv.color import set_color
 from oelint_adv.rule_file import set_noinfo
 from oelint_adv.rule_file import set_nowarn
 from oelint_adv.rule_file import set_rulefile
+from oelint_adv.rule_file import set_suppressions
 
 sys.path.append(os.path.abspath(os.path.join(__file__, "..")))
 
@@ -94,6 +95,7 @@ def arguments_post(args):
         set_nowarn(True)
     if args.noinfo:
         set_noinfo(True)
+    set_suppressions(args.suppress)
     return args
 
 
@@ -140,8 +142,6 @@ def run(args):
     try:
         rules = [x for x in load_rules(args,
             add_rules=args.addrules, add_dirs=args.customrules)]
-        # filter out suppressions
-        rules = [x for x in rules if not any(y in args.suppress for y in x.GetIDs())]
         _loadedIDs = []
         for r in rules:
             _loadedIDs += r.GetIDs()

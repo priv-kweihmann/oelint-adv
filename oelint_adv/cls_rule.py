@@ -7,7 +7,7 @@ import sys
 from colorama import Fore, Style
 
 from oelint_adv.color import get_color
-from oelint_adv.rule_file import get_rulefile, get_noinfo, get_nowarn
+from oelint_adv.rule_file import get_rulefile, get_noinfo, get_nowarn, get_suppressions
 
 
 class Rule():
@@ -78,6 +78,9 @@ class Rule():
         _id = self.ID
         if appendix:
             _id += "." + appendix
+        # filter out suppressions
+        if _id in get_suppressions():
+            return []
         if _rule_file and self.ID in _rule_file:
             _severity = _rule_file[self.ID] or self.Severity # pragma: no cover
         if _severity == "info" and get_noinfo():
