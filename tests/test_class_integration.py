@@ -139,6 +139,34 @@ class TestClassIntegration(TestBaseClass):
         with pytest.raises(argparse.ArgumentTypeError):
             _args = self._create_args(input, extraopts=_extra_opts)
 
+    @pytest.mark.parametrize('input',
+        [
+            {
+            'oelint adv-test.bb':
+            '''
+            VAR = "1"
+            '''
+            }
+        ],
+    )
+    def test_rulefile_and_subrules(self, input):
+        from oelint_adv.__main__ import run
+        from oelint_parser.constants import CONSTANTS
+        __cnt = """
+        {
+            "oelint.var.suggestedvar": "info",
+            "oelint.var.suggestedvar.AUTHOR": "error",
+            "oelint.var.suggestedvar.BBCLASSEXTEND": "error",
+            "oelint.var.suggestedvar.BUGTRACKER": "error",
+            "oelint.var.suggestedvar.SECTION": "error",
+            "oelint.var.suggestedvar.CVE_PRODUCT": "info"
+        }
+        """
+        _extra_opts = ["--rulefile={}".format(self._create_tempfile('rulefile', __cnt)), '--noinfo']
+        self.check_for_id(self._create_args(input, _extra_opts), 'oelint.var.suggestedvar.CVE_PRODUCT', 0)
+        self.check_for_id(self._create_args(input, _extra_opts), 'oelint.var.suggestedvar.BBCLASSEXTEND', 1)
+
+
     @pytest.mark.parametrize('id', ['oelint.var.override'])
     @pytest.mark.parametrize('occurance', [0])
     @pytest.mark.parametrize('input', 

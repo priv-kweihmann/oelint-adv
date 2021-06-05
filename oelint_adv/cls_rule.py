@@ -81,8 +81,8 @@ class Rule():
         # filter out suppressions
         if _id in get_suppressions():
             return []
-        if _rule_file and self.ID in _rule_file:
-            _severity = _rule_file[self.ID] or self.Severity # pragma: no cover
+        if _rule_file and _id in _rule_file:
+            _severity = _rule_file[_id] or self.Severity
         if _severity == "info" and get_noinfo():
             return []
         if _severity == "warning" and get_nowarn():
