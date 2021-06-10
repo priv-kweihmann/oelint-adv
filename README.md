@@ -41,12 +41,10 @@ yay -S oelint-adv
 
 ```shell
 oelint-adv
-usage: __main__.py [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix]
-                   [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
-                   [--customrules CUSTOMRULES [CUSTOMRULES ...]]
-                   [--rulefile RULEFILE] [--constantfile CONSTANTFILE]
-                   [--color]
-                   files [files ...]
+usage: oelint-adv [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix] [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
+                  [--customrules CUSTOMRULES [CUSTOMRULES ...]] [--rulefile RULEFILE] [--constantfile CONSTANTFILE] [--color] [--quiet] [--noinfo] [--nowarn]
+                  [--constantmods CONSTANTMODS [CONSTANTMODS ...]]
+                  files [files ...]
 
 Advanced OELint - Check bitbake recipes against OECore styleguide
 
@@ -67,6 +65,11 @@ optional arguments:
   --constantfile CONSTANTFILE
                         Constantfile
   --color               Add color to the output based on the severity
+  --quiet               Print findings only
+  --noinfo              Don't print information level findings
+  --nowarn              Don't print warning level findings
+  --constantmods CONSTANTMODS [CONSTANTMODS ...]
+                        Modifications to the constant db. prefix with: + - to add to DB, - - to remove from DB, None - to override DB
 ```
 
 ## Output
