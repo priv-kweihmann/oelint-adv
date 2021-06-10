@@ -18,7 +18,7 @@ sys.path.append(os.path.abspath(os.path.join(__file__, "..")))
 
 
 def create_argparser():
-    parser = argparse.ArgumentParser(
+    parser = argparse.ArgumentParser(prog='oelint-adv',
         description='Advanced OELint - Check bitbake recipes against OECore styleguide')
     parser.add_argument("--suppress", default=[],
                         action="append", help="Rules to suppress")
