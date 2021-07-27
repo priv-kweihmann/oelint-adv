@@ -74,7 +74,7 @@ optional arguments:
 
 ## Output
 
-Will be [file]:[line]:[severity]:[message].
+Will be [file]:[line]:[severity]:[id]:[message].
 
 Example:
 
