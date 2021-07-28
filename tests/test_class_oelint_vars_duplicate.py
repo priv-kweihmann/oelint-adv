@@ -71,6 +71,14 @@ class TestClassOelintVarsDuplicate(TestBaseClass):
             DEPENDS_remove = "foo"
             '''
             },
+            {
+            'oelint_adv_test.bb':
+            '''
+            DEPENDS += "a (>= 1.2.3)"
+            DEPENDS += "b (>= 1.2.3)"
+            '''
+            },
+
         ],
     )
     def test_good(self, input, id, occurance):

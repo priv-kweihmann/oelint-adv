@@ -90,6 +90,13 @@ class TestClassOelintVarsDependsOrdered(TestBaseClass):
             "
             '''
             },
+            {
+            'oelint_adv_test.bb':
+            '''
+            DEPENDS += "a (>= 1.2.3) \\
+                        b (>= 4.5.6)"
+            '''
+            },
         ],
     )
     def test_good(self, input, id, occurance):

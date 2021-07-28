@@ -15,7 +15,7 @@ class VarDuplicates(Rule):
                                       attribute=Variable.ATTR_VAR, attributeValue=c)
             _items = {}
             for i in items:
-                for x in [y for y in i.get_items() if y]:
+                for x in [y for y in i.get_items(versioned=True) if y]:
                     machine_mods = i.SubItems
                     machine_mods_cleaned = "_".join(
                         sorted([x for x in machine_mods if x not in ["append", "prepend", "remove"]]))
