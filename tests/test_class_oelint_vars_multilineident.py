@@ -85,6 +85,13 @@ class TestClassOelintVarsMultilineIdent(TestBaseClass):
             "
             '''
             },
+            {
+            'oelint_adv_test.bb':
+            '''
+            A = "\\
+            "
+            '''
+            },
         ],
     )
     def test_good(self, input, id, occurance):

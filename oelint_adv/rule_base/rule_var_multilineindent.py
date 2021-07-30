@@ -17,6 +17,9 @@ class VarMultiLineIndent(Rule):
             _map[index] = len(value) - len(value.lstrip())
         _distribution = {x:list(_map.values()).count(x) for x in set(_map.values())}
 
+        if not any(_distribution):
+            return (0, list(_map.values()))
+
         return (max(_distribution, key=lambda x: _distribution[x]), list(_map.values()))
 
     def check(self, _file, stash):
