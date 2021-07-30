@@ -66,6 +66,13 @@ class TestClassOelintJetmDependsSingleLine(TestBaseClass):
             RDEPENDS_${PN} += "jkl"
             '''
             },
+            {
+            'oelint_adv_test.bb':
+            '''
+            DEPENDS += "abc (>= 1.2.3)"
+            DEPENDS += "def (<= 4.5.6)"
+            '''
+            },
         ],
     )
     def test_good(self, input, id, occurance):
