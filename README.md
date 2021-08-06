@@ -41,9 +41,13 @@ yay -S oelint-adv
 
 ```shell
 oelint-adv
-usage: oelint-adv [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix] [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
-                  [--customrules CUSTOMRULES [CUSTOMRULES ...]] [--rulefile RULEFILE] [--constantfile CONSTANTFILE] [--color] [--quiet] [--noinfo] [--nowarn]
+usage: oelint-adv [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix]
+                  [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
+                  [--customrules CUSTOMRULES [CUSTOMRULES ...]]
+                  [--rulefile RULEFILE] [--constantfile CONSTANTFILE]
+                  [--color] [--quiet] [--noinfo] [--nowarn]
                   [--constantmods CONSTANTMODS [CONSTANTMODS ...]]
+                  [--exit-zero]
                   files [files ...]
 
 Advanced OELint - Check bitbake recipes against OECore styleguide
@@ -69,7 +73,12 @@ optional arguments:
   --noinfo              Don't print information level findings
   --nowarn              Don't print warning level findings
   --constantmods CONSTANTMODS [CONSTANTMODS ...]
-                        Modifications to the constant db. prefix with: + - to add to DB, - - to remove from DB, None - to override DB
+                        Modifications to the constant db. prefix with: + - to
+                        add to DB, - - to remove from DB, None - to override
+                        DB
+  --exit-zero           Always return a 0 (non-error) status code, even if
+                        lint errors are found
+
 ```
 
 ## Output
