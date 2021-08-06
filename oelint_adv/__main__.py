@@ -51,6 +51,8 @@ def create_argparser():
                              - - to remove from DB,
                              None - to override DB
                             """)
+    parser.add_argument("--exit-zero", action="store_true", default=False,
+        help="Always return a 0 (non-error) status code, even if lint errors are found")
     parser.add_argument("files", nargs='+', help="File to parse")
 
     return parser
@@ -74,7 +76,7 @@ def arguments_post(args):
         except (FileNotFoundError, json.JSONDecodeError):
             raise argparse.ArgumentTypeError(
                 "'constantfile' is not a valid file")
- 
+
     for mod in args.constantmods:
         try:
             with open(mod.lstrip('+-')) as _in:
@@ -130,7 +132,7 @@ def group_files(files):
             if not _filename_key in res: # pragma: no cover
                 res[_filename_key] = set()
             res[_filename_key].add(f)
-    
+
     # as sets are unordered, we convert them to sorted lists at this point
     # order is like the files have been passed via CLI
     for k, v in res.items():
@@ -201,7 +203,9 @@ def main():  # pragma: no cover
     args.output.write("\n".join([x[1] for x in issues]) + "\n")
     if args.output != sys.stderr:
         args.output.close()
-    sys.exit(len(issues))
+
+    exit_code = len(issues) if not args.exit_zero else 0
+    sys.exit(exit_code)
 
 if __name__ == '__main__':
     main()  # pragma: no cover
