@@ -581,3 +581,18 @@ class TestClassIntegration(TestBaseClass):
         ))
         issues = [x[1] for x in run(_args)]
         assert(not any(issues))
+
+    @pytest.mark.parametrize('input',
+        [
+            {
+            'oelint adv-test.bb':
+            '''
+            VAR = "1"
+            INSANE_SKIP_${PN} = "foo"
+            '''
+            }
+        ],
+    )
+    def test_exit_zero(self, input):
+        _args = self._create_args(input, extraopts=["--exit-zero"])
+        assert(_args.exit_zero)
