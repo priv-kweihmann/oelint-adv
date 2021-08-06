@@ -37,7 +37,7 @@ jobs:
         tar -tvf dist/oelint_adv-*.tar.gz | grep LICENSE
         tar -tvf dist/oelint_adv-*.tar.gz | grep README.md
       shell: bash
-    - if: matrix.python-version == 3.7
+    - if: matrix.python-version == 3.7 && github.repository == 'priv-kweihmann/oelint-adv'
       name: Trigger nittymcpick-oelint
       run: |
         echo '{"event_type": "dep-change-oelint", "client_payload": { "repository": "'$GITHUB_REPOSITORY'" }}' > payload.json
