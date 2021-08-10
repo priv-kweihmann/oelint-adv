@@ -275,6 +275,10 @@ Please see [oelint-parser](https://github.com/priv-kweihmann/oelint-parser) for 
 
 Find the extension in the [marketplace](https://marketplace.visualstudio.com/items?itemName=kweihmann.oelint-vscode), or search for `oelint-vscode`
 
+## Jenkins integration
+
+Jenkins integration is provided by [warnings-ng](https://plugins.jenkins.io/warnings-ng/).
+
 ## Missing anything?
 
 You think there's something missing, wrong, 'improveable'...
