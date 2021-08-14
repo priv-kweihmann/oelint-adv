@@ -30,15 +30,15 @@ class TestClassOelintVarsDependsOrdered(TestBaseClass):
             {
             'oelint_adv_test.bb':
             '''
-            RDEPENDS_${PN} += "zzz \\
+            RDEPENDS:${PN} += "zzz \\
                         xyz"
             '''
             },
             {
             'oelint_adv_test.bb':
             '''
-            RDEPENDS_${PN} += "foo"
-            RDEPENDS_${PN} += "bar"
+            RDEPENDS:${PN} += "foo"
+            RDEPENDS:${PN} += "bar"
             '''
             },
         ],
@@ -67,25 +67,25 @@ class TestClassOelintVarsDependsOrdered(TestBaseClass):
             {
             'oelint_adv_test.bb':
             '''
-            RDEPENDS_${PN} += "bar"
-            RDEPENDS_${PN} += "foo"
+            RDEPENDS:${PN} += "bar"
+            RDEPENDS:${PN} += "foo"
             '''
             },
             {
             'oelint_adv_test.bb':
             '''
-            RDEPENDS_${PN} += "xyz \\
+            RDEPENDS:${PN} += "xyz \\
                         zzz"
             '''
             },
             {
             'oelint_adv_test.bb':
             '''
-            DEPENDS_class-native += "\\
+            DEPENDS:class-native += "\\
                 rubygems-mini-portile2-native \\
                 rubygems-racc-native \\
             "
-            DEPENDS_class-target += "\\
+            DEPENDS:class-target += "\\
                 rubygems-mini-portile2 \\
             "
             '''
@@ -96,6 +96,36 @@ class TestClassOelintVarsDependsOrdered(TestBaseClass):
             DEPENDS += "a (>= 1.2.3) \\
                         b (>= 4.5.6)"
             '''
+            },
+            {
+            'recipes/oelint_adv_test.bb':
+            '''
+            DEPENDS:append = " z"
+            inherit foo
+            ''',
+            'conf/layer.conf':
+            '''
+            
+            ''',
+            'classes/foo.bbclass':
+            '''
+            DEPENDS:append = " a"
+            ''', 
+            },
+                        {
+            'recipes/oelint_adv_test.bb':
+            '''
+            RDEPENDS:${PN}:append = " z"
+            inherit foo
+            ''',
+            'conf/layer.conf':
+            '''
+            
+            ''',
+            'classes/foo.bbclass':
+            '''
+            RDEPENDS:${PN}:append = " a"
+            ''', 
             },
         ],
     )
