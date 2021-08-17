@@ -75,6 +75,21 @@ class TestClassOelintVarsSRCURIfile(TestBaseClass):
             SRC_URI[sha256sum] = "file://abc"
             '''
             },
+            {
+            'recipes/oelint_adv_test.bb':
+            '''
+            A = "1"
+            inherit foo
+            ''',
+            'conf/layer.conf':
+            '''
+            
+            ''',
+            'classes/foo.bbclass':
+            '''
+            SRC_URI ?= "https://some.corp.org/${PN}"
+            ''',
+            },
         ],
     )
     def test_good(self, input, id, occurance):

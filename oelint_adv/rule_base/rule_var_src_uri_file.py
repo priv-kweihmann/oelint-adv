@@ -26,7 +26,8 @@ class VarSRCUriGitTag(Rule):
                     _fetcher.append(("inline", i.InFileLine))
                     continue
                 _url = get_scr_components(x)
-                _fetcher.append((_url["scheme"], i.InFileLine))
+                if _url["scheme"]:
+                    _fetcher.append((_url["scheme"], i.InFileLine))
         if _fetcher:
             if any(x[0] != "file" for x in _fetcher) and _fetcher[0][0] == "file":
                 res += self.finding(i.Origin, _fetcher[0][1])
