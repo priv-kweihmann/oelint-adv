@@ -39,6 +39,13 @@ class TestClassOelintJetmDependsSingleLine(TestBaseClass):
                 jkl"
             '''
             },
+            {
+            'oelint_adv_test.bb':
+            '''
+            RDEPENDS:${PN} += "ghi \\
+                jkl"
+            '''
+            },
         ],
     )
     def test_bad(self, input, id, occurance):

@@ -55,6 +55,7 @@ class TestClassOelintVarsSpecific(TestBaseClass):
             A_append_fooarch = " abc"
             COMPATIBLE_MACHINE += "|bar"
             B_bararch += "abc"
+            PACKAGES =+ "${PN}-httpd ${PN}-syslog ${PN}-mdev ${PN}-udhcpd ${PN}-udhcpc ${PN}-hwclock"
             FILES_${PN}-httpd = "${sysconfdir}/init.d/busybox-httpd /srv/www"
             FILES_${PN}-syslog = "${sysconfdir}/init.d/syslog* ${sysconfdir}/syslog-startup.conf* ${sysconfdir}/syslog.conf* ${systemd_unitdir}/system/syslog.service ${sysconfdir}/default/busybox-syslog"
             FILES_${PN}-mdev = "${sysconfdir}/init.d/mdev ${sysconfdir}/mdev.conf ${sysconfdir}/mdev/*"

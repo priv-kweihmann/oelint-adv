@@ -11,10 +11,9 @@ class VarFilesOverride(Rule):
 
     def check(self, _file, stash):
         res = []
-        items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER, 
-                                  attribute=Variable.ATTR_VAR)
+        items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER)
         for i in items:
-            if not i.VarName.startswith("FILES_") or i.VarName in ["FILES_SOLIBSDEV"]:
+            if i.VarName not in ["FILES"]:
                 continue
             if not i.AppendOperation():
                 res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.format(i.VarName))

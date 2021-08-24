@@ -23,7 +23,7 @@ class VarDependsOrdered(Rule):
         # ignore the settings from bbclasses
         items = [x for x in items if not x.Origin.endswith(".bbclass")]
         _keys = set(x.VarName for x in items if re.match(
-            r"DEPENDS|RDEPENDS_.*|RDEPENDS", x.VarName))
+            r"DEPENDS|RDEPENDS", x.VarName))
         _filegroups = set(x.Origin for x in items)
 
         for _file in _filegroups:

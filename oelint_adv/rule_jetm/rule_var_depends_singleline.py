@@ -15,7 +15,7 @@ class VarDependsSingleLine(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue="DEPENDS")
         items += stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                   attribute=Variable.ATTR_VAR, attributeValue="RDEPENDS_${PN}")
+                                   attribute=Variable.ATTR_VAR, attributeValue="RDEPENDS")
         
         for i in items:
             if len(i.get_items(versioned=True)) > 1:

@@ -1,6 +1,6 @@
 from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_parser.helper_files import get_valid_package_names
+from oelint_parser.helper_files import get_valid_package_names, expand_term
 
 
 class VarPkgSpecific(Rule):
@@ -9,7 +9,7 @@ class VarPkgSpecific(Rule):
                    'FILES', 'pkg_preinst', 'pkg_postinst', 'pkg_prerm', 'pkg_postrm', 'ALLOW_EMPTY']
         super().__init__(id="oelint.vars.pkgspecific",
                          severity="error",
-                         message="Variable {VAR} is package-specific and therefore it should be {VAR}_${PN}",
+                         message="Variable {VAR} is package-specific and therefore it should be {VAR}_${PN} or {VAR}:${PN}",
                          appendix=self.needles)
 
     def check(self, _file, stash):
@@ -18,15 +18,17 @@ class VarPkgSpecific(Rule):
         if self.IsLoneAppend(stash, _file):
             return res
        
-        _packages = get_valid_package_names(stash, _file)
+        _packages = list(get_valid_package_names(stash, _file))
         items = stash.GetItemsFor(
             filename=_file, classifier=Variable.CLASSIFIER)
         for i in items:
             if i.VarName == "inherit":
                 continue
             if i.VarName in self.needles:
-                _machine = i.GetMachineEntry()
-                if not _machine or _machine not in _packages:
+                _machine = []
+                if i.GetMachineEntry():
+                    _machine = [i.GetMachineEntry(), expand_term(stash, _file, i.GetMachineEntry())]
+                if not _machine or not any(x in _packages for x in _machine):
                     res += self.finding(i.Origin, i.InFileLine,
                                         override_msg=self.Msg.replace("{VAR}", i.VarName), appendix=i.VarName)
         return res

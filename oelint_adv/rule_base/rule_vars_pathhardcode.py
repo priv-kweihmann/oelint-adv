@@ -36,7 +36,7 @@ class VarsPathHardcode(Rule):
         
         for i in items:
             if isinstance(i, Variable) and \
-               i.VarName in ["SUMMARY", "DESCRIPTION", "HOMEPAGE", "AUTHOR", "BUGTRACKER", "FILES", "FILES_${PN}"]:
+               i.VarName in ["SUMMARY", "DESCRIPTION", "HOMEPAGE", "AUTHOR", "BUGTRACKER", "FILES"]:
                 continue
             if isinstance(i, Comment):
                 continue

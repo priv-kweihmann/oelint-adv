@@ -29,7 +29,7 @@ class VarMisspell(Rule):
                 if not pkg:
                     continue # pragma: no cover
                 if _cleanvarname.endswith(pkg):
-                    _cleanvarname = ''.join(_cleanvarname.rsplit(pkg, 1))
+                    _cleanvarname = ''.join(_cleanvarname.rsplit(pkg, 1)) # pragma: no cover
             if _cleanvarname in CONSTANTS.VariablesKnown:
                 continue
             _used = False

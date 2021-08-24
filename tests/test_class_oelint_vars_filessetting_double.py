@@ -26,7 +26,19 @@ class TestClassOelintVarsFileSettingsDouble(TestBaseClass):
             FILES_${PN} += "${bindir}"
             FILES_${PN}-ping = "${base_bindir}/ping.${BPN}"
             '''
-            }
+            },
+            {
+            'oelint_adv_test.bb':
+            '''
+            FILES_${PN} += "${bindir}"
+            '''
+            },
+            {
+            'oelint_adv_test.bb':
+            '''
+            FILES_${PN}-doc += "${docdir}"
+            '''
+            },
         ],
     )
     def test_bad(self, input, id, occurance):

@@ -12,9 +12,9 @@ class VarUnneededFilesSetting(Rule):
     def __find_match_from_stash(self, _file, stash, variable, needle, msg, appendix, onappendonly=False):
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                  attribute=Variable.ATTR_VAR, attributeValue=variable)
+                                  attribute=Variable.ATTR_VAR, attributeValue="FILES")
         for i in items:
-            if needle in i.VarValue and "remove" not in i.SubItems: # pragma: no cover
+            if variable in i.SubItems and "remove" not in i.SubItems and needle in i.VarValue: # pragma: no cover
                 if (onappendonly and i.IsAppend()) or (not onappendonly):
                     res += self.finding(i.Origin, i.InFileLine, override_msg=msg, appendix=appendix)
         return res
@@ -32,17 +32,17 @@ class VarUnneededFilesSetting(Rule):
                     # double setting in FILES
                     if len([x for x in _pattern if x == _p]) > 1:
                         # try to find with both unexpanded and expanded values
-                        res += self.__find_match_from_stash(_file, stash, _convfiles, _p, 
+                        res += self.__find_match_from_stash(_file, stash, p.replace(_expanded["PN"][0], "${PN}"), _p, 
                                                             "{} is already set by default or in this recipe".format(_p), "double", True)
-                        res += self.__find_match_from_stash(_file, stash, _files, _p, 
+                        res += self.__find_match_from_stash(_file, stash, p, _p, 
                                                             "{} is already set by default or in this recipe".format(_p), "double", True)
                     # useless as hidden by previous package
                     if _p in _seenpath.keys() and _seenpath[_p] != _convfiles:
                         # try to find with both unexpanded and expanded values
-                        res += self.__find_match_from_stash(_file, stash, _convfiles, _p, 
+                        res += self.__find_match_from_stash(_file, stash, p.replace(_expanded["PN"][0], "${PN}"), _p, 
                                                             "{} is already covered by {}".format(_p, _seenpath[_p]),
                                                             "hidden")
-                        res += self.__find_match_from_stash(_file, stash, _files, _p, 
+                        res += self.__find_match_from_stash(_file, stash, p, _p, 
                                                             "{} is already covered by {}".format(_p, _seenpath[_p]),
                                                             "hidden")
                     _seenpath[_p] = _convfiles

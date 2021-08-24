@@ -12,7 +12,7 @@ class VarListAppend(Rule):
         res = []
         items = stash.GetItemsFor(
             filename=_file, classifier=Variable.CLASSIFIER)
-        needles = ["PACKAGES", "SRC_URI", "FILES_", "RDEPENDS_", "DEPENDS"]
+        needles = ["PACKAGES", "SRC_URI", "FILES", "RDEPENDS", "DEPENDS"]
 
         for i in items:
             if not any(i.VarName.startswith(x) for x in needles):
