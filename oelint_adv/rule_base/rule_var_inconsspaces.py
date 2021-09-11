@@ -15,8 +15,6 @@ class VarInconSpaces(Rule):
         for i in items:
             app_operation = i.AppendOperation()
             _stripped = i.VarValueStripped.lstrip(chr(0x1b))
-            import logging
-            logging.warning(_stripped)
             # allow 'spaceless' append to FILESEXTRAPATHS as there is 
             # no operation which supports the combination of
             # append + :=
