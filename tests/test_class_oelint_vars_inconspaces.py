@@ -25,6 +25,14 @@ class TestClassOelintVarsInconSpaces(TestBaseClass):
             VAR_append = "fhhh"
             '''
             },
+                        {
+            'oelint_adv_test.bb':
+            '''
+            RDEPENDS:${PN}-ptest:append:libc-glibc = "\\
+            locale-base-en-us.iso-8859-1 \\
+            "
+            '''
+            },
         ],
     )
     def test_bad(self, input, id, occurance):
@@ -46,10 +54,18 @@ class TestClassOelintVarsInconSpaces(TestBaseClass):
             VAR_append = " fhhh"
             '''
             },
-                        {
+            {
             'oelint_adv_test.bb':
             '''
             FILESEXTRAPATHS_append := "foo:"
+            '''
+            },
+            {
+            'oelint_adv_test.bb':
+            '''
+            RDEPENDS:${PN}-ptest:append:libc-glibc = "\\
+                locale-base-en-us.iso-8859-1 \\
+            "
             '''
             },
         ],

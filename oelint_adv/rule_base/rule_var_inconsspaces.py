@@ -14,16 +14,19 @@ class VarInconSpaces(Rule):
             filename=_file, classifier=Variable.CLASSIFIER)
         for i in items:
             app_operation = i.AppendOperation()
+            _stripped = i.VarValueStripped.lstrip(chr(0x1b))
+            import logging
+            logging.warning(_stripped)
             # allow 'spaceless' append to FILESEXTRAPATHS as there is 
-            # now operation which supports the combination of
+            # no operation which supports the combination of
             # append + :=
-            if "append" in app_operation and not i.VarValueStripped.startswith(" ") and \
+            if "append" in app_operation and not _stripped.startswith(" ") and \
                i.VarName in ["FILESEXTRAPATHS"]:
                continue
-            if " += " in app_operation and i.VarValueStripped.startswith(" "):
+            if " += " in app_operation and _stripped.startswith(" "):
                 res += self.finding(i.Origin, i.InFileLine,
                                     "Assignment should be 'VAR += \"foo\"' not 'VAR += \" foo\"'")
-            if "append" in app_operation and not i.VarValueStripped.startswith(" "):
+            if "append" in app_operation and not _stripped.startswith(" "):
                 res += self.finding(i.Origin, i.InFileLine,
                                     "Assignment should be 'VAR_append = \" foo\"' not 'VAR_append = \"foo\"'")
         return res
