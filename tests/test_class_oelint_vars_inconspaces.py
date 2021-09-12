@@ -68,6 +68,14 @@ class TestClassOelintVarsInconSpaces(TestBaseClass):
             "
             '''
             },
+                        {
+            'oelint_adv_test.bb':
+            '''
+            A += "\\
+                foo \\
+            "
+            '''
+            },
         ],
     )
     def test_good(self, input, id, occurance):

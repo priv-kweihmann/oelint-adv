@@ -21,7 +21,7 @@ class VarInconSpaces(Rule):
             if "append" in app_operation and not _stripped.startswith(" ") and \
                i.VarName in ["FILESEXTRAPATHS"]:
                continue
-            if " += " in app_operation and _stripped.startswith(" "):
+            if " += " in app_operation and i.VarValueStripped.startswith(" "):
                 res += self.finding(i.Origin, i.InFileLine,
                                     "Assignment should be 'VAR += \"foo\"' not 'VAR += \" foo\"'")
             if "append" in app_operation and not _stripped.startswith(" "):
