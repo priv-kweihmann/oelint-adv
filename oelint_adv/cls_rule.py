@@ -75,14 +75,19 @@ class Rule():
             override_msg = self.Msg
         _severity = self.Severity
         _rule_file = get_rulefile()
-        _id = self.ID
+        _id = [self.ID]
+        _displayId = self.ID
         if appendix:
-            _id += "." + appendix
+            _id.append(self.ID + "." + appendix)
+            _displayId += "." + appendix
         # filter out suppressions
-        if _id in get_suppressions():
+        if any(x in get_suppressions() for x in _id):
             return []
-        if _rule_file and _id in _rule_file:
-            _severity = _rule_file[_id] or self.Severity
+        if _rule_file:
+            _severity = self.Severity
+            for x in _id:
+                if _rule_file.get(x):
+                    _severity = _rule_file[x]
         if _severity == "info" and get_noinfo():
             return []
         if _severity == "warning" and get_nowarn():
@@ -92,12 +97,12 @@ class Rule():
             _line = 1
         if get_color():
             if _severity == "error":
-                return [(_line, "{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.RED, _line, _severity, _id, override_msg, Style.RESET_ALL))]
+                return [(_line, "{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.RED, _line, _severity, _displayId, override_msg, Style.RESET_ALL))]
             elif _severity == "warning":
-                return [(_line, "{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.YELLOW, _line, _severity, _id, override_msg, Style.RESET_ALL))]
+                return [(_line, "{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.YELLOW, _line, _severity, _displayId, override_msg, Style.RESET_ALL))]
             else:
-                return [(_line, "{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.GREEN, _line, _severity, _id, override_msg, Style.RESET_ALL))]
-        return [(_line, "{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, _severity, _id, override_msg))]
+                return [(_line, "{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.GREEN, _line, _severity, _displayId, override_msg, Style.RESET_ALL))]
+        return [(_line, "{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, _severity, _displayId, override_msg))]
 
     def __repr__(self):
         return "{}".format(self.ID) # pragma: no cover
@@ -175,8 +180,9 @@ def load_rules(args, add_rules=[], add_dirs=[]):
                     try:
                         if issubclass(m[1], Rule):
                             inst = m[1]()
-                            if inst.ID:
-                                if _rule_file and inst.ID not in _rule_file:
+                            _potentialIds = [inst.ID] + ["{}.{}".format(inst.ID, x) for x in inst.Appendix]
+                            if any(_potentialIds):
+                                if _rule_file and not any(x in _rule_file for x in _potentialIds):
                                     continue # pragma: no cover
                                 res.append(inst)
                     except Exception: # pragma: no cover
