@@ -16,7 +16,7 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name="oelint_adv",
-    version="3.0.3",
+    version="3.1.0",
     author="Konrad Weihmann",
     author_email="kweihmann@outlook.com",
     description="Advanced bitbake-recipe linter",
