@@ -17,6 +17,9 @@ class VarListAppend(Rule):
         for i in items:
             if not any(i.VarName.startswith(x) for x in needles):
                 continue
+            if i.VarName.startswith("FILESEXTRAPATHS"):
+                # Catched by the `FILES` above but this list is colon separated.
+                continue
             ops = i.AppendOperation()
             if not i.VarValue.startswith("\" ") and any(x in ops for x in ["append", " .= "]):
                 res += self.finding(i.Origin, i.InFileLine, override_msg="Append to list should start with a blank")
