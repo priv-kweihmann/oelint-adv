@@ -73,8 +73,6 @@ class Rule():
             return [] # pragma: no cover
         if override_msg is None:
             override_msg = self.Msg
-        _severity = self.Severity
-        _rule_file = get_rulefile()
         _id = [self.ID]
         _displayId = self.ID
         if appendix:
@@ -83,11 +81,10 @@ class Rule():
         # filter out suppressions
         if any(x in get_suppressions() for x in _id):
             return []
-        if _rule_file:
-            _severity = self.Severity
-            for x in _id:
-                if _rule_file.get(x):
-                    _severity = _rule_file[x]
+        _severity = self.GetSeverity(appendix)
+        if _severity is None:
+            # the rule is disabled
+            return []
         if _severity == "info" and get_noinfo():
             return []
         if _severity == "warning" and get_nowarn():
@@ -106,6 +103,27 @@ class Rule():
 
     def __repr__(self):
         return "{}".format(self.ID) # pragma: no cover
+
+    def GetSeverity(self, appendix=None):
+        """Get the configured severity for this rule, if it is enabled.
+
+        Keyword Arguments:
+            appendix {str} -- Potential subrule name (default: {None})
+
+        Returns:
+            str -- Severity for this rule if it is enabled, {None} if disabled.
+        """
+        _rule_file = get_rulefile()
+        if not _rule_file:
+            return self.Severity
+        _subid = None if appendix is None else f"{self.ID}.{appendix}"
+        if _subid and _subid in _rule_file:
+            return _rule_file[_subid]
+        elif self.ID in _rule_file:
+            return _rule_file[self.ID]
+        else:
+            # rule not in rulefile
+            return None
 
     def GetIDs(self):
         """Returns all possible IDs of the rule
