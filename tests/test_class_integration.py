@@ -547,6 +547,25 @@ class TestClassIntegration(TestBaseClass):
             {
             'oelint adv-test.bb':
             '''
+            DESCRIPTION = "foo"
+            '''
+            }
+        ],
+    )
+    def test_rulefile_filtering2(self, input):
+        from oelint_adv.__main__ import run
+
+        _cstfile = self._create_tempfile('constants.json', '{"oelint.var.mandatoryvar.DESCRIPTION": "warning"}')
+
+        _args = self._create_args(input, extraopts=["--rulefile={}".format(_cstfile)])
+        issues = [x[1] for x in run(_args)]
+        assert(not any(issues))
+
+    @pytest.mark.parametrize('input',
+        [
+            {
+            'oelint adv-test.bb':
+            '''
             HOMEPAGE = "foo"
             '''
             }
