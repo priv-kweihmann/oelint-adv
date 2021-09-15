@@ -51,9 +51,11 @@ def create_argparser():
                              - - to remove from DB,
                              None - to override DB
                             """)
+    parser.add_argument("--print-rulefile", action="store_true", default=False,
+                        help="Print loaded rules as a rulefile and exit")
     parser.add_argument("--exit-zero", action="store_true", default=False,
         help="Always return a 0 (non-error) status code, even if lint errors are found")
-    parser.add_argument("files", nargs='+', help="File to parse")
+    parser.add_argument("files", nargs='*', help="File to parse")
 
     return parser
 
@@ -62,6 +64,9 @@ def parse_arguments():
     return create_argparser().parse_args() # pragma: no cover
 
 def arguments_post(args):
+    if args.files == [] and not args.print_rulefile:
+        raise argparse.ArgumentTypeError("no input files")
+
     if args.rulefile:
         try:
             with open(args.rulefile) as i:
@@ -140,6 +145,14 @@ def group_files(files):
 
     return res.values()
 
+def print_rulefile(args):
+    rules = [x for x in load_rules(args,
+        add_rules=args.addrules, add_dirs=args.customrules)]
+    ruleset = {}
+    for r in rules:
+        ruleset.update(r.GetRulefileEntries())
+    print(json.dumps(ruleset, indent=2))
+
 def run(args):
     try:
         rules = [x for x in load_rules(args,
@@ -195,6 +208,10 @@ def run(args):
 
 def main():  # pragma: no cover
     args = arguments_post(parse_arguments())
+
+    if args.print_rulefile:
+        print_rulefile(args)
+        sys.exit(0)
 
     issues = run(args)
 

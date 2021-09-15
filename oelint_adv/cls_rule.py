@@ -133,6 +133,18 @@ class Rule():
         """
         return [self.ID] + ["{}.{}".format(self.ID, x) for x in self.Appendix]
 
+    def GetRulefileEntries(self):
+        """Returns a dictionary of entries which would represent the currently
+        enabled ruleset (for this rule) in a rulefile.
+
+        Returns:
+            dict -- list of rulefile entries
+        """
+        return {
+            **({} if self.GetSeverity() is None else {self.ID: self.GetSeverity()}),
+            **{f"{self.ID}.{x}": self.GetSeverity(x) for x in self.Appendix if self.GetSeverity(x) is not None},
+        }
+
     def FormatMsg(self, *args):
         """Format message
 

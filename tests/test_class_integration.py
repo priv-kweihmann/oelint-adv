@@ -31,6 +31,10 @@ class TestClassIntegration(TestBaseClass):
         assert(any(Fore.YELLOW in x for x in issues)), '{} expected in:\n{}'.format("yellow", '\n'.join(issues))
         assert(any(Fore.GREEN in x for x in issues)), '{} expected in:\n{}'.format("green", '\n'.join(issues))
 
+    def test_missing_file_args(self):
+        with pytest.raises(argparse.ArgumentTypeError):
+            _args = self._create_args({})
+
     @pytest.mark.parametrize('input',
         [
             {
@@ -594,6 +598,25 @@ class TestClassIntegration(TestBaseClass):
     def test_broken_rulefile(self, input):
         with pytest.raises(ArgumentTypeError):
             _args = self._create_args(input, extraopts=["--rulefile=/does/not/exist"])
+
+    @pytest.mark.parametrize('input',
+        [
+            {"oelint.var.mandatoryvar.DESCRIPTION": "warning"},
+            {"oelint.var.mandatoryvar": "warning"},
+            {"oelint.var.mandatoryvar": "warning", "oelint.var.mandatoryvar.DESCRIPTION": "info"},
+        ],
+    )
+    def test_print_rulefile(self, capsys, input):
+        from oelint_adv.__main__ import print_rulefile
+        import json
+
+        _rule_file = self._create_tempfile('rules.json', json.dumps(input))
+        _args = self._create_args({}, extraopts=[f"--rulefile={_rule_file}", "--print-rulefile"])
+        print_rulefile(_args)
+
+        out = json.loads(capsys.readouterr().out)
+        for k, v in input.items():
+            assert out[k] == v
 
     @pytest.mark.parametrize('input',
         [
