@@ -1,6 +1,6 @@
 import re
 
-from oelint_parser.cls_item import Variable, Item
+from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
 
 
