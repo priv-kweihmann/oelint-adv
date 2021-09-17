@@ -118,12 +118,13 @@ class Rule():
             return self.Severity
         _subid = None if appendix is None else f"{self.ID}.{appendix}"
         if _subid and _subid in _rule_file:
-            return _rule_file[_subid]
+            _severity = _rule_file[_subid]
         elif self.ID in _rule_file:
-            return _rule_file[self.ID]
+            _severity = _rule_file[self.ID]
         else:
             # rule not in rulefile
             return None
+        return _severity if _severity != "" else self.Severity
 
     def GetIDs(self):
         """Returns all possible IDs of the rule
