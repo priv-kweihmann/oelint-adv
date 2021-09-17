@@ -170,6 +170,22 @@ class TestClassIntegration(TestBaseClass):
         self.check_for_id(self._create_args(input, _extra_opts), 'oelint.var.suggestedvar.CVE_PRODUCT', 0)
         self.check_for_id(self._create_args(input, _extra_opts), 'oelint.var.suggestedvar.BBCLASSEXTEND', 1)
 
+    @pytest.mark.parametrize('input',
+        [
+            {
+            'oelint adv-test.bb':
+            '''
+            VAR = "1"
+            '''
+            }
+        ],
+    )
+    def test_rulefile_default_severity(self, input):
+        from oelint_adv.__main__ import run
+        _rule_file = self._create_tempfile('rulefile', '{"oelint.var.mandatoryvar": ""}')
+        _args = self._create_args(input, extraopts=[f"--rulefile={_rule_file}"])
+        for issue in [x[1] for x in run(_args)]:
+            assert ":error:" in issue
 
     @pytest.mark.parametrize('id', ['oelint.var.override'])
     @pytest.mark.parametrize('occurance', [0])
