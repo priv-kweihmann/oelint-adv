@@ -28,7 +28,7 @@ class FilePatchIsUpstreamStatus(Rule):
             "Accepted": r"Accepted",
             "Denied": r"Denied",
             "Backport": r"Backport",
-            "Inappropriate": r"Inappropriate\s+\[(oe-specific|OE specific|oe-core specific|not author|native|licensing|configuration|enable feature|disable feature|bugfix .*|embedded specific|no upstream|other)\]"
+            "Inappropriate": r"Inappropriate(\s+\[.*\])*"
         }
         for i in patches:
             with open(i) as _input:
