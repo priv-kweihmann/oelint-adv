@@ -787,3 +787,24 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
     )
     def test_good_edgecases_bad(self, input, id, occurance):
         self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('input',
+        [
+            {
+            'oelint_adv_test.bb':
+            '''
+            SRC_URI += "file://kmeta/common;type=kmeta"
+            '''
+            },
+            {
+            'oelint_adv_test.bb':
+            '''
+            SRC_URI += "git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-5.10;destsuffix=${KMETA}"
+            '''
+            },
+        ],
+    )
+    def test_type_kmeta_allowed(self, input, id, occurance):
+        self.check_for_id(self._create_args(input), id, occurance)
