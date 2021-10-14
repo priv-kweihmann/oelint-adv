@@ -168,8 +168,8 @@ class Rule():
         if not file.endswith('.bbappend'):
             return False
         for item in stash.GetItemsFor(filename=file):
-            if any(x.endswith('.bb') for x in item.Links):
-                return False
+            if any(x.endswith('.bb') for x in item.Links): # pragma: no cover
+                return False # pragma: no cover
         return True
 
 
