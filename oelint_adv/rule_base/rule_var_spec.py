@@ -1,32 +1,35 @@
 import re
 
-from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
-from oelint_parser.helper_files import get_valid_package_names, get_valid_named_resources, expand_term
+from oelint_parser.cls_item import Variable
 from oelint_parser.constants import CONSTANTS
+from oelint_parser.helper_files import expand_term
+from oelint_parser.helper_files import get_valid_named_resources
+from oelint_parser.helper_files import get_valid_package_names
 
 
 class VarPnBpnUsage(Rule):
     def __init__(self):
-        super().__init__(id="oelint.vars.specific",
-                         severity="error",
-                         message="'{}' is set specific to ['{}'], but isn't known from PACKAGES, MACHINE or resources",
+        super().__init__(id='oelint.vars.specific',
+                         severity='error',
+                         message='\'{a}\' is set specific to [\'{b}\'], but isn\'t known from PACKAGES, MACHINE or resources',
                          onappend=False)
 
     def check(self, _file, stash):
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR)
-        _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER, 
-                            attribute=Variable.ATTR_VAR, 
-                            attributeValue="COMPATIBLE_MACHINE")
-        _comp = "".join(x.VarValueStripped for x in _comp)
+        _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                                  attribute=Variable.ATTR_VAR,
+                                  attributeValue='COMPATIBLE_MACHINE')
+        _comp = ''.join(x.VarValueStripped for x in _comp)
         _packages = get_valid_package_names(stash, _file)
         _named_res = get_valid_named_resources(stash, _file)
         for i in items:
             _machine = []
             if i.GetMachineEntry():
-                _machine = [i.GetMachineEntry(), expand_term(stash, _file, i.GetMachineEntry())]
+                _machine = [i.GetMachineEntry(), expand_term(
+                    stash, _file, i.GetMachineEntry())]
             if not _machine:
                 continue
             if any(x in _packages for x in _machine):
@@ -39,5 +42,5 @@ class VarPnBpnUsage(Rule):
                 if any(re.match(_comp, x) for x in _machine):
                     continue
             res += self.finding(i.Origin, i.InFileLine,
-                                override_msg=self.Msg.format(i.VarName, _machine[0]))
+                                override_msg=self.Msg.format(a=i.VarName, b=_machine[0]))
         return res

@@ -1,12 +1,12 @@
-from oelint_parser.cls_item import Function
 from oelint_adv.cls_rule import Rule
+from oelint_parser.cls_item import Function
 
 
 class TaskMultiFragments(Rule):
     def __init__(self):
-        super().__init__(id="oelint.task.multifragments",
-                         severity="info",
-                         message="Multiple fragments of the same function in the same file should be merged")
+        super().__init__(id='oelint.task.multifragments',
+                         severity='info',
+                         message='Multiple fragments of the same function in the same file should be merged')
 
     def check(self, _file, stash):
         res = []

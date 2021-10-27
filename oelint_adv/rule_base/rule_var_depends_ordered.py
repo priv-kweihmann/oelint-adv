@@ -7,12 +7,12 @@ from oelint_adv.cls_rule import Rule
 
 class VarDependsOrdered(Rule):
     def __init__(self):
-        super().__init__(id="oelint.vars.dependsordered",
-                         severity="warning",
-                         message="'{VAR}' entries should be ordered alphabetically")
+        super().__init__(id='oelint.vars.dependsordered',
+                         severity='warning',
+                         message='\'{VAR}\' entries should be ordered alphabetically')
 
     def __overrides(self, findings):
-        res = set(f.GetMachineEntry() for f in findings)
+        res = {f.GetMachineEntry() for f in findings}
         res.update(f.GetClassOverride() for f in findings)
         return res
 
@@ -21,14 +21,14 @@ class VarDependsOrdered(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR)
         # ignore the settings from bbclasses
-        items = [x for x in items if not x.Origin.endswith(".bbclass")]
-        _keys = set(x.VarName for x in items if re.match(
-            r"DEPENDS|RDEPENDS", x.VarName))
-        _filegroups = set(x.Origin for x in items)
+        items = [x for x in items if not x.Origin.endswith('.bbclass')]
+        _keys = {x.VarName for x in items if re.match(
+            r'DEPENDS|RDEPENDS', x.VarName)}
+        _filegroups = {x.Origin for x in items}
 
         for _file in _filegroups:
             _, _ext = os.path.splitext(_file)
-            if _ext not in [".bb", ".bbappend"]:
+            if _ext not in ['.bb', '.bbappend']:
                 continue
             for _key in _keys:
                 _all_findings = sorted([x for x in items if (

@@ -4,20 +4,24 @@ import os
 import pkgutil
 import sys
 
-from colorama import Fore, Style
+from colorama import Fore
+from colorama import Style
 
 from oelint_adv.color import get_color
-from oelint_adv.rule_file import get_rulefile, get_noinfo, get_nowarn, get_suppressions
+from oelint_adv.rule_file import get_noinfo
+from oelint_adv.rule_file import get_nowarn
+from oelint_adv.rule_file import get_rulefile
+from oelint_adv.rule_file import get_suppressions
 
 
 class Rule():
-    def __init__(self, id="", severity="", message="", onappend=True, onlyappend=False, appendix=()):
+    def __init__(self, id='', severity='', message='', onappend=True, onlyappend=False, appendix=()):
         """constructor
 
         Keyword Arguments:
-            id {str} -- ID of the rule (default: {""})
-            severity {str} -- severity of the rule (default: {""})
-            message {str} -- Rule message (default: {""})
+            id {str} -- ID of the rule (default: {''})
+            severity {str} -- severity of the rule (default: {''})
+            message {str} -- Rule message (default: {''})
             onappend {bool} -- true if rule should be run on bbappends (default: {True})
             onlyappend {bool} -- true if rule applies to bbappends only (default: {False})
             appendix {tuple} -- possible appendix to id
@@ -39,7 +43,7 @@ class Rule():
         Returns:
             list -- List of findings
         """
-        return [] # pragma: no cover
+        return []  # pragma: no cover
 
     def fix(self, _file, stash):
         """Stub for fix function - can be overridden by each rule
@@ -67,17 +71,17 @@ class Rule():
         Returns:
             str -- Human readable finding (possibly with color codes)
         """
-        if not self.OnAppend and _file.endswith(".bbappend"):
-            return [] # pragma: no cover
-        if self.OnlyAppend and not _file.endswith(".bbappend"):
-            return [] # pragma: no cover
+        if not self.OnAppend and _file.endswith('.bbappend'):
+            return []  # pragma: no cover
+        if self.OnlyAppend and not _file.endswith('.bbappend'):
+            return []  # pragma: no cover
         if override_msg is None:
             override_msg = self.Msg
         _id = [self.ID]
-        _displayId = self.ID
+        _display_id = self.ID
         if appendix:
-            _id.append(self.ID + "." + appendix)
-            _displayId += "." + appendix
+            _id.append(self.ID + '.' + appendix)
+            _display_id += '.' + appendix
         # filter out suppressions
         if any(x in get_suppressions() for x in _id):
             return []
@@ -85,24 +89,24 @@ class Rule():
         if _severity is None:
             # the rule is disabled
             return []
-        if _severity == "info" and get_noinfo():
+        if _severity == 'info' and get_noinfo():
             return []
-        if _severity == "warning" and get_nowarn():
+        if _severity == 'warning' and get_nowarn():
             return []
         if _line <= 0:
             # Fix those issues, that don't come with a line
             _line = 1
         if get_color():
-            if _severity == "error":
-                return [(_line, "{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.RED, _line, _severity, _displayId, override_msg, Style.RESET_ALL))]
-            elif _severity == "warning":
-                return [(_line, "{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.YELLOW, _line, _severity, _displayId, override_msg, Style.RESET_ALL))]
+            if _severity == 'error':
+                return [(_line, '{file}:{color}{line}:{sev}:{id}:{msg}{reset}'.format(file=os.path.abspath(_file), color=Fore.RED, line=_line, sev=_severity, id=_display_id, msg=override_msg, reset=Style.RESET_ALL))]
+            elif _severity == 'warning':
+                return [(_line, '{file}:{color}{line}:{sev}:{id}:{msg}{reset}'.format(file=os.path.abspath(_file), color=Fore.YELLOW, line=_line, sev=_severity, id=_display_id, msg=override_msg, reset=Style.RESET_ALL))]
             else:
-                return [(_line, "{}:{}{}:{}:{}:{}{}".format(os.path.abspath(_file), Fore.GREEN, _line, _severity, _displayId, override_msg, Style.RESET_ALL))]
-        return [(_line, "{}:{}:{}:{}:{}".format(os.path.abspath(_file), _line, _severity, _displayId, override_msg))]
+                return [(_line, '{file}:{color}{line}:{sev}:{id}:{msg}{reset}'.format(file=os.path.abspath(_file), color=Fore.GREEN, line=_line, sev=_severity, id=_display_id, msg=override_msg, reset=Style.RESET_ALL))]
+        return [(_line, '{file}:{line}:{sev}:{id}:{msg}'.format(file=os.path.abspath(_file), line=_line, sev=_severity, id=_display_id, msg=override_msg))]
 
     def __repr__(self):
-        return "{}".format(self.ID) # pragma: no cover
+        return '{id}'.format(id=self.ID)  # pragma: no cover
 
     def GetSeverity(self, appendix=None):
         """Get the configured severity for this rule, if it is enabled.
@@ -116,7 +120,7 @@ class Rule():
         _rule_file = get_rulefile()
         if not _rule_file:
             return self.Severity
-        _subid = None if appendix is None else f"{self.ID}.{appendix}"
+        _subid = None if appendix is None else f'{self.ID}.{appendix}'
         if _subid and _subid in _rule_file:
             _severity = _rule_file[_subid]
         elif self.ID in _rule_file:
@@ -124,7 +128,7 @@ class Rule():
         else:
             # rule not in rulefile
             return None
-        return _severity if _severity != "" else self.Severity
+        return _severity if _severity != '' else self.Severity
 
     def GetIDs(self):
         """Returns all possible IDs of the rule
@@ -132,7 +136,7 @@ class Rule():
         Returns:
             list -- possible IDS of the rule
         """
-        return [self.ID] + ["{}.{}".format(self.ID, x) for x in self.Appendix]
+        return [self.ID] + ['{id}.{app}'.format(id=self.ID, app=x) for x in self.Appendix]
 
     def GetRulefileEntries(self):
         """Returns a dictionary of entries which would represent the currently
@@ -143,16 +147,16 @@ class Rule():
         """
         return {
             **({} if self.GetSeverity() is None else {self.ID: self.GetSeverity()}),
-            **{f"{self.ID}.{x}": self.GetSeverity(x) for x in self.Appendix if self.GetSeverity(x) is not None},
+            **{f'{self.ID}.{x}': self.GetSeverity(x) for x in self.Appendix if self.GetSeverity(x) is not None},
         }
 
-    def FormatMsg(self, *args):
+    def FormatMsg(self, *args, **kwargs):
         """Format message
 
         Returns:
             str -- formatted message
         """
-        return self.Msg.format(*args)
+        return self.Msg.format(*args, **kwargs)
 
     def IsLoneAppend(self, stash, file):
         """Check if the file is a bbappend file without any matching
@@ -168,8 +172,8 @@ class Rule():
         if not file.endswith('.bbappend'):
             return False
         for item in stash.GetItemsFor(filename=file):
-            if any(x.endswith('.bb') for x in item.Links): # pragma: no cover
-                return False # pragma: no cover
+            if any(x.endswith('.bb') for x in item.Links):  # pragma: no cover
+                return False  # pragma: no cover
         return True
 
 
@@ -186,39 +190,42 @@ def load_rules(args, add_rules=(), add_dirs=()):
     res = []
     _rule_file = get_rulefile()
     _path_list = {
-        "base": {"path": "rule_base", "builtin": True}
+        'base': {'path': 'rule_base', 'builtin': True},
     }
     for ar in add_rules:
-        _path_list[ar] = {"path": "rule_{}".format(ar), "builtin": True}
+        _path_list[ar] = {'path': 'rule_{a}'.format(a=ar), 'builtin': True}
     for ar in add_dirs:
-        _path_list["additional_{}".format(os.path.basename(ar))] = {"path": ar, "builtin": False} # pragma: no cover
+        _path_list['additional_{a}'.format(a=os.path.basename(ar))] = {
+            'path': ar, 'builtin': False}  # pragma: no cover
     for _, v in _path_list.items():
-        if v["builtin"]:
+        if v['builtin']:
             _searchpath = os.path.join(os.path.dirname(
-                os.path.abspath(__file__)), v["path"])
+                os.path.abspath(__file__)), v['path'])
         else:
-            _searchpath = os.path.join(v["path"]) # pragma: no cover
-            sys.path.append(os.path.dirname(v["path"])) # pragma: no cover
+            _searchpath = os.path.join(v['path'])  # pragma: no cover
+            sys.path.append(os.path.dirname(v['path']))  # pragma: no cover
         packages = pkgutil.walk_packages(path=[_searchpath])
         for _, name, _ in packages:
-            if v["builtin"]:
-                name = __name__.split(".")[0] + "." + v["path"] + "." + name
+            if v['builtin']:
+                name = __name__.split('.')[0] + '.' + v['path'] + '.' + name
             else:
-                name = os.path.basename(v["path"]) + "." + name # pragma: no cover
+                name = os.path.basename(v['path']) + '.' + name  # pragma: no cover
             try:
                 mod = importlib.import_module(name)
                 for m in inspect.getmembers(mod, inspect.isclass):
                     try:
                         if issubclass(m[1], Rule):
                             inst = m[1]()
-                            _potentialIds = [inst.ID] + ["{}.{}".format(inst.ID, x) for x in inst.Appendix]
-                            if any(_potentialIds):
-                                if _rule_file and not any(x in _rule_file for x in _potentialIds):
-                                    continue # pragma: no cover
+                            _potential_ids = [
+                                inst.ID] + ['{a}.{b}'.format(a=inst.ID, b=x) for x in inst.Appendix]
+                            if any(_potential_ids):
+                                if _rule_file and not any(x in _rule_file for x in _potential_ids):
+                                    continue  # pragma: no cover
                                 res.append(inst)
-                    except Exception: # pragma: no cover
-                        pass # pragma: no cover
-            except Exception as e: # pragma: no cover
-                if not args.quiet: # pragma: no cover
-                    print("Can't load rule {} -> {}".format(name, e)) # pragma: no cover
+                    except Exception:  # pragma: no cover
+                        pass  # pragma: no cover
+            except Exception as e:  # pragma: no cover
+                if not args.quiet:  # pragma: no cover
+                    print(  # noqa: T001 this print is fine here
+                        'Can\'t load rule {rule} -> {exp}'.format(rule=name, exp=e))  # pragma: no cover
     return res
