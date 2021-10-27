@@ -46,36 +46,36 @@ class TestClassOelintVarOrder(TestBaseClass):
             '''.format(first=first, second=second)
 
     @pytest.mark.parametrize('id', ['oelint.var.order'])
-    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('var', VAR_ORDER)
-    def test_bad(self, id, occurance, var):
+    def test_bad(self, id, occurrence, var):
         try:
             id += '.{}'.format(var)
             for item in VAR_ORDER[:VAR_ORDER.index(var)]:
                 input = {
                     'oelint_adv_test.bb': self.__generate_sample_code(item, var)
                 }
-                self.check_for_id(self._create_args(input), id, occurance)
+                self.check_for_id(self._create_args(input), id, occurrence)
         except:
             pass
 
     @pytest.mark.parametrize('id', ['oelint.var.order'])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('var', VAR_ORDER)
-    def test_good(self, id, occurance, var):
+    def test_good(self, id, occurrence, var):
         try:
             id += '.{}'.format(var)
             for item in VAR_ORDER[VAR_ORDER.index(var):]:
                 input = {
                     'oelint_adv_test.bb': self.__generate_sample_code(item, var)
                 }
-                self.check_for_id(self._create_args(input), id, occurance)
+                self.check_for_id(self._create_args(input), id, occurrence)
         except:
             pass
 
 
     @pytest.mark.parametrize('id', ['oelint.var.order.SRCREV'])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input',
         [
             {
@@ -96,5 +96,5 @@ class TestClassOelintVarOrder(TestBaseClass):
             }
         ],
     )
-    def test_single_file_scope(self, id, occurance, input):
-        self.check_for_id(self._create_args(input), id, occurance)
+    def test_single_file_scope(self, id, occurrence, input):
+        self.check_for_id(self._create_args(input), id, occurrence)

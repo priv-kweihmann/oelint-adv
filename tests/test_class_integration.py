@@ -188,7 +188,7 @@ class TestClassIntegration(TestBaseClass):
             assert ":error:" in issue
 
     @pytest.mark.parametrize('id', ['oelint.var.override'])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input', 
         [
             {
@@ -325,11 +325,11 @@ class TestClassIntegration(TestBaseClass):
             }
         ],
     )
-    def test_grouping(self, input, id, occurance):
-        self.check_for_id(self._create_args(input), id, occurance)
+    def test_grouping(self, input, id, occurrence):
+        self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.var.override'])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input', 
         [
             {
@@ -466,8 +466,8 @@ class TestClassIntegration(TestBaseClass):
             }
         ],
     )
-    def test_grouping_with_missing_files(self, input, id, occurance):
-        self.check_for_id(self._create_args(input, extraopts=["/does/not/exist"]), id, occurance)
+    def test_grouping_with_missing_files(self, input, id, occurrence):
+        self.check_for_id(self._create_args(input, extraopts=["/does/not/exist"]), id, occurrence)
 
     @pytest.mark.parametrize('input', 
         [

@@ -15,7 +15,7 @@ class TestClassOelintVarsBBVars(TestBaseClass):
             '''.format(var=var, operation=operation)
 
     @pytest.mark.parametrize('id', ['oelint.vars.bbvars'])
-    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('var', [
             "BB_CONSOLELOG",
             "BB_CURRENTTASK",
@@ -91,16 +91,16 @@ class TestClassOelintVarsBBVars(TestBaseClass):
             "TOPDIR"
     ])
     @pytest.mark.parametrize('operation', ['=', ':=', '.=', '=.', '+=', '=+'])
-    def test_bad(self, id, occurance, var, operation):
+    def test_bad(self, id, occurrence, var, operation):
         input = {
             'oelint_adv_test.bb': self.__generate_sample_code(var, operation)
         }
         id += '.{}'.format(var)
-        self.check_for_id(self._create_args(input), id, occurance)
+        self.check_for_id(self._create_args(input), id, occurrence)
 
 
     @pytest.mark.parametrize('id', ['oelint.vars.bbvars'])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('var', [
             "BB_CONSOLELOG",
             "BB_CURRENTTASK",
@@ -177,9 +177,9 @@ class TestClassOelintVarsBBVars(TestBaseClass):
             "TOPDIR"
     ])
     @pytest.mark.parametrize('operation', ['?=', '??='])
-    def test_good_weak(self, id, occurance, var, operation):
+    def test_good_weak(self, id, occurrence, var, operation):
         input = {
             'oelint_adv_test.bb': self.__generate_sample_code(var, operation)
         }
         id += '.{}'.format(var)
-        self.check_for_id(self._create_args(input), id, occurance)
+        self.check_for_id(self._create_args(input), id, occurrence)

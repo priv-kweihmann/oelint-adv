@@ -59,9 +59,9 @@ class TestBaseClass():
         from oelint_adv.__main__ import create_argparser
         return create_argparser()
 
-    def check_for_id(self, args, id, occurences):
+    def check_for_id(self, args, id, occurrences):
         from oelint_adv.__main__ import run
         issues = [x[1] for x in run(args)]
         _files = '\n---\n'.join(['{}:\n{}'.format(k,v) for k,v in self.__created_files.items()])
         assert(len([x for x in issues if ':{}:'.format(id) in x]) ==
-               occurences), '{} expected {} time(s) in:\n{}\n\n---\n{}'.format(id, occurences, '\n'.join(issues), _files)
+               occurrences), '{} expected {} time(s) in:\n{}\n\n---\n{}'.format(id, occurrences, '\n'.join(issues), _files)

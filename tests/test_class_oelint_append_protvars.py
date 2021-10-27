@@ -15,7 +15,7 @@ class TestClassOelintAppendProtVars(TestBaseClass):
             '''.format(var=var, operation=operation)
 
     @pytest.mark.parametrize('id', ['oelint.append.protvars'])
-    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('var', [
             "PV",
             "PR",
@@ -24,16 +24,16 @@ class TestClassOelintAppendProtVars(TestBaseClass):
             "LIC_FILES_CHKSUM"
     ])
     @pytest.mark.parametrize('operation', ['=', ':='])
-    def test_bad(self, id, occurance, var, operation):
+    def test_bad(self, id, occurrence, var, operation):
         input = {
             'oelint_adv_test.bbappend': self.__generate_sample_code(var, operation)
         }
         id += '.{}'.format(var)
-        self.check_for_id(self._create_args(input), id, occurance)
+        self.check_for_id(self._create_args(input), id, occurrence)
 
 
     @pytest.mark.parametrize('id', ['oelint.append.protvars'])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('var', [
             "PV",
             "PR",
@@ -42,15 +42,15 @@ class TestClassOelintAppendProtVars(TestBaseClass):
             "LIC_FILES_CHKSUM"
     ])
     @pytest.mark.parametrize('operation', ['?=', '??='])
-    def test_good_weak(self, id, occurance, var, operation):
+    def test_good_weak(self, id, occurrence, var, operation):
         input = {
             'oelint_adv_test.bbappend': self.__generate_sample_code(var, operation)
         }
         id += '.{}'.format(var)
-        self.check_for_id(self._create_args(input), id, occurance)
+        self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.append.protvars'])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('var', [
             "PV",
             "PR",
@@ -59,15 +59,15 @@ class TestClassOelintAppendProtVars(TestBaseClass):
             "LIC_FILES_CHKSUM"
     ])
     @pytest.mark.parametrize('operation', ['=', ':='])
-    def test_good_bb(self, id, occurance, var, operation):
+    def test_good_bb(self, id, occurrence, var, operation):
         input = {
             'oelint_adv_test.bb': self.__generate_sample_code(var, operation)
         }
         id += '.{}'.format(var)
-        self.check_for_id(self._create_args(input), id, occurance)
+        self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.append.protvars'])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('var', [
             "PV[vardeps]",
             "PV[vardepsexclude]",
@@ -75,9 +75,9 @@ class TestClassOelintAppendProtVars(TestBaseClass):
             "PV[vardepvalueexclude]",
     ])
     @pytest.mark.parametrize('operation', ['=', ':='])
-    def test_good_flags(self, id, occurance, var, operation):
+    def test_good_flags(self, id, occurrence, var, operation):
         input = {
             'oelint_adv_test.bbappend': self.__generate_sample_code(var, operation)
         }
         id += '.{}'.format(var)
-        self.check_for_id(self._create_args(input), id, occurance)
+        self.check_for_id(self._create_args(input), id, occurrence)
