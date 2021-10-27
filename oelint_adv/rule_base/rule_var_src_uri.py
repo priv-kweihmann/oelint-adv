@@ -55,6 +55,7 @@ class VarSRCUriOptions(Rule):
                 'protocol',
                 'rebaseable',
                 'rev',
+                'subdir',
                 'subpath',
                 'tag',
                 'usehead',
