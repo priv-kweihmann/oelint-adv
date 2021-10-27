@@ -11,7 +11,7 @@ from oelint_adv.rule_file import get_rulefile, get_noinfo, get_nowarn, get_suppr
 
 
 class Rule():
-    def __init__(self, id="", severity="", message="", onappend=True, onlyappend=False, appendix=[]):
+    def __init__(self, id="", severity="", message="", onappend=True, onlyappend=False, appendix=()):
         """constructor
 
         Keyword Arguments:
@@ -20,7 +20,7 @@ class Rule():
             message {str} -- Rule message (default: {""})
             onappend {bool} -- true if rule should be run on bbappends (default: {True})
             onlyappend {bool} -- true if rule applies to bbappends only (default: {False})
-            appendix {list} -- possible appendix to id
+            appendix {tuple} -- possible appendix to id
         """
         self.ID = id
         self.Severity = severity
@@ -173,12 +173,12 @@ class Rule():
         return True
 
 
-def load_rules(args, add_rules=[], add_dirs=[]):
+def load_rules(args, add_rules=(), add_dirs=()):
     """Load rules from set directories
 
     Keyword Arguments:
-        add_rules {list} -- Additional builtin rulesets to be loaded (default: {[]})
-        add_dirs {list} -- Additional directories to parse for rules (default: {[]})
+        add_rules {tuple} -- Additional builtin rulesets to be loaded (default: {[]})
+        add_dirs {tuple} -- Additional directories to parse for rules (default: {[]})
 
     Returns:
         list -- Class instances of loaded rules
