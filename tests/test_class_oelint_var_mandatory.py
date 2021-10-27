@@ -16,7 +16,7 @@ class TestClassOelintVarMandatoryVar(TestBaseClass):
             '''.format(var=var, extra=extra)
 
     @pytest.mark.parametrize('id', ['oelint.var.mandatoryvar'])
-    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('var', [
         "SUMMARY",
         "DESCRIPTION",
@@ -24,15 +24,15 @@ class TestClassOelintVarMandatoryVar(TestBaseClass):
         "LICENSE",
         "SRC_URI"
     ])
-    def test_bad(self, id, occurance, var):
+    def test_bad(self, id, occurrence, var):
         input = {
             'oelint_adv_test.bb': self.__generate_sample_code('A', '')
         }
         id += '.{}'.format(var)
-        self.check_for_id(self._create_args(input), id, occurance)
+        self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.var.mandatoryvar'])
-    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('var', [
         "SUMMARY",
         "DESCRIPTION",
@@ -45,12 +45,12 @@ class TestClassOelintVarMandatoryVar(TestBaseClass):
         'IMAGE_INSTALL += " foo"',
         'IMAGE_INSTALL = "foo"'
     ])
-    def test_bad_image(self, id, occurance, var, extra):
+    def test_bad_image(self, id, occurrence, var, extra):
         input = {
             'oelint_adv_test.bb': self.__generate_sample_code('A', extra)
         }
         id += '.{}'.format(var)
-        self.check_for_id(self._create_args(input), id, occurance)
+        self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', [
         'oelint.var.mandatoryvar.SUMMARY',
@@ -59,7 +59,7 @@ class TestClassOelintVarMandatoryVar(TestBaseClass):
         'oelint.var.mandatoryvar.LICENSE',
         'oelint.var.mandatoryvar.SRC_URI',
         ])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input', 
         [
             {
@@ -100,8 +100,8 @@ class TestClassOelintVarMandatoryVar(TestBaseClass):
             },
         ],
     )
-    def test_good(self, input, id, occurance):
-        self.check_for_id(self._create_args(input), id, occurance)
+    def test_good(self, input, id, occurrence):
+        self.check_for_id(self._create_args(input), id, occurrence)
 
 
  

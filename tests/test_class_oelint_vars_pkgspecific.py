@@ -15,7 +15,7 @@ class TestClassOelintVarsPKGSpecific(TestBaseClass):
             '''.format(var=var)
 
     @pytest.mark.parametrize('id', ['oelint.vars.pkgspecific'])
-    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('var', [
         "RDEPENDS",
         "RRECOMMENDS",
@@ -30,15 +30,15 @@ class TestClassOelintVarsPKGSpecific(TestBaseClass):
         "pkg_postrm",
         "ALLOW_EMPTY",
     ])
-    def test_bad(self, id, occurance, var):
+    def test_bad(self, id, occurrence, var):
         input = {
             'oelint_adv_test.bb': self.__generate_sample_code(var)
         }
         id += '.{}'.format(var)
-        self.check_for_id(self._create_args(input), id, occurance)
+        self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.vars.pkgspecific'])
-    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('var', [
         "RDEPENDS",
         "RRECOMMENDS",
@@ -53,16 +53,16 @@ class TestClassOelintVarsPKGSpecific(TestBaseClass):
         "pkg_postrm",
         "ALLOW_EMPTY",
     ])
-    def test_bad_append_with_bb(self, id, occurance, var):
+    def test_bad_append_with_bb(self, id, occurrence, var):
         input = {
             'oelint-adv-test_1.0.bb': 'VAR = "FOO"',
             'oelint-adv-test_1.0.bbappend': self.__generate_sample_code(var),
         }
         id += '.{}'.format(var)
-        self.check_for_id(self._create_args(input), id, occurance)
+        self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.vars.pkgspecific'])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('var', [
         "RDEPENDS_${PN}",
         "RRECOMMENDS_${PN}",
@@ -77,15 +77,15 @@ class TestClassOelintVarsPKGSpecific(TestBaseClass):
         "pkg_postrm_${PN}",
         "ALLOW_EMPTY_${PN}",
     ])
-    def test_good(self, id, occurance, var):
+    def test_good(self, id, occurrence, var):
         input = {
             'oelint_adv_test.bb': self.__generate_sample_code(var)
         }
         id += '.{}'.format(var)
-        self.check_for_id(self._create_args(input), id, occurance)
+        self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.vars.pkgspecific'])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('var', [
         "RDEPENDS_foo",
         "RRECOMMENDS_foo",
@@ -100,12 +100,12 @@ class TestClassOelintVarsPKGSpecific(TestBaseClass):
         "pkg_postrm_foo",
         "ALLOW_EMPTY_foo",
     ])
-    def test_good_bbappend(self, id, occurance, var):
+    def test_good_bbappend(self, id, occurrence, var):
         input = {
             'oelint_adv_test_%.bbappend': self.__generate_sample_code(var)
         }
         id += '.{}'.format(var)
-        self.check_for_id(self._create_args(input), id, occurance)
+        self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', [
         'oelint.var.pkgspecific.RDEPENDS',
@@ -121,7 +121,7 @@ class TestClassOelintVarsPKGSpecific(TestBaseClass):
         'oelint.var.pkgspecific.pkg_postrm',
         'oelint.var.pkgspecific.ALLOW_EMPTY',
         ])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input', 
         [
             {
@@ -133,8 +133,8 @@ class TestClassOelintVarsPKGSpecific(TestBaseClass):
             },
         ],
     )
-    def test_good_custom_pkg(self, input, id, occurance):
-        self.check_for_id(self._create_args(input), id, occurance)
+    def test_good_custom_pkg(self, input, id, occurrence):
+        self.check_for_id(self._create_args(input), id, occurrence)
 
 
  

@@ -15,7 +15,7 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
             '''.format(var=var)
 
     @pytest.mark.parametrize('id', ['oelint.vars.pathhardcode'])
-    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('pair', [
         ( "${systemd_user_unitdir}", "/usr/lib/systemd/user" ),
         ( "${systemd_system_unitdir}", "/lib/systemd/system" ),
@@ -35,7 +35,7 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
         ( "${sharedstatedir}", "/com" ),
         ( "${sysconfdir}", "/etc" ),
     ])
-    def test_bad(self, id, occurance, pair):
+    def test_bad(self, id, occurrence, pair):
         id += '.{}'.format(pair[0].strip('${}'))
         for variation in [pair[1], 
                           pair[1] + "/", 
@@ -45,10 +45,10 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
             input = {
                 'oelint_adv_test.bb': self.__generate_sample_code(variation)
             }
-            self.check_for_id(self._create_args(input), id, occurance)
+            self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.vars.pathhardcode'])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('pair', [
         ( "${systemd_user_unitdir}", "/usr/lib/systemd/user" ),
         ( "${systemd_system_unitdir}", "/lib/systemd/system" ),
@@ -70,7 +70,7 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
         ( "${sharedstatedir}", "/com" ),
         ( "${sysconfdir}", "/etc" ),
     ])
-    def test_good(self, id, occurance, pair):
+    def test_good(self, id, occurrence, pair):
         id += '.{}'.format(pair[0].strip('${}'))
         for variation in [pair[0],
                           pair[0] + "/", 
@@ -80,10 +80,10 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
             input = {
                 'oelint_adv_test.bb': self.__generate_sample_code(variation)
             }
-            self.check_for_id(self._create_args(input), id, occurance)
+            self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.vars.pathhardcode'])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input', 
         [
             {
@@ -112,5 +112,5 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
             },
         ],
     )
-    def test_good_pattern(self, input, id, occurance):
-        self.check_for_id(self._create_args(input), id, occurance)
+    def test_good_pattern(self, input, id, occurrence):
+        self.check_for_id(self._create_args(input), id, occurrence)

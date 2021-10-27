@@ -15,7 +15,7 @@ class TestClassOelintVarsSectionLowerCase(TestBaseClass):
             '''.format(op=op)
 
     @pytest.mark.parametrize('id', ['oelint.vars.spacesassignment'])
-    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('op', 
         [
             " :=",
@@ -44,14 +44,14 @@ class TestClassOelintVarsSectionLowerCase(TestBaseClass):
             "=+",
         ],
     )
-    def test_bad(self, op, id, occurance):
+    def test_bad(self, op, id, occurrence):
         input = {
             'oelint_adv_test.bb': self.__generate_sample_code(op)
         }
-        self.check_for_id(self._create_args(input), id, occurance)
+        self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.vars.spacesassignment'])
-    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('op', 
         [
             " = ",
@@ -64,8 +64,8 @@ class TestClassOelintVarsSectionLowerCase(TestBaseClass):
             " := ",
         ],
     )
-    def test_good(self, op, id, occurance):
+    def test_good(self, op, id, occurrence):
         input = {
             'oelint_adv_test.bb': self.__generate_sample_code(op)
         }
-        self.check_for_id(self._create_args(input), id, occurance)
+        self.check_for_id(self._create_args(input), id, occurrence)
