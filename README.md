@@ -147,6 +147,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.var.multiinclude - Warn on including the same file more than once
 * oelint.var.multiinherit - Warn on inherit the same file more than once
 * oelint.var.nativefilename - Native only recipes should be named -native
+* oelint.var.nativesdkfilename - NativeSDK only recipes should be named nativesdk-
 * oelint.var.order - Variable order **[S]**
 * oelint.var.override - Check if include/append is overriding a variable
 * oelint.var.rootfspostcmd - ROOTFS_POSTPROCESS_COMMAND should not have trailing blanks
