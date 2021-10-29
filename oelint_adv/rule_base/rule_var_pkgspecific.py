@@ -16,7 +16,7 @@ class VarPkgSpecific(Rule):
     def check(self, _file, stash):
         res = []
 
-        if self.IsLoneAppend(stash, _file):
+        if self.is_lone_append(stash, _file):
             return res
 
         _packages = list(get_valid_package_names(stash, _file))
