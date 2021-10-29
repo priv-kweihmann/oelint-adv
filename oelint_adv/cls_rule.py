@@ -4,10 +4,10 @@ import os
 import pkgutil
 import sys
 
-from colorama import Fore
 from colorama import Style
 
-from oelint_adv.color import get_color
+from oelint_adv.color import get_colorize
+from oelint_adv.color import get_color_by_severity
 from oelint_adv.rule_file import get_noinfo
 from oelint_adv.rule_file import get_nowarn
 from oelint_adv.rule_file import get_relpaths
@@ -97,17 +97,18 @@ class Rule:
         if _line <= 0:
             # Fix those issues, that don't come with a line
             _line = 1
+
         _path = os.path.abspath(_file)
         if get_relpaths():
             _path = os.path.relpath(_path, os.getcwd())
-        if get_color():
-            if _severity == 'error':
-                return [(_line, '{file}:{color}{line}:{sev}:{id}:{msg}{reset}'.format(file=_path, color=Fore.RED, line=_line, sev=_severity, id=_display_id, msg=override_msg, reset=Style.RESET_ALL))]
-            elif _severity == 'warning':
-                return [(_line, '{file}:{color}{line}:{sev}:{id}:{msg}{reset}'.format(file=_path, color=Fore.YELLOW, line=_line, sev=_severity, id=_display_id, msg=override_msg, reset=Style.RESET_ALL))]
-            else:
-                return [(_line, '{file}:{color}{line}:{sev}:{id}:{msg}{reset}'.format(file=_path, color=Fore.GREEN, line=_line, sev=_severity, id=_display_id, msg=override_msg, reset=Style.RESET_ALL))]
-        return [(_line, '{file}:{line}:{sev}:{id}:{msg}'.format(file=_path, line=_line, sev=_severity, id=_display_id, msg=override_msg))]
+
+        style = ''
+        if get_colorize() is False:
+            style = Style.RESET_ALL
+
+        _color = get_color_by_severity(_severity)
+
+        return [(_line, f'{_path}:{_color}{_line}:{_severity}:{_display_id}:{override_msg}{style}')]
 
     def __repr__(self):
         return '{id}'.format(id=self.ID)  # pragma: no cover

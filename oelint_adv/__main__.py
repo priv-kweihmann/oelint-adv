@@ -8,7 +8,7 @@ from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
 
 from oelint_adv.cls_rule import load_rules
-from oelint_adv.color import set_color
+from oelint_adv.color import set_colorize
 from oelint_adv.rule_file import set_noinfo
 from oelint_adv.rule_file import set_nowarn
 from oelint_adv.rule_file import set_relpaths
@@ -102,7 +102,7 @@ def arguments_post(args):
                 'mod file \'{file}\' is not a valid file'.format(file=mod))
 
     if args.color:
-        set_color(True)
+        set_colorize(True)
     if args.nowarn:
         set_nowarn(True)
     if args.noinfo:

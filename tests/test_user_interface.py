@@ -1,7 +1,7 @@
-from argparse import ArgumentTypeError
 import argparse
 import os
 import sys
+from argparse import ArgumentTypeError
 
 import pytest
 
@@ -23,7 +23,7 @@ class TestClassIntegration(TestBaseClass):
             }
         ],
     )
-    def test_color(self, input):
+    def test_color_input(self, input):
         from oelint_adv.__main__ import run
         from colorama import Fore
         _args = self._create_args(input, extraopts=["--color"])
@@ -67,7 +67,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_constmod_add(self, input):
-        from oelint_adv.__main__ import run
         from oelint_parser.constants import CONSTANTS
         __cnt = """
         {
@@ -95,7 +94,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_constmod_remove(self, input):
-        from oelint_adv.__main__ import run
         from oelint_parser.constants import CONSTANTS
         __cnt = """
         {
@@ -122,7 +120,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_constmod_override(self, input):
-        from oelint_adv.__main__ import run
         from oelint_parser.constants import CONSTANTS
         __cnt = """
         {
@@ -149,8 +146,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_constmod_corrupt(self, input):
-        from oelint_adv.__main__ import run
-        from oelint_parser.constants import CONSTANTS
         __cnt = """
         {
             "functions": 
@@ -175,8 +170,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_rulefile_and_subrules(self, input):
-        from oelint_adv.__main__ import run
-        from oelint_parser.constants import CONSTANTS
         __cnt = """
         {
             "oelint.var.suggestedvar": "info",
