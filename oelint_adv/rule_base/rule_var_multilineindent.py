@@ -36,5 +36,5 @@ class VarMultiLineIndent(Rule):
             for index, value in enumerate(_indent_map):
                 if value != _likeliest_indent:
                     res += self.finding(i.Origin, i.InFileLine + index,
-                                        self.FormatMsg(a=value, b=_likeliest_indent))
+                                        self.format_message(a=value, b=_likeliest_indent))
         return res

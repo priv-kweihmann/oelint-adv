@@ -14,7 +14,7 @@ from oelint_adv.rule_file import get_rulefile
 from oelint_adv.rule_file import get_suppressions
 
 
-class Rule():
+class Rule:
     def __init__(self, id='', severity='', message='', onappend=True, onlyappend=False, appendix=()):
         """constructor
 
@@ -85,7 +85,7 @@ class Rule():
         # filter out suppressions
         if any(x in get_suppressions() for x in _id):
             return []
-        _severity = self.GetSeverity(appendix)
+        _severity = self.get_severity(appendix)
         if _severity is None:
             # the rule is disabled
             return []
@@ -108,7 +108,7 @@ class Rule():
     def __repr__(self):
         return '{id}'.format(id=self.ID)  # pragma: no cover
 
-    def GetSeverity(self, appendix=None):
+    def get_severity(self, appendix=None):
         """Get the configured severity for this rule, if it is enabled.
 
         Keyword Arguments:
@@ -130,7 +130,7 @@ class Rule():
             return None
         return _severity if _severity != '' else self.Severity
 
-    def GetIDs(self):
+    def get_ids(self):
         """Returns all possible IDs of the rule
 
         Returns:
@@ -138,7 +138,7 @@ class Rule():
         """
         return [self.ID] + ['{id}.{app}'.format(id=self.ID, app=x) for x in self.Appendix]
 
-    def GetRulefileEntries(self):
+    def get_rulefile_entries(self):
         """Returns a dictionary of entries which would represent the currently
         enabled ruleset (for this rule) in a rulefile.
 
@@ -146,11 +146,11 @@ class Rule():
             dict -- list of rulefile entries
         """
         return {
-            **({} if self.GetSeverity() is None else {self.ID: self.GetSeverity()}),
-            **{f'{self.ID}.{x}': self.GetSeverity(x) for x in self.Appendix if self.GetSeverity(x) is not None},
+            **({} if self.get_severity() is None else {self.ID: self.get_severity()}),
+            **{f'{self.ID}.{x}': self.get_severity(x) for x in self.Appendix if self.get_severity(x) is not None},
         }
 
-    def FormatMsg(self, *args, **kwargs):
+    def format_message(self, *args, **kwargs):
         """Format message
 
         Returns:
@@ -158,7 +158,8 @@ class Rule():
         """
         return self.Msg.format(*args, **kwargs)
 
-    def IsLoneAppend(self, stash, file):
+    @staticmethod
+    def is_lone_append(stash, file):
         """Check if the file is a bbappend file without any matching
            bb file
 

@@ -154,7 +154,7 @@ def print_rulefile(args):
     rules = load_rules(args, add_rules=args.addrules, add_dirs=args.customrules)
     ruleset = {}
     for r in rules:
-        ruleset.update(r.GetRulefileEntries())
+        ruleset.update(r.get_rulefile_entries())
     print(json.dumps(ruleset, indent=2))  # noqa: T001 - it's here for a reason
 
 
@@ -163,7 +163,7 @@ def run(args):
         rules = load_rules(args, add_rules=args.addrules, add_dirs=args.customrules)
         _loaded_ids = []
         for r in rules:
-            _loaded_ids += r.GetIDs()
+            _loaded_ids += r.get_ids()
         if not args.quiet:
             print('Loaded rules:\n\t{rules}'.format(  # noqa: T001 - it's here for a reason
                 rules='\n\t'.join(sorted(_loaded_ids))))
