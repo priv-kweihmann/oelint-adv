@@ -10,6 +10,7 @@ from colorama import Style
 from oelint_adv.color import get_color
 from oelint_adv.rule_file import get_noinfo
 from oelint_adv.rule_file import get_nowarn
+from oelint_adv.rule_file import get_relpaths
 from oelint_adv.rule_file import get_rulefile
 from oelint_adv.rule_file import get_suppressions
 
@@ -96,14 +97,17 @@ class Rule:
         if _line <= 0:
             # Fix those issues, that don't come with a line
             _line = 1
+        _path = os.path.abspath(_file)
+        if get_relpaths():
+            _path = os.path.relpath(_path, os.getcwd())
         if get_color():
             if _severity == 'error':
-                return [(_line, '{file}:{color}{line}:{sev}:{id}:{msg}{reset}'.format(file=os.path.abspath(_file), color=Fore.RED, line=_line, sev=_severity, id=_display_id, msg=override_msg, reset=Style.RESET_ALL))]
+                return [(_line, '{file}:{color}{line}:{sev}:{id}:{msg}{reset}'.format(file=_path, color=Fore.RED, line=_line, sev=_severity, id=_display_id, msg=override_msg, reset=Style.RESET_ALL))]
             elif _severity == 'warning':
-                return [(_line, '{file}:{color}{line}:{sev}:{id}:{msg}{reset}'.format(file=os.path.abspath(_file), color=Fore.YELLOW, line=_line, sev=_severity, id=_display_id, msg=override_msg, reset=Style.RESET_ALL))]
+                return [(_line, '{file}:{color}{line}:{sev}:{id}:{msg}{reset}'.format(file=_path, color=Fore.YELLOW, line=_line, sev=_severity, id=_display_id, msg=override_msg, reset=Style.RESET_ALL))]
             else:
-                return [(_line, '{file}:{color}{line}:{sev}:{id}:{msg}{reset}'.format(file=os.path.abspath(_file), color=Fore.GREEN, line=_line, sev=_severity, id=_display_id, msg=override_msg, reset=Style.RESET_ALL))]
-        return [(_line, '{file}:{line}:{sev}:{id}:{msg}'.format(file=os.path.abspath(_file), line=_line, sev=_severity, id=_display_id, msg=override_msg))]
+                return [(_line, '{file}:{color}{line}:{sev}:{id}:{msg}{reset}'.format(file=_path, color=Fore.GREEN, line=_line, sev=_severity, id=_display_id, msg=override_msg, reset=Style.RESET_ALL))]
+        return [(_line, '{file}:{line}:{sev}:{id}:{msg}'.format(file=_path, line=_line, sev=_severity, id=_display_id, msg=override_msg))]
 
     def __repr__(self):
         return '{id}'.format(id=self.ID)  # pragma: no cover

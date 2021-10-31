@@ -11,6 +11,7 @@ from oelint_adv.cls_rule import load_rules
 from oelint_adv.color import set_color
 from oelint_adv.rule_file import set_noinfo
 from oelint_adv.rule_file import set_nowarn
+from oelint_adv.rule_file import set_relpaths
 from oelint_adv.rule_file import set_rulefile
 from oelint_adv.rule_file import set_suppressions
 
@@ -43,6 +44,8 @@ def create_argparser():
                         help='Don\'t print information level findings')
     parser.add_argument('--nowarn', action='store_true', default=False,
                         help='Don\'t print warning level findings')
+    parser.add_argument('--relpaths', action='store_true', default=False,
+                        help='Show relative paths instead of absolute paths in results')
     parser.add_argument('--constantmods', default=[], nargs='+',
                         help="""
                              Modifications to the constant db.
@@ -104,6 +107,8 @@ def arguments_post(args):
         set_nowarn(True)
     if args.noinfo:
         set_noinfo(True)
+    if args.relpaths:
+        set_relpaths(True)
     set_suppressions(args.suppress)
     return args
 
@@ -207,6 +212,7 @@ def run(args):
         return sorted(set(issues), key=lambda x: x[0])
     except Exception:
         import traceback
+
         # pragma: no cover
         print('OOPS - That shouldn\'t happen - {files}'.format(files=args.files))   # noqa: T001 - it's here for a reason
         # pragma: no cover

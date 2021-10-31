@@ -2,6 +2,7 @@ from oelint_parser.constants import CONSTANTS
 
 _NOINFO = False
 _NOWARN = False
+_RELPATH = False
 _RULE_FILE = {}
 _SUPPRESSIONS = []
 
@@ -14,9 +15,18 @@ def get_nowarn():
     return _NOWARN
 
 
+def get_relpaths():
+    return _RELPATH
+
+
 def set_noinfo(value):
     global _NOINFO
     _NOINFO = value
+
+
+def set_relpaths(value):
+    global _RELPATH
+    _RELPATH = value
 
 
 def set_nowarn(value):

@@ -31,6 +31,26 @@ class TestClassIntegration(TestBaseClass):
         assert(any(Fore.YELLOW in x for x in issues)), '{} expected in:\n{}'.format("yellow", '\n'.join(issues))
         assert(any(Fore.GREEN in x for x in issues)), '{} expected in:\n{}'.format("green", '\n'.join(issues))
 
+    @pytest.mark.parametrize('input', 
+        [
+            {
+            'oelint adv-test.bb':
+            '''
+            VAR = "1"
+            INSANE_SKIP_${PN} = "foo"
+            '''
+            }
+        ],
+    )
+    def test_relpaths(self, input):
+        from oelint_adv.__main__ import run
+        _args = self._create_args(input, extraopts=["--relpaths"])
+        _cwd = os.getcwd()
+        os.chdir("/tmp")
+        issues = [x[1] for x in run(_args)]
+        assert(not any(x.startswith("/tmp/") for x in issues), 'Expected relpaths in:\n{}'.format('\n'.join(issues)))
+        os.chdir(_cwd)
+
     def test_missing_file_args(self):
         with pytest.raises(argparse.ArgumentTypeError):
             _args = self._create_args({})

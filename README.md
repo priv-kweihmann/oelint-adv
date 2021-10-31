@@ -72,6 +72,7 @@ optional arguments:
   --quiet               Print findings only
   --noinfo              Don't print information level findings
   --nowarn              Don't print warning level findings
+  --relpaths            Show relative paths instead of absolute paths in results
   --constantmods CONSTANTMODS [CONSTANTMODS ...]
                         Modifications to the constant db. prefix with: + - to
                         add to DB, - - to remove from DB, None - to override
