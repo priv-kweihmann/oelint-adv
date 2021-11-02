@@ -231,7 +231,9 @@ def main():  # pragma: no cover
 
     if args.output != sys.stderr:
         args.output = open(args.output, 'w')
-    args.output.write('\n'.join([x[1] for x in issues]) + '\n')
+    args.output.write('\n'.join([x[1] for x in issues]))
+    if issues:
+        args.output.write('\n')
     if args.output != sys.stderr:
         args.output.close()
 
