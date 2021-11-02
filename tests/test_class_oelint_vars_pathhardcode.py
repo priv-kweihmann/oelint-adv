@@ -7,6 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 from base import TestBaseClass
 
+
 class TestClassOelintVarsPathHardcode(TestBaseClass):
 
     def __generate_sample_code(self, var):

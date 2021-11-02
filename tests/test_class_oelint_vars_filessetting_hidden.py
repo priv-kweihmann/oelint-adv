@@ -7,6 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 from base import TestBaseClass
 
+
 class TestClassOelintVarsFileSettingsHidden(TestBaseClass):
 
     @pytest.mark.parametrize('id', ['oelint.vars.filessetting.hidden'])
