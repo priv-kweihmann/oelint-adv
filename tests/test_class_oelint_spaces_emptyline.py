@@ -7,6 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 from base import TestBaseClass
 
+
 class TestClassOelintSpacesEmptyLine(TestBaseClass):
     @pytest.mark.parametrize('id', ['oelint.spaces.emptyline'])
     @pytest.mark.parametrize('occurrence', [0])

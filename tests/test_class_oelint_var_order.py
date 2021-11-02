@@ -37,6 +37,7 @@ VAR_ORDER = [
     "BBCLASSEXTEND"
 ]
 
+
 class TestClassOelintVarOrder(TestBaseClass):
 
     def __generate_sample_code(self, first, second):

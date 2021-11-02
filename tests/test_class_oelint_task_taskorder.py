@@ -18,6 +18,7 @@ from base import TestBaseClass
 # "do_build",
 # "do_package"
 
+
 class TestClassOelintTaskOrder(TestBaseClass):
 
     def __generate_sample_code(self, first, second):
