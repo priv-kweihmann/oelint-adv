@@ -18,6 +18,7 @@ class VarQuoted(Rule):
             # Don't use VarValueStripped here as we explicitly want the quotes
             # at the beginning and the end of the value
             val = i.VarValue.strip()
-            if not val.startswith('"') or not val.endswith('"'):
+            if ((not val.startswith('"') or not val.endswith('"'))
+                    and (not val.startswith('\'') or not val.endswith('\''))): # noqa: W503
                 res += self.finding(i.Origin, i.InFileLine)
         return res
