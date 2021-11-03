@@ -102,13 +102,13 @@ class Rule:
         if get_relpaths():
             _path = os.path.relpath(_path, os.getcwd())
 
-        style = ''
-        if get_colorize() is False:
-            style = Style.RESET_ALL
+        _style = ''
+        _color = ''
+        if get_colorize():
+            _color = get_color_by_severity(_severity)
+            _style = Style.RESET_ALL
 
-        _color = get_color_by_severity(_severity)
-
-        return [(_line, f'{_path}:{_color}{_line}:{_severity}:{_display_id}:{override_msg}{style}')]
+        return [(_line, f'{_color}{_path}:{_line}:{_severity}:{_display_id}:{override_msg}{_style}')]
 
     def __repr__(self):
         return '{id}'.format(id=self.ID)  # pragma: no cover
