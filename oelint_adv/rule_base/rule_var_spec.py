@@ -12,7 +12,7 @@ class VarPnBpnUsage(Rule):
     def __init__(self):
         super().__init__(id='oelint.vars.specific',
                          severity='error',
-                         message='\'{a}\' is set specific to [\'{b}\'], but isn\'t known from PACKAGES, MACHINE or resources',
+                         message='\'{a}\' is set specific to [\'{b}\'], but isn\'t known from PACKAGES, MACHINE, DISTRO or resources',
                          onappend=False)
 
     def check(self, _file, stash):
@@ -26,6 +26,14 @@ class VarPnBpnUsage(Rule):
         _packages = get_valid_package_names(stash, _file)
         _named_res = get_valid_named_resources(stash, _file)
         for i in items:
+            _distro = []
+            if i.GetDistroEntry():
+                _distro = [i.GetDistroEntry(), expand_term(stash, _file, i.GetDistroEntry())]
+            if any(x in _packages for x in _distro) or any(x in _named_res for x in _distro): # pragma: no cover
+                continue # pragma: no cover
+            if any(x in CONSTANTS.DistrosKnown for x in _distro):
+                continue
+
             _machine = []
             if i.GetMachineEntry():
                 _machine = [i.GetMachineEntry(), expand_term(

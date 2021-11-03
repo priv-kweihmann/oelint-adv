@@ -119,6 +119,18 @@ class TestClassOelintVarsSpecific(TestBaseClass):
             B_bararch += "abc"
             '''
             },
+            {
+            'oelint_adv_test.bb':
+            '''
+            B:poky += "abc"
+            '''
+            },
+            {
+            'oelint_adv_test.bb':
+            '''
+            B:nodistro += "abc"
+            '''
+            },
         ],
     )
     def test_good(self, input, id, occurrence):

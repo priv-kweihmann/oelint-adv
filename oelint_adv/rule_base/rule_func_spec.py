@@ -12,7 +12,7 @@ class VarPnBpnUsage(Rule):
     def __init__(self):
         super().__init__(id='oelint.func.specific',
                          severity='error',
-                         message='\'{func}\' is set specific to [\'{machine}\'], but isn\'t known from PACKAGES, MACHINE or resources')
+                         message='\'{func}\' is set specific to [\'{machine}\'] or [\'{distro}\'], but isn\'t known from PACKAGES, MACHINE, DISTRO, or resources')
 
     def check(self, _file, stash):
         res = []
@@ -28,6 +28,10 @@ class VarPnBpnUsage(Rule):
             _valid_funcs += ['{a}-{b}'.format(a=b, b=p)
                              for p in _packages if p.strip() and p != INLINE_BLOCK]
         for i in items:
+            _distro = i.GetDistroEntry()
+            if _distro in CONSTANTS.DistrosKnown:
+                continue
+
             _machine = i.GetMachineEntry()
             if not _machine or _machine in CONSTANTS.MachinesKnown:
                 continue
@@ -39,5 +43,5 @@ class VarPnBpnUsage(Rule):
             if _comp and re.match(''.join(x.VarValueStripped for x in _comp), _machine):
                 continue
             res += self.finding(i.Origin, i.InFileLine,
-                                override_msg=self.Msg.format(func=i.FuncName, machine=_machine))
+                                override_msg=self.Msg.format(func=i.FuncName, machine=_machine, distro=_distro))
         return res
