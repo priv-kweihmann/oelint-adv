@@ -3,6 +3,7 @@ import json
 import os
 import re
 import sys
+from typing import List
 
 from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
@@ -60,7 +61,7 @@ def create_argparser():
                         help='Print loaded rules as a rulefile and exit')
     parser.add_argument('--exit-zero', action='store_true', default=False,
                         help='Always return a 0 (non-error) status code, even if lint errors are found')
-    parser.add_argument('files', nargs='*', help='File to parse')
+    parser.add_argument('files', nargs='*', help='File(s) to lint')
 
     return parser
 
@@ -69,9 +70,45 @@ def parse_arguments():
     return create_argparser().parse_args()  # pragma: no cover
 
 
+def find_recipes(root_directory: str) -> List[str]:
+    """Walks a `root_directory` and gathers `.bb` / `.bbappend` files.
+    """
+    recipes = []
+    for root, _, files in os.walk(root_directory):
+        for file in files:
+            if file.endswith('.bb') or file.endswith('.bbappend'):
+                recipes.append('/'.join((root, file)))
+
+    return recipes
+
+
+def expand_paths(roots: List[str]) -> List[str]:
+    """If an item in `roots` is a path, walks that path and gathers all `.bb` and
+    `.bbappend` files.
+
+    Args:
+        roots: list of files or paths
+
+    Returns:
+        a list of absolute file paths
+    """
+    recipes = []
+    for root in roots:
+        if os.path.isdir(root):
+            recipes.extend(find_recipes(root))
+        else:
+            recipes.append(root)
+
+    return recipes
+
+
 def arguments_post(args):
+
     if args.files == [] and not args.print_rulefile:
-        raise argparse.ArgumentTypeError('no input files')
+        sys.exit('no input files provided')
+
+    if args.files == ['.']:
+        args.files = expand_paths(args.files)
 
     if args.rulefile:
         try:
@@ -103,16 +140,13 @@ def arguments_post(args):
             raise argparse.ArgumentTypeError(
                 'mod file \'{file}\' is not a valid file'.format(file=mod))
 
-    if args.color:
-        set_colorize(True)
-    if args.nowarn:
-        set_nowarn(True)
-    if args.noinfo:
-        set_noinfo(True)
-    if args.relpaths:
-        set_relpaths(True)
     set_noid(args.noid)
+    set_colorize(args.color)
+    set_nowarn(args.nowarn)
+    set_noinfo(args.noinfo)
+    set_relpaths(args.relpaths)
     set_suppressions(args.suppress)
+
     return args
 
 
@@ -178,7 +212,8 @@ def run(args):
         issues = []
         fixedfiles = []
         groups = group_files(args.files)
-        for group in groups:
+        for i_group, group in enumerate(groups):
+            print(f'oelint processing file {i_group+1} out of {len(groups)}')  # noqa: T001
             stash = Stash(args)
             for f in group:
                 try:
