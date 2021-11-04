@@ -1,5 +1,5 @@
 import pytest
-from base import TestBaseClass
+from .base import TestBaseClass
 
 OPTIONS_AVAILABLE =  [
     "apply",

@@ -1,19 +1,11 @@
 import os
-import sys
 import tempfile
 import textwrap
-import logging
-
-import pytest
 
 
 class TestBaseClass:
 
     TEST_UNDEFINED_PARAMETER = 'this is an undefined parameter to work around pytest limitations'
-
-    @classmethod
-    def setup_class(cls):
-        sys.path.insert(0, os.path.abspath(os.path.dirname(__file__) + "/../"))
 
     def __pytest_empty_object_fixture(self, _input, default):
         if _input == TestBaseClass.TEST_UNDEFINED_PARAMETER:
