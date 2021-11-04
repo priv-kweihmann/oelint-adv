@@ -7,7 +7,7 @@ import logging
 import pytest
 
 
-class TestBaseClass():
+class TestBaseClass:
 
     TEST_UNDEFINED_PARAMETER = 'this is an undefined parameter to work around pytest limitations'
 
@@ -25,25 +25,29 @@ class TestBaseClass():
         self._tmpdir = getattr(self, '_tmpdir', tempfile.mkdtemp())
         _path = os.path.join(self._tmpdir, _file)
         os.makedirs(os.path.dirname(_path), exist_ok=True)
-        
+
         with open(_path, "w") as o:
             _cnt = textwrap.dedent(_input).lstrip("\n")
             self.__created_files[_file] = _cnt
             o.write(_cnt)
         return _path
 
-    def _create_args(self, input, extraopts=[]):
+    def _create_args(self, input, extraopts=None):
+        if extraopts is None:
+            extraopts = []
         from oelint_adv.__main__ import arguments_post
         return arguments_post(self._create_args_parser().parse_args(
-            ['--quiet'] + 
+            ['--quiet'] +
             self.__pytest_empty_object_fixture(extraopts, []) +
             [self._create_tempfile(k, v) for k, v in input.items()]
         ))
 
-    def _create_args_fix(self, input, extraopts=[]):
+    def _create_args_fix(self, input, extraopts=None):
+        if extraopts is None:
+            extraopts = []
         from oelint_adv.__main__ import arguments_post
         return arguments_post(self._create_args_parser().parse_args(
-            ['--quiet', '--fix', '--nobackup'] + 
+            ['--quiet', '--fix', '--nobackup'] +
             self.__pytest_empty_object_fixture(extraopts, []) +
             [self._create_tempfile(k, v) for k, v in input.items()]
         ))
