@@ -1,13 +1,16 @@
 import argparse
 import os
-import sys
 from argparse import ArgumentTypeError
+from oelint_parser.constants import CONSTANTS
+from colorama import Fore
+from oelint_adv.__main__ import run
+from oelint_adv.__main__ import arguments_post
+from oelint_adv.__main__ import print_rulefile
+import json
 
 import pytest
 
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
-
-from base import TestBaseClass
+from .base import TestBaseClass
 
 
 class TestClassIntegration(TestBaseClass):
@@ -24,13 +27,12 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_color_input(self, input):
-        from oelint_adv.__main__ import run
-        from colorama import Fore
         _args = self._create_args(input, extraopts=["--color"])
         issues = [x[1] for x in run(_args)]
-        assert(any(Fore.RED in x for x in issues)), '{} expected in:\n{}'.format("red", '\n'.join(issues))
-        assert(any(Fore.YELLOW in x for x in issues)), '{} expected in:\n{}'.format("yellow", '\n'.join(issues))
-        assert(any(Fore.GREEN in x for x in issues)), '{} expected in:\n{}'.format("green", '\n'.join(issues))
+        issues_formatted = "\n".join(issues)
+        assert(any(Fore.RED in x for x in issues)), f'red expected in:\n{issues_formatted}'
+        assert(any(Fore.YELLOW in x for x in issues)), f'yellow expected in:\n{issues_formatted}'
+        assert(any(Fore.GREEN in x for x in issues)), f'green expected in:\n{issues_formatted}'
 
     @pytest.mark.parametrize('input', 
         [
@@ -44,7 +46,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_relpaths(self, input):
-        from oelint_adv.__main__ import run
         _args = self._create_args(input, extraopts=["--relpaths"])
         _cwd = os.getcwd()
         os.chdir("/tmp")
@@ -67,7 +68,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_constmod_add(self, input):
-        from oelint_parser.constants import CONSTANTS
         __cnt = """
         {
             "functions": {
@@ -94,7 +94,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_constmod_remove(self, input):
-        from oelint_parser.constants import CONSTANTS
         __cnt = """
         {
             "functions": {
@@ -120,7 +119,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_constmod_override(self, input):
-        from oelint_parser.constants import CONSTANTS
         __cnt = """
         {
             "functions": {
@@ -195,7 +193,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_rulefile_default_severity(self, input):
-        from oelint_adv.__main__ import run
         _rule_file = self._create_tempfile('rulefile', '{"oelint.var.mandatoryvar": ""}')
         _args = self._create_args(input, extraopts=[f"--rulefile={_rule_file}"])
         for issue in [x[1] for x in run(_args)]:
@@ -495,7 +492,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_noinfo(self, input):
-        from oelint_adv.__main__ import run
         _args = self._create_args(input, extraopts=["--noinfo"])
         issues = [x[1] for x in run(_args)]
         assert(not any([x for x in issues if ':info:' in x]))
@@ -512,7 +508,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_nowarn(self, input):
-        from oelint_adv.__main__ import run
         _args = self._create_args(input, extraopts=["--nowarn"])
         issues = [x[1] for x in run(_args)]
         assert(not any([x for x in issues if ':warning:' in x]))
@@ -529,7 +524,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_constantfile(self, input):
-        from oelint_adv.__main__ import run
 
         _cstfile = self._create_tempfile('constants.json', '{}')
 
@@ -549,8 +543,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_rulefile(self, input):
-        from oelint_adv.__main__ import run
-
         _cstfile = self._create_tempfile('constants.json', '{}')
 
         _args = self._create_args(input, extraopts=["--rulefile={}".format(_cstfile)])
@@ -568,8 +560,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_rulefile_filtering(self, input):
-        from oelint_adv.__main__ import run
-
         _cstfile = self._create_tempfile('constants.json', '{"oelint.var.mandatoryvar.DESCRIPTION": "warning", "oelint.var.mandatoryvar": "info" }')
 
         _args = self._create_args(input, extraopts=["--rulefile={}".format(_cstfile), "--noinfo"])
@@ -587,8 +577,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_rulefile_filtering2(self, input):
-        from oelint_adv.__main__ import run
-
         _cstfile = self._create_tempfile('constants.json', '{"oelint.var.mandatoryvar.DESCRIPTION": "warning"}')
 
         _args = self._create_args(input, extraopts=["--rulefile={}".format(_cstfile)])
@@ -606,8 +594,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_rulefile_filtering_invert(self, input):
-        from oelint_adv.__main__ import run
-
         _cstfile = self._create_tempfile('constants.json', '{"oelint.var.mandatoryvar.DESCRIPTION": "warning", "oelint.var.mandatoryvar": "info" }')
 
         _args = self._create_args(input, extraopts=["--rulefile={}".format(_cstfile), "--noinfo"])
@@ -637,9 +623,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_print_rulefile(self, capsys, input):
-        from oelint_adv.__main__ import print_rulefile
-        import json
-
         _rule_file = self._create_tempfile('rules.json', json.dumps(input))
         _args = self._create_args({}, extraopts=[f"--rulefile={_rule_file}", "--print-rulefile"])
         print_rulefile(_args)
@@ -675,8 +658,6 @@ class TestClassIntegration(TestBaseClass):
         ],
     )
     def test_nonquiet(self, input):
-        from oelint_adv.__main__ import run
-        from oelint_adv.__main__ import arguments_post
         _args = arguments_post(self._create_args_parser().parse_args(
             [self._create_tempfile(k, v) for k, v in input.items()]
         ))
@@ -684,8 +665,6 @@ class TestClassIntegration(TestBaseClass):
         assert(any(issues))
 
     def test_invalidfile(self):
-        from oelint_adv.__main__ import run
-        from oelint_adv.__main__ import arguments_post
         _args = arguments_post(self._create_args_parser().parse_args(
             ["/does/not/exist"]
         ))
