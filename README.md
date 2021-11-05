@@ -19,9 +19,9 @@ It could also be used as part of a CI to avoid hard to debug issues slipping to 
 As every linter this tool is sometimes extra picky, but for the good of it, not just to bug people.
 Especially for novice users it might be a help to avoid the most common pitfalls of bitbake recipes.
 
-The tool does handle includes/requires automatically so you don't have to pass them via CLI.
+The tool does handle includes/requires automatically, so you don't have to pass them via CLI.
 
-**NOTE**: .bbappend-files have to be passed via CLI - these are NOT gathered automatically
+**NOTE**: .bbappend-files have to be passed via CLI - these are NOT gathered automatically.
 
 ## Install
 
@@ -200,13 +200,13 @@ Rules marked with **[S]** can have multiple sub-IDs
 To enable rulesets that are not part of the standard ruleset pass
 **--addrules \<ruleset-name\>** to CLI.
 
-These rules are sometimes contrary to OE-style-guide, so use them with caution
+These rules are sometimes contrary to OE-style-guide, so use them with caution.
 
 #### jetm ruleset
 
-To enable pass **--addrules jetm** to CLI
+To enable pass **--addrules jetm** to CLI.
 
-Rules marked with **[F]** are able to perform automatic fixing
+Rules marked with **[F]** are able to perform automatic fixing.
 
 * oelint.jetm.vars.dependssingleline - Each [R]DEPENDS entry should be put into a single line
   
@@ -214,7 +214,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 
 By passing `--customrules` via CLI you could add additional rules to be checked.
 The argument should point to a directory - every class derived from `Rule` will be automatically loaded.
-Please use the the following as a template for your own
+Please use the following as a template for your own:
 
 ```python
 from oelint_adv.cls_rule import Rule
@@ -235,13 +235,13 @@ class FooMagicRule(Rule):
         return res
 ```
 
-for more details please see the function docstrings of the API
+For more details please see the function docstrings of the API.
 
 ## Defining a ruleset
 
 If you pass the option `--rulefile` you could define the rules to be checked and their severity via a simple json file.
 
-The rule file could look like this
+The rule file could look like this:
 
 ```json
 {
@@ -269,15 +269,15 @@ to keep the original severity.
 ```
 
 would enable the two rules `oelint.file.includenotfound` and `oelint.file.requirenotfound`.
-The severity of `oelint.file.includenotfound` will be the default of the tool, while `oelint.file.requirenotfound` will report `warning` instead of the original suggested severity
+The severity of `oelint.file.includenotfound` will be the default of the tool, while `oelint.file.requirenotfound` will report `warning` instead of the original suggested severity.
 
 ### Adding additional constants
 
-Please see [oelint-parser](https://github.com/priv-kweihmann/oelint-parser) for further details, how to add your own constants to the parser
+Please see [oelint-parser](https://github.com/priv-kweihmann/oelint-parser) for further details, how to add your own constants to the parser.
 
 ## vscode extension
 
-Find the extension in the [marketplace](https://marketplace.visualstudio.com/items?itemName=kweihmann.oelint-vscode), or search for `oelint-vscode`
+Find the extension in the [marketplace](https://marketplace.visualstudio.com/items?itemName=kweihmann.oelint-vscode), or search for `oelint-vscode`.
 
 ## Jenkins integration
 
@@ -285,10 +285,10 @@ Jenkins integration is provided by [warnings-ng](https://plugins.jenkins.io/warn
 
 ## Missing anything?
 
-You think there's something missing, wrong, 'improveable'...
+You think there's something missing, wrong, 'improvable'...
 Just file an issue to get in contact.
 
 ## Contribute
 
 Any sort of ideas, pull requests, bug reports, reports of false positives are welcome.
-This project is open to anyone - no pitfalls or legal inconveniences
+This project is open to anyone - no pitfalls or legal inconveniences.
