@@ -25,7 +25,7 @@ class FooMagicRule(Rule):
                 # you have to replace the content of `RealRaw` and `Raw`
                 # with the fixed content
                 # `Raw` is the raw block with expanded inlines blocks
-                # `RealRaw` is the raw block with any modifications
+                # `RealRaw` is the raw block without any modifications
                 #           this is what will be actually written to the file
                 i.RealRaw = i.RealRaw.replace('Foo', 'Bar')
                 i.Raw = i.Raw.replace('Foo', 'Bar')
