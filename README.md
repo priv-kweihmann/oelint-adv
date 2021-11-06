@@ -238,6 +238,10 @@ class FooMagicRule(Rule):
 
 For more details please see the function docstrings of the API.
 
+You can find this example also in the development [source tree](https://github.com/priv-kweihmann/oelint-adv/tree/master/testruleset)
+
+Additional real-life examples can be found in e.g. [meta-rubygems](https://github.com/priv-kweihmann/meta-rubygems/tree/master/files/lint/oelint-custom)
+
 ## Defining a ruleset
 
 If you pass the option `--rulefile` you could define the rules to be checked and their severity via a simple json file.
