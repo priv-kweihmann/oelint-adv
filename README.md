@@ -46,9 +46,23 @@ required python libraries on your own. See [requirements.txt](requirements.txt) 
 
 ```shell
 oelint-adv
-usage: oelint-adv [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix] [--nobackup] [--addrules ADDRULES [ADDRULES ...]] [--customrules CUSTOMRULES [CUSTOMRULES ...]]
-                  [--rulefile RULEFILE] [--constantfile CONSTANTFILE] [--color] [--quiet] [--noinfo] [--nowarn] [--relpaths] [--noid]
-                  [--constantmods CONSTANTMODS [CONSTANTMODS ...]] [--print-rulefile] [--exit-zero]
+usage: oelint-adv [-h]
+                  [--suppress SUPPRESS]
+                  [--output OUTPUT]
+                  [--fix]
+                  [--nobackup]
+                  [--addrules ADDRULES [ADDRULES ...]]
+                  [--customrules CUSTOMRULES [CUSTOMRULES ...]]
+                  [--rulefile RULEFILE] [--constantfile CONSTANTFILE]
+                  [--color]
+                  [--quiet]
+                  [--noinfo]
+                  [--nowarn]
+                  [--relpaths]
+                  [--noid]
+                  [--constantmods CONSTANTMODS [CONSTANTMODS ...]]
+                  [--print-rulefile]
+                  [--exit-zero]
                   [files [files ...]]
 
 Advanced OELint - Check bitbake recipes against OECore styleguide
