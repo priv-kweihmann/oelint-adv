@@ -31,12 +31,6 @@ With pip
 pip3 install oelint_adv
 ```
 
-From Arch Linux:
-
-```shell
-yay -S oelint-adv
-```
-
 ## Usage
 
 ```shell
