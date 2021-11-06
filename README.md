@@ -25,11 +25,22 @@ The tool does handle includes/requires automatically, so you don't have to pass 
 
 ## Install
 
-With pip
+With pip (**recommended**)
 
 ```shell
 pip3 install oelint_adv
 ```
+
+from source
+
+```shell
+git clone https://github.com/priv-kweihmann/oelint-adv
+cd oelint-adv
+python3 setup.py install # might require sudo/root permissions
+```
+
+**NOTE** if you install from source, you'll have to provide all matching
+required python libraries on your own. See [requirements.txt](requirements.txt) for details
 
 ## Usage
 
