@@ -523,6 +523,22 @@ class TestClassIntegration(TestBaseClass):
             }
         ],
     )
+    def test_noid(self, input):
+        _args = self._create_args(input, extraopts=["--noid"])
+        issues = [x[1] for x in run(_args)]
+        assert(not any([x for x in issues if ':oelint.vars.insaneskip:' in x]))
+
+    @pytest.mark.parametrize('input',
+        [
+            {
+            'oelint adv-test.bb':
+            '''
+            VAR = "1"
+            INSANE_SKIP_${PN} = "foo"
+            '''
+            }
+        ],
+    )
     def test_constantfile(self, input):
 
         _cstfile = self._create_tempfile('constants.json', '{}')

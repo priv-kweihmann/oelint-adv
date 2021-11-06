@@ -9,7 +9,7 @@ from oelint_parser.constants import CONSTANTS
 
 from oelint_adv.cls_rule import load_rules
 from oelint_adv.color import set_colorize
-from oelint_adv.rule_file import set_noinfo
+from oelint_adv.rule_file import set_noid, set_noinfo
 from oelint_adv.rule_file import set_nowarn
 from oelint_adv.rule_file import set_relpaths
 from oelint_adv.rule_file import set_rulefile
@@ -46,6 +46,8 @@ def create_argparser():
                         help='Don\'t print warning level findings')
     parser.add_argument('--relpaths', action='store_true', default=False,
                         help='Show relative paths instead of absolute paths in results')
+    parser.add_argument('--noid', action='store_true', default=False,
+                        help='Don\'t show the error-ID in the output')
     parser.add_argument('--constantmods', default=[], nargs='+',
                         help="""
                              Modifications to the constant db.
@@ -109,6 +111,7 @@ def arguments_post(args):
         set_noinfo(True)
     if args.relpaths:
         set_relpaths(True)
+    set_noid(args.noid)
     set_suppressions(args.suppress)
     return args
 
