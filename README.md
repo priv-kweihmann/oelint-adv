@@ -164,6 +164,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.descriptionsame - 'DESCRIPTION' is the same a 'SUMMARY' - it can be removed then
 * oelint.vars.descriptiontoobrief - 'DESCRIPTION' is the shorter than 'SUMMARY'
 * oelint.vars.doublemodify - Multiple modifiers of append/prepend/remove/+= found in one operation
+* oelint.vars.downloadfilename - Fetcher does create a download artifact without 'PV' in the filename
 * oelint.vars.duplicate - No duplicates in DEPENDS and RDEPENDS
 * oelint.vars.fileextrapaths - 'FILESEXTRAPATHS' shouldn't be used in a bb file
 * oelint.vars.fileextrapathsop - 'FILESEXTRAPATHS' should only be used in combination with ' := '
