@@ -14,12 +14,12 @@ class VarSRCURIWildcard(Rule):
         res = []
         _items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                    attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
-        for i in _items:
-            for f in [x.strip('\'') for x in i.get_items() if x]:
+        for item in _items:
+            for f in [x.strip('\'') for x in item.get_items() if x]:
                 if f == INLINE_BLOCK:
                     continue
                 components = get_scr_components(f)
                 if components['scheme'] == 'file':
                     if any([x for x in ['*'] if x in components['src']]):
-                        res += self.finding(i.Origin, i.InFileLine)
+                        res += self.finding(item.Origin, item.InFileLine)
         return res
