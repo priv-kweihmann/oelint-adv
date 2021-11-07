@@ -16,13 +16,13 @@ class VarSRCUriOptions(Rule):
                                   attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
 
         _domains = set()
-        for i in items:
-            for u in [x.strip('\'').strip() for x in i.get_items()]:
+        for item in items:
+            for u in [x.strip('\'').strip() for x in item.get_items()]:
                 if u == INLINE_BLOCK:
                     continue
                 _url = get_scr_components(u)
                 if _url['scheme'] and _url['scheme'] not in ['file']:
                     _domains.add(_url['src'].split('/')[0])
         if len(_domains) > 1:
-            res += self.finding(i.Origin, i.InFileLine)
+            res += self.finding(item.Origin, item.InFileLine)
         return res

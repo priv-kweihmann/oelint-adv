@@ -15,20 +15,20 @@ class VarSRCUriGitTag(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
         _fetcher = []
-        for i in items:
-            if any([i.Flag.endswith(x) for x in ['md5sum', 'sha256sum']]):
+        for item in items:
+            if any([item.Flag.endswith(x) for x in ['md5sum', 'sha256sum']]):
                 # These are just the hashes
                 continue
-            lines = [y.strip('"') for y in i.get_items() if y]
+            lines = [y.strip('"') for y in item.get_items() if y]
 
             for x in lines:
                 if x == INLINE_BLOCK:
-                    _fetcher.append(('inline', i.InFileLine))
+                    _fetcher.append(('inline', item.InFileLine))
                     continue
                 _url = get_scr_components(x)
                 if _url['scheme']:
-                    _fetcher.append((_url['scheme'], i.InFileLine))
+                    _fetcher.append((_url['scheme'], item.InFileLine))
         if _fetcher:
             if any(x[0] != 'file' for x in _fetcher) and _fetcher[0][0] == 'file':
-                res += self.finding(i.Origin, _fetcher[0][1])
+                res += self.finding(item.Origin, _fetcher[0][1])
         return res

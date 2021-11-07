@@ -126,7 +126,7 @@ class VarSRCUriOptions(Rule):
             ],
         }
 
-    def __analyse(self, i, _input, _index):
+    def __analyse(self, item, _input, _index):
         _url = get_scr_components(_input)
         res = []
         if 'scheme' not in _url:
@@ -134,7 +134,7 @@ class VarSRCUriOptions(Rule):
         # For certain types of file:// url parsing fails
         # ignore those
         if _url['scheme'] not in self._valid_options.keys() and not _input.strip().startswith('file://') and _url['scheme']:
-            res += self.finding(i.Origin, i.InFileLine + _index,
+            res += self.finding(item.Origin, item.InFileLine + _index,
                                 'Fetcher \'{a}\' is not known'.format(a=_url['scheme']))
         else:
             for k, v in _url['options'].items():
@@ -143,7 +143,7 @@ class VarSRCUriOptions(Rule):
                 if k == 'type' and v == 'kmeta':
                     continue  # linux-yocto uses this option to indicate kernel metadata sources
                 if k not in self._valid_options[_url['scheme']] + self._general_options:
-                    res += self.finding(i.Origin, i.InFileLine + _index,
+                    res += self.finding(item.Origin, item.InFileLine + _index,
                                         'Option \'{a}\' is not known with this fetcher type'.format(a=k))
         return res
 
@@ -151,13 +151,13 @@ class VarSRCUriOptions(Rule):
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
-        for i in items:
-            if any([i.Flag.endswith(x) for x in ['md5sum', 'sha256sum']]):
+        for item in items:
+            if any([item.Flag.endswith(x) for x in ['md5sum', 'sha256sum']]):
                 # These are just the hashes
                 continue
-            lines = [y.strip('"') for y in i.get_items() if y]
+            lines = [y.strip('"') for y in item.get_items() if y]
             for x in lines:
                 if x == INLINE_BLOCK:
                     continue
-                res += self.__analyse(i, x, lines.index(x))
+                res += self.__analyse(item, x, lines.index(x))
         return res
