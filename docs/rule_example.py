@@ -1,4 +1,4 @@
-from oelint_adv.cls_rule import Rule
+from oelint_adv.rule import Rule
 
 
 class FooMagicRule(Rule):

@@ -3,9 +3,9 @@ import os
 from argparse import ArgumentTypeError
 from oelint_parser.constants import CONSTANTS
 from colorama import Fore
-from oelint_adv.__main__ import run
-from oelint_adv.__main__ import arguments_post
-from oelint_adv.__main__ import print_rulefile
+from oelint_adv.main import run
+from oelint_adv.main import arguments_post
+from oelint_adv.main import print_rulefile
 import json
 
 import pytest

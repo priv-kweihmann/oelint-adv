@@ -1,1 +1,1 @@
-__all__ = ['cls_rule']
+__all__ = ['rule']

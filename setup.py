@@ -27,7 +27,7 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=('tests',)),
     entry_points={
         'console_scripts': [
-            'oelint-adv = oelint_adv.__main__:main',
+            'oelint-adv = oelint_adv.main:main',
         ],
     },
     install_requires=requirements,

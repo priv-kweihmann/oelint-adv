@@ -234,7 +234,7 @@ The argument should point to a directory - every class derived from `Rule` will 
 Please use the following as a template for your own:
 
 ```python
-from oelint_adv.cls_rule import Rule
+from oelint_adv.rule import Rule
 
 
 class FooMagicRule(Rule):
