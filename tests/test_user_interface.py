@@ -54,7 +54,7 @@ class TestClassIntegration(TestBaseClass):
         os.chdir(_cwd)
 
     def test_missing_file_args(self):
-        with pytest.raises(argparse.ArgumentTypeError):
+        with pytest.raises(SystemExit):
             _args = self._create_args({})
 
     @pytest.mark.parametrize('input',
