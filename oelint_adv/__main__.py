@@ -20,11 +20,12 @@ sys.path.append(os.path.abspath(os.path.join(__file__, '..')))
 
 def create_argparser():
     parser = argparse.ArgumentParser(prog='oelint-adv',
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                                      description='Advanced OELint - Check bitbake recipes against OECore styleguide')
     parser.add_argument('--suppress', default=[],
                         action='append', help='Rules to suppress')
     parser.add_argument('--output', default=sys.stderr,
-                        help='Where to flush the findings (default: stderr)')
+                        help='Where to flush the findings')
     parser.add_argument('--fix', action='store_true', default=False,
                         help='Automatically try to fix the issues')
     parser.add_argument('--nobackup', action='store_true', default=False,
