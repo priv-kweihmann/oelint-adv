@@ -60,6 +60,7 @@ usage: oelint-adv [-h]
                   [--nowarn]
                   [--relpaths]
                   [--noid]
+                  [--messageformat MESSAGEFORMAT]
                   [--constantmods CONSTANTMODS [CONSTANTMODS ...]]
                   [--print-rulefile]
                   [--exit-zero]
@@ -89,6 +90,8 @@ optional arguments:
   --nowarn              Don't print warning level findings
   --relpaths            Show relative paths instead of absolute paths in results
   --noid                Don't show the error-ID in the output
+  --messageformat MESSAGEFORMAT
+                        Format of message output (default: {path}:{line}:{severity}:{id}:{msg})
   --constantmods CONSTANTMODS [CONSTANTMODS ...]
                         Modifications to the constant db. prefix with: + - to
                         add to DB, - - to remove from DB, None - to override
@@ -102,6 +105,7 @@ optional arguments:
 ## Output
 
 Will be [file]:[line]:[severity]:[id]:[message].
+To change the default message format, please see [Output message format](#output-message-format) section.
 
 Example:
 
@@ -315,6 +319,18 @@ The severity of `oelint.file.includenotfound` will be the default of the tool, w
 
 Please see [oelint-parser](https://github.com/priv-kweihmann/oelint-parser) for further details, how to add your own constants to the parser.
 
+## Output message format
+
+You can freely define a custom output format.
+The following placeholder symbols will be automatically replaced
+
+| name       | replaced by                |
+| ---------- | -------------------------- |
+| {path}     | path of the file           |
+| {line}     | line of the finding        |
+| {severity} | severity of the finding    |
+| {id}       | error-ID of the finding    |
+| {msg}      | description of the finding |
 ## vscode extension
 
 Find the extension in the [marketplace](https://marketplace.visualstudio.com/items?itemName=kweihmann.oelint-vscode), or search for `oelint-vscode`.

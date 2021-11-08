@@ -8,7 +8,7 @@ from colorama import Style
 
 from oelint_adv.color import get_color_by_severity
 from oelint_adv.color import get_colorize
-from oelint_adv.rule_file import get_noid
+from oelint_adv.rule_file import get_messageformat
 from oelint_adv.rule_file import get_noinfo
 from oelint_adv.rule_file import get_nowarn
 from oelint_adv.rule_file import get_relpaths
@@ -80,12 +80,10 @@ class Rule:
         if override_msg is None:
             override_msg = self.Msg
         _id = [self.ID]
-        _display_id = self.ID if not get_noid() else ''
-        if _display_id:
-            if appendix:
-                _id.append(self.ID + '.' + appendix)
-                _display_id += '.' + appendix
-            _display_id += ':'
+        _display_id = self.ID
+        if appendix:
+            _id.append(self.ID + '.' + appendix)
+            _display_id += '.' + appendix
         # filter out suppressions
         if any(x in get_suppressions() for x in _id):
             return []
@@ -111,7 +109,10 @@ class Rule:
             _color = get_color_by_severity(_severity)
             _style = Style.RESET_ALL
 
-        return [(_line, f'{_color}{_path}:{_line}:{_severity}:{_display_id}{override_msg}{_style}')]
+        _msg = get_messageformat().format(path=_path, line=_line, severity=_severity,
+                                          id=_display_id, msg=override_msg)
+
+        return [(_line, f'{_color}{_msg}{_style}')]
 
     def __repr__(self):
         return '{id}'.format(id=self.ID)  # pragma: no cover

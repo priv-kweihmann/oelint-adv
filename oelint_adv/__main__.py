@@ -9,7 +9,8 @@ from oelint_parser.constants import CONSTANTS
 
 from oelint_adv.cls_rule import load_rules
 from oelint_adv.color import set_colorize
-from oelint_adv.rule_file import set_noid, set_noinfo
+from oelint_adv.rule_file import set_messageformat
+from oelint_adv.rule_file import set_noinfo
 from oelint_adv.rule_file import set_nowarn
 from oelint_adv.rule_file import set_relpaths
 from oelint_adv.rule_file import set_rulefile
@@ -20,12 +21,11 @@ sys.path.append(os.path.abspath(os.path.join(__file__, '..')))
 
 def create_argparser():
     parser = argparse.ArgumentParser(prog='oelint-adv',
-                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                                      description='Advanced OELint - Check bitbake recipes against OECore styleguide')
     parser.add_argument('--suppress', default=[],
                         action='append', help='Rules to suppress')
     parser.add_argument('--output', default=sys.stderr,
-                        help='Where to flush the findings')
+                        help='Where to flush the findings (default: stderr)')
     parser.add_argument('--fix', action='store_true', default=False,
                         help='Automatically try to fix the issues')
     parser.add_argument('--nobackup', action='store_true', default=False,
@@ -49,6 +49,8 @@ def create_argparser():
                         help='Show relative paths instead of absolute paths in results')
     parser.add_argument('--noid', action='store_true', default=False,
                         help='Don\'t show the error-ID in the output')
+    parser.add_argument('--messageformat', default='{path}:{line}:{severity}:{id}:{msg}',
+                        type=str, help='Format of message output')
     parser.add_argument('--constantmods', default=[], nargs='+',
                         help="""
                              Modifications to the constant db.
@@ -112,8 +114,13 @@ def arguments_post(args):
         set_noinfo(True)
     if args.relpaths:
         set_relpaths(True)
-    set_noid(args.noid)
     set_suppressions(args.suppress)
+    if args.noid:
+        # just strip id from message format if noid is requested
+        args.messageformat = args.messageformat.replace('{id}', '')
+        # strip any double : resulting from the previous operation
+        args.messageformat = args.messageformat.replace('::', ':')
+    set_messageformat(args.messageformat)
     return args
 
 

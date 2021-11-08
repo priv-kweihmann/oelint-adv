@@ -539,6 +539,38 @@ class TestClassIntegration(TestBaseClass):
             }
         ],
     )
+    def test_messageformat_1(self, input):
+        _args = self._create_args(input, extraopts=["--messageformat='BAR:FOO'"])
+        issues = [x[1] for x in run(_args)]
+        assert(any([x for x in issues if 'BAR:FOO' in x]))
+
+    @pytest.mark.parametrize('input',
+        [
+            {
+            'oelint adv-test.bb':
+            '''
+            VAR = "1"
+            INSANE_SKIP_${PN} = "foo"
+            '''
+            }
+        ],
+    )
+    def test_messageformat_2(self, input):
+        _args = self._create_args(input, extraopts=["--messageformat='{id}:{severity}:{msg}'"])
+        issues = [x[1] for x in run(_args)]
+        assert(any([x for x in issues if 'oelint.vars.insaneskip:error:' in x]))
+
+    @pytest.mark.parametrize('input',
+        [
+            {
+            'oelint adv-test.bb':
+            '''
+            VAR = "1"
+            INSANE_SKIP_${PN} = "foo"
+            '''
+            }
+        ],
+    )
     def test_constantfile(self, input):
 
         _cstfile = self._create_tempfile('constants.json', '{}')
