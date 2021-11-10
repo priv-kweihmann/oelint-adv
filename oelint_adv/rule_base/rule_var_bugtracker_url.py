@@ -15,10 +15,8 @@ class VarBugtrackerIsUrl(Rule):
                                   attribute=Variable.ATTR_VAR, attributeValue='BUGTRACKER')
         for i in items:
             val = i.VarValueStripped
-            try:
-                result = get_scr_components(val)
-                if not result['scheme'] or not result['src']:
-                    raise Exception()
-            except Exception:
+            result = get_scr_components(val)
+            if not result['scheme'] or not result['src']:
                 res += self.finding(i.Origin, i.InFileLine)
+
         return res

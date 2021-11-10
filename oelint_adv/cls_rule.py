@@ -223,17 +223,14 @@ def load_rules(args, add_rules=(), add_dirs=()):
             try:
                 mod = importlib.import_module(name)
                 for m in inspect.getmembers(mod, inspect.isclass):
-                    try:
-                        if issubclass(m[1], Rule):
-                            inst = m[1]()
-                            _potential_ids = [
-                                inst.ID] + ['{a}.{b}'.format(a=inst.ID, b=x) for x in inst.Appendix]
-                            if any(_potential_ids):
-                                if _rule_file and not any(x in _rule_file for x in _potential_ids):
-                                    continue  # pragma: no cover
-                                res.append(inst)
-                    except Exception:  # pragma: no cover
-                        pass  # pragma: no cover
+                    if issubclass(m[1], Rule):
+                        inst = m[1]()
+                        _potential_ids = [
+                            inst.ID] + ['{a}.{b}'.format(a=inst.ID, b=x) for x in inst.Appendix]
+                        if any(_potential_ids):
+                            if _rule_file and not any(x in _rule_file for x in _potential_ids):
+                                continue  # pragma: no cover
+                            res.append(inst)
             except Exception as e:  # pragma: no cover
                 if not args.quiet:  # pragma: no cover
                     print(  # noqa: T001 this print is fine here

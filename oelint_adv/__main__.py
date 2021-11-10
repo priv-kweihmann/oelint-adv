@@ -175,60 +175,52 @@ def print_rulefile(args):
 
 
 def run(args):
-    try:
-        rules = load_rules(args, add_rules=args.addrules, add_dirs=args.customrules)
-        _loaded_ids = []
-        for r in rules:
-            _loaded_ids += r.get_ids()
-        if not args.quiet:
-            print('Loaded rules:\n\t{rules}'.format(  # noqa: T001 - it's here for a reason
-                rules='\n\t'.join(sorted(_loaded_ids))))
-        issues = []
-        fixedfiles = []
-        groups = group_files(args.files)
-        for group in groups:
-            stash = Stash(args)
-            for f in group:
-                try:
-                    stash.AddFile(f)
-                except FileNotFoundError as e:  # pragma: no cover
-                    if not args.quiet:  # pragma: no cover
-                        print('Can\'t open/read: {e}'.format(e=e))  # noqa: T001 - it's fine here; # pragma: no cover
+    rules = load_rules(args, add_rules=args.addrules, add_dirs=args.customrules)
+    _loaded_ids = []
+    for r in rules:
+        _loaded_ids += r.get_ids()
+    if not args.quiet:
+        print('Loaded rules:\n\t{rules}'.format(  # noqa: T001 - it's here for a reason
+            rules='\n\t'.join(sorted(_loaded_ids))))
+    issues = []
+    fixedfiles = []
+    groups = group_files(args.files)
+    for group in groups:
+        stash = Stash(args)
+        for f in group:
+            try:
+                stash.AddFile(f)
+            except FileNotFoundError as e:  # pragma: no cover
+                if not args.quiet:  # pragma: no cover
+                    print('Can\'t open/read: {e}'.format(e=e))  # noqa: T001 - it's fine here; # pragma: no cover
 
-            stash.Finalize()
+        stash.Finalize()
 
-            _files = list(set(stash.GetRecipes() + stash.GetLoneAppends()))
-            for _, f in enumerate(_files):
-                for r in rules:
-                    if not r.OnAppend and f.endswith('.bbappend'):
-                        continue
-                    if r.OnlyAppend and not f.endswith('.bbappend'):
-                        continue
-                    if args.fix:
-                        fixedfiles += r.fix(f, stash)
-                    issues += r.check(f, stash)
-            fixedfiles = list(set(fixedfiles))
-            for f in fixedfiles:
-                _items = [f] + stash.GetLinksForFile(f)
-                for i in _items:
-                    items = stash.GetItemsFor(filename=i, nolink=True)
-                    if not args.nobackup:
-                        os.rename(i, i + '.bak')  # pragma: no cover
-                    with open(i, 'w') as o:
-                        o.write(''.join([x.RealRaw for x in items]))
-                        if not args.quiet:
-                            print('{path}:{lvl}:{msg}'.format(path=os.path.abspath(i),  # noqa: T001 - it's fine here; # pragma: no cover
-                                                    lvl='debug', msg='Applied automatic fixes'))
+        _files = list(set(stash.GetRecipes() + stash.GetLoneAppends()))
+        for _, f in enumerate(_files):
+            for r in rules:
+                if not r.OnAppend and f.endswith('.bbappend'):
+                    continue
+                if r.OnlyAppend and not f.endswith('.bbappend'):
+                    continue
+                if args.fix:
+                    fixedfiles += r.fix(f, stash)
+                issues += r.check(f, stash)
+        fixedfiles = list(set(fixedfiles))
+        for f in fixedfiles:
+            _items = [f] + stash.GetLinksForFile(f)
+            for i in _items:
+                items = stash.GetItemsFor(filename=i, nolink=True)
+                if not args.nobackup:
+                    os.rename(i, i + '.bak')  # pragma: no cover
+                with open(i, 'w') as o:
+                    o.write(''.join([x.RealRaw for x in items]))
+                    if not args.quiet:
+                        print('{path}:{lvl}:{msg}'.format(path=os.path.abspath(i),  # noqa: T001 - it's fine here; # pragma: no cover
+                                                lvl='debug', msg='Applied automatic fixes'))
 
-        return sorted(set(issues), key=lambda x: x[0])
-    except Exception:
-        import traceback
+    return sorted(set(issues), key=lambda x: x[0])
 
-        # pragma: no cover
-        print('OOPS - That shouldn\'t happen - {files}'.format(files=args.files))   # noqa: T001 - it's here for a reason
-        # pragma: no cover
-        traceback.print_exc()
-    return []
 
 
 def main():  # pragma: no cover
@@ -238,7 +230,16 @@ def main():  # pragma: no cover
         print_rulefile(args)
         sys.exit(0)
 
-    issues = run(args)
+    try:
+        issues = run(args)
+    except Exception:
+        import traceback
+
+        # pragma: no cover
+        print('OOPS - That shouldn\'t happen - {files}'.format(files=args.files))   # noqa: T001 - it's here for a reason
+        # pragma: no cover
+        traceback.print_exc()
+        issues = []
 
     if args.output != sys.stderr:
         args.output = open(args.output, 'w')
