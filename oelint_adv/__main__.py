@@ -3,6 +3,10 @@ import json
 import os
 import re
 import sys
+from configparser import ConfigParser
+from configparser import NoOptionError
+from configparser import NoSectionError
+from configparser import ParsingError
 
 from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
@@ -17,6 +21,23 @@ from oelint_adv.rule_file import set_rulefile
 from oelint_adv.rule_file import set_suppressions
 
 sys.path.append(os.path.abspath(os.path.join(__file__, '..')))
+
+
+def parse_configfile():
+    config = ConfigParser()
+    for conffile in [os.environ.get('OELINT_CONFIG', '/does/not/exist'),
+                     os.path.join(os.getcwd(), '.oelint.cfg'),
+                     os.path.join(os.environ.get('HOME', '/does/not/exist'), '.oelint.cfg')]:
+        try:
+            if not os.path.exists(conffile):
+                continue
+            config.read(conffile)
+            return dict(config.items('oelint'))
+        except (PermissionError, SystemError) as e:  # pragma: no cover
+            print(f'Failed to load config file {conffile}. {e!r}')  # noqa: T001 - it's fine here; # pragma: no cover
+        except (NoSectionError, NoOptionError, ParsingError) as e:
+            print(f'Failed parsing config file {conffile}. {e!r}')  # noqa: T001 - it's here for a reason
+    return {}
 
 
 def create_argparser():
@@ -63,6 +84,9 @@ def create_argparser():
                         help='Print loaded rules as a rulefile and exit')
     parser.add_argument('--exit-zero', action='store_true', default=False,
                         help='Always return a 0 (non-error) status code, even if lint errors are found')
+    # Override the defaults with the values from the config file
+    parser.set_defaults(**parse_configfile())
+
     parser.add_argument('files', nargs='*', help='File to parse')
 
     return parser
@@ -72,7 +96,35 @@ def parse_arguments():
     return create_argparser().parse_args()  # pragma: no cover
 
 
-def arguments_post(args):
+def arguments_post(args):  # noqa: C901 - complexity is still okay
+    # Convert boolean symbols
+    for _option in [
+        'color',
+        'exit-zero',
+        'fix',
+        'nobackup',
+        'noinfo',
+        'nowarn',
+        'print-rulefile',
+        'quiet',
+        'relpaths',
+    ]:
+        try:
+            setattr(args, _option, bool(getattr(args, _option)))
+        except AttributeError:
+            pass
+
+    # Convert list symbols
+    for _option in [
+        'suppress',
+        'constantmods',
+    ]:
+        try:
+            if not isinstance(getattr(args, _option), list):
+                setattr(args, _option, [x.strip() for x in (getattr(args, _option) or '').split('\n') if x])
+        except AttributeError:  # pragma: no cover
+            pass  # pragma: no cover
+
     if args.files == [] and not args.print_rulefile:
         raise argparse.ArgumentTypeError('no input files')
 
@@ -106,14 +158,10 @@ def arguments_post(args):
             raise argparse.ArgumentTypeError(
                 'mod file \'{file}\' is not a valid file'.format(file=mod))
 
-    if args.color:
-        set_colorize(True)
-    if args.nowarn:
-        set_nowarn(True)
-    if args.noinfo:
-        set_noinfo(True)
-    if args.relpaths:
-        set_relpaths(True)
+    set_colorize(args.color)
+    set_nowarn(args.nowarn)
+    set_noinfo(args.noinfo)
+    set_relpaths(args.relpaths)
     set_suppressions(args.suppress)
     if args.noid:
         # just strip id from message format if noid is requested
@@ -167,7 +215,8 @@ def group_files(files):
 
 
 def print_rulefile(args):
-    rules = load_rules(args, add_rules=args.addrules, add_dirs=args.customrules)
+    rules = load_rules(args, add_rules=args.addrules,
+                       add_dirs=args.customrules)
     ruleset = {}
     for r in rules:
         ruleset.update(r.get_rulefile_entries())
@@ -176,7 +225,8 @@ def print_rulefile(args):
 
 def run(args):
     try:
-        rules = load_rules(args, add_rules=args.addrules, add_dirs=args.customrules)
+        rules = load_rules(args, add_rules=args.addrules,
+                           add_dirs=args.customrules)
         _loaded_ids = []
         for r in rules:
             _loaded_ids += r.get_ids()

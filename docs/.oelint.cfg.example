@@ -1,0 +1,7 @@
+[oelint]
+messageformat={severity}:{id}:{msg}
+suppress=
+    oelint.tabs.notabs
+    oelint.task.docstrings
+noinfo=True
+exit-zero=True
