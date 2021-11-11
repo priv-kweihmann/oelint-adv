@@ -331,6 +331,36 @@ The following placeholder symbols will be automatically replaced
 | {severity} | severity of the finding    |
 | {id}       | error-ID of the finding    |
 | {msg}      | description of the finding |
+
+## Configuration file
+
+You can define your own global or project wide defaults for all CLI parameters with an ini-style configuration file.
+
+In the following order files are probed
+
+* file pointed to by environment variable `OELINT_CONFIG`
+* file `.oelint.cfg` in current work directory
+* file `.oelint.cfg` in your `HOME` directory
+
+Explicitly passed options to CLI are always chosen over the defaults defined by the configuration file
+
+### File format
+
+```ini
+[oelint]
+# this will set the --nowarn parameter automatically
+nowarn = True
+# this will set A + B as suppress item
+# use indent (tab) and line breaks for multiple items
+suppress = 
+  A
+  B
+# this will set messageformat parameter
+messageformat = {severity}:{id}:{msg}
+```
+
+You can find an example file [here](docs/.oelint.cfg.example)
+
 ## vscode extension
 
 Find the extension in the [marketplace](https://marketplace.visualstudio.com/items?itemName=kweihmann.oelint-vscode), or search for `oelint-vscode`.
