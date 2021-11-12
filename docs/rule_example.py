@@ -16,7 +16,7 @@ class FooMagicRule(Rule):
         return res
 
     # To provide automatic fixing capability
-    # add the following optinal function
+    # add the following optional function
     def fix(self, _file, stash):
         res = []
         items = stash.GetItemsFor(filename=_file)

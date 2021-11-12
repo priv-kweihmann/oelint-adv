@@ -18,7 +18,7 @@ class VarListAppend(Rule):
             if not any(i.VarName.startswith(x) for x in needles):
                 continue
             if i.VarName.startswith('FILESEXTRAPATHS'):
-                # Catched by the `FILES` above but this list is colon separated.
+                # Caught by the `FILES` above but this list is colon separated.
                 continue
             ops = i.AppendOperation()
             if not i.VarValue.startswith('" ') and any(x in ops for x in ['append', ' .= ']):
