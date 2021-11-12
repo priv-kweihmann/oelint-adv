@@ -23,7 +23,7 @@ jobs:
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
     - name: linter (codespell)
-      run: codespell oelint_adv docs setup.py README.md
+      run: pre-commit run --all-files
       shell: bash
     - name: test (pytest)
       run: pytest
