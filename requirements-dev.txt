@@ -13,3 +13,4 @@ pytest-sugar >=0.9.0, <2.0.0
 pytest-tldr >=0.2.0, <2.0.0
 wemake-python-styleguide >=0.15.2, <2.0.0
 codespell >=2.1.0, <3.0.0
+pre-commit >=2.14.0, <3.0.0

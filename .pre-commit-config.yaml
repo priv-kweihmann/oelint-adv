@@ -1,0 +1,11 @@
+fail_fast: true
+repos:
+
+- repo: https://github.com/codespell-project/codespell
+  rev: v2.1.0
+  hooks:
+  - id: codespell
+    args:
+      - --skip=*.lock,tests/test_class_oelint_vars_misspell.py
+      # Provide a comma separated list of ignored words here:
+      - -L=mispell
