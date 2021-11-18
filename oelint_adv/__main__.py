@@ -32,7 +32,7 @@ def parse_configfile():
             if not os.path.exists(conffile):
                 continue
             config.read(conffile)
-            return dict(config.items('oelint'))
+            return {k.replace('-', '_'): v for k, v in config.items('oelint')}
         except (PermissionError, SystemError) as e:  # pragma: no cover
             print(f'Failed to load config file {conffile}. {e!r}')  # noqa: T001 - it's fine here; # pragma: no cover
         except (NoSectionError, NoOptionError, ParsingError) as e:
@@ -100,19 +100,19 @@ def arguments_post(args):  # noqa: C901 - complexity is still okay
     # Convert boolean symbols
     for _option in [
         'color',
-        'exit-zero',
+        'exit_zero',
         'fix',
         'nobackup',
         'noinfo',
         'nowarn',
-        'print-rulefile',
+        'print_rulefile',
         'quiet',
         'relpaths',
     ]:
         try:
             setattr(args, _option, bool(getattr(args, _option)))
-        except AttributeError:
-            pass
+        except AttributeError:  # pragma: no cover
+            pass  # pragma: no cover
 
     # Convert list symbols
     for _option in [

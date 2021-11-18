@@ -106,7 +106,7 @@ class TestConfigFile(TestBaseClass):
             _args = self._create_args(input)
             del os.environ['OELINT_CONFIG']
 
-            assert isinstance(getattr(_args, _option), bool)
+            assert isinstance(getattr(_args, _option.replace('-', '_')), bool)
 
     @pytest.mark.parametrize('input',
                              [
@@ -204,3 +204,28 @@ class TestConfigFile(TestBaseClass):
         del os.environ['OELINT_CONFIG']
         
         assert not _args.nowarn
+
+    @pytest.mark.parametrize('input',
+                            [
+                                {
+                                    'oelint adv-test.bb': 'VAR = "1"',
+                                },
+                            ],
+                            )
+    def test_config_file_dash_replace(self, input):
+        # Test if the following options do the needed
+        # - -> _ replacements automatically
+        for _option in [
+            'exit-zero',
+            'print-rulefile',
+        ]:
+            _args = self._create_args(input)
+            assert not getattr(_args, _option.replace('-', '_'))
+
+            _cstfile = self._create_tempfile(
+                '.oelint.cfg', '[oelint]\n{item}=True'.format(item=_option))
+            os.environ['OELINT_CONFIG'] = _cstfile
+            _args = self._create_args(input)
+            del os.environ['OELINT_CONFIG']
+
+            assert getattr(_args, _option.replace('-', '_'))
