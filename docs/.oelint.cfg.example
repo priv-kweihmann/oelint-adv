@@ -4,4 +4,4 @@ suppress=
     oelint.tabs.notabs
     oelint.task.docstrings
 noinfo=True
-exit-zero=True
+exit_zero=True

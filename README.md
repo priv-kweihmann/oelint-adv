@@ -359,6 +359,8 @@ suppress =
 messageformat = {severity}:{id}:{msg}
 ```
 
+**NOTE:** CLI parameters containing a `-` must use `_` in the configuration file.
+
 You can find an example file [here](docs/.oelint.cfg.example)
 
 ## vscode extension
