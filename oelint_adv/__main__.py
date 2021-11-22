@@ -23,6 +23,16 @@ from oelint_adv.rule_file import set_suppressions
 sys.path.append(os.path.abspath(os.path.join(__file__, '..')))
 
 
+class TypeSafeAppendAction(argparse.Action):
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        items = getattr(namespace, self.dest) or []
+        if isinstance(items, str):
+            items = re.split(r'\s+|\t+|\n+', items)  # pragma: no cover
+        items.append(values)  # pragma: no cover
+        setattr(namespace, self.dest, items)  # pragma: no cover
+
+
 def parse_configfile():
     config = ConfigParser()
     for conffile in [os.environ.get('OELINT_CONFIG', '/does/not/exist'),
@@ -43,8 +53,9 @@ def parse_configfile():
 def create_argparser():
     parser = argparse.ArgumentParser(prog='oelint-adv',
                                      description='Advanced OELint - Check bitbake recipes against OECore styleguide')
+    parser.register('action', 'tsappend', TypeSafeAppendAction)
     parser.add_argument('--suppress', default=[],
-                        action='append', help='Rules to suppress')
+                        action='tsappend', help='Rules to suppress')
     parser.add_argument('--output', default=sys.stderr,
                         help='Where to flush the findings (default: stderr)')
     parser.add_argument('--fix', action='store_true', default=False,
@@ -73,13 +84,13 @@ def create_argparser():
     parser.add_argument('--messageformat', default='{path}:{line}:{severity}:{id}:{msg}',
                         type=str, help='Format of message output')
     parser.add_argument('--constantmods', default=[], nargs='+',
-                        help="""
+                        help='''
                              Modifications to the constant db.
                              prefix with:
                              + - to add to DB,
                              - - to remove from DB,
                              None - to override DB
-                            """)
+                            ''')
     parser.add_argument('--print-rulefile', action='store_true', default=False,
                         help='Print loaded rules as a rulefile and exit')
     parser.add_argument('--exit-zero', action='store_true', default=False,
