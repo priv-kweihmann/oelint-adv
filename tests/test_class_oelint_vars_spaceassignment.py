@@ -1,4 +1,5 @@
 import pytest
+
 from .base import TestBaseClass
 
 
@@ -11,56 +12,56 @@ class TestClassOelintVarsSectionLowerCase(TestBaseClass):
 
     @pytest.mark.parametrize('id', ['oelint.vars.spacesassignment'])
     @pytest.mark.parametrize('occurrence', [1])
-    @pytest.mark.parametrize('op', 
-        [
-            " :=",
-            " ??=",
-            " ?=",
-            " .=",
-            " +=",
-            " =.",
-            " =",
-            " =+",
-            ":= ",
-            ":=",
-            "??= ",
-            "??=",
-            "?= ",
-            "?=",
-            ".= ",
-            ".=",
-            "+= ",
-            "+=",
-            "= ",
-            "=. ",
-            "=.",
-            "=",
-            "=+ ",
-            "=+",
-        ],
-    )
+    @pytest.mark.parametrize('op',
+                             [
+                                 ' :=',
+                                 ' ??=',
+                                 ' ?=',
+                                 ' .=',
+                                 ' +=',
+                                 ' =.',
+                                 ' =',
+                                 ' =+',
+                                 ':= ',
+                                 ':=',
+                                 '??= ',
+                                 '??=',
+                                 '?= ',
+                                 '?=',
+                                 '.= ',
+                                 '.=',
+                                 '+= ',
+                                 '+=',
+                                 '= ',
+                                 '=. ',
+                                 '=.',
+                                 '=',
+                                 '=+ ',
+                                 '=+',
+                             ],
+                             )
     def test_bad(self, op, id, occurrence):
         input = {
-            'oelint_adv_test.bb': self.__generate_sample_code(op)
+            'oelint_adv_test.bb': self.__generate_sample_code(op),
         }
         self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.vars.spacesassignment'])
     @pytest.mark.parametrize('occurrence', [0])
-    @pytest.mark.parametrize('op', 
-        [
-            " = ",
-            " =. ",
-            " .= ",
-            " += ",
-            " =+ ",
-            " ?= ",
-            " ??= ",
-            " := ",
-        ],
-    )
+    @pytest.mark.parametrize('op',
+                             [
+                                 ' = ',
+                                 ' =. ',
+                                 ' .= ',
+                                 ' += ',
+                                 ' =+ ',
+                                 ' ?= ',
+                                 ' ??= ',
+                                 ' := ',
+                             ],
+                             )
     def test_good(self, op, id, occurrence):
         input = {
-            'oelint_adv_test.bb': self.__generate_sample_code(op)
+            'oelint_adv_test.bb': self.__generate_sample_code(op),
         }
         self.check_for_id(self._create_args(input), id, occurrence)

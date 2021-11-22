@@ -1,4 +1,5 @@
 import pytest
+
 from .base import TestBaseClass
 
 
@@ -6,36 +7,30 @@ class TestClassOelintVarBBClassExtend(TestBaseClass):
 
     @pytest.mark.parametrize('id', ['oelint.var.bbclassextend'])
     @pytest.mark.parametrize('occurrence', [1])
-    @pytest.mark.parametrize('input', 
-        [
-            {
-            'oelint_adv_test.bb':
-            '''
-            A = "1"
-            '''
-            },
-        ],
-    )
+    @pytest.mark.parametrize('input',
+                             [
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'A = "1"',
+                                 },
+                             ],
+                             )
     def test_bad(self, input, id, occurrence):
         self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.var.bbclassextend'])
     @pytest.mark.parametrize('occurrence', [0])
-    @pytest.mark.parametrize('input', 
-        [
-                        {
-            'oelint_adv_test.bb':
-            '''
-            BBCLASSEXTEND = "native"
-            '''
-            },
-            {
-            'oelint_adv_test.bb':
-            '''
-            BBCLASSEXTEND = "native nativesdk"
-            '''
-            },
-        ],
-    )
+    @pytest.mark.parametrize('input',
+                             [
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'BBCLASSEXTEND = "native"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'BBCLASSEXTEND = "native nativesdk"',
+                                 },
+                             ],
+                             )
     def test_good(self, input, id, occurrence):
         self.check_for_id(self._create_args(input), id, occurrence)

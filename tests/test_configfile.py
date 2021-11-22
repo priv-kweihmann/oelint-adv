@@ -1,12 +1,10 @@
 import os
-import sys
 
 import pytest
 
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+from .base import TestBaseClass
 
-from base import TestBaseClass  # noqa
-
+# flake8: noqa S101 - n.a. for test files
 
 class TestConfigFile(TestBaseClass):
 
@@ -29,7 +27,7 @@ class TestConfigFile(TestBaseClass):
         os.environ['OELINT_CONFIG'] = _cstfile
         _args = self._create_args(input)
         del os.environ['OELINT_CONFIG']
-        
+
         assert _args.nowarn
 
     @pytest.mark.parametrize('input',
@@ -152,28 +150,12 @@ class TestConfigFile(TestBaseClass):
             assert getattr(_args, _option) == ['+True', '-False']
 
     @pytest.mark.parametrize('input',
-                        [
-                            {
-                                'oelint adv-test.bb': 'VAR = "1"',
-                            },
-                        ],
-                        )
-    def test_config_file_cli_always_wins(self, input):
-        _cstfile = self._create_tempfile(
-            '.oelint.cfg', '[oelint]\suppress=B')
-        os.environ['OELINT_CONFIG'] = _cstfile
-        _args = self._create_args(input, extraopts=['--suppress=A'])
-        del os.environ['OELINT_CONFIG']
-
-        assert getattr(_args, 'suppress') == ['A']
-
-    @pytest.mark.parametrize('input',
-                    [
-                        {
-                            'oelint adv-test.bb': 'VAR = "1"',
-                        },
-                    ],
-                    )
+                             [
+                                 {
+                                     'oelint adv-test.bb': 'VAR = "1"',
+                                 },
+                             ],
+                             )
     def test_config_file_messageformat(self, input):
         _cstfile = self._create_tempfile(
             '.oelint.cfg', '[oelint]\nmessageformat={severity}-{id}-{msg}')
@@ -184,12 +166,12 @@ class TestConfigFile(TestBaseClass):
         assert getattr(_args, 'messageformat') == '{severity}-{id}-{msg}'
 
     @pytest.mark.parametrize('input',
-                            [
-                                {
-                                    'oelint adv-test.bb': 'VAR = "1"',
-                                },
-                            ],
-                            )
+                             [
+                                 {
+                                     'oelint adv-test.bb': 'VAR = "1"',
+                                 },
+                             ],
+                             )
     def test_config_file_environ_broken(self, input):
         # Test the default
         _args = self._create_args(input)
@@ -202,16 +184,16 @@ class TestConfigFile(TestBaseClass):
         os.environ['OELINT_CONFIG'] = _cstfile
         _args = self._create_args(input)
         del os.environ['OELINT_CONFIG']
-        
+
         assert not _args.nowarn
 
     @pytest.mark.parametrize('input',
-                            [
-                                {
-                                    'oelint adv-test.bb': 'VAR = "1"',
-                                },
-                            ],
-                            )
+                             [
+                                 {
+                                     'oelint adv-test.bb': 'VAR = "1"',
+                                 },
+                             ],
+                             )
     def test_config_file_dash_replace(self, input):
         # Test if the following options do the needed
         # - -> _ replacements automatically

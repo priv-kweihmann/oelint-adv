@@ -3,6 +3,7 @@ import tempfile
 import textwrap
 
 
+# flake8: noqa S101 - n.a. for test files
 class TestBaseClass:
 
     TEST_UNDEFINED_PARAMETER = 'this is an undefined parameter to work around pytest limitations'
@@ -18,8 +19,8 @@ class TestBaseClass:
         _path = os.path.join(self._tmpdir, _file)
         os.makedirs(os.path.dirname(_path), exist_ok=True)
 
-        with open(_path, "w") as o:
-            _cnt = textwrap.dedent(_input).lstrip("\n")
+        with open(_path, 'w') as o:
+            _cnt = textwrap.dedent(_input).lstrip('\n')
             self.__created_files[_file] = _cnt
             o.write(_cnt)
         return _path
@@ -29,9 +30,11 @@ class TestBaseClass:
             extraopts = []
         from oelint_adv.__main__ import arguments_post
         return arguments_post(self._create_args_parser().parse_args(
+            # noqa: W504 - we need to concat lists here
             ['--quiet'] +
+            # noqa: W504 - we need to concat lists here
             self.__pytest_empty_object_fixture(extraopts, []) +
-            [self._create_tempfile(k, v) for k, v in input.items()]
+            [self._create_tempfile(k, v) for k, v in input.items()],
         ))
 
     def _create_args_fix(self, input, extraopts=None):
@@ -39,13 +42,16 @@ class TestBaseClass:
             extraopts = []
         from oelint_adv.__main__ import arguments_post
         return arguments_post(self._create_args_parser().parse_args(
+            # noqa: W504 - we need to concat lists here
             ['--quiet', '--fix', '--nobackup'] +
+            # noqa: W504 - we need to concat lists here
             self.__pytest_empty_object_fixture(extraopts, []) +
-            [self._create_tempfile(k, v) for k, v in input.items()]
+            [self._create_tempfile(k, v) for k, v in input.items()],
         ))
 
     def fix_and_check(self, args, id):
         from oelint_adv.__main__ import run
+
         # run for auto fixing
         run(args)
         # check run
@@ -58,6 +64,7 @@ class TestBaseClass:
     def check_for_id(self, args, id, occurrences):
         from oelint_adv.__main__ import run
         issues = [x[1] for x in run(args)]
-        _files = '\n---\n'.join(['{}:\n{}'.format(k,v) for k,v in self.__created_files.items()])
-        assert(len([x for x in issues if ':{}:'.format(id) in x]) ==
-               occurrences), '{} expected {} time(s) in:\n{}\n\n---\n{}'.format(id, occurrences, '\n'.join(issues), _files)
+        _files = '\n---\n'.join(['{k}:\n{v}'.format(k=k, v=v)
+                                 for k, v in self.__created_files.items()])
+        assert(len([x for x in issues if ':{id}:'.format(id=id) in x]) ==
+               occurrences), '{id} expected {o} time(s) in:\n{i}\n\n---\n{f}'.format(id=id, o=occurrences, i='\n'.join(issues), f=_files)
