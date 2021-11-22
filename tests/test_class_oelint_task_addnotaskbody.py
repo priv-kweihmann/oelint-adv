@@ -2,7 +2,7 @@ import pytest
 
 from .base import TestBaseClass
 
-# flake8: noqa W293 - we want to explictly test lines with just whitespaces here
+# flake8: noqa W293 - we want to explicitly test lines with just whitespaces here
 
 class TestClassOelintTaskAddNoBody(TestBaseClass):
 

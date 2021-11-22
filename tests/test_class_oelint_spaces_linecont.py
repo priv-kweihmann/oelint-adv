@@ -2,7 +2,7 @@ import pytest
 
 from .base import TestBaseClass
 
-# flake8: noqa W291 - we want to explictly test trailing whitespace here
+# flake8: noqa W291 - we want to explicitly test trailing whitespace here
 class TestClassOelintSpacesLineCont(TestBaseClass):
 
     @pytest.mark.parametrize('id', ['oelint.spaces.linecont'])
