@@ -437,6 +437,29 @@ class TestClassIntegration(TestBaseClass):
         self.check_for_id(self._create_args(input, extraopts=[
                           '/does/not/exist']), id, occurrence)
 
+    @pytest.mark.parametrize('id', ['oelint.var.multiinclude'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('input',
+                             [
+                                 {
+                                     'u-boot-rahix.bb':
+                                     '''
+                                     require u-boot-rahix-common.inc
+                                     ''',
+                                     'u-boot-rahix-tools.bb':
+                                     '''
+                                     require u-boot-rahix-common.inc
+                                     ''',
+                                     'u-boot-rahix-common.inc':
+                                     '''
+                                     require recipes-bsp/u-boot/u-boot-common.inc
+                                     ''',
+                                 }
+                             ],
+                             )
+    def test_grouping_with_noversion(self, input, id, occurrence):
+        self.check_for_id(self._create_args(input), id, occurrence)
+
     @pytest.mark.parametrize('input',
                              [
                                  {

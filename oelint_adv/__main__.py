@@ -192,8 +192,11 @@ def group_files(files):
         _filename, _ext = os.path.splitext(f)
         if _ext not in ['.bb']:
             continue
-        _filename_key = '_'.join(os.path.basename(
-            _filename).split('_')[:-1]).replace('%', '')
+        if '_' in os.path.basename(_filename):
+            _filename_key = '_'.join(os.path.basename(
+                _filename).split('_')[:-1]).replace('%', '')
+        else:
+            _filename_key = os.path.basename(_filename)
         if _filename_key not in res:  # pragma: no cover
             res[_filename_key] = set()
         res[_filename_key].add(f)
