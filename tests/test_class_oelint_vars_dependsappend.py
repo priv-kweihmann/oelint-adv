@@ -11,7 +11,24 @@ class TestClassOelintVarsDependsAppend(TestBaseClass):
                              [
                                  {
                                      'oelint_adv_test.bb':
-                                     'DEPENDS = "bar"',
+                                     '''
+                                     inherit someting
+                                     DEPENDS = "bar"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     include someting.inc
+                                     DEPENDS = "bar"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     require someting.inc
+                                     DEPENDS = "bar"
+                                     ''',
                                  },
                              ],
                              )
@@ -37,6 +54,33 @@ class TestClassOelintVarsDependsAppend(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      'DEPENDS_remove = "abc"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     DEPENDS = "foo"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     DEPENDS = "foo"
+                                     inherit something
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     DEPENDS = "foo"
+                                     include something.inc
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     DEPENDS = "foo"
+                                     require something.inc
+                                     ''',
                                  },
                              ],
                              )
