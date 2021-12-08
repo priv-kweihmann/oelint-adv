@@ -12,21 +12,21 @@ class TestClassOelintVarsDependsAppend(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                     inherit someting
+                                     inherit something
                                      DEPENDS = "bar"
                                      ''',
                                  },
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                     include someting.inc
+                                     include something.inc
                                      DEPENDS = "bar"
                                      ''',
                                  },
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                     require someting.inc
+                                     require something.inc
                                      DEPENDS = "bar"
                                      ''',
                                  },
