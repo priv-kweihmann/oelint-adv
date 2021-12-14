@@ -133,6 +133,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 Rules marked with **[S]** can have multiple sub-IDs
 
 * oelint.append.protvars - Variables that shouldn't be set in a bbappend **[S]**
+* oelint.file.inactiveupstreamdetails - Patches with Upstream-Status: Inactive-Upstream require more details
 * oelint.file.inappropriatemsg - Patches with Upstream-Status: Inappropriate should provide a valid reasoning
 * oelint.file.includenotfound - File to be included not found
 * oelint.file.nospaces - Path to file should not contain spaces

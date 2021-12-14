@@ -29,6 +29,7 @@ class FilePatchIsUpstreamStatus(Rule):
             'Denied': r'Denied',
             'Backport': r'Backport',
             'Inappropriate': r'Inappropriate(\s+\[.*\])*',
+            'Inactive-Upstream': r'Inactive-Upstream(\s+\[.*\])*',
         }
         for i in patches:
             with open(i) as _input:

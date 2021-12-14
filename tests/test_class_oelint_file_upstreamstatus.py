@@ -132,6 +132,30 @@ class TestClassOelintFileUpstreamStatus(TestBaseClass):
                                      'files/test.patch':
                                      'Upstream-Status: Submitted [http://some.where]',
                                  },
+                                 {
+                                     'oelint_adv-test.bb':
+                                     'SRC_URI = "file://test.patch"',
+                                     'files/test.patch':
+                                     'Upstream-Status: Inactive-Upstream',
+                                 },
+                                 {
+                                     'oelint_adv-test.bb':
+                                     'SRC_URI = "file://test.patch"',
+                                     'files/test.patch':
+                                     'Upstream-Status: Inactive-Upstream [lastcommit 1234]',
+                                 },
+                                 {
+                                     'oelint_adv-test.bb':
+                                     'SRC_URI = "file://test.patch"',
+                                     'files/test.patch':
+                                     'Upstream-Status: Inactive-Upstream [lastrelease 1234]',
+                                 },
+                                 {
+                                     'oelint_adv-test.bb':
+                                     'SRC_URI = "file://test.patch"',
+                                     'files/test.patch':
+                                     'Upstream-Status: Inactive-Upstream [lastcommit 1234 lastrelease 1234]',
+                                 },
                              ],
                              )
     def test_good(self, input, id, occurrence):
