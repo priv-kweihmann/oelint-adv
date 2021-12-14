@@ -24,22 +24,17 @@ jobs:
         pip install -r requirements-dev.txt
     - name: linter (codespell)
       run: pre-commit run --all-files
-      shell: bash
     - name: test (pytest)
       run: pytest
-      shell: bash
     - name: build
       run: python3 setup.py build sdist
-      shell: bash
     - name: install
       run: python3 setup.py install --user
-      shell: bash
     - name: test (installed)
       run: |
         oelint-adv --help
         tar -tvf dist/oelint_adv-*.tar.gz | grep LICENSE
         tar -tvf dist/oelint_adv-*.tar.gz | grep README.md
-      shell: bash
     - if: matrix.python-version == 3.7 && github.repository == 'priv-kweihmann/oelint-adv' && github.event_name == 'push'
       name: Trigger nittymcpick-oelint
       run: |
