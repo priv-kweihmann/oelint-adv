@@ -5,6 +5,9 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     strategy:
       max-parallel: 5
       matrix:
