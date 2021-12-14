@@ -16,6 +16,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+        cache: 'pip'
     - name: prepare
       run: |
         python3 -m pip install --upgrade pip
