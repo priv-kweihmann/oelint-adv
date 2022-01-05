@@ -30,6 +30,22 @@ class TestClassOelintVarBBClassExtend(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'BBCLASSEXTEND = "native nativesdk"',
                                  },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     '',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'inherit native',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'inherit cross',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'inherit nativesdk',
+                                 },
                              ],
                              )
     def test_good(self, input, id, occurrence):

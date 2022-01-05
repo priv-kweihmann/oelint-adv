@@ -15,6 +15,11 @@ class VarBbclassextend(Rule):
         items_inherit = stash.GetItemsFor(
             filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue='inherit')
         if not any(items):
-            if not any([x for x in items_inherit if x.VarValue.find('native') != -1]):
+            _safe = False
+            for _class in ['native', 'nativesdk', 'cross']:
+                if any([x for x in items_inherit if x.VarValue.find(_class) != -1]):
+                    _safe = True
+                    break
+            if not _file.endswith('.bbappend') and not _safe:
                 res += self.finding(_file, 0)
         return res
