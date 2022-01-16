@@ -39,6 +39,10 @@ class TestClassOelintVarsValueQuoted(TestBaseClass):
                                  },
                                  {
                                      'oelint_adv_test.bb':
+                                     'EXTRA_OEMAKE = \'CROSS_COMPILE=${TARGET_PREFIX} CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}" V=1\'',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
                                      '''
                                      EXTRA_OECMAKE += "\\
                                          -DBUILD_TESTS=OFF \\
