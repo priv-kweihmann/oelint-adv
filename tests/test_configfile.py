@@ -3,8 +3,10 @@ import os
 import pytest
 
 from .base import TestBaseClass
+from oelint_adv.__main__ import deserialize_boolean_options
 
 # flake8: noqa S101 - n.a. for test files
+
 
 class TestConfigFile(TestBaseClass):
 
@@ -127,7 +129,7 @@ class TestConfigFile(TestBaseClass):
             _args = self._create_args(input)
             del os.environ['OELINT_CONFIG']
 
-            assert getattr(_args, _option) == 'True'
+            assert getattr(_args, _option) == True
 
     @pytest.mark.parametrize('input',
                              [
@@ -211,3 +213,9 @@ class TestConfigFile(TestBaseClass):
             del os.environ['OELINT_CONFIG']
 
             assert getattr(_args, _option.replace('-', '_'))
+
+
+    def test_option_deserialization(self):
+        options = {'a': 'True', 'b': True, 'c': 'False', 'd': False, 'e': 'other value'}
+        deserialized = deserialize_boolean_options(options)
+        assert deserialized == {'a': True, 'b': True, 'c': False, 'd': False, 'e': 'other value'}

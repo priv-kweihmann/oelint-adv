@@ -7,6 +7,7 @@ from configparser import ConfigParser
 from configparser import NoOptionError
 from configparser import NoSectionError
 from configparser import ParsingError
+from typing import Union, Dict
 
 from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
@@ -33,6 +34,20 @@ class TypeSafeAppendAction(argparse.Action):
         setattr(namespace, self.dest, items)  # pragma: no cover
 
 
+def deserialize_boolean_options(options: Dict) -> Dict[str, Union[str, bool]]:
+    """Converts strings in `options` that are either 'True' or 'False' to their boolean
+    representations.
+    """
+    for k, v in options.items():
+        if isinstance(v, str):
+            if v.strip() == 'False':
+                options[k] = False
+            elif v.strip() == 'True':
+                options[k] = True
+
+    return options
+
+
 def parse_configfile():
     config = ConfigParser()
     for conffile in [os.environ.get('OELINT_CONFIG', '/does/not/exist'),
@@ -42,11 +57,15 @@ def parse_configfile():
             if not os.path.exists(conffile):
                 continue
             config.read(conffile)
-            return {k.replace('-', '_'): v for k, v in config.items('oelint')}
+            items = {k.replace('-', '_'): v for k, v in config.items('oelint')}
+            items = deserialize_boolean_options(items)
+
+            return items
         except (PermissionError, SystemError) as e:  # pragma: no cover
             print(f'Failed to load config file {conffile}. {e!r}')  # noqa: T001 - it's fine here; # pragma: no cover
         except (NoSectionError, NoOptionError, ParsingError) as e:
             print(f'Failed parsing config file {conffile}. {e!r}')  # noqa: T001 - it's here for a reason
+
     return {}
 
 
