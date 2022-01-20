@@ -62,6 +62,15 @@ OPTION_MAPPING = {
         'subdir',
         'unpack',
     ],
+    'crate': [
+        'apply',
+        'destsuffix',
+        'name',
+        'patchdir',
+        'striplevel',
+        'subdir',
+        'unpack',
+    ],
     'crcc': [
         'apply',
         'destsuffix',
@@ -342,6 +351,26 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
     @pytest.mark.parametrize('protocol', ['bzr'])
     @pytest.mark.parametrize('option', OPTION_MAPPING['bzr'])
     def test_good_bzr(self, id, occurrence, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option),
+        }
+        self.check_for_id(self._create_args(input), id, occurrence)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurrence', [1])
+    @pytest.mark.parametrize('protocol', ['crate'])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['az']])
+    def test_bad_crate(self, id, occurrence, protocol, option):
+        input = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option),
+        }
+        self.check_for_id(self._create_args(input), id, occurrence)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('protocol', ['crate'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['az'])
+    def test_good_crate(self, id, occurrence, protocol, option):
         input = {
             'oelint_adv_test.bb': self.__generate_sample_code(protocol, option),
         }

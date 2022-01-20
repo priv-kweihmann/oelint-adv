@@ -24,6 +24,7 @@ class VarSRCUriOptions(Rule):
                 'protocol',
                 'scmdata',
             ],
+            'crate': [],
             'crcc': [
                 'module',
                 'proto',
