@@ -366,6 +366,10 @@ You can find an example file [here](docs/.oelint.cfg.example)
 
 Find the extension in the [marketplace](https://marketplace.visualstudio.com/items?itemName=kweihmann.oelint-vscode), or search for `oelint-vscode`.
 
+## Vim / NeoVim integration
+
+Integration for Vim / NeoVim is provided by [ale](https://github.com/dense-analysis/ale).
+
 ## Jenkins integration
 
 Jenkins integration is provided by [warnings-ng](https://plugins.jenkins.io/warnings-ng/).
