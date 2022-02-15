@@ -199,6 +199,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.multilineident - On a multiline assignment, line indent is desirable
 * oelint.vars.notneededspace - Space at the beginning of the var is not needed **[F]**
 * oelint.vars.notrailingslash - Variable shall not end on a slash
+* oelint.vars.overrideappend - Check correct order of append/prepend on variables with override syntax
 * oelint.vars.pathhardcode - Warn about the usage of hardcoded paths **[S]**
 * oelint.vars.pbpusage - ${BP} should be used instead of ${P}
 * oelint.vars.pkgspecific - Variable is package-specific, but isn't set in that way **[S]**
