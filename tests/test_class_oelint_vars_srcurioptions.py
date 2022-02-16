@@ -462,7 +462,7 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
     @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['git']])
     def test_bad_git(self, id, occurrence, protocol, option):
         input = {
-            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option),
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, 'protocol=ssh;nobranch=1;' + option),
         }
         self.check_for_id(self._create_args(input), id, occurrence)
 
@@ -472,7 +472,7 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
     @pytest.mark.parametrize('option', OPTION_MAPPING['git'])
     def test_good_git(self, id, occurrence, protocol, option):
         input = {
-            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option),
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, 'protocol=ssh;nobranch=1;' + option),
         }
         self.check_for_id(self._create_args(input), id, occurrence)
 
@@ -482,7 +482,7 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
     @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['gitsm']])
     def test_bad_gitsm(self, id, occurrence, protocol, option):
         input = {
-            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option),
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, 'protocol=ssh;nobranch=1;' + option),
         }
         self.check_for_id(self._create_args(input), id, occurrence)
 
@@ -492,7 +492,7 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
     @pytest.mark.parametrize('option', OPTION_MAPPING['gitsm'])
     def test_good_gitsm(self, id, occurrence, protocol, option):
         input = {
-            'oelint_adv_test.bb': self.__generate_sample_code(protocol, option),
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, 'protocol=ssh;nobranch=1;' + option),
         }
         self.check_for_id(self._create_args(input), id, occurrence)
 
@@ -813,7 +813,7 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
                                  },
                                  {
                                      'oelint_adv_test.bb':
-                                     'SRC_URI += "git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-5.10;destsuffix=${KMETA}"',
+                                     'SRC_URI += "git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-5.10;destsuffix=${KMETA};protocol=foo"',
                                  },
                              ],
                              )
