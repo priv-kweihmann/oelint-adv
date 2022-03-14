@@ -190,8 +190,6 @@ class TestClassIntegration(TestBaseClass):
             '--rulefile={file}'.format(file=self._create_tempfile('rulefile', __cnt)), '--noinfo']
         self.check_for_id(self._create_args(input, _extra_opts),
                           'oelint.var.suggestedvar.CVE_PRODUCT', 0)
-        self.check_for_id(self._create_args(input, _extra_opts),
-                          'oelint.var.suggestedvar.BBCLASSEXTEND', 1)
 
     @pytest.mark.parametrize('input',
                              [

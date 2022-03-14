@@ -20,6 +20,9 @@ class VarSuggestedExists(Rule):
                 _is_pkg_group = True
                 break
         for var in CONSTANTS.VariablesSuggested:
+            if var == 'BBCLASSEXTEND':
+                # this is better covered by oelint_adv/rule_base/rule_vars_bbclassextends.py
+                continue
             if _is_pkg_group and var in ['LICENSE', 'CVE_PRODUCT']:
                 continue
             items = stash.GetItemsFor(

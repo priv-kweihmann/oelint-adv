@@ -16,7 +16,6 @@ class TestClassOelintVarSuggestedVar(TestBaseClass):
     @pytest.mark.parametrize('var', [
         'AUTHOR',
         'BUGTRACKER',
-        'BBCLASSEXTEND',
         'CVE_PRODUCT',
         'SECTION',
     ])
