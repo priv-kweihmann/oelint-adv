@@ -458,6 +458,45 @@ class TestClassIntegration(TestBaseClass):
     def test_grouping_with_noversion(self, input, id, occurrence):
         self.check_for_id(self._create_args(input), id, occurrence)
 
+    @pytest.mark.parametrize('id', ['oelint.var.multiinclude'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('input',
+                             [
+                                 {
+                                     'test.bb':
+                                     '''
+                                     require test.inc
+                                     ''',
+                                     'test_1.2.3.bb':
+                                     '''
+                                     require test.inc
+                                     ''',
+                                     'test_git.bb':
+                                     '''
+                                     require test.inc
+                                     ''',
+                                     'test_1.%.bbappend':
+                                     '''
+                                     require test2.inc
+                                     ''',
+                                     'test_git.bbappend':
+                                     '''
+                                     require test2.inc
+                                     ''',
+                                     'test.inc':
+                                     '''
+                                     A = "1"
+                                     ''',
+                                     'test2.inc':
+                                     '''
+                                     B = "1"
+                                     ''',
+                                 }
+                             ],
+                             )
+    def test_grouping_with_noversion(self, input, id, occurrence):
+        self.check_for_id(self._create_args(input), id, occurrence)
+
     @pytest.mark.parametrize('input',
                              [
                                  {

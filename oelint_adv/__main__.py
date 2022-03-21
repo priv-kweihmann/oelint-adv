@@ -212,13 +212,12 @@ def group_files(files):
         if _ext not in ['.bb']:
             continue
         if '_' in os.path.basename(_filename):
-            _filename_key = '_'.join(os.path.basename(
-                _filename).split('_')[:-1]).replace('%', '')
+            _filename_key = _filename
         else:
             _filename_key = os.path.basename(_filename)
         if _filename_key not in res:  # pragma: no cover
             res[_filename_key] = set()
-        res[_filename_key].add(f)
+        res[_filename_key].add(os.path.abspath(f))
 
     # second round now for the bbappend files
     for f in files:
@@ -231,7 +230,6 @@ def group_files(files):
             if any(re.match(_needle, x) for x in v):
                 v.add(f)
                 _match = True
-                break
         if not _match:
             _filename_key = '_'.join(os.path.basename(
                 _filename).split('_')[:-1]).replace('%', '')
