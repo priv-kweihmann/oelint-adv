@@ -217,7 +217,7 @@ def group_files(files):
             _filename_key = os.path.basename(_filename)
         if _filename_key not in res:  # pragma: no cover
             res[_filename_key] = set()
-        res[_filename_key].add(os.path.abspath(f))
+        res[_filename_key].add(f)
 
     # second round now for the bbappend files
     for f in files:
