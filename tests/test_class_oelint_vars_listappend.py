@@ -35,30 +35,58 @@ class TestClassOelintVarsListAppend(TestBaseClass):
         self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.vars.listappend'])
-    @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input',
                              [
                                  {
                                      'oelint_adv_test.bb':
-                                     'PACKAGES =. "foo "',
+                                     'PACKAGES =. "foo"',
                                  },
                                  {
                                      'oelint_adv_test.bb':
-                                     'FILES_${PN}-tracepath_append = " ${base_bindir}"',
+                                     'FILES_${PN}-tracepath_append = "${base_bindir}"',
                                  },
                                  {
                                      'oelint_adv_test.bb':
-                                     'RDEPENDS_${PN} .= " bar"',
+                                     'RDEPENDS_${PN} .= "bar"',
                                  },
                                  {
                                      'oelint_adv_test.bb':
-                                     'DEPENDS_prepend = "xyz "',
+                                     'DEPENDS_prepend = "xyz"',
                                  },
                                  {
                                      'oelint_adv_test.bb':
-                                     'SRC_URI .= " file://abc"',
+                                     'SRC_URI .= "file://abc"',
                                  },
                              ],
                              )
+    def test_fix(self, input, id):
+        self.fix_and_check(self._create_args_fix(input), id)
+
+    @ pytest.mark.parametrize('id', ['oelint.vars.listappend'])
+    @ pytest.mark.parametrize('occurrence', [0])
+    @ pytest.mark.parametrize('input',
+                              [
+                                  {
+                                      'oelint_adv_test.bb':
+                                      'PACKAGES =. "foo "',
+                                  },
+                                  {
+                                      'oelint_adv_test.bb':
+                                      'FILES_${PN}-tracepath_append = " ${base_bindir}"',
+                                  },
+                                  {
+                                      'oelint_adv_test.bb':
+                                      'RDEPENDS_${PN} .= " bar"',
+                                  },
+                                  {
+                                      'oelint_adv_test.bb':
+                                      'DEPENDS_prepend = "xyz "',
+                                  },
+                                  {
+                                      'oelint_adv_test.bb':
+                                      'SRC_URI .= " file://abc"',
+                                  },
+                              ],
+                              )
     def test_good(self, input, id, occurrence):
         self.check_for_id(self._create_args(input), id, occurrence)

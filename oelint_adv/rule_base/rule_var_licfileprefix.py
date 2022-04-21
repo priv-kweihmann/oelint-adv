@@ -11,7 +11,7 @@ class VarLicFilePrefix(Rule):
                          severity='warning',
                          message='Prefix \'{PATH}\' to LIC_FILES_CHKSUM is not needed')
 
-    def check(self, _file, stash):
+    def __getMatches(self, _file, stash):
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue='LIC_FILES_CHKSUM')
@@ -20,6 +20,20 @@ class VarLicFilePrefix(Rule):
                 _comp = get_scr_components(listitem)
                 _prefix = os.path.dirname(_comp['src'])
                 if _prefix in ['${S}']:
-                    res += self.finding(i.Origin, i.InFileLine,
-                                        override_msg=self.Msg.format(PATH=_prefix))
+                    res.append(i)
+        return res
+
+    def check(self, _file, stash):
+        res = []
+        for i in self.__getMatches(_file, stash):
+            res += self.finding(i.Origin, i.InFileLine,
+                                override_msg=self.Msg.format(PATH='${S}'))
+        return res
+
+    def fix(self, _file, stash):
+        res = []
+        for i in self.__getMatches(_file, stash):
+            i.RealRaw = i.RealRaw.replace('${S}/', '').replace('${S}', '')
+            i.Raw = i.Raw.replace('${S}/', '').replace('${S}', '')
+            res.append(_file)
         return res

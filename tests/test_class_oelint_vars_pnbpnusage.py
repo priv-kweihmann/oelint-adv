@@ -27,6 +27,26 @@ class TestClassOelintVarsPNBPNUsage(TestBaseClass):
         self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.vars.pnbpnusage'])
+    @pytest.mark.parametrize('input',
+                             [
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI = "file://${PN}.patch"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI = "git://${PN}.com/${PN}.git"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI = "https://foo.org/${PN}"',
+                                 },
+                             ],
+                             )
+    def test_fix(self, input, id):
+        self.fix_and_check(self._create_args_fix(input), id)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.pnbpnusage'])
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input',
                              [

@@ -19,6 +19,31 @@ class TestClassOelintVarsLicenseFilePrefix(TestBaseClass):
         self.check_for_id(self._create_args(input), id, occurrence)
 
     @pytest.mark.parametrize('id', ['oelint.vars.licfileprefix'])
+    @pytest.mark.parametrize('input',
+                             [
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'LIC_FILES_CHKSUM = "file://${S}/LICENSE;md5=a4a2bbea1db029f21b3a328c7a059172"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'LIC_FILES_CHKSUM = "file://${S}LICENSE;md5=a4a2bbea1db029f21b3a328c7a059172"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     LIC_FILES_CHKSUM = "\\
+                                         file://${S}/LICENSE;md5=a4a2bbea1db029f21b3a328c7a059172 \\
+                                         file://${S}/COPYING;md5=a4a2bbea1db029f21b3a328c7a059172 \\
+                                     "
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_fix(self, input, id):
+        self.fix_and_check(self._create_args_fix(input), id)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.licfileprefix'])
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input',
                              [
