@@ -194,17 +194,17 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.homepageprefix - HOMEPAGE should begin with https:// or http://
 * oelint.vars.inconspaces - Inconsistent use of spaces on append operation
 * oelint.vars.insaneskip - INSANE_SKIP should be avoided at any cost
-* oelint.vars.licfileprefix - Unnecessary prefix to LIC_FILES_CHKSUM detected
-* oelint.vars.listappend - Proper append/prepend to lists
+* oelint.vars.licfileprefix - Unnecessary prefix to LIC_FILES_CHKSUM detected **[F]**
+* oelint.vars.listappend - Proper append/prepend to lists **[F]**
 * oelint.vars.mispell - Possible typo detected
 * oelint.vars.multilineident - On a multiline assignment, line indent is desirable
 * oelint.vars.notneededspace - Space at the beginning of the var is not needed **[F]**
 * oelint.vars.notrailingslash - Variable shall not end on a slash
 * oelint.vars.overrideappend - Check correct order of append/prepend on variables with override syntax
 * oelint.vars.pathhardcode - Warn about the usage of hardcoded paths **[S]**
-* oelint.vars.pbpusage - ${BP} should be used instead of ${P}
+* oelint.vars.pbpusage - ${BP} should be used instead of ${P} **[F]**
 * oelint.vars.pkgspecific - Variable is package-specific, but isn't set in that way **[S]**
-* oelint.vars.pnbpnusage - ${BPN} should be used instead of ${PN}
+* oelint.vars.pnbpnusage - ${BPN} should be used instead of ${PN} **[F]**
 * oelint.vars.pnusagediscouraged - Variable shouldn't contain ${PN} or ${BPN}
 * oelint.vars.sectionlowercase - SECTION should be lowercase only **[F]**
 * oelint.vars.spacesassignment - ' = ' should be correct variable assignment
@@ -213,7 +213,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.srcuridomains - Recipe is pulling from different domains, this will likely cause issues
 * oelint.vars.srcurifile - First item of SRC_URI should not be a file:// fetcher, if multiple fetcher are used
 * oelint.vars.srcurigittag - 'tag' in SRC_URI-options leads to not-reproducible builds
-* oelint.vars.srcurioptions - Fetcher should only valid options
+* oelint.vars.srcurioptions - Unsupported fetcher or invalid options detected
 * oelint.vars.srcurisrcrevtag - 'tag' in SRC_URI and a SRCREV for the same component doesn't compute
 * oelint.vars.summary80chars - SUMMARY should max. be 80 characters long
 * oelint.vars.summarylinebreaks - No line breaks in SUMMARY
