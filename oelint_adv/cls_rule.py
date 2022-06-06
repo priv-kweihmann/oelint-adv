@@ -236,6 +236,6 @@ def load_rules(args, add_rules=(), add_dirs=()):
                         pass  # pragma: no cover
             except Exception as e:  # pragma: no cover
                 if not args.quiet:  # pragma: no cover
-                    print(  # noqa: T001 this print is fine here
+                    print(  # noqa: T201 this print is fine here
                         'Can\'t load rule {rule} -> {exp}'.format(rule=name, exp=e))  # pragma: no cover
     return res

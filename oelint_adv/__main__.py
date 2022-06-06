@@ -63,9 +63,9 @@ def parse_configfile():
 
             return items
         except (PermissionError, SystemError) as e:  # pragma: no cover
-            print(f'Failed to load config file {conffile}. {e!r}')  # noqa: T001 - it's fine here; # pragma: no cover
+            print(f'Failed to load config file {conffile}. {e!r}')  # noqa: T201 - it's fine here; # pragma: no cover
         except (NoSectionError, NoOptionError, ParsingError) as e:
-            print(f'Failed parsing config file {conffile}. {e!r}')  # noqa: T001 - it's here for a reason
+            print(f'Failed parsing config file {conffile}. {e!r}')  # noqa: T201 - it's here for a reason
 
     return {}
 
@@ -252,7 +252,7 @@ def print_rulefile(args):
     ruleset = {}
     for r in rules:
         ruleset.update(r.get_rulefile_entries())
-    print(json.dumps(ruleset, indent=2))  # noqa: T001 - it's here for a reason
+    print(json.dumps(ruleset, indent=2))  # noqa: T201 - it's here for a reason
 
 
 def run(args):
@@ -263,7 +263,7 @@ def run(args):
         for r in rules:
             _loaded_ids += r.get_ids()
         if not args.quiet:
-            print('Loaded rules:\n\t{rules}'.format(  # noqa: T001 - it's here for a reason
+            print('Loaded rules:\n\t{rules}'.format(  # noqa: T201 - it's here for a reason
                 rules='\n\t'.join(sorted(_loaded_ids))))
         issues = []
         fixedfiles = []
@@ -275,7 +275,7 @@ def run(args):
                     stash.AddFile(f)
                 except FileNotFoundError as e:  # pragma: no cover
                     if not args.quiet:  # pragma: no cover
-                        print('Can\'t open/read: {e}'.format(e=e))  # noqa: T001 - it's fine here; # pragma: no cover
+                        print('Can\'t open/read: {e}'.format(e=e))  # noqa: T201 - it's fine here; # pragma: no cover
 
             stash.Finalize()
 
@@ -299,7 +299,7 @@ def run(args):
                     with open(i, 'w') as o:
                         o.write(''.join([x.RealRaw for x in items]))
                         if not args.quiet:
-                            print('{path}:{lvl}:{msg}'.format(path=os.path.abspath(i),  # noqa: T001 - it's fine here; # pragma: no cover
+                            print('{path}:{lvl}:{msg}'.format(path=os.path.abspath(i),  # noqa: T201 - it's fine here; # pragma: no cover
                                                     lvl='debug', msg='Applied automatic fixes'))
 
         return sorted(set(issues), key=lambda x: x[0])
@@ -307,7 +307,7 @@ def run(args):
         import traceback
 
         # pragma: no cover
-        print('OOPS - That shouldn\'t happen - {files}'.format(files=args.files))   # noqa: T001 - it's here for a reason
+        print('OOPS - That shouldn\'t happen - {files}'.format(files=args.files))   # noqa: T201 - it's here for a reason
         # pragma: no cover
         traceback.print_exc()
     return []
