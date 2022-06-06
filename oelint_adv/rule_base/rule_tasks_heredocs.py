@@ -1,6 +1,6 @@
-import re
-from oelint_parser.cls_item import Function
 from oelint_adv.cls_rule import Rule
+from oelint_parser.cls_item import Function
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class TaskInstallNoCp(Rule):
@@ -16,6 +16,6 @@ class TaskInstallNoCp(Rule):
         for i in items:
             for index, line in enumerate(i.get_items()):
                 line = line.strip()
-                if re.match(r'^cat\s*>\s*.*<<\s*[A-Za-z0-9]+$', line) or re.match(r'^cat\s*<<\s*[A-Za-z0-9]+\s*>.*$', line):
+                if RegexRpl.match(r'^cat\s*>\s*.*<<\s*[A-Za-z0-9]+$', line) or RegexRpl.match(r'^cat\s*<<\s*[A-Za-z0-9]+\s*>.*$', line):
                     res += self.finding(i.Origin, i.InFileLine + index)
         return res

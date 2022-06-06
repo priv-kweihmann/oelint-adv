@@ -1,7 +1,6 @@
-import re
-
 from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Include
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class VarMultiInclude(Rule):
@@ -16,7 +15,7 @@ class VarMultiInclude(Rule):
             filename=_file, classifier=Include.CLASSIFIER)
         keys = []
         for i in items:
-            keys += [x.strip() for x in re.split(r'\s|,', i.IncName) if x]
+            keys += [x.strip() for x in RegexRpl.split(r'\s|,', i.IncName) if x]
         for key in list(set(keys)):
             _i = [x for x in items if x.IncName.find(key) != -1]
             if len(_i) > 1:

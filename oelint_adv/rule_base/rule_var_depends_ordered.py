@@ -1,8 +1,8 @@
 import os
-import re
 
-from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
+from oelint_parser.cls_item import Variable
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class VarDependsOrdered(Rule):
@@ -22,7 +22,7 @@ class VarDependsOrdered(Rule):
                                   attribute=Variable.ATTR_VAR)
         # ignore the settings from bbclasses
         items = [x for x in items if not x.Origin.endswith('.bbclass')]
-        _keys = {x.VarName for x in items if re.match(
+        _keys = {x.VarName for x in items if RegexRpl.match(
             r'DEPENDS|RDEPENDS', x.VarName)}
         _filegroups = {x.Origin for x in items}
 

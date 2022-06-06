@@ -1,9 +1,10 @@
 import os
-import re
 
+import regex
 from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Variable
 from oelint_parser.helper_files import get_files
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class FilePatchIsUpstreamStatusInactiveUpstreamDetails(Rule):
@@ -34,9 +35,9 @@ class FilePatchIsUpstreamStatusInactiveUpstreamDetails(Rule):
                 else:
                     continue  # pragma: no cover
                 try:
-                    for m in re.finditer(r'^Upstream-Status:\s*(?P<class>.*)', _input.read(), re.MULTILINE):
+                    for m in RegexRpl.finditer(r'^Upstream-Status:\s*(?P<class>.*)', _input.read(), regex.regex.MULTILINE):
                         for k, v in _valid_class.items():
-                            if m.group('class').strip().startswith(k) and not re.match(v, m.group('class')):
+                            if m.group('class').strip().startswith(k) and not RegexRpl.match(v, m.group('class')):
                                 res += self.finding(_recipe_match.Origin,
                                                     _recipe_match.InFileLine)
                 except UnicodeDecodeError:  # pragma: no cover

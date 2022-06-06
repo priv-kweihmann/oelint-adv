@@ -1,9 +1,8 @@
-import re
-
 from anytree import LoopError
 from anytree import Node
-from oelint_parser.cls_item import TaskAdd
 from oelint_adv.cls_rule import Rule
+from oelint_parser.cls_item import TaskAdd
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class TaskCustomOrder(Rule):
@@ -13,7 +12,7 @@ class TaskCustomOrder(Rule):
                          message='<FOO>')
 
     def __getNodeFromException(self, msg):
-        m = re.match(r'^.*Node\(\'(?P<path>.*)\'\)\.$', msg)
+        m = RegexRpl.match(r'^.*Node\(\'(?P<path>.*)\'\)\.$', msg)
         if m:
             return [x for x in m.group('path').split('/') if x]
         return []  # pragma: no cover

@@ -1,7 +1,6 @@
-import re
-
-from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
+from oelint_parser.cls_item import Variable
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class VarSectionLowercase(Rule):
@@ -28,8 +27,8 @@ class VarSectionLowercase(Rule):
     def fix(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):
-            i.RealRaw = re.sub(r'"\s+', '"', i.RealRaw) + '\n'
-            i.Raw = re.sub(r'"\s+', '"', i.Raw) + '\n'
-            i.VarValue = re.sub(r'"\s+', '"', i.VarValue) + '\n'
+            i.RealRaw = RegexRpl.sub(r'"\s+', '"', i.RealRaw) + '\n'
+            i.Raw = RegexRpl.sub(r'"\s+', '"', i.Raw) + '\n'
+            i.VarValue = RegexRpl.sub(r'"\s+', '"', i.VarValue) + '\n'
             res.append(_file)
         return res

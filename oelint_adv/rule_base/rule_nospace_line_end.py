@@ -1,6 +1,5 @@
-import re
-
 from oelint_adv.cls_rule import Rule
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class NoSpaceTrailingRule(Rule):
@@ -29,7 +28,7 @@ class NoSpaceTrailingRule(Rule):
     def fix(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):
-            i.RealRaw = re.sub(r'\s{2,}\n', '\n', i[0].RealRaw)
-            i.Raw = re.sub(r'\s{2,}\n', '\n', i[0].Raw)  # pragma: no cover
+            i.RealRaw = RegexRpl.sub(r'\s{2,}\n', '\n', i[0].RealRaw)
+            i.Raw = RegexRpl.sub(r'\s{2,}\n', '\n', i[0].Raw)  # pragma: no cover
             res.append(_file)  # pragma: no cover
         return res  # pragma: no cover

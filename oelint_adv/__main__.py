@@ -1,16 +1,17 @@
 import argparse
 import json
 import os
-import re
 import sys
 from configparser import ConfigParser
 from configparser import NoOptionError
 from configparser import NoSectionError
 from configparser import ParsingError
-from typing import Union, Dict
+from typing import Dict
+from typing import Union
 
 from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
+from oelint_parser.rpl_regex import RegexRpl
 
 from oelint_adv.cls_rule import load_rules
 from oelint_adv.color import set_colorize
@@ -29,7 +30,7 @@ class TypeSafeAppendAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         items = getattr(namespace, self.dest) or []
         if isinstance(items, str):
-            items = re.split(r'\s+|\t+|\n+', items)  # pragma: no cover
+            items = RegexRpl.split(r'\s+|\t+|\n+', items)  # pragma: no cover
         items.append(values)  # pragma: no cover
         setattr(namespace, self.dest, items)  # pragma: no cover
 
@@ -227,7 +228,7 @@ def group_files(files):
         _match = False
         for _, v in res.items():
             _needle = '.*/' + os.path.basename(_filename).replace('%', '.*')
-            if any(re.match(_needle, x) for x in v):
+            if any(RegexRpl.match(_needle, x) for x in v):
                 v.add(f)
                 _match = True
         if not _match:

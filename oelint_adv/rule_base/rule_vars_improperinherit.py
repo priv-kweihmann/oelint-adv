@@ -1,9 +1,8 @@
-import re
-
 from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Variable
 from oelint_parser.helper_files import expand_term
 from oelint_parser.parser import INLINE_BLOCK
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class VarImproperInherit(Rule):
@@ -18,7 +17,7 @@ class VarImproperInherit(Rule):
                                   attribute=Variable.ATTR_VAR, attributeValue='inherit')
         for i in items:
             for subi in [expand_term(stash, _file, x) for x in i.get_items() if x and x != INLINE_BLOCK]:
-                if not re.match(r'^[A-Za-z0-9_.-]+$', subi):
+                if not RegexRpl.match(r'^[A-Za-z0-9_.-]+$', subi):
                     res += self.finding(i.Origin, i.InFileLine,
                                         self.Msg.replace('{INH}', subi))
         return res

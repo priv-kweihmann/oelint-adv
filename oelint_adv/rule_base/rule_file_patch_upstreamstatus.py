@@ -1,9 +1,10 @@
 import os
-import re
 
+import regex
 from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Variable
 from oelint_parser.helper_files import get_files
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class FilePatchIsUpstreamStatus(Rule):
@@ -40,9 +41,9 @@ class FilePatchIsUpstreamStatus(Rule):
                 else:
                     continue  # pragma: no cover
                 try:
-                    for m in re.finditer(r'^Upstream-Status:\s*(?P<class>.*)', _input.read(), re.MULTILINE):
+                    for m in RegexRpl.finditer(r'^Upstream-Status:\s*(?P<class>.*)', _input.read(), regex.regex.MULTILINE):
                         found = True
-                        if not any(re.match(v, m.group('class')) for k, v in _valid_class.items()):
+                        if not any(RegexRpl.match(v, m.group('class')) for k, v in _valid_class.items()):
                             _msg = 'Upstream-Status in \'{FILE}\' doesn\'t pick from valid classifiers {cls}'.format(
                                 FILE=os.path.basename(i), cls=','.join(sorted(_valid_class.keys())),
                             )

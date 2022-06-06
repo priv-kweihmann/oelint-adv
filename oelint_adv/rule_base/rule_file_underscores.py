@@ -1,8 +1,8 @@
 import os
-import re
 
 from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Variable
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class FileNoSpaces(Rule):
@@ -21,7 +21,7 @@ class FileNoSpaces(Rule):
             _inherits = set()
             for inh in stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                          attribute=Variable.ATTR_VAR, attributeValue='inherit'):
-                _inherits.update([x.strip() for x in re.split(
+                _inherits.update([x.strip() for x in RegexRpl.split(
                     r'\s|,|\t|\x1b', inh.VarValue) if x])
             if _image_install or any(x in _inherits for x in ['core-image', 'image']):
                 return res

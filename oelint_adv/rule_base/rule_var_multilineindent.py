@@ -1,7 +1,6 @@
-import re
-
 from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Variable
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class VarMultiLineIndent(Rule):
@@ -12,7 +11,7 @@ class VarMultiLineIndent(Rule):
 
     def __line_stats(self, raw):
         _map = {}
-        _lines = [x for x in re.split(r'\t|\x1b', raw) if x and x.strip()]
+        _lines = [x for x in RegexRpl.split(r'\t|\x1b', raw) if x and x.strip()]
         for index, value in enumerate(_lines):
             _map[index] = len(value) - len(value.lstrip())
         _distribution = {x: list(_map.values()).count(x)

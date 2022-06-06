@@ -1,7 +1,6 @@
-import re
-
 from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Comment
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class NoSpaceRuleCont(Rule):
@@ -17,7 +16,7 @@ class NoSpaceRuleCont(Rule):
             if isinstance(i, Comment):
                 continue
             if i.Raw:  # pragma: no cover
-                if re.search(r'\\\s+\n', i.Raw):
+                if RegexRpl.search(r'\\\s+\n', i.Raw):
                     res.append(i)
         return res
 
@@ -30,7 +29,7 @@ class NoSpaceRuleCont(Rule):
     def fix(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):
-            i.RealRaw = re.sub(r'\\\s+\n', '\\\n', i.RealRaw)
-            i.Raw = re.sub(r'\\\s+\n', '\\\n', i.Raw)
+            i.RealRaw = RegexRpl.sub(r'\\\s+\n', '\\\n', i.RealRaw)
+            i.Raw = RegexRpl.sub(r'\\\s+\n', '\\\n', i.Raw)
             res.append(_file)
         return res

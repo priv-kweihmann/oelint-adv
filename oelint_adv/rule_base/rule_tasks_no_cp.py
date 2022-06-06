@@ -1,6 +1,6 @@
-import re
-from oelint_parser.cls_item import Function
 from oelint_adv.cls_rule import Rule
+from oelint_parser.cls_item import Function
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class TaskInstallNoCp(Rule):
@@ -16,7 +16,7 @@ class TaskInstallNoCp(Rule):
                 for lineindex, line in enumerate(item.get_items()):
                     if line.strip().startswith('#'):
                         continue
-                    if re.search(r'\s*cp ', line) and not re.search(r'\s*cp\s+(-R|-r)', line):
+                    if RegexRpl.search(r'\s*cp ', line) and not RegexRpl.search(r'\s*cp\s+(-R|-r)', line):
                         res += self.finding(item.Origin,
                                             item.InFileLine + lineindex)
         return res

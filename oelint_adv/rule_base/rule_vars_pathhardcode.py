@@ -1,9 +1,9 @@
-import re
 from collections import OrderedDict
 
 from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Comment
 from oelint_parser.cls_item import Variable
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class VarsPathHardcode(Rule):
@@ -48,7 +48,7 @@ class VarsPathHardcode(Rule):
                         for line in i.get_items():
                             if line.strip().startswith('#'):
                                 continue
-                            _match = re.search(pre + k + ext, line)
+                            _match = RegexRpl.search(pre + k + ext, line)
                             if _match and k not in _matches:
                                 _cleanapp = v.strip('$').strip('{').strip('}')
                                 res += self.finding(i.Origin, i.InFileLine,

@@ -1,11 +1,10 @@
-import re
-
 from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Function
 from oelint_parser.cls_item import Variable
 from oelint_parser.constants import CONSTANTS
 from oelint_parser.helper_files import get_valid_package_names
 from oelint_parser.parser import INLINE_BLOCK
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class VarPnBpnUsage(Rule):
@@ -40,7 +39,7 @@ class VarPnBpnUsage(Rule):
             if _machine in ['ptest']:
                 # known exceptions
                 continue
-            if _comp and re.match(''.join(x.VarValueStripped for x in _comp), _machine):
+            if _comp and RegexRpl.match(''.join(x.VarValueStripped for x in _comp), _machine):
                 continue
             res += self.finding(i.Origin, i.InFileLine,
                                 override_msg=self.Msg.format(func=i.FuncName, machine=_machine, distro=_distro))

@@ -1,6 +1,5 @@
-import re
-
 from oelint_adv.cls_rule import Rule
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class NoTabs(Rule):
@@ -26,7 +25,7 @@ class NoTabs(Rule):
     def fix(self, _file, stash):  # pragma: no cover
         res = []  # pragma: no cover
         for i in self.__getMatches(_file, stash):  # pragma: no cover
-            i.RealRaw = re.sub(r'\t', '    ', i.RealRaw)  # pragma: no cover
-            i.Raw = re.sub(r'\t', '    ', i.Raw)  # pragma: no cover
+            i.RealRaw = RegexRpl.sub(r'\t', '    ', i.RealRaw)  # pragma: no cover
+            i.Raw = RegexRpl.sub(r'\t', '    ', i.Raw)  # pragma: no cover
             res.append(_file)  # pragma: no cover
         return res  # pragma: no cover

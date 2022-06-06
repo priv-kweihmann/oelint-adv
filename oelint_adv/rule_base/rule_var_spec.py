@@ -1,11 +1,10 @@
-import re
-
 from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Variable
 from oelint_parser.constants import CONSTANTS
 from oelint_parser.helper_files import expand_term
 from oelint_parser.helper_files import get_valid_named_resources
 from oelint_parser.helper_files import get_valid_package_names
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class VarPnBpnUsage(Rule):
@@ -47,7 +46,7 @@ class VarPnBpnUsage(Rule):
             if any(x in CONSTANTS.MachinesKnown for x in _machine):
                 continue
             if _comp:
-                if any(re.match(_comp, x) for x in _machine):
+                if any(RegexRpl.match(_comp, x) for x in _machine):
                     continue
             res += self.finding(i.Origin, i.InFileLine,
                                 override_msg=self.Msg.format(a=i.VarName, b=_machine[0]))

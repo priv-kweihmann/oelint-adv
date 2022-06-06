@@ -1,7 +1,6 @@
-import re
-
-from oelint_parser.cls_item import Variable
 from oelint_adv.cls_rule import Rule
+from oelint_parser.cls_item import Variable
+from oelint_parser.rpl_regex import RegexRpl
 
 
 class VarMultiInherit(Rule):
@@ -16,7 +15,7 @@ class VarMultiInherit(Rule):
                                   attribute=Variable.ATTR_VAR, attributeValue='inherit')
         keys = []
         for i in items:
-            for y in [x.strip() for x in re.split(r'\s|,|\t|\x1b', i.VarValue) if x]:
+            for y in [x.strip() for x in RegexRpl.split(r'\s|,|\t|\x1b', i.VarValue) if x]:
                 if y not in keys:
                     keys.append(y)
                 else:
