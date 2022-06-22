@@ -364,6 +364,26 @@ messageformat = {severity}:{id}:{msg}
 
 You can find an example file [here](docs/.oelint.cfg.example)
 
+## Inline suppression
+
+You can suppress one or more checks on a line by line basis
+
+```bitbake
+# nooelint: <id>[,<id>,...]
+```
+
+suppresses all the specified IDs for the next line.
+Multiple IDs can be separated by commas.
+
+### Example
+
+```bitbake
+# nooelint: oelint.vars.insaneskip
+INSANE_SKIP_${PN} = "foo"
+```
+
+will not warn about the usage of `INSANE_SKIP`.
+
 ## vscode extension
 
 Find the extension in the [marketplace](https://marketplace.visualstudio.com/items?itemName=kweihmann.oelint-vscode), or search for `oelint-vscode`.

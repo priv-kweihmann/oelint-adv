@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import re
 import sys
 from configparser import ConfigParser
 from configparser import NoOptionError
@@ -9,12 +10,14 @@ from configparser import ParsingError
 from typing import Dict
 from typing import Union
 
+from oelint_parser.cls_item import Comment
 from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
 from oelint_parser.rpl_regex import RegexRpl
 
 from oelint_adv.cls_rule import load_rules
 from oelint_adv.color import set_colorize
+from oelint_adv.rule_file import set_inlinesuppressions
 from oelint_adv.rule_file import set_messageformat
 from oelint_adv.rule_file import set_noinfo
 from oelint_adv.rule_file import set_nowarn
@@ -152,7 +155,8 @@ def arguments_post(args):  # noqa: C901 - complexity is still okay
     ]:
         try:
             if not isinstance(getattr(args, _option), list):
-                setattr(args, _option, [x.strip() for x in (getattr(args, _option) or '').split('\n') if x])
+                setattr(args, _option, [x.strip() for x in (
+                    getattr(args, _option) or '').split('\n') if x])
         except AttributeError:  # pragma: no cover
             pass  # pragma: no cover
 
@@ -255,7 +259,7 @@ def print_rulefile(args):
     print(json.dumps(ruleset, indent=2))  # noqa: T201 - it's here for a reason
 
 
-def run(args):
+def run(args): # noqa: C901 - no it isn't too complex
     try:
         rules = load_rules(args, add_rules=args.addrules,
                            add_dirs=args.customrules)
@@ -278,6 +282,19 @@ def run(args):
                         print('Can\'t open/read: {e}'.format(e=e))  # noqa: T201 - it's fine here; # pragma: no cover
 
             stash.Finalize()
+
+            inline_supp_map = {}
+            for item in stash.GetItemsFor(classifier=Comment.CLASSIFIER):
+                for line in item.get_items():
+                    m = re.match(
+                        r'^#\s+nooelint:\s+(?P<ids>[A-Za-z0-9\.,]*)', line)
+                    if m:
+                        if item.Origin not in inline_supp_map:  # pragma: no cover
+                            inline_supp_map[item.Origin] = {}
+                        inline_supp_map[item.Origin][item.InFileLine] = m.group(
+                            'ids').strip().split(',')
+
+            set_inlinesuppressions(inline_supp_map)
 
             _files = list(set(stash.GetRecipes() + stash.GetLoneAppends()))
             for _, f in enumerate(_files):

@@ -6,6 +6,7 @@ _RELPATH = False
 _MESSAGEFORMAT = ''
 _RULE_FILE = {}
 _SUPPRESSIONS = []
+_INLINESUPPRESSION = {}
 
 
 def get_noinfo():
@@ -61,3 +62,12 @@ def set_rulefile(value):
     global _RULE_FILE
     _RULE_FILE = value
     CONSTANTS.AddFromRuleFile(value)
+
+
+def get_inlinesuppressions():
+    return _INLINESUPPRESSION
+
+
+def set_inlinesuppressions(value):
+    global _INLINESUPPRESSION
+    _INLINESUPPRESSION = value

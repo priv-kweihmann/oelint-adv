@@ -8,6 +8,7 @@ from colorama import Style
 
 from oelint_adv.color import get_color_by_severity
 from oelint_adv.color import get_colorize
+from oelint_adv.rule_file import get_inlinesuppressions
 from oelint_adv.rule_file import get_messageformat
 from oelint_adv.rule_file import get_noinfo
 from oelint_adv.rule_file import get_nowarn
@@ -98,6 +99,10 @@ class Rule:
         if _line <= 0:
             # Fix those issues, that don't come with a line
             _line = 1
+
+        # filter out inline suppressions
+        if any(x for x in _id if x in get_inlinesuppressions().get(_file, {}).get(max(1, _line - 1), [])):
+            return []
 
         _path = os.path.abspath(_file)
         if get_relpaths():
