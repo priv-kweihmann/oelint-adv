@@ -20,7 +20,6 @@ class FilePatchIsUpstreamStatus(Rule):
     def check(self, _file, stash):
         res = []
         patches = get_files(stash, _file, '*.patch')
-        import logging
         _items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                    attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
 
@@ -44,7 +43,6 @@ class FilePatchIsUpstreamStatus(Rule):
                 try:
                     cnt = _input.read()
                     for m in RegexRpl.finditer(r'^Upstream-Status:\s*(?P<class>.*)', cnt, flags=regex.regex.MULTILINE):
-                        logging.warning(m)
                         found = True
                         if not any(RegexRpl.match(v, m.group('class')) for k, v in _valid_class.items()):
                             _msg = 'Upstream-Status in \'{FILE}\' doesn\'t pick from valid classifiers {cls}'.format(
