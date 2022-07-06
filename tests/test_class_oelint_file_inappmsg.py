@@ -120,6 +120,16 @@ class TestClassOelintFileUpstreamStatusInAppMsg(TestBaseClass):
                                      'files/test.patch':
                                      'Upstream-Status: Inappropriate [other]',
                                  },
+                                 {
+                                     'oelint_adv-test.bb':
+                                     'SRC_URI = "file://test.patch"',
+                                     'files/test.patch':
+                                     '''
+                                     Some line before
+                                     Upstream-Status: Inappropriate [other]
+                                     Some line after
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input, id, occurrence):

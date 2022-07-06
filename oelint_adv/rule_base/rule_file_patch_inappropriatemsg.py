@@ -51,7 +51,7 @@ class FilePatchIsUpstreamStatusInAppMsg(Rule):
                 else:
                     continue  # pragma: no cover
                 try:
-                    for m in RegexRpl.finditer(r'^Upstream-Status:\s*(?P<class>.*)', _input.read(), regex.regex.MULTILINE):
+                    for m in RegexRpl.finditer(r'^Upstream-Status:\s*(?P<class>.*)', _input.read(), flags=regex.regex.MULTILINE):
                         for k, v in _valid_class.items():
                             if m.group('class').strip().startswith(k) and not RegexRpl.match(v, m.group('class')):
                                 res += self.finding(_recipe_match.Origin,

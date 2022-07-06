@@ -156,6 +156,16 @@ class TestClassOelintFileUpstreamStatus(TestBaseClass):
                                      'files/test.patch':
                                      'Upstream-Status: Inactive-Upstream [lastcommit 1234 lastrelease 1234]',
                                  },
+                                 {
+                                     'oelint_adv-test.bb':
+                                     'SRC_URI = "file://test.patch"',
+                                     'files/test.patch':
+                                     '''
+                                     Some line before that
+                                     Upstream-Status: Inappropriate
+                                     Some line after that
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input, id, occurrence):
