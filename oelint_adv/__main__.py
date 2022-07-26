@@ -24,6 +24,7 @@ from oelint_adv.rule_file import set_nowarn
 from oelint_adv.rule_file import set_relpaths
 from oelint_adv.rule_file import set_rulefile
 from oelint_adv.rule_file import set_suppressions
+from oelint_adv.version import __version__
 
 sys.path.append(os.path.abspath(os.path.join(__file__, '..')))
 
@@ -122,6 +123,8 @@ def create_argparser():
     parser.set_defaults(**parse_configfile())
 
     parser.add_argument('files', nargs='*', help='File to parse')
+
+    parser.add_argument('--version', action='version', version=f'%(prog)s {__version__}')
 
     return parser
 

@@ -1,6 +1,6 @@
 import subprocess
-
 import setuptools
+from oelint_adv.version import __version__
 
 _long_description = 'See https://github.com/priv-kweihmann/oelint-adv for documentation'
 _long_description_content_type = 'text/plain'
@@ -17,7 +17,7 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name='oelint_adv',
-    version='3.15.3',
+    version=__version__,
     author='Konrad Weihmann',
     author_email='kweihmann@outlook.com',
     description='Advanced bitbake-recipe linter',
