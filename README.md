@@ -46,32 +46,22 @@ required python libraries on your own. See [requirements.txt](requirements.txt) 
 
 ```shell
 oelint-adv
-usage: oelint-adv [-h]
-                  [--suppress SUPPRESS]
-                  [--output OUTPUT]
-                  [--fix]
-                  [--nobackup]
-                  [--addrules ADDRULES [ADDRULES ...]]
+usage: oelint-adv [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix]
+                  [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
                   [--customrules CUSTOMRULES [CUSTOMRULES ...]]
                   [--rulefile RULEFILE] [--constantfile CONSTANTFILE]
-                  [--color]
-                  [--quiet]
-                  [--noinfo]
-                  [--nowarn]
-                  [--relpaths]
-                  [--noid]
-                  [--messageformat MESSAGEFORMAT]
+                  [--color] [--quiet] [--noinfo] [--nowarn] [--relpaths]
+                  [--noid] [--messageformat MESSAGEFORMAT]
                   [--constantmods CONSTANTMODS [CONSTANTMODS ...]]
-                  [--print-rulefile]
-                  [--exit-zero]
-                  [files [files ...]]
+                  [--print-rulefile] [--exit-zero] [--version]
+                  [files ...]
 
 Advanced OELint - Check bitbake recipes against OECore styleguide
 
 positional arguments:
   files                 File to parse
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --suppress SUPPRESS   Rules to suppress
   --output OUTPUT       Where to flush the findings (default: stderr)
@@ -88,10 +78,11 @@ optional arguments:
   --quiet               Print findings only
   --noinfo              Don't print information level findings
   --nowarn              Don't print warning level findings
-  --relpaths            Show relative paths instead of absolute paths in results
+  --relpaths            Show relative paths instead of absolute paths in
+                        results
   --noid                Don't show the error-ID in the output
   --messageformat MESSAGEFORMAT
-                        Format of message output (default: {path}:{line}:{severity}:{id}:{msg})
+                        Format of message output
   --constantmods CONSTANTMODS [CONSTANTMODS ...]
                         Modifications to the constant db. prefix with: + - to
                         add to DB, - - to remove from DB, None - to override
@@ -99,6 +90,7 @@ optional arguments:
   --print-rulefile      Print loaded rules as a rulefile and exit
   --exit-zero           Always return a 0 (non-error) status code, even if
                         lint errors are found
+  --version             show program's version number and exit
 
 ```
 
