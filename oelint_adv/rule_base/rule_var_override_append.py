@@ -11,18 +11,36 @@ class VarOverrideAppend(Rule):
             'ALLOW_EMPTY',
             'ALTERNATIVE',
             'CONFFILES',
+            'DEBIAN_NOAUTONAME',
+            'DEBIANNAME',
+            'DEPENDS',
+            'DESCRIPTION',
             'FILES',
+            'GROUPADD_PARAM',
+            'INITSCRIPT_NAME',
+            'INITSCRIPT_PARAMS',
             'INSANE_SKIP',
+            'LICENSE',
+            'PKG',
             'pkg_postinst',
+            'pkg_postinst_ontarget',
             'pkg_postrm',
             'pkg_preinst',
             'pkg_prerm',
+            'PRIVATE_LIBS',
             'RCONFLICTS',
             'RDEPENDS',
             'RPROVIDES',
             'RRECOMMENDS',
             'RREPLACES',
             'RSUGGESTS',
+            'SECTION',
+            'SKIP_FILEDEPS',
+            'sstate',
+            'SUMMARY',
+            'SYSTEMD_AUTO_ENABLE',
+            'SYSTEMD_SERVICE',
+            'USERADD_PARAM',
         ]
 
     def check(self, _file, stash):
@@ -39,7 +57,7 @@ class VarOverrideAppend(Rule):
             _scope = [x for x in _items if x not in ['append', 'prepend']]
             _op = [x for x in _items if x in ['append', 'prepend']]
             if not _scope or not _items:
-                continue # pragma: no cover
+                continue  # pragma: no cover
             _scope_key = i.VarName + ':' + '-'.join(_scope)
             if _op:
                 if _items[0] not in _op and _scope_key not in _store:
