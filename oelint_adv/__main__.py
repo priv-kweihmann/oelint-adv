@@ -1,5 +1,6 @@
 import argparse
 import json
+import multiprocessing as mp
 import os
 import re
 import sys
@@ -7,6 +8,7 @@ from configparser import ConfigParser
 from configparser import NoOptionError
 from configparser import NoSectionError
 from configparser import ParsingError
+from functools import partial
 from typing import Dict
 from typing import Union
 
@@ -92,6 +94,8 @@ def create_argparser():
                         help='Additional directories to parse for rulessets')
     parser.add_argument('--rulefile', default=None,
                         help='Rulefile')
+    parser.add_argument('--jobs', type=int, default=mp.cpu_count(),
+                        help='Number of jobs to run (default all cores)')
     parser.add_argument('--constantfile', default=None, help='Constantfile')
     parser.add_argument('--color', action='store_true', default=False,
                         help='Add color to the output based on the severity')
@@ -124,7 +128,8 @@ def create_argparser():
 
     parser.add_argument('files', nargs='*', help='File to parse')
 
-    parser.add_argument('--version', action='version', version=f'%(prog)s {__version__}')
+    parser.add_argument('--version', action='version',
+                        version=f'%(prog)s {__version__}')
 
     return parser
 
@@ -262,7 +267,67 @@ def print_rulefile(args):
     print(json.dumps(ruleset, indent=2))  # noqa: T201 - it's here for a reason
 
 
-def run(args): # noqa: C901 - no it isn't too complex
+def flatten(list_):
+    if not isinstance(list_, list):
+        return [list_]
+    flat = []
+    for sublist in list_:
+        flat.extend(flatten(sublist))
+    return flat
+
+
+def group_run(group, quiet, fix, jobs, rules, nobackup):
+    fixedfiles = []
+    stash = Stash(quiet)
+    for f in group:
+        try:
+            stash.AddFile(f)
+        except FileNotFoundError as e:  # pragma: no cover
+            if not quiet:  # pragma: no cover
+                print('Can\'t open/read: {e}'.format(e=e))  # noqa: T201 - it's fine here; # pragma: no cover
+
+    stash.Finalize()
+
+    inline_supp_map = {}
+    for item in stash.GetItemsFor(classifier=Comment.CLASSIFIER):
+        for line in item.get_items():
+            m = re.match(
+                r'^#\s+nooelint:\s+(?P<ids>[A-Za-z0-9\.,]*)', line)
+            if m:
+                if item.Origin not in inline_supp_map:  # pragma: no cover
+                    inline_supp_map[item.Origin] = {}
+                inline_supp_map[item.Origin][item.InFileLine] = m.group(
+                    'ids').strip().split(',')
+
+    set_inlinesuppressions(inline_supp_map)
+
+    _files = list(set(stash.GetRecipes() + stash.GetLoneAppends()))
+    issues = []
+    for _, f in enumerate(_files):
+        for r in rules:
+            if not r.OnAppend and f.endswith('.bbappend'):
+                continue
+            if r.OnlyAppend and not f.endswith('.bbappend'):
+                continue
+            if fix:
+                fixedfiles += r.fix(f, stash)
+            issues += r.check(f, stash)
+    fixedfiles = list(set(fixedfiles))
+    for f in fixedfiles:
+        _items = [f] + stash.GetLinksForFile(f)
+        for i in _items:
+            items = stash.GetItemsFor(filename=i, nolink=True)
+            if not nobackup:
+                os.rename(i, i + '.bak')  # pragma: no cover
+            with open(i, 'w') as o:
+                o.write(''.join([x.RealRaw for x in items]))
+                if not quiet:
+                    print('{path}:{lvl}:{msg}'.format(path=os.path.abspath(i),  # noqa: T201 - it's fine here; # pragma: no cover
+                                            lvl='debug', msg='Applied automatic fixes'))
+    return issues
+
+
+def run(args):
     try:
         rules = load_rules(args, add_rules=args.addrules,
                            add_dirs=args.customrules)
@@ -273,54 +338,11 @@ def run(args): # noqa: C901 - no it isn't too complex
             print('Loaded rules:\n\t{rules}'.format(  # noqa: T201 - it's here for a reason
                 rules='\n\t'.join(sorted(_loaded_ids))))
         issues = []
-        fixedfiles = []
         groups = group_files(args.files)
-        for group in groups:
-            stash = Stash(args)
-            for f in group:
-                try:
-                    stash.AddFile(f)
-                except FileNotFoundError as e:  # pragma: no cover
-                    if not args.quiet:  # pragma: no cover
-                        print('Can\'t open/read: {e}'.format(e=e))  # noqa: T201 - it's fine here; # pragma: no cover
-
-            stash.Finalize()
-
-            inline_supp_map = {}
-            for item in stash.GetItemsFor(classifier=Comment.CLASSIFIER):
-                for line in item.get_items():
-                    m = re.match(
-                        r'^#\s+nooelint:\s+(?P<ids>[A-Za-z0-9\.,]*)', line)
-                    if m:
-                        if item.Origin not in inline_supp_map:  # pragma: no cover
-                            inline_supp_map[item.Origin] = {}
-                        inline_supp_map[item.Origin][item.InFileLine] = m.group(
-                            'ids').strip().split(',')
-
-            set_inlinesuppressions(inline_supp_map)
-
-            _files = list(set(stash.GetRecipes() + stash.GetLoneAppends()))
-            for _, f in enumerate(_files):
-                for r in rules:
-                    if not r.OnAppend and f.endswith('.bbappend'):
-                        continue
-                    if r.OnlyAppend and not f.endswith('.bbappend'):
-                        continue
-                    if args.fix:
-                        fixedfiles += r.fix(f, stash)
-                    issues += r.check(f, stash)
-            fixedfiles = list(set(fixedfiles))
-            for f in fixedfiles:
-                _items = [f] + stash.GetLinksForFile(f)
-                for i in _items:
-                    items = stash.GetItemsFor(filename=i, nolink=True)
-                    if not args.nobackup:
-                        os.rename(i, i + '.bak')  # pragma: no cover
-                    with open(i, 'w') as o:
-                        o.write(''.join([x.RealRaw for x in items]))
-                        if not args.quiet:
-                            print('{path}:{lvl}:{msg}'.format(path=os.path.abspath(i),  # noqa: T201 - it's fine here; # pragma: no cover
-                                                    lvl='debug', msg='Applied automatic fixes'))
+        with mp.Pool(processes=args.jobs) as pool:
+            # run each individual group as a thread
+            issues = flatten(pool.map(partial(group_run, quiet=args.quiet, fix=args.fix,
+                             jobs=args.jobs, rules=rules, nobackup=args.nobackup), groups))
 
         return sorted(set(issues), key=lambda x: x[0])
     except Exception:

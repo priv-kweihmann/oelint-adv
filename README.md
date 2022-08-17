@@ -45,15 +45,10 @@ required python libraries on your own. See [requirements.txt](requirements.txt) 
 ## Usage
 
 ```shell
-oelint-adv
-usage: oelint-adv [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix]
-                  [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
-                  [--customrules CUSTOMRULES [CUSTOMRULES ...]]
-                  [--rulefile RULEFILE] [--constantfile CONSTANTFILE]
-                  [--color] [--quiet] [--noinfo] [--nowarn] [--relpaths]
-                  [--noid] [--messageformat MESSAGEFORMAT]
-                  [--constantmods CONSTANTMODS [CONSTANTMODS ...]]
-                  [--print-rulefile] [--exit-zero] [--version]
+usage: oelint-adv [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix] [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
+                  [--customrules CUSTOMRULES [CUSTOMRULES ...]] [--rulefile RULEFILE] [--jobs JOBS] [--constantfile CONSTANTFILE] [--color] [--quiet] [--noinfo]
+                  [--nowarn] [--relpaths] [--noid] [--messageformat MESSAGEFORMAT] [--constantmods CONSTANTMODS [CONSTANTMODS ...]] [--print-rulefile] [--exit-zero]
+                  [--version]
                   [files ...]
 
 Advanced OELint - Check bitbake recipes against OECore styleguide
@@ -72,26 +67,23 @@ options:
   --customrules CUSTOMRULES [CUSTOMRULES ...]
                         Additional directories to parse for rulessets
   --rulefile RULEFILE   Rulefile
+  --jobs JOBS           Number of jobs to run (default all cores)
   --constantfile CONSTANTFILE
                         Constantfile
   --color               Add color to the output based on the severity
   --quiet               Print findings only
   --noinfo              Don't print information level findings
   --nowarn              Don't print warning level findings
-  --relpaths            Show relative paths instead of absolute paths in
-                        results
+  --relpaths            Show relative paths instead of absolute paths in results
   --noid                Don't show the error-ID in the output
   --messageformat MESSAGEFORMAT
                         Format of message output
   --constantmods CONSTANTMODS [CONSTANTMODS ...]
-                        Modifications to the constant db. prefix with: + - to
-                        add to DB, - - to remove from DB, None - to override
-                        DB
+                        Modifications to the constant db.
+                        prefix with: + - to add to DB, - - to remove from DB, None - to override DB
   --print-rulefile      Print loaded rules as a rulefile and exit
-  --exit-zero           Always return a 0 (non-error) status code, even if
-                        lint errors are found
+  --exit-zero           Always return a 0 (non-error) status code, even if lint errors are found
   --version             show program's version number and exit
-
 ```
 
 ## Output
