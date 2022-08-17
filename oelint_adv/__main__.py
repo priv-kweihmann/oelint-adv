@@ -340,9 +340,12 @@ def run(args):
         issues = []
         groups = group_files(args.files)
         with mp.Pool(processes=args.jobs) as pool:
-            # run each individual group as a thread
-            issues = flatten(pool.map(partial(group_run, quiet=args.quiet, fix=args.fix,
-                             jobs=args.jobs, rules=rules, nobackup=args.nobackup), groups))
+            try:
+                issues = flatten(pool.map(partial(group_run, quiet=args.quiet, fix=args.fix,
+                                                  jobs=args.jobs, rules=rules, nobackup=args.nobackup), groups))
+            finally:
+                pool.close()
+                pool.join()
 
         return sorted(set(issues), key=lambda x: x[0])
     except Exception:
