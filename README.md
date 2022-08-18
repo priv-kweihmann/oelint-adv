@@ -165,6 +165,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.bbvars - Variables that shouldn't be altered in recipe scope **[S]**
 * oelint.vars.bugtrackerisurl - BUGTRACKER should be an URL
 * oelint.vars.dependsappend - DEPENDS should only be appended, not overwritten
+* oelint.vars.dependsclass - DEPENDS should use the correct class variants
 * oelint.vars.dependsordered - RDEPENDS entries should be ordered alphabetically
 * oelint.vars.descriptionsame - 'DESCRIPTION' is the same a 'SUMMARY' - it can be removed then
 * oelint.vars.descriptiontoobrief - 'DESCRIPTION' is the shorter than 'SUMMARY'
