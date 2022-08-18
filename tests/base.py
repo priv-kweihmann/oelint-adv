@@ -31,7 +31,7 @@ class TestBaseClass:
         from oelint_adv.__main__ import arguments_post
         return arguments_post(self._create_args_parser().parse_args(
             # noqa: W504 - we need to concat lists here
-            ['--quiet'] +
+            ['--quiet', '--jobs=1'] +
             # noqa: W504 - we need to concat lists here
             self.__pytest_empty_object_fixture(extraopts, []) +
             [self._create_tempfile(k, v) for k, v in input.items()],
@@ -43,7 +43,7 @@ class TestBaseClass:
         from oelint_adv.__main__ import arguments_post
         return arguments_post(self._create_args_parser().parse_args(
             # noqa: W504 - we need to concat lists here
-            ['--quiet', '--fix', '--nobackup'] +
+            ['--quiet', '--fix', '--nobackup', '--jobs=1'] +
             # noqa: W504 - we need to concat lists here
             self.__pytest_empty_object_fixture(extraopts, []) +
             [self._create_tempfile(k, v) for k, v in input.items()],
