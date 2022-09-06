@@ -15,14 +15,28 @@ class VarSRCUriOptions(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
 
-        _domains = set()
+        _domains = {'default': set()}
+        _override_ignores = ['append', 'remove', 'prepend']
         for item in items:
+            _overrides = '-'.join(sorted([
+                x for x in item.SubItems if x not in _override_ignores])) or 'default'
+            _is_append = item.IsAppend()
+            _is_remove = 'remove' in item.AppendOperation()
+            if _overrides not in _domains:
+                _domains[_overrides] = set()
             for u in [x.strip('\'').strip() for x in item.get_items()]:
                 if u == INLINE_BLOCK:
                     continue
                 _url = get_scr_components(u)
                 if _url['scheme'] and _url['scheme'] not in ['file']:
-                    _domains.add(_url['src'].split('/')[0])
-        if len(_domains) > 1:
-            res += self.finding(item.Origin, item.InFileLine)
+                    domain = _url['src'].split('/')[0]
+                    if _is_append:
+                        _domains[_overrides].add(domain)
+                    elif _is_remove and domain in _domains[_overrides]:
+                        _domains[_overrides].remove(domain)
+                    else:
+                        _domains[_overrides] = {domain}
+        for _, v in _domains.items():
+            if len(v) > 1:
+                res += self.finding(item.Origin, item.InFileLine)
         return res
