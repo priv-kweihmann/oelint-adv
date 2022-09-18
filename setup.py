@@ -1,15 +1,9 @@
-import subprocess
 import setuptools
+
 from oelint_adv.version import __version__
 
-_long_description = 'See https://github.com/priv-kweihmann/oelint-adv for documentation'
-_long_description_content_type = 'text/plain'
-try:
-    _long_description = subprocess.check_output(
-        ['pandoc', '--from', 'markdown', '--to', 'markdown', 'README.md']).decode('utf-8')
-    _long_description_content_type = 'text/markdown'
-except (subprocess.CalledProcessError, FileNotFoundError):
-    pass
+with open('README.md') as f:
+    _long_description = f.read()
 
 requirements = []
 with open('requirements.txt') as f:
@@ -22,7 +16,7 @@ setuptools.setup(
     author_email='kweihmann@outlook.com',
     description='Advanced bitbake-recipe linter',
     long_description=_long_description,
-    long_description_content_type=_long_description_content_type,
+    long_description_content_type='text/markdown',
     url='https://github.com/priv-kweihmann/oelint-adv',
     packages=setuptools.find_packages(exclude=('tests',)),
     entry_points={
@@ -46,4 +40,5 @@ setuptools.setup(
         'Programming Language :: Python :: 3',
         'Topic :: Software Development :: Quality Assurance',
     ],
+    python_requires='>=3.7',
 )
