@@ -9,7 +9,7 @@ class VarImproperInherit(Rule):
     def __init__(self):
         super().__init__(id='oelint.var.improperinherit',
                          severity='error',
-                         message='\'{INH}\' is not a proper bbclass name')
+                         message='\'{inherit}\' is not a proper bbclass name')
 
     def check(self, _file, stash):
         res = []
@@ -19,5 +19,5 @@ class VarImproperInherit(Rule):
             for subi in [expand_term(stash, _file, x) for x in i.get_items() if x and x != INLINE_BLOCK]:
                 if not RegexRpl.match(r'^[A-Za-z0-9_.-]+$', subi):
                     res += self.finding(i.Origin, i.InFileLine,
-                                        self.Msg.replace('{INH}', subi))
+                                        self.Msg.replace('{inherit}', subi))
         return res
