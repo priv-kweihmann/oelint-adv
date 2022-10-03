@@ -16,4 +16,4 @@ pytest-socket == 0.5.1
 pytest-sugar == 0.9.5
 pytest-tldr == 0.2.4
 twine == 4.0.1
-wemake-python-styleguide == 0.16.1
+wemake-python-styleguide == 0.17.0
