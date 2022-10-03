@@ -39,11 +39,3 @@ jobs:
         oelint-adv --help
         tar -tvf dist/oelint_adv-*.tar.gz | grep LICENSE
         tar -tvf dist/oelint_adv-*.tar.gz | grep README.md
-    - if: matrix.python-version == 3.7 && github.repository == 'priv-kweihmann/oelint-adv' && github.event_name == 'push'
-      name: Trigger nittymcpick-oelint
-      run: |
-        echo '{"event_type": "dep-change-oelint", "client_payload": { "repository": "'$GITHUB_REPOSITORY'" }}' > payload.json
-        curl -X POST https://api.github.com/repos/priv-kweihmann/nittymcpick-oelint/dispatches \
-          -H 'Accept: application/vnd.github.everest-preview+json' \
-          -u ${{ secrets.ACCESS_TOKEN }} \
-          --data @payload.json
