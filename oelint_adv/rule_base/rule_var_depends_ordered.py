@@ -21,7 +21,7 @@ class VarDependsOrdered(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR)
         # ignore the settings from bbclasses
-        items = [x for x in items if not x.Origin.endswith('.bbclass')]
+        items = [x for x in items if not x.Origin.endswith('.bbclass') and 'remove' not in x.SubItems]
         _keys = {x.VarName for x in items if RegexRpl.match(
             r'DEPENDS|RDEPENDS', x.VarName)}
         _filegroups = {x.Origin for x in items}

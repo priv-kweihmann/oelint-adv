@@ -115,6 +115,20 @@ class TestClassOelintVarsDependsOrdered(TestBaseClass):
                                      'classes/foo.bbclass':
                                      'RDEPENDS:${PN}:append = " a"',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     DEPENDS += "abc def ghi"
+                                     DEPENDS:remove = "def"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     RDEPENDS:${PN} += "abc def ghi"
+                                     RDEPENDS:${PN}:remove = "def"
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
