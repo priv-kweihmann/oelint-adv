@@ -30,14 +30,14 @@ class VarMandatoryExists(Rule):
         res = []
         _is_pkg_group = is_packagegroup(stash, _file)
         _is_image = is_image(stash, _file)
-        for var in CONSTANTS.VariablesMandatory:
-            if _is_pkg_group and var in VarMandatoryExists.PACKAGEGRP_EXCLUDES:
+        for var_ in CONSTANTS.VariablesMandatory:
+            if _is_pkg_group and var_ in VarMandatoryExists.PACKAGEGRP_EXCLUDES:
                 continue
-            if _is_image and var in VarMandatoryExists.IMAGE_EXCLUDES:
+            if _is_image and var_ in VarMandatoryExists.IMAGE_EXCLUDES:
                 continue
             items = stash.GetItemsFor(
-                filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue=var)
+                filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue=var_)
             if not any(items):
                 res += self.finding(_file, 0,
-                                    'Variable \'{a}\' should be set'.format(a=var), appendix=var)
+                                    'Variable \'{a}\' should be set'.format(a=var_), appendix=var_)
         return res

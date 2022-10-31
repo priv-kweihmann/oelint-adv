@@ -323,7 +323,7 @@ def group_run(group, quiet, fix, jobs, rules, nobackup):
                 o.write(''.join([x.RealRaw for x in items]))
                 if not quiet:
                     print('{path}:{lvl}:{msg}'.format(path=os.path.abspath(i),  # noqa: T201 - it's fine here; # pragma: no cover
-                                            lvl='debug', msg='Applied automatic fixes'))
+                          lvl='debug', msg='Applied automatic fixes'))
     return issues
 
 

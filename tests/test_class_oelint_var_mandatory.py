@@ -1,4 +1,4 @@
-import pytest
+import pytest  # noqa: I900
 
 from .base import TestBaseClass
 
@@ -11,7 +11,7 @@ class TestClassOelintVarMandatoryVar(TestBaseClass):
             {var} = "foo"
             '''.format(var=var, extra=extra)
 
-    @pytest.mark.parametrize('id', ['oelint.var.mandatoryvar'])
+    @pytest.mark.parametrize('id_', ['oelint.var.mandatoryvar'])
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('var', [
         'SUMMARY',
@@ -20,14 +20,14 @@ class TestClassOelintVarMandatoryVar(TestBaseClass):
         'LICENSE',
         'SRC_URI',
     ])
-    def test_bad(self, id, occurrence, var):
-        input = {
+    def test_bad(self, id_, occurrence, var):
+        input_ = {
             'oelint_adv_test.bb': self.__generate_sample_code('A', ''),
         }
-        id += '.{var}'.format(var=var)
-        self.check_for_id(self._create_args(input), id, occurrence)
+        id_ += '.{var}'.format(var=var)
+        self.check_for_id(self._create_args(input_), id_, occurrence)
 
-    @pytest.mark.parametrize('id', ['oelint.var.mandatoryvar'])
+    @pytest.mark.parametrize('id_', ['oelint.var.mandatoryvar'])
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('var', [
         'SUMMARY',
@@ -41,14 +41,14 @@ class TestClassOelintVarMandatoryVar(TestBaseClass):
         'IMAGE_INSTALL += " foo"',
         'IMAGE_INSTALL = "foo"',
     ])
-    def test_bad_image(self, id, occurrence, var, extra):
-        input = {
+    def test_bad_image(self, id_, occurrence, var, extra):
+        input_ = {
             'oelint_adv_test.bb': self.__generate_sample_code('A', extra),
         }
-        id += '.{var}'.format(var=var)
-        self.check_for_id(self._create_args(input), id, occurrence)
+        id_ += '.{var}'.format(var=var)
+        self.check_for_id(self._create_args(input_), id_, occurrence)
 
-    @pytest.mark.parametrize('id', [
+    @pytest.mark.parametrize('id_', [
         'oelint.var.mandatoryvar.SUMMARY',
         'oelint.var.mandatoryvar.DESCRIPTION',
         'oelint.var.mandatoryvar.HOMEPAGE',
@@ -56,7 +56,7 @@ class TestClassOelintVarMandatoryVar(TestBaseClass):
         'oelint.var.mandatoryvar.SRC_URI',
     ])
     @pytest.mark.parametrize('occurrence', [0])
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint_adv_test.bb':
@@ -96,5 +96,5 @@ class TestClassOelintVarMandatoryVar(TestBaseClass):
                                  },
                              ],
                              )
-    def test_good(self, input, id, occurrence):
-        self.check_for_id(self._create_args(input), id, occurrence)
+    def test_good(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_), id_, occurrence)

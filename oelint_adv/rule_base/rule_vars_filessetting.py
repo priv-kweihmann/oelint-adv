@@ -9,12 +9,12 @@ class VarUnneededFilesSetting(Rule):
                          message='Check for improvable FILES settings',
                          appendix=['hidden', 'double'])
 
-    def __find_match_from_stash(self, _file, stash, variable, needle, msg, appendix, onappendonly=False):
+    def __find_match_from_stash(self, _file, stash, variable_, needle, msg, appendix, onappendonly=False):
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue='FILES')
         for i in items:
-            if variable in i.SubItems and 'remove' not in i.SubItems and needle in i.VarValue:  # pragma: no cover
+            if variable_ in i.SubItems and 'remove' not in i.SubItems and needle in i.VarValue:  # pragma: no cover
                 if (onappendonly and i.IsAppend()) or (not onappendonly):
                     res += self.finding(i.Origin, i.InFileLine,
                                         override_msg=msg, appendix=appendix)

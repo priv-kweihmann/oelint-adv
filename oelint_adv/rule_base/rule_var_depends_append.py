@@ -14,7 +14,7 @@ class VarDependsAppend(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue='DEPENDS')
         incinh = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                  attribute=Variable.ATTR_VAR, attributeValue='inherit', nolink=True)
+                                   attribute=Variable.ATTR_VAR, attributeValue='inherit', nolink=True)
         incinh += stash.GetItemsFor(filename=_file, classifier=Include.CLASSIFIER, nolink=True)
 
         earliest = 99999999

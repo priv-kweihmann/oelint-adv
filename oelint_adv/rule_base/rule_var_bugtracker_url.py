@@ -14,9 +14,9 @@ class VarBugtrackerIsUrl(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue='BUGTRACKER')
         for i in items:
-            val = i.VarValueStripped
+            val_ = i.VarValueStripped
             try:
-                result = get_scr_components(val)
+                result = get_scr_components(val_)
                 if not result['scheme'] or not result['src']:
                     raise Exception()
             except Exception:

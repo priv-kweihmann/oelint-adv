@@ -1,13 +1,13 @@
-import pytest
+import pytest  # noqa: I900
 
 from .base import TestBaseClass
 
 # flake8: noqa W291 - we want to explicitly test trailing whitespace here
 class TestClassOelintVarsValueQuoted(TestBaseClass):
 
-    @pytest.mark.parametrize('id', ['oelint.vars.valuequoted'])
+    @pytest.mark.parametrize('id_', ['oelint.vars.valuequoted'])
     @pytest.mark.parametrize('occurrence', [2])
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint_adv_test.bb':
@@ -18,12 +18,12 @@ class TestClassOelintVarsValueQuoted(TestBaseClass):
                                  },
                              ],
                              )
-    def test_bad(self, input, id, occurrence):
-        self.check_for_id(self._create_args(input), id, occurrence)
+    def test_bad(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_), id_, occurrence)
 
-    @pytest.mark.parametrize('id', ['oelint.vars.valuequoted'])
+    @pytest.mark.parametrize('id_', ['oelint.vars.valuequoted'])
     @pytest.mark.parametrize('occurrence', [0])
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint_adv_test.bb':
@@ -61,5 +61,5 @@ class TestClassOelintVarsValueQuoted(TestBaseClass):
                                  },
                              ],
                              )
-    def test_good(self, input, id, occurrence):
-        self.check_for_id(self._create_args(input), id, occurrence)
+    def test_good(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_), id_, occurrence)

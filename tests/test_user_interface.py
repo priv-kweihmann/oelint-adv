@@ -2,7 +2,7 @@ import json
 import os
 from argparse import ArgumentTypeError
 
-import pytest
+import pytest  # noqa: I900
 
 from .base import TestBaseClass
 
@@ -10,7 +10,7 @@ from .base import TestBaseClass
 # flake8: noqa S101 - n.a. for test files
 class TestClassIntegration(TestBaseClass):
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -21,12 +21,12 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_color_input(self, input):
+    def test_color_input(self, input_):
         # local imports only
         from colorama import Fore
         from oelint_adv.__main__ import run
 
-        _args = self._create_args(input, extraopts=['--color'])
+        _args = self._create_args(input_, extraopts=['--color'])
         issues = [x[1] for x in run(_args)]
         issues_formatted = '\n'.join(issues)
         assert(any(Fore.RED in x for x in issues)
@@ -36,7 +36,7 @@ class TestClassIntegration(TestBaseClass):
         assert(any(Fore.GREEN in x for x in issues)
                ), f'green expected in:\n{issues_formatted}'
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -47,11 +47,11 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_relpaths(self, input):
+    def test_relpaths(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
 
-        _args = self._create_args(input, extraopts=['--relpaths'])
+        _args = self._create_args(input_, extraopts=['--relpaths'])
         _cwd = os.getcwd()
         os.chdir('/tmp')  # noqa: S108 - usage of tmp is fine for our purposes
         issues = [x[1] for x in run(_args)]
@@ -63,7 +63,7 @@ class TestClassIntegration(TestBaseClass):
         with pytest.raises(ArgumentTypeError):
             self._create_args({})
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -71,7 +71,7 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_constmod_add(self, input):
+    def test_constmod_add(self, input_):
         # local imports only
         from oelint_parser.constants import CONSTANTS
 
@@ -86,11 +86,11 @@ class TestClassIntegration(TestBaseClass):
         '''
         _extra_opts = [
             '--constantmod=+{mod}'.format(mod=self._create_tempfile('constmod', __cnt))]
-        _args = self._create_args(input, extraopts=_extra_opts)
+        _args = self._create_args(input_, extraopts=_extra_opts)
 
         assert('do_foo_bar' in CONSTANTS.FunctionsKnown)
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -98,7 +98,7 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_constmod_remove(self, input):
+    def test_constmod_remove(self, input_):
         # local imports only
         from oelint_parser.constants import CONSTANTS
 
@@ -113,11 +113,11 @@ class TestClassIntegration(TestBaseClass):
         '''
         _extra_opts = [
             '--constantmod=-{mod}'.format(mod=self._create_tempfile('constmod', __cnt))]
-        self._create_args(input, extraopts=_extra_opts)
+        self._create_args(input_, extraopts=_extra_opts)
 
         assert('do_ar_patched' not in CONSTANTS.FunctionsKnown)
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -125,7 +125,7 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_constmod_override(self, input):
+    def test_constmod_override(self, input_):
         # local imports only
         from oelint_parser.constants import CONSTANTS
         
@@ -140,11 +140,11 @@ class TestClassIntegration(TestBaseClass):
         '''
         _extra_opts = [
             '--constantmod={mod}'.format(mod=self._create_tempfile('constmod', __cnt))]
-        _args = self._create_args(input, extraopts=_extra_opts)
+        _args = self._create_args(input_, extraopts=_extra_opts)
 
         assert(['do_ar_patched'] == CONSTANTS.FunctionsKnown)
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -152,7 +152,7 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_constmod_corrupt(self, input):
+    def test_constmod_corrupt(self, input_):
         __cnt = '''
         {
             "functions": 
@@ -165,9 +165,9 @@ class TestClassIntegration(TestBaseClass):
         _extra_opts = [
             '--constantmod={}'.format(self._create_tempfile('constmod', __cnt))]
         with pytest.raises(ArgumentTypeError):
-            self._create_args(input, extraopts=_extra_opts)
+            self._create_args(input_, extraopts=_extra_opts)
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -175,7 +175,7 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_rulefile_and_subrules(self, input):
+    def test_rulefile_and_subrules(self, input_):
         __cnt = '''
         {
             "oelint.var.suggestedvar": "info",
@@ -188,10 +188,10 @@ class TestClassIntegration(TestBaseClass):
         '''
         _extra_opts = [
             '--rulefile={file}'.format(file=self._create_tempfile('rulefile', __cnt)), '--noinfo']
-        self.check_for_id(self._create_args(input, _extra_opts),
+        self.check_for_id(self._create_args(input_, _extra_opts),
                           'oelint.var.suggestedvar.CVE_PRODUCT', 0)
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -199,20 +199,20 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_rulefile_default_severity(self, input):
+    def test_rulefile_default_severity(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
 
         _rule_file = self._create_tempfile(
             'rulefile', '{"oelint.var.mandatoryvar": ""}')
         _args = self._create_args(
-            input, extraopts=[f'--rulefile={_rule_file}'])
+            input_, extraopts=[f'--rulefile={_rule_file}'])
         for issue in [x[1] for x in run(_args)]:
             assert ':error:' in issue
 
-    @pytest.mark.parametrize('id', ['oelint.var.override'])
+    @pytest.mark.parametrize('id_', ['oelint.var.override'])
     @pytest.mark.parametrize('occurrence', [0])
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'optee-client_3.11.0.bb':
@@ -319,12 +319,12 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_grouping(self, input, id, occurrence):
-        self.check_for_id(self._create_args(input), id, occurrence)
+    def test_grouping(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_), id_, occurrence)
 
-    @pytest.mark.parametrize('id', ['oelint.var.override'])
+    @pytest.mark.parametrize('id_', ['oelint.var.override'])
     @pytest.mark.parametrize('occurrence', [0])
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'optee-client_3.11.0.bb':
@@ -431,13 +431,13 @@ class TestClassIntegration(TestBaseClass):
                                  }
                              ],
                              )
-    def test_grouping_with_missing_files(self, input, id, occurrence):
-        self.check_for_id(self._create_args(input, extraopts=[
+    def test_grouping_with_missing_files(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_, extraopts=[
                           '/does/not/exist']), id, occurrence)
 
-    @pytest.mark.parametrize('id', ['oelint.var.multiinclude'])
+    @pytest.mark.parametrize('id_', ['oelint.var.multiinclude'])
     @pytest.mark.parametrize('occurrence', [0])
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'u-boot-rahix.bb':
@@ -455,12 +455,12 @@ class TestClassIntegration(TestBaseClass):
                                  }
                              ],
                              )
-    def test_grouping_with_noversion(self, input, id, occurrence):
-        self.check_for_id(self._create_args(input), id, occurrence)
+    def test_grouping_with_noversion(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_), id_, occurrence)
 
-    @pytest.mark.parametrize('id', ['oelint.var.multiinclude'])
+    @pytest.mark.parametrize('id_', ['oelint.var.multiinclude'])
     @pytest.mark.parametrize('occurrence', [0])
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'test.bb':
@@ -494,10 +494,10 @@ class TestClassIntegration(TestBaseClass):
                                  }
                              ],
                              )
-    def test_grouping_with_noversion(self, input, id, occurrence):
-        self.check_for_id(self._create_args(input), id, occurrence)
+    def test_grouping_with_noversion(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_), id_, occurrence)
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -508,15 +508,15 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_noinfo(self, input):
+    def test_noinfo(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
 
-        _args = self._create_args(input, extraopts=['--noinfo'])
+        _args = self._create_args(input_, extraopts=['--noinfo'])
         issues = [x[1] for x in run(_args)]
         assert(not any([x for x in issues if ':info:' in x]))
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -527,15 +527,15 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_nowarn(self, input):
+    def test_nowarn(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
 
-        _args = self._create_args(input, extraopts=['--nowarn'])
+        _args = self._create_args(input_, extraopts=['--nowarn'])
         issues = [x[1] for x in run(_args)]
         assert(not any([x for x in issues if ':warning:' in x]))
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -546,15 +546,15 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_noid(self, input):
+    def test_noid(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
 
-        _args = self._create_args(input, extraopts=['--noid'])
+        _args = self._create_args(input_, extraopts=['--noid'])
         issues = [x[1] for x in run(_args)]
         assert(not any([x for x in issues if ':oelint.vars.insaneskip:' in x]))
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -565,16 +565,16 @@ class TestClassIntegration(TestBaseClass):
                                  }
                              ],
                              )
-    def test_messageformat_1(self, input):
+    def test_messageformat_1(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
 
         _args = self._create_args(
-            input, extraopts=['--messageformat="BAR:FOO"'])
+            input_, extraopts=['--messageformat="BAR:FOO"'])
         issues = [x[1] for x in run(_args)]
         assert(any([x for x in issues if 'BAR:FOO' in x]))
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -585,16 +585,16 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_messageformat_2(self, input):
+    def test_messageformat_2(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
 
         _args = self._create_args(
-            input, extraopts=['--messageformat="{id}:{severity}:{msg}"'])
+            input_, extraopts=['--messageformat="{id}:{severity}:{msg}"'])
         issues = [x[1] for x in run(_args)]
         assert(any([x for x in issues if 'oelint.vars.insaneskip:error:' in x]))
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -605,18 +605,18 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_constantfile(self, input):
+    def test_constantfile(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
 
         _cstfile = self._create_tempfile('constants.json', '{}')
 
         _args = self._create_args(
-            input, extraopts=['--constantfile={file}'.format(file=_cstfile)])
+            input_, extraopts=['--constantfile={file}'.format(file=_cstfile)])
         issues = [x[1] for x in run(_args)]
         assert(any(issues))
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -627,18 +627,18 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_rulefile(self, input):
+    def test_rulefile(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
 
         _cstfile = self._create_tempfile('constants.json', '{}')
 
         _args = self._create_args(
-            input, extraopts=['--rulefile={file}'.format(file=_cstfile)])
+            input_, extraopts=['--rulefile={file}'.format(file=_cstfile)])
         issues = [x[1] for x in run(_args)]
         assert(any(issues))
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -646,7 +646,7 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_rulefile_filtering(self, input):
+    def test_rulefile_filtering(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
 
@@ -654,11 +654,11 @@ class TestClassIntegration(TestBaseClass):
             'constants.json', '{"oelint.var.mandatoryvar.DESCRIPTION": "warning", "oelint.var.mandatoryvar": "info" }')
 
         _args = self._create_args(
-            input, extraopts=['--rulefile={file}'.format(file=_cstfile), '--noinfo'])
+            input_, extraopts=['--rulefile={file}'.format(file=_cstfile), '--noinfo'])
         issues = [x[1] for x in run(_args)]
         assert(not any(issues))
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -666,7 +666,7 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_rulefile_filtering2(self, input):
+    def test_rulefile_filtering2(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
 
@@ -674,11 +674,11 @@ class TestClassIntegration(TestBaseClass):
             'constants.json', '{"oelint.var.mandatoryvar.DESCRIPTION": "warning"}')
 
         _args = self._create_args(
-            input, extraopts=['--rulefile={file}'.format(file=_cstfile)])
+            input_, extraopts=['--rulefile={file}'.format(file=_cstfile)])
         issues = [x[1] for x in run(_args)]
         assert(not any(issues))
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -686,7 +686,7 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_rulefile_filtering_invert(self, input):
+    def test_rulefile_filtering_invert(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
 
@@ -694,11 +694,11 @@ class TestClassIntegration(TestBaseClass):
             'constants.json', '{"oelint.var.mandatoryvar.DESCRIPTION": "warning", "oelint.var.mandatoryvar": "info" }')
 
         _args = self._create_args(
-            input, extraopts=['--rulefile={file}'.format(file=_cstfile), '--noinfo'])
+            input_, extraopts=['--rulefile={file}'.format(file=_cstfile), '--noinfo'])
         issues = [x[1] for x in run(_args)]
         assert(any(issues))
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -709,12 +709,12 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_broken_rulefile(self, input):
+    def test_broken_rulefile(self, input_):
         with pytest.raises(ArgumentTypeError):
             _args = self._create_args(
-                input, extraopts=['--rulefile=/does/not/exist'])
+                input_, extraopts=['--rulefile=/does/not/exist'])
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {'oelint.var.mandatoryvar.DESCRIPTION': 'warning'},
                                  {'oelint.var.mandatoryvar': 'warning'},
@@ -722,20 +722,20 @@ class TestClassIntegration(TestBaseClass):
                                   'oelint.var.mandatoryvar.DESCRIPTION': 'info'},
                              ],
                              )
-    def test_print_rulefile(self, capsys, input):
+    def test_print_rulefile(self, capsys, input_):
         # local imports only
         from oelint_adv.__main__ import print_rulefile
 
-        _rule_file = self._create_tempfile('rules.json', json.dumps(input))
+        _rule_file = self._create_tempfile('rules.json', json.dumps(input_))
         _args = self._create_args(
             {}, extraopts=[f'--rulefile={_rule_file}', '--print-rulefile'])
         print_rulefile(_args)
 
         out = json.loads(capsys.readouterr().out)
-        for k, v in input.items():
+        for k, v in input_.items():
             assert out[k] == v
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -746,12 +746,12 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_broken_constantfile(self, input):
+    def test_broken_constantfile(self, input_):
         with pytest.raises(ArgumentTypeError):
             _args = self._create_args(
-                input, extraopts=['--constantfile=/does/not/exist'])
+                input_, extraopts=['--constantfile=/does/not/exist'])
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -762,13 +762,13 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_nonquiet(self, input):
+    def test_nonquiet(self, input_):
         # local imports only
         from oelint_adv.__main__ import arguments_post
         from oelint_adv.__main__ import run
 
         _args = arguments_post(self._create_args_parser().parse_args(
-            [self._create_tempfile(k, v) for k, v in input.items()]
+            [self._create_tempfile(k, v) for k, v in input_.items()]
         ))
         issues = [x[1] for x in run(_args)]
         assert(any(issues))
@@ -784,7 +784,7 @@ class TestClassIntegration(TestBaseClass):
         issues = [x[1] for x in run(_args)]
         assert(not any(issues))
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -795,6 +795,6 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_exit_zero(self, input):
-        _args = self._create_args(input, extraopts=['--exit-zero'])
+    def test_exit_zero(self, input_):
+        _args = self._create_args(input_, extraopts=['--exit-zero'])
         assert(_args.exit_zero)
