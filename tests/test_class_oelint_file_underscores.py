@@ -1,13 +1,13 @@
-import pytest
+import pytest  # noqa: I900
 
 from .base import TestBaseClass
 
 
 class TestClassOelintFileUnderscores(TestBaseClass):
 
-    @pytest.mark.parametrize('id', ['oelint.file.underscores'])
+    @pytest.mark.parametrize('id_', ['oelint.file.underscores'])
     @pytest.mark.parametrize('occurrence', [1])
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint_adv-test.bb':
@@ -23,12 +23,12 @@ class TestClassOelintFileUnderscores(TestBaseClass):
                                  },
                              ],
                              )
-    def test_bad(self, input, id, occurrence):
-        self.check_for_id(self._create_args(input), id, occurrence)
+    def test_bad(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_), id_, occurrence)
 
-    @pytest.mark.parametrize('id', ['oelint.file.underscores'])
+    @pytest.mark.parametrize('id_', ['oelint.file.underscores'])
     @pytest.mark.parametrize('occurrence', [0])
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint_adv_test.bb':
@@ -56,12 +56,12 @@ class TestClassOelintFileUnderscores(TestBaseClass):
                                  },
                              ],
                              )
-    def test_good(self, input, id, occurrence):
-        self.check_for_id(self._create_args(input), id, occurrence)
+    def test_good(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_), id_, occurrence)
 
-    @pytest.mark.parametrize('id', ['oelint.file.underscores'])
+    @pytest.mark.parametrize('id_', ['oelint.file.underscores'])
     @pytest.mark.parametrize('occurrence', [0])
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint_adv_test.bb':
@@ -69,7 +69,7 @@ class TestClassOelintFileUnderscores(TestBaseClass):
                                  },
                              ],
                              )
-    def test_good_image_mod(self, input, id, occurrence):
+    def test_good_image_mod(self, input_, id_, occurrence):
         __cnt = '''
         {
             "images": {
@@ -84,6 +84,6 @@ class TestClassOelintFileUnderscores(TestBaseClass):
         '''
         _extra_opts = [
             '--constantmods=+{mod}'.format(mod=self._create_tempfile('constmod', __cnt))]
-        _args = self._create_args(input, extraopts=_extra_opts)
+        _args = self._create_args(input_, extraopts=_extra_opts)
 
         self.check_for_id(_args, id, occurrence)

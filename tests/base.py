@@ -25,7 +25,7 @@ class TestBaseClass:
             o.write(_cnt)
         return _path
 
-    def _create_args(self, input, extraopts=None):
+    def _create_args(self, input_, extraopts=None):
         if extraopts is None:
             extraopts = []
         from oelint_adv.__main__ import arguments_post
@@ -34,10 +34,10 @@ class TestBaseClass:
             ['--quiet', '--jobs=1'] +
             # noqa: W504 - we need to concat lists here
             self.__pytest_empty_object_fixture(extraopts, []) +
-            [self._create_tempfile(k, v) for k, v in input.items()],
+            [self._create_tempfile(k, v) for k, v in input_.items()],
         ))
 
-    def _create_args_fix(self, input, extraopts=None):
+    def _create_args_fix(self, input_, extraopts=None):
         if extraopts is None:
             extraopts = []
         from oelint_adv.__main__ import arguments_post
@@ -46,25 +46,25 @@ class TestBaseClass:
             ['--quiet', '--fix', '--nobackup', '--jobs=1'] +
             # noqa: W504 - we need to concat lists here
             self.__pytest_empty_object_fixture(extraopts, []) +
-            [self._create_tempfile(k, v) for k, v in input.items()],
+            [self._create_tempfile(k, v) for k, v in input_.items()],
         ))
 
-    def fix_and_check(self, args, id):
+    def fix_and_check(self, args, id_):
         from oelint_adv.__main__ import run
 
         # run for auto fixing
         run(args)
         # check run
-        self.check_for_id(args, id, 0)
+        self.check_for_id(args, id_, 0)
 
     def _create_args_parser(self):
         from oelint_adv.__main__ import create_argparser
         return create_argparser()
 
-    def check_for_id(self, args, id, occurrences):
+    def check_for_id(self, args, id_, occurrences):
         from oelint_adv.__main__ import run
         issues = [x[1] for x in run(args)]
         _files = '\n---\n'.join(['{k}:\n{v}'.format(k=k, v=v)
                                  for k, v in self.__created_files.items()])
-        assert(len([x for x in issues if ':{id}:'.format(id=id) in x]) ==
-               occurrences), '{id} expected {o} time(s) in:\n{i}\n\n---\n{f}'.format(id=id, o=occurrences, i='\n'.join(issues), f=_files)
+        assert(len([x for x in issues if ':{id}:'.format(id=id_) in x]) ==
+               occurrences), '{id} expected {o} time(s) in:\n{i}\n\n---\n{f}'.format(id=id_, o=occurrences, i='\n'.join(issues), f=_files)

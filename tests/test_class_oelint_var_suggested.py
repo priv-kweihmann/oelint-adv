@@ -1,4 +1,4 @@
-import pytest
+import pytest  # noqa: I900
 
 from .base import TestBaseClass
 
@@ -11,7 +11,7 @@ class TestClassOelintVarSuggestedVar(TestBaseClass):
             {var} = "foo"
             '''.format(var=var, extra=extra)
 
-    @pytest.mark.parametrize('id', ['oelint.var.suggestedvar'])
+    @pytest.mark.parametrize('id_', ['oelint.var.suggestedvar'])
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('var', [
         'AUTHOR',
@@ -19,16 +19,16 @@ class TestClassOelintVarSuggestedVar(TestBaseClass):
         'CVE_PRODUCT',
         'SECTION',
     ])
-    def test_bad(self, id, occurrence, var):
-        input = {
+    def test_bad(self, id_, occurrence, var):
+        input_ = {
             'oelint_adv_test.bb': self.__generate_sample_code('A', ''),
         }
-        id += '.{var}'.format(var=var)
-        self.check_for_id(self._create_args(input), id, occurrence)
+        id_ += '.{var}'.format(var=var)
+        self.check_for_id(self._create_args(input_), id_, occurrence)
 
-    @pytest.mark.parametrize('id', ['oelint.var.suggestedvar.CVE_PRODUCT'])
+    @pytest.mark.parametrize('id_', ['oelint.var.suggestedvar.CVE_PRODUCT'])
     @pytest.mark.parametrize('occurrence', [0])
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint-adv_test.bb':
@@ -36,12 +36,12 @@ class TestClassOelintVarSuggestedVar(TestBaseClass):
                                  },
                              ],
                              )
-    def test_suppress(self, id, occurrence, input):
-        _x = self._create_args(input, extraopts=['--suppress', id])
-        self.check_for_id(_x, id, occurrence)
+    def test_suppress(self, id_, occurrence, input_):
+        _x = self._create_args(input_, extraopts=['--suppress', id_])
+        self.check_for_id(_x, id_, occurrence)
         self.check_for_id(_x, 'oelint.var.suggestedvar.BUGTRACKER', 1)
 
-    @pytest.mark.parametrize('id', [
+    @pytest.mark.parametrize('id_', [
         'oelint.var.suggestedvar.AUTHOR',
         'oelint.var.suggestedvar.BUGTRACKER',
         'oelint.var.suggestedvar.BBCLASSEXTEND',
@@ -49,7 +49,7 @@ class TestClassOelintVarSuggestedVar(TestBaseClass):
         'oelint.var.suggestedvar.SECTION',
     ])
     @pytest.mark.parametrize('occurrence', [0])
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint_adv_test.bb':
@@ -63,5 +63,5 @@ class TestClassOelintVarSuggestedVar(TestBaseClass):
                                  },
                              ],
                              )
-    def test_good(self, input, id, occurrence):
-        self.check_for_id(self._create_args(input), id, occurrence)
+    def test_good(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_), id_, occurrence)

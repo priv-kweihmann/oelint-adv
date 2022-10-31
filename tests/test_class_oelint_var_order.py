@@ -1,4 +1,4 @@
-import pytest
+import pytest  # noqa: I900
 
 from .base import TestBaseClass
 
@@ -41,37 +41,37 @@ class TestClassOelintVarOrder(TestBaseClass):
             {second} = "foo"
             '''.format(first=first, second=second)
 
-    @pytest.mark.parametrize('id', ['oelint.var.order'])
+    @pytest.mark.parametrize('id_', ['oelint.var.order'])
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('var', VAR_ORDER)
-    def test_bad(self, id, occurrence, var):
+    def test_bad(self, id_, occurrence, var):
         try:
-            id += '.{var}'.format(var=var)
+            id_ += '.{var}'.format(var=var)
             for item in VAR_ORDER[:VAR_ORDER.index(var)]:
-                input = {
+                input_ = {
                     'oelint_adv_test.bb': self.__generate_sample_code(item, var),
                 }
-                self.check_for_id(self._create_args(input), id, occurrence)
-        except Exception:
+                self.check_for_id(self._create_args(input_), id_, occurrence)
+        except BaseException:
             pass
 
-    @pytest.mark.parametrize('id', ['oelint.var.order'])
+    @pytest.mark.parametrize('id_', ['oelint.var.order'])
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('var', VAR_ORDER)
-    def test_good(self, id, occurrence, var):
+    def test_good(self, id_, occurrence, var):
         try:
-            id += '.{var}'.format(var=var)
+            id_ += '.{var}'.format(var=var)
             for item in VAR_ORDER[VAR_ORDER.index(var):]:
-                input = {
+                input_ = {
                     'oelint_adv_test.bb': self.__generate_sample_code(item, var),
                 }
-                self.check_for_id(self._create_args(input), id, occurrence)
-        except Exception:
+                self.check_for_id(self._create_args(input_), id_, occurrence)
+        except BaseException:
             pass
 
-    @pytest.mark.parametrize('id', ['oelint.var.order.SRCREV'])
+    @pytest.mark.parametrize('id_', ['oelint.var.order.SRCREV'])
     @pytest.mark.parametrize('occurrence', [0])
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint_adv_test.inc':
@@ -91,5 +91,5 @@ class TestClassOelintVarOrder(TestBaseClass):
                                  },
                              ],
                              )
-    def test_single_file_scope(self, id, occurrence, input):
-        self.check_for_id(self._create_args(input), id, occurrence)
+    def test_single_file_scope(self, id_, occurrence, input_):
+        self.check_for_id(self._create_args(input_), id_, occurrence)

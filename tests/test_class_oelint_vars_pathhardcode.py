@@ -1,6 +1,6 @@
 import os
 
-import pytest
+import pytest  # noqa: I900
 
 from .base import TestBaseClass
 
@@ -12,7 +12,7 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
             VAR = "{var}"
             '''.format(var=var)
 
-    @pytest.mark.parametrize('id', ['oelint.vars.pathhardcode'])
+    @pytest.mark.parametrize('id_', ['oelint.vars.pathhardcode'])
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('pair', [
         ('${systemd_user_unitdir}', '/usr/lib/systemd/user'),
@@ -33,19 +33,19 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
         ('${sharedstatedir}', '/com'),
         ('${sysconfdir}', '/etc'),
     ])
-    def test_bad(self, id, occurrence, pair):
-        id += '.{var}'.format(var=pair[0].strip('${}'))  # noqa: P103 - false positive
+    def test_bad(self, id_, occurrence, pair):
+        id_ += '.{var}'.format(var=pair[0].strip('${}'))  # noqa: P103 - false positive
         for variation in [pair[1],
                           pair[1] + '/',
                           os.path.join(pair[1], 'fooooo/ggsg'),
                           os.path.join(pair[1], '*'),
                           os.path.join('${D}', pair[1])]:
-            input = {
+            input_ = {
                 'oelint_adv_test.bb': self.__generate_sample_code(variation),
             }
-            self.check_for_id(self._create_args(input), id, occurrence)
+            self.check_for_id(self._create_args(input_), id_, occurrence)
 
-    @pytest.mark.parametrize('id', ['oelint.vars.pathhardcode'])
+    @pytest.mark.parametrize('id_', ['oelint.vars.pathhardcode'])
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('pair', [
         ('${systemd_user_unitdir}', '/usr/lib/systemd/user'),
@@ -68,21 +68,21 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
         ('${sharedstatedir}', '/com'),
         ('${sysconfdir}', '/etc'),
     ])
-    def test_good(self, id, occurrence, pair):
-        id += '.{var}'.format(var=pair[0].strip('${}'))  # noqa: P103 - false positive
+    def test_good(self, id_, occurrence, pair):
+        id_ += '.{var}'.format(var=pair[0].strip('${}'))  # noqa: P103 - false positive
         for variation in [pair[0],
                           pair[0] + '/',
                           os.path.join(pair[0], 'fooooo/ggsg'),
                           os.path.join(pair[0], '*'),
                           os.path.join('${D}', pair[0])]:
-            input = {
+            input_ = {
                 'oelint_adv_test.bb': self.__generate_sample_code(variation),
             }
-            self.check_for_id(self._create_args(input), id, occurrence)
+            self.check_for_id(self._create_args(input_), id_, occurrence)
 
-    @pytest.mark.parametrize('id', ['oelint.vars.pathhardcode'])
+    @pytest.mark.parametrize('id_', ['oelint.vars.pathhardcode'])
     @pytest.mark.parametrize('occurrence', [0])
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint_adv_test.bb':
@@ -106,5 +106,5 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
                                  },
                              ],
                              )
-    def test_good_pattern(self, input, id, occurrence):
-        self.check_for_id(self._create_args(input), id, occurrence)
+    def test_good_pattern(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_), id_, occurrence)

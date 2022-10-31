@@ -163,11 +163,11 @@ class VarSRCUriOptions(Rule):
                 if opt not in _url['options']:
                     res += self.finding(item.Origin, item.InFileLine + _index,
                                         'Fetcher \'{fetcher}\' might require option \'{option}\' to be set'.format(fetcher=_url['scheme'], option=opt))
-            for key, val in self._required_unless_options.get(_url['scheme'], {}).items():
-                if key not in _url['options'] and not any(x in _url['options'] for x in val):
+            for key, val_ in self._required_unless_options.get(_url['scheme'], {}).items():
+                if key not in _url['options'] and not any(x in _url['options'] for x in val_):
                     res += self.finding(item.Origin, item.InFileLine + _index,
                                         'Fetcher \'{fetcher}\' requires option \'{option}\' or any of \'{other}\' to be set'.format(
-                                            fetcher=_url['scheme'], option=key, other=','.join(val)))
+                                            fetcher=_url['scheme'], option=key, other=','.join(val_)))
         return res
 
     def check(self, _file, stash):

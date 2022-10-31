@@ -18,7 +18,7 @@ from oelint_adv.rule_file import get_suppressions
 
 
 class Rule:
-    def __init__(self, id='', severity='', message='', onappend=True, onlyappend=False, appendix=()):
+    def __init__(self, id='', severity='', message='', onappend=True, onlyappend=False, appendix=()):  # noqa: A002, VNE003
         """constructor
 
         Keyword Arguments:
@@ -237,7 +237,7 @@ def load_rules(args, add_rules=(), add_dirs=()):
                                 if _rule_file and not any(x in _rule_file for x in _potential_ids):
                                     continue  # pragma: no cover
                                 res.append(inst)
-                    except Exception:  # pragma: no cover
+                    except BaseException:  # pragma: no cover
                         pass  # pragma: no cover
             except Exception as e:  # pragma: no cover
                 if not args.quiet:  # pragma: no cover

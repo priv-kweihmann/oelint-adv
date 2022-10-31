@@ -1,4 +1,4 @@
-import pytest
+import pytest  # noqa: I900
 
 from .base import TestBaseClass
 
@@ -6,7 +6,7 @@ from .base import TestBaseClass
 # flake8: noqa S101 - n.a. for test files
 class TestClassInlineSuppressions(TestBaseClass):
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -38,11 +38,11 @@ class TestClassInlineSuppressions(TestBaseClass):
                                  }
                              ],
                              )
-    def test_inlinesuppressions_single(self, input):
-        self.check_for_id(self._create_args(input),
+    def test_inlinesuppressions_single(self, input_):
+        self.check_for_id(self._create_args(input_),
                           'oelint.vars.insaneskip', 0)
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -53,11 +53,11 @@ class TestClassInlineSuppressions(TestBaseClass):
                                  }
                              ],
                              )
-    def test_inlinesuppressions_single_notmatching(self, input):
-        self.check_for_id(self._create_args(input),
+    def test_inlinesuppressions_single_notmatching(self, input_):
+        self.check_for_id(self._create_args(input_),
                           'oelint.vars.insaneskip', 1)
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -68,15 +68,15 @@ class TestClassInlineSuppressions(TestBaseClass):
                                  }
                              ],
                              )
-    def test_inlinesuppressions_line_1(self, input):
-        self.check_for_id(self._create_args(input),
+    def test_inlinesuppressions_line_1(self, input_):
+        self.check_for_id(self._create_args(input_),
                           'oelint.var.suggestedvar.BUGTRACKER', 0)
-        self.check_for_id(self._create_args(input),
+        self.check_for_id(self._create_args(input_),
                           'oelint.var.mandatoryvar.SUMMARY', 0)
-        self.check_for_id(self._create_args(input),
+        self.check_for_id(self._create_args(input_),
                           'oelint.var.bbclassextend', 0)
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -88,14 +88,14 @@ class TestClassInlineSuppressions(TestBaseClass):
                                  }
                              ],
                              )
-    def test_inlinesuppressions_multiple(self, input):
-        self.check_for_id(self._create_args(input), 'oelint.vars.specific', 0)
-        self.check_for_id(self._create_args(input),
+    def test_inlinesuppressions_multiple(self, input_):
+        self.check_for_id(self._create_args(input_), 'oelint.vars.specific', 0)
+        self.check_for_id(self._create_args(input_),
                           'oelint.vars.doublemodify', 0)
-        self.check_for_id(self._create_args(input),
+        self.check_for_id(self._create_args(input_),
                           'oelint.vars.overrideappend', 0)
 
-    @pytest.mark.parametrize('input',
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -107,9 +107,9 @@ class TestClassInlineSuppressions(TestBaseClass):
                                  }
                              ],
                              )
-    def test_inlinesuppressions_multiple_scope(self, input):
-        self.check_for_id(self._create_args(input), 'oelint.vars.specific', 1)
-        self.check_for_id(self._create_args(input),
+    def test_inlinesuppressions_multiple_scope(self, input_):
+        self.check_for_id(self._create_args(input_), 'oelint.vars.specific', 1)
+        self.check_for_id(self._create_args(input_),
                           'oelint.vars.doublemodify', 1)
-        self.check_for_id(self._create_args(input),
+        self.check_for_id(self._create_args(input_),
                           'oelint.vars.overrideappend', 1)
