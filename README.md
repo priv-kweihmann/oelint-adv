@@ -376,7 +376,7 @@ Find the extension in the [marketplace](https://marketplace.visualstudio.com/ite
 
 ## Vim / NeoVim integration
 
-Integration for Vim / NeoVim is provided by [ale](https://github.com/dense-analysis/ale).
+Integration for Vim / NeoVim is provided by [ale](https://github.com/dense-analysis/ale) or [nvim-lint](https://github.com/mfussenegger/nvim-lint).
 
 ## Jenkins integration
 
