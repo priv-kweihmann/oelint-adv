@@ -20,6 +20,7 @@ jobs:
   release:
 
     runs-on: ubuntu-latest
+    if: github.repository == 'priv-kweihmann/oelint-adv'
 
     steps:
     - name: Checkout
