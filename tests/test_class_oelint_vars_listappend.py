@@ -86,6 +86,14 @@ class TestClassOelintVarsListAppend(TestBaseClass):
                                       'oelint_adv_test.bb':
                                       'SRC_URI .= " file://abc"',
                                   },
+                                  {
+                                      'oelint_adv_test.bb':
+                                      'FILESPATH_prepend := "${THISDIR}/file:"',
+                                  },
+                                  {
+                                      'oelint_adv_test.bb':
+                                      'FILESEXTRAPATHS_prepend := "${THISDIR}/file:"',
+                                  },
                               ],
                               )
     def test_good(self, input_, id_, occurrence):
