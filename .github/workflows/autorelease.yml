@@ -44,7 +44,7 @@ jobs:
         filters: |
           relevant-for-release:
             - 'requirements.txt'
-            - ${{ env.MODULE_CODE }}'
+            - '${{ env.MODULE_CODE }}'
           manual-bumped-version:
             - '.bumpversion'
 
