@@ -1,0 +1,133 @@
+import pytest
+
+from .base import TestBaseClass
+
+
+class TestClassOelintVarsSRCURICHECKSUM(TestBaseClass):
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurichecksum'])
+    @pytest.mark.parametrize('occurance', [1])
+    @pytest.mark.parametrize('input',
+        [
+            {
+                'oelint_adv_test.bb':
+                '''
+                SRC_URI += "ftp://foo;name=f3"
+                '''
+            },
+            {
+                'oelint_adv_test.bb':
+                '''
+                SRC_URI += "http://foo;name=f1"
+                SRC_URI[f1.md5sum] = "a"
+                '''
+            },
+            {
+                'oelint_adv_test.bb':
+                '''
+                SRC_URI += "https://foo;name=f2"
+                SRC_URI[f2.sha256sum] = "a"
+                '''
+            },
+            {
+                'oelint_adv_test.bb':
+                '''
+                SRC_URI += "ftp://foo"
+                SRC_URI += "ftp://foo"
+                SRC_URI += "http://foo;name=f1"
+                SRC_URI += "https://foo;name=f2"
+                SRC_URI[f1.md5sum] = "a"
+                SRC_URI[f1.sha256sum] = "a"
+                SRC_URI[f2.md5sum] = "a"
+                SRC_URI[f2.sha256sum] = "a"
+                SRC_URI[md5sum] = "a"
+                SRC_URI[sha256sum] = "a"
+                '''
+            },
+            {
+                'oelint_adv_test.bb':
+                '''
+                SRC_URI += "ftp://foo"
+                '''
+            },
+            {
+                'oelint_adv_test.bb':
+                '''
+                SRC_URI += "ftp://foo"
+                SRC_URI[sha256sum] = "a"
+                '''
+            },
+            {
+                'oelint_adv_test.bb':
+                '''
+                SRC_URI += "ftp://foo"
+                SRC_URI[md5sum] = "a"
+                '''
+            },
+        ],
+    )
+    def test_bad(self, input, id, occurance):
+        self.check_for_id(self._create_args(input), id, occurance)
+
+    @pytest.mark.parametrize('id', ['oelint.vars.srcurichecksum'])
+    @pytest.mark.parametrize('occurance', [0])
+    @pytest.mark.parametrize('input',
+        [
+            {
+                'oelint_adv_test.bb':
+                '''
+                SRC_URI += "file://foo"
+                SRC_URI += "bzr://foo"
+                SRC_URI += "crcc://foo"
+                SRC_URI += "cvs://foo"
+                SRC_URI += "ftp://foo;name=f3"
+                SRC_URI += "git://foo;name"
+                SRC_URI += "gitsm://foo"
+                SRC_URI += "gitannex://foo"
+                SRC_URI += "hg://foo"
+                SRC_URI += "http://foo;name=f1"
+                SRC_URI += "https://foo;name=f2"
+                SRC_URI += "osc://foo"
+                SRC_URI += "p4://foo"
+                SRC_URI += "repo://foo"
+                SRC_URI += "ssh://foo"
+                SRC_URI += "s3://foo;name=f5"
+                SRC_URI += "sftp://foo;name=f4"
+                SRC_URI += "npm://foo"
+                SRC_URI += "svn://foo"
+                SRC_URI += "az://foo;name=f6"
+                SRC_URI[f1.md5sum] = "a"
+                SRC_URI[f1.sha256sum] = "a"
+                SRC_URI[f2.md5sum] = "a"
+                SRC_URI[f2.sha256sum] = "a"
+                SRC_URI[f3.md5sum] = "a"
+                SRC_URI[f3.sha256sum] = "a"
+                SRC_URI[f4.md5sum] = "a"
+                SRC_URI[f4.sha256sum] = "a"
+                SRC_URI[f5.md5sum] = "a"
+                SRC_URI[f5.sha256sum] = "a"
+                SRC_URI[f6.md5sum] = "a"
+                SRC_URI[f6.sha256sum] = "a"
+                '''
+            },
+            {
+                'oelint_adv_test.bb':
+                '''
+                SRC_URI += "ftp://foo \\
+                            ftp://foo;name=f1"
+                SRC_URI[md5sum] = "a"
+                SRC_URI[sha256sum] = "a"
+                SRC_URI[f1.md5sum] = "a"
+                SRC_URI[f1.sha256sum] = "a"
+                '''
+            },
+            {
+                'oelint_adv_test.bb':
+                '''
+                SRC_URI += "${@["", "file://init.cfg"][(d.getVar(\'VIRTUAL-RUNTIME_init_manager\') == \'busybox\')]}"
+                '''
+            },
+        ],
+    )
+    def test_good(self, input, id, occurance):
+        self.check_for_id(self._create_args(input), id, occurance)

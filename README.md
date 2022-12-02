@@ -196,6 +196,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.spacesassignment - ' = ' should be correct variable assignment
 * oelint.vars.specific - Variable is specific to an unknown identifier
 * oelint.vars.srcuriappend - Use SRC_URI_append otherwise this will override weak defaults by inherit
+* oelint.vars.srcurichecksum - If SRC_URI has URLs pointing single file that is not from VCS, then checksusm is required
 * oelint.vars.srcuridomains - Recipe is pulling from different domains, this will likely cause issues
 * oelint.vars.srcurifile - First item of SRC_URI should not be a file:// fetcher, if multiple fetcher are used
 * oelint.vars.srcurigittag - 'tag' in SRC_URI-options leads to not-reproducible builds
