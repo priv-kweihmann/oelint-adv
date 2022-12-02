@@ -19,6 +19,10 @@ class TestClassOelintVarsInconSpaces(TestBaseClass):
                                  },
                                  {
                                      'oelint_adv_test.bb':
+                                     'VAR:append = "fhhh"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
                                      '''
                                      RDEPENDS:${PN}-ptest:append:libc-glibc = "\\
                                      locale-base-en-us.iso-8859-1 \\
@@ -45,6 +49,14 @@ class TestClassOelintVarsInconSpaces(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      'FILESEXTRAPATHS_append := "foo:"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'VAR:append = " fhhh"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'FILESEXTRAPATHS:append := "foo:"',
                                  },
                                  {
                                      'oelint_adv_test.bb':

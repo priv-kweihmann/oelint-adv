@@ -130,6 +130,62 @@ class TestClassOelintVarAppendOp(TestBaseClass):
                                      I ?= "1"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A ??= "1"
+                                     A:append = "2"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     B:append = "B"
+                                     B ?= "A"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     C ??= "1"
+                                     C:append = "2"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     D:append = "2"
+                                     D ?= "1"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     F ??= "1"
+                                     F:prepend = "2"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     G:prepend = "B"
+                                     G ?= "A"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     H ??= "1"
+                                     H:prepend = "2"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     I:prepend = "2"
+                                     I ?= "1"
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):

@@ -19,6 +19,14 @@ class TestClassOelintVarsFilextrapaths(TestBaseClass):
                                  },
                                  {
                                      'oelint_adv_test.bb':
+                                     'FILESEXTRAPATHS:prepend := "${THISDIR}/file"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'FILESEXTRAPATHS:append := "${THISDIR}/file"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
                                      'FILESEXTRAPATHS += "${THISDIR}/file"',
                                  },
                              ],
@@ -37,6 +45,14 @@ class TestClassOelintVarsFilextrapaths(TestBaseClass):
                                  {
                                      'oelint_adv_test.bbappend':
                                      'FILESEXTRAPATHS_append := "${THISDIR}/file"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     'FILESEXTRAPATHS:prepend := "${THISDIR}/file"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     'FILESEXTRAPATHS:append := "${THISDIR}/file"',
                                  },
                              ],
                              )
