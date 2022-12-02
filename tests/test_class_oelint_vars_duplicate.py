@@ -30,6 +30,34 @@ class TestClassOelintVarsDuplicate(TestBaseClass):
                                      DEPENDS_prepend = " foo"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     RDEPENDS_${PN} = "foo"
+                                     RDEPENDS_${PN}_prepend = " foo"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     RDEPENDS:${PN} = "foo"
+                                     RDEPENDS:${PN}:prepend = " foo"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     RDEPENDS:${PN}-dev = "foo"
+                                     RDEPENDS:${PN}-dev:prepend = " foo"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     RDEPENDS:${PN}:class-target = "foo"
+                                     RDEPENDS:${PN}:append:class-target = "foo "
+                                     ''',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -72,6 +100,13 @@ class TestClassOelintVarsDuplicate(TestBaseClass):
                                      '''
                                      DEPENDS += "a (>= 1.2.3)"
                                      DEPENDS += "b (>= 1.2.3)"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     RDEPENDS:${PN}:class-target = "foo"
+                                     RDEPENDS:${PN} = "foo"
                                      ''',
                                  },
                              ],
