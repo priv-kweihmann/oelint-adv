@@ -21,6 +21,19 @@ class TestClassOelintVarsInsaneSkip(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'INSANE_SKIP_bla_class-native = "a"',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'INSANE_SKIP:${PN} = "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'INSANE_SKIP:bla = "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'INSANE_SKIP:bla:class-native = "a"',
+                                 },
+
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):

@@ -147,7 +147,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.task.order - Order of tasks **[S]**
 * oelint.task.pythonprefix - Tasks containing python code should be prefixed with 'python' in function header
 * oelint.var.bbclassextend - Use BBCLASSEXTEND when possible
-* oelint.var.filesoverride - FILES_* variables should not be overridden
+* oelint.var.filesoverride - FILES:*(FILES_*) variables should not be overridden
 * oelint.var.improperinherit - Warn about improperly named inherits
 * oelint.var.licenseremotefile - License shall be a file in remote source not a local file
 * oelint.var.mandatoryvar - Check for mandatory variables **[S]**
@@ -160,7 +160,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.var.rootfspostcmd - ROOTFS_POSTPROCESS_COMMAND should not have trailing blanks
 * oelint.var.srcuriwildcard - 'SRC_URI' should not contain any wildcards
 * oelint.var.suggestedvar - Notice on suggested variables **[S]**
-* oelint.vars.appendop - Use '_append' instead of ' += '
+* oelint.vars.appendop - Use ':append(_append)' instead of ' += '
 * oelint.vars.autorev - The usage of 'AUTOREV' for SRCREV leads to not reproducible builds
 * oelint.vars.bbvars - Variables that shouldn't be altered in recipe scope **[S]**
 * oelint.vars.bugtrackerisurl - BUGTRACKER should be an URL
@@ -195,7 +195,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.sectionlowercase - SECTION should be lowercase only **[F]**
 * oelint.vars.spacesassignment - ' = ' should be correct variable assignment
 * oelint.vars.specific - Variable is specific to an unknown identifier
-* oelint.vars.srcuriappend - Use SRC_URI_append otherwise this will override weak defaults by inherit
+* oelint.vars.srcuriappend - Use SRC_URI:append(SRC_URI_append) otherwise this will override weak defaults by inherit
 * oelint.vars.srcurichecksum - If SRC_URI has URLs pointing single file that is not from VCS, then checksusm is required
 * oelint.vars.srcuridomains - Recipe is pulling from different domains, this will likely cause issues
 * oelint.vars.srcurifile - First item of SRC_URI should not be a file:// fetcher, if multiple fetcher are used
@@ -366,7 +366,7 @@ Multiple IDs can be separated by commas.
 
 ```bitbake
 # nooelint: oelint.vars.insaneskip
-INSANE_SKIP_${PN} = "foo"
+INSANE_SKIP:${PN} = "foo"
 ```
 
 will not warn about the usage of `INSANE_SKIP`.

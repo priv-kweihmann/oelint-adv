@@ -46,6 +46,20 @@ class TestClassOelintVarsSRCURIappend(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
+                                     SRC_URI:append = " file://abc"
+                                     inherit abc
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SRC_URI:remove = "file://abc"
+                                     inherit abc
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
                                      SRC_URI_prepend = "file://abc "
                                      inherit abc
                                      ''',

@@ -15,7 +15,7 @@ class VarBugtrackerIsUrl(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR)
         for i in items:
-            if i.VarName in ['FILESEXTRAPATHS_prepend', 'FILESEXTRAPATHS_append', 'FILESEXTRAPATHS']:
+            if i.VarName in ['FILESEXTRAPATHS']:
                 _, ext = os.path.splitext(i.Origin)
                 if ext == '.bb':
                     res += self.finding(i.Origin, i.InFileLine)

@@ -24,6 +24,8 @@ class VarInconSpaces(Rule):
                 res += self.finding(i.Origin, i.InFileLine,
                                     'Assignment should be \'VAR += "foo"\' not \'VAR += " foo"\'')
             if 'append' in app_operation and not _stripped.startswith(' '):
+                override_delimiter = i.OverrideDelimiter
                 res += self.finding(i.Origin, i.InFileLine,
-                                    'Assignment should be \'VAR_append = " foo"\' not \'VAR_append = "foo"\'')
+                                    'Assignment should be \'VAR{od}append = " foo"\' not \'VAR{od}append = "foo"\''.format(
+                                        od=override_delimiter))
         return res

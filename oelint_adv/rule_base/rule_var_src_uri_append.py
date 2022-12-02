@@ -6,7 +6,7 @@ class VarSRCUriGitTag(Rule):
     def __init__(self):
         super().__init__(id='oelint.vars.srcuriappend',
                          severity='error',
-                         message='Use SRC_URI_append otherwise this will override weak defaults by inherit')
+                         message='<FOO>')
 
     def check(self, _file, stash):
         res = []
@@ -22,5 +22,8 @@ class VarSRCUriGitTag(Rule):
                 # These are just the hashes
                 continue
             if item.VarOp in [' += ']:
-                res += self.finding(item.Origin, item.InFileLine)
+                override_delimiter = item.OverrideDelimiter
+                res += self.finding(item.Origin, item.InFileLine,
+                                    'Use SRC_URI{od}append otherwise this will override weak defaults by inherit'.format(
+                                        od=override_delimiter))
         return res

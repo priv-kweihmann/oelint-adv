@@ -18,18 +18,20 @@ class VarAppendOperation(Rule):
             _weak = [x for x in items if x.VarName == name and x.VarOp == ' ?= ']
             _items = [x for x in items if x.VarName == name and x not in _weakest + _weak and x.VarOp in [' .= ', ' += ']]
             for i in _items:
+                override_delimiter = i.OverrideDelimiter
                 if any(_weakest):
                     res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.format(
-                        a='_append', b=i.VarOp, c=_weakest[0].Raw))
+                        a='{od}append'.format(od=override_delimiter), b=i.VarOp, c=_weakest[0].Raw))
                 elif any(x.Line > i.Line for x in _weak):
                     res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.format(
-                        a='_append', b=i.VarOp, c=_weak[0].Raw))
+                        a='{od}append'.format(od=override_delimiter), b=i.VarOp, c=_weak[0].Raw))
             _items = [x for x in items if x.VarName == name and x not in _weakest + _weak and x.VarOp in [' =. ', ' =+ ']]
             for i in _items:
+                override_delimiter = i.OverrideDelimiter
                 if any(_weakest):
                     res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.format(
-                        a='_prepend', b=i.VarOp, c=_weakest[0].Raw))
+                        a='{od}prepend'.format(od=override_delimiter), b=i.VarOp, c=_weakest[0].Raw))
                 elif any(x.Line > i.Line for x in _weak):
                     res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.format(
-                        a='_prepend', b=i.VarOp, c=_weak[0].Raw))
+                        a='{od}prepend'.format(od=override_delimiter), b=i.VarOp, c=_weak[0].Raw))
         return res

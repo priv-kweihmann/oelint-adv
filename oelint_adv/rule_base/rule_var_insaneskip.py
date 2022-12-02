@@ -12,6 +12,6 @@ class VarInsaneSkip(Rule):
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR)
-        for i in [x for x in items if x.VarName.startswith('INSANE_SKIP_') or x.VarName == 'INSANE_SKIP']:
+        for i in [x for x in items if x.VarName == 'INSANE_SKIP']:
             res += self.finding(i.Origin, i.InFileLine)
         return res

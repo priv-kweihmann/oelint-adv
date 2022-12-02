@@ -25,6 +25,22 @@ class TestClassOelintVarFilesOverride(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'FILES_${PN}-dev := "foo"',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'FILES:${PN} = " foo"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'FILES:${PN} := "foo"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'FILES:${PN}-dev = "foo"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'FILES:${PN}-dev := "foo"',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -77,6 +93,50 @@ class TestClassOelintVarFilesOverride(TestBaseClass):
                                  {
                                      'oelint_adv_test.bbappend':
                                      'FILES_${PN}-dev =. "foo "',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     'FILES:SOLIBSDEV = "abc"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     'FILES:${PN}:append = " foo"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     'FILES:${PN}:prepend = "foo "',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     'FILES:${PN} += "foo"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     'FILES:${PN} =+ "foo"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     'FILES:${PN} .= " foo"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     'FILES:${PN} =. "foo "',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     'FILES:${PN}-dev += "foo"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     'FILES:${PN}-dev =+ "foo"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     'FILES:${PN}-dev .= " foo"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     'FILES:${PN}-dev =. "foo "',
                                  },
                              ],
                              )
