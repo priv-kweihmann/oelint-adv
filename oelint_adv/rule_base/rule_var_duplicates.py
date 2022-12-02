@@ -10,7 +10,7 @@ class VarDuplicates(Rule):
 
     def check(self, _file, stash):
         res = []
-        for c in ['DEPENDS', 'RDEPENDS_${PN}']:
+        for c in ['DEPENDS', 'RDEPENDS']:
             items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                       attribute=Variable.ATTR_VAR, attributeValue=c)
             _items = {}
