@@ -4,11 +4,11 @@ from oelint_parser.helper_files import get_scr_components
 from oelint_parser.parser import INLINE_BLOCK
 
 
-class VarSRCUriOptions(Rule):
+class VarSRCUriChecksum(Rule):
     def __init__(self):
-        super(VarSRCUriOptions, self).__init__(id="oelint.vars.srcurichecksum",
-                                               severity="error",
-                                               message="<FOO>")
+        super().__init__(id='oelint.vars.srcurichecksum',
+                         severity='error',
+                         message='<FOO>')
 
     def check(self, _file, stash):
         res = []
