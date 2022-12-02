@@ -24,28 +24,29 @@ class VarUnneededFilesSetting(Rule):
         res = []
         _expanded = stash.ExpandVar(
             filename=_file, attribute=Variable.ATTR_VAR)
-        _seenpath = {}
-        for p in _expanded['PACKAGES']:
-            _files = 'FILES_{a}'.format(a=p)
-            _convfiles = _files.replace(_expanded['PN'][0], '${PN}')
-            if _files in _expanded:
-                _pattern = _expanded[_files]
-                for _p in _pattern:
-                    # double setting in FILES
-                    if len([x for x in _pattern if x == _p]) > 1:
-                        # try to find with both unexpanded and expanded values
-                        res += self.__find_match_from_stash(_file, stash, p.replace(_expanded['PN'][0], '${PN}'), _p,
-                                                            '{a} is already set by default or in this recipe'.format(a=_p), 'double', True)
-                        res += self.__find_match_from_stash(_file, stash, p, _p,
-                                                            '{a} is already set by default or in this recipe'.format(a=_p), 'double', True)
-                    # useless as hidden by previous package
-                    if _p in _seenpath.keys() and _seenpath[_p] != _convfiles:
-                        # try to find with both unexpanded and expanded values
-                        res += self.__find_match_from_stash(_file, stash, p.replace(_expanded['PN'][0], '${PN}'), _p,
-                                                            '{a} is already covered by {b}'.format(a=_p, b=_seenpath[_p]),
-                                                            'hidden')
-                        res += self.__find_match_from_stash(_file, stash, p, _p,
-                                                            '{a} is already covered by {b}'.format(a=_p, b=_seenpath[_p]),
-                                                            'hidden')
-                    _seenpath[_p] = _convfiles
+        for ov in ["_", ":"]:
+            _seenpath = {}
+            for p in _expanded['PACKAGES']:
+                _files = 'FILES{o}{a}'.format(o=ov, a=p)
+                _convfiles = _files.replace(_expanded['PN'][0], '${PN}')
+                if _files in _expanded:
+                    _pattern = _expanded[_files]
+                    for _p in _pattern:
+                        # double setting in FILES
+                        if len([x for x in _pattern if x == _p]) > 1:
+                            # try to find with both unexpanded and expanded values
+                            res += self.__find_match_from_stash(_file, stash, p.replace(_expanded['PN'][0], '${PN}'), _p,
+                                                                '{a} is already set by default or in this recipe'.format(a=_p), 'double', True)
+                            res += self.__find_match_from_stash(_file, stash, p, _p,
+                                                                '{a} is already set by default or in this recipe'.format(a=_p), 'double', True)
+                        # useless as hidden by previous package
+                        if _p in _seenpath.keys() and _seenpath[_p] != _convfiles:
+                            # try to find with both unexpanded and expanded values
+                            res += self.__find_match_from_stash(_file, stash, p.replace(_expanded['PN'][0], '${PN}'), _p,
+                                                                '{a} is already covered by {b}'.format(a=_p, b=_seenpath[_p]),
+                                                                'hidden')
+                            res += self.__find_match_from_stash(_file, stash, p, _p,
+                                                                '{a} is already covered by {b}'.format(a=_p, b=_seenpath[_p]),
+                                                                'hidden')
+                        _seenpath[_p] = _convfiles
         return res

@@ -35,6 +35,33 @@ class TestClassOelintVarsFileSettingsDouble(TestBaseClass):
                                      FILES_${PN}-doc += "${docdir}"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     FILES_${PN} += "${bindir}"
+                                     FILES_${PN}:ping = "${base_bindir}/ping.${BPN}"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     '''
+                                     FILES_${PN} += "${bindir}"
+                                     FILES_${PN}:ping = "${base_bindir}/ping.${BPN}"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     FILES:${PN} += "${bindir}"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     FILES:${PN}-doc += "${docdir}"
+                                     ''',
+                                 },
+
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -52,6 +79,15 @@ class TestClassOelintVarsFileSettingsDouble(TestBaseClass):
                                      FILES_${PN} += "/opt/other/path"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     FILES:${PN} += "/opt/other/path"
+                                     FILES:${PN}-ping = "${base_bindir}/ping.${BPN}"
+                                     FILES:${PN} += "/opt/other/path"
+                                     ''',
+                                 },
+
                              ],
                              )
     def test_bad_non_default(self, input_, id_, occurrence):
@@ -66,6 +102,13 @@ class TestClassOelintVarsFileSettingsDouble(TestBaseClass):
                                      '''
                                      FILES_${PN} += "/opt/other/path"
                                      FILES_${PN}-ping = "${base_bindir}/ping.${BPN}"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     FILES:${PN} += "/opt/other/path"
+                                     FILES:${PN}-ping = "${base_bindir}/ping.${BPN}"
                                      ''',
                                  },
                              ],
