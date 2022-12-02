@@ -60,11 +60,11 @@ class VarSRCUriChecksum(Rule):
                 no_name_src_uri = True
             else:
                 if name not in md5sum:
-                    message = "SRC_URI[%s.md5sum]" % name
+                    message = "SRC_URI[{n}.md5sum]".format(n=name)
                 if name not in sha256sum:
                     if len(message) > 0:
-                      message += ", "
-                    message += "SRC_URI[%s.sha256sum]" % name
+                        message += ", "
+                    message += "SRC_URI[{n}.sha256sum]".format(n=name)
                 if len(message) > 0:
                     message += " is(are) needed"
             if len(message) > 0:
