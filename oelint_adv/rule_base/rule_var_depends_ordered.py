@@ -16,12 +16,23 @@ class VarDependsOrdered(Rule):
         res.update(f.GetClassOverride() for f in findings)
         return res
 
+    def is_applicable(self, item):
+        if 'remove' in item.SubItems:
+            return False
+        if 'append' in item.SubItems:
+            return False
+        if 'prepend' in item.SubItems:
+            return False
+        if item.Origin.endswith('.bbclass'):
+            return False
+        return True
+
     def check(self, _file, stash):
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR)
         # ignore the settings from bbclasses
-        items = [x for x in items if not x.Origin.endswith('.bbclass') and 'remove' not in x.SubItems]
+        items = [x for x in items if self.is_applicable(x)]
         _keys = {x.VarName for x in items if RegexRpl.match(
             r'DEPENDS|RDEPENDS', x.VarName)}
         _filegroups = {x.Origin for x in items}

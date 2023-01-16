@@ -129,6 +129,20 @@ class TestClassOelintVarsDependsOrdered(TestBaseClass):
                                      RDEPENDS:${PN}:remove = "def"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     RDEPENDS:${PN} = "x y z"
+                                     RDEPENDS:${PN}:append:magic-machine = " a"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     RDEPENDS:${PN} = "x y z"
+                                     RDEPENDS:${PN}:prepend:magic-machine = "a "
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
