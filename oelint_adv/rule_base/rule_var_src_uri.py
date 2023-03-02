@@ -1,7 +1,9 @@
-from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Variable
+from oelint_parser.helper_files import expand_term
 from oelint_parser.helper_files import get_scr_components
 from oelint_parser.parser import INLINE_BLOCK
+
+from oelint_adv.cls_rule import Rule
 
 
 class VarSRCUriOptions(Rule):
@@ -182,5 +184,5 @@ class VarSRCUriOptions(Rule):
             for x in lines:
                 if x == INLINE_BLOCK:
                     continue
-                res += self.__analyse(item, x, lines.index(x))
+                res += self.__analyse(item, expand_term(stash, _file, x), lines.index(x))
         return res
