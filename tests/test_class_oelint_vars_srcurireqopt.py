@@ -68,17 +68,15 @@ class TestClassOelintVarsSRCURIReqOpt(TestBaseClass):
                                      'SRC_URI += "gitsm://foo.org/gaz.git;name=foo;protocol=ssh;nobranch=1"',
                                  },
                                  {
-                                    'oelint-adv_test.bb':
+                                     'oelint-adv_test.bb':
                                      '''
                                      SRC_REPO ?= "bitbucket.org/foo/bar.git"
                                      GIT_PROTO ?= "user=git;protocol=ssh"
                                      GIT_SUBPATH ?= "subpath=tools/${PACKAGE_NAME}"
-                                     
                                      SRC_URI = "git://${SRC_REPO};nobranch=1;${GIT_PROTO};${GIT_SUBPATH}"
-                                     
                                      SRCREV ?= "master"
-                                     '''
-                                 }
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
