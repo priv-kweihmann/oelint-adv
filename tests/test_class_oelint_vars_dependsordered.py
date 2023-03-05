@@ -143,6 +143,18 @@ class TestClassOelintVarsDependsOrdered(TestBaseClass):
                                      RDEPENDS:${PN}:prepend:magic-machine = "a "
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     RDEPENDS_${PN} += "\\
+                                        bash \\
+                                        libFormatConversion.so()(64bit) \\
+                                        libMvCameraControl.so()(64bit) \\
+                                        libMVRender.so()(64bit) \\
+                                        libstdc++ \\
+                                     "
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):

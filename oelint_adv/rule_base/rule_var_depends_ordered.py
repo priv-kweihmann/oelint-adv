@@ -50,7 +50,7 @@ class VarDependsOrdered(Rule):
                     ) or _m == x.GetClassOverride()], key=lambda x: x.Line)
                     for item in _machine_findings:
                         _raw_list += item.get_items(versioned=True)
-                        if _raw_list != sorted(_raw_list):
+                        if _raw_list != sorted(_raw_list, key=str.lower):
                             res += self.finding(item.Origin, item.InFileLine,
                                                 override_msg=self.Msg.format(VAR=_key))
                             # quit on the first finding, as all following will be corrupted anyway
