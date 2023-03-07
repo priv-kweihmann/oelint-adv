@@ -114,12 +114,17 @@ class VarSRCUriOptions(Rule):
                 'protocol',
             ],
             'npm': [
+                'downloadfilename',
                 'name',
                 'noverify',
+                'package',
                 'version',
             ],
             'npmsw': [
                 'dev',
+                'downloadfilename',
+                'protocol',
+                'rev',
             ],
             'svn': [
                 'module',
