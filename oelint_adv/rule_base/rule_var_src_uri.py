@@ -80,6 +80,10 @@ class VarSRCUriOptions(Rule):
                 'usehead',
             ],
             'gitannex': [],
+            'gn': [
+                'destdir',
+                'proto',
+            ],
             'hg': [
                 'module',
                 'rev',

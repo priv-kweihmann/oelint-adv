@@ -168,6 +168,11 @@ OPTION_MAPPING = {
         'subdir',
         'unpack',
     ],
+    'gn': [
+        'destdir',
+        'name',
+        'proto',
+    ],
     'hg': [
         'apply',
         'destsuffix',
