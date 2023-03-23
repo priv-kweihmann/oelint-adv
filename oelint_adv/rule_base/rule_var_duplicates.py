@@ -1,6 +1,7 @@
 from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Variable
 
+from oelint_parser.rpl_regex import RegexRpl
 
 class VarDuplicates(Rule):
     def __init__(self):
@@ -19,6 +20,9 @@ class VarDuplicates(Rule):
                     machine_mods = i.SubItems
                     machine_mods_cleaned = '_'.join(
                         sorted([x for x in machine_mods if x not in ['append', 'prepend', 'remove']]))
+                    m = RegexRpl.match('.*(?P<dyn>/dynamic-layers/.*?/).*', i.Origin)
+                    if m:
+                        machine_mods_cleaned += f'_{m.group("dyn")}'
                     if machine_mods_cleaned not in _items:
                         _items[machine_mods_cleaned] = []
                     _operations = i.AppendOperation()

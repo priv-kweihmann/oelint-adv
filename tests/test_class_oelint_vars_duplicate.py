@@ -58,6 +58,17 @@ class TestClassOelintVarsDuplicate(TestBaseClass):
                                      RDEPENDS:${PN}:append:class-target = "foo "
                                      ''',
                                  },
+                                 {
+                                     'oelint-adv-test_1.0.bb': '',
+                                     'dynamic-layers/a/oelint-adv-test_1.0.bbappend':
+                                     '''
+                                     DEPENDS += "a"
+                                     ''',
+                                     'dynamic-layers/a/oelint-adv-test_%.bbappend':
+                                     '''
+                                     DEPENDS += "a"
+                                     ''',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -107,6 +118,17 @@ class TestClassOelintVarsDuplicate(TestBaseClass):
                                      '''
                                      RDEPENDS:${PN}:class-target = "foo"
                                      RDEPENDS:${PN} = "foo"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb': '',
+                                     'dynamic-layers/a/oelint_adv_test.bbappend':
+                                     '''
+                                     DEPENDS += "a"
+                                     ''',
+                                     'dynamic-layers/b/oelint_adv_test.bbappend':
+                                     '''
+                                     DEPENDS += "a"
                                      ''',
                                  },
                              ],
