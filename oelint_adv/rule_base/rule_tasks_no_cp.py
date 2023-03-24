@@ -18,5 +18,5 @@ class TaskInstallNoCp(Rule):
                         continue
                     if RegexRpl.search(r'\s*cp ', line) and not RegexRpl.search(r'\s*cp\s+(-R|-r)', line):
                         res += self.finding(item.Origin,
-                                            item.InFileLine + lineindex)
+                                            item.InFileLine + lineindex, blockoffset=item.InFileLine)
         return res

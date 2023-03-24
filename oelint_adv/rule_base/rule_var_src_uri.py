@@ -160,7 +160,8 @@ class VarSRCUriOptions(Rule):
         # ignore those
         if _url['scheme'] not in self._valid_options.keys() and not _input.strip().startswith('file://') and _url['scheme']:
             res += self.finding(item.Origin, item.InFileLine + _index,
-                                'Fetcher \'{a}\' is not known'.format(a=_url['scheme']))
+                                'Fetcher \'{a}\' is not known'.format(a=_url['scheme']),
+                                blockoffset=item.InFileLine)
         else:
             for k, v in _url['options'].items():
                 if _url['scheme'] not in self._valid_options:
@@ -169,16 +170,20 @@ class VarSRCUriOptions(Rule):
                     continue  # linux-yocto uses this option to indicate kernel metadata sources
                 if k not in self._valid_options[_url['scheme']] + self._general_options:
                     res += self.finding(item.Origin, item.InFileLine + _index,
-                                        'Option \'{a}\' is not known with this fetcher type'.format(a=k))
+                                        'Option \'{a}\' is not known with this fetcher type'.format(a=k),
+                                        blockoffset=item.InFileLine)
             for opt in self._required_might_options.get(_url['scheme'], []):
                 if opt not in _url['options']:
                     res += self.finding(item.Origin, item.InFileLine + _index,
-                                        'Fetcher \'{fetcher}\' might require option \'{option}\' to be set'.format(fetcher=_url['scheme'], option=opt))
+                                        'Fetcher \'{fetcher}\' might require option \'{option}\' to be set'.format(
+                                            fetcher=_url['scheme'], option=opt),
+                                        blockoffset=item.InFileLine)
             for key, val_ in self._required_unless_options.get(_url['scheme'], {}).items():
                 if key not in _url['options'] and not any(x in _url['options'] for x in val_):
                     res += self.finding(item.Origin, item.InFileLine + _index,
                                         'Fetcher \'{fetcher}\' requires option \'{option}\' or any of \'{other}\' to be set'.format(
-                                            fetcher=_url['scheme'], option=key, other=','.join(val_)))
+                                            fetcher=_url['scheme'], option=key, other=','.join(val_)),
+                                        blockoffset=item.InFileLine)
         return res
 
     def check(self, _file, stash):

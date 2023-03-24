@@ -42,6 +42,15 @@ class TestClassOelintTaskNoCopy(TestBaseClass):
                                      }
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     # nooelint: oelint.task.nocopy
+                                     do_install_append() {
+                                         cp A B
+                                     }
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):

@@ -60,7 +60,7 @@ class Rule:
         """
         return []
 
-    def finding(self, _file, _line, override_msg=None, appendix=None):
+    def finding(self, _file, _line, override_msg=None, appendix=None, blockoffset=0):
         """Called by rule to indicate a finding
 
         Arguments:
@@ -70,6 +70,7 @@ class Rule:
         Keyword Arguments:
             override_msg {str} -- Optional string which overrides the set standard message (default: {None})
             appendix {str} -- Optional appendix to rule ID (default: {None})
+            blockoffset {int} -- line number to look for inline suppressions instead of _line (default: 0 == use _line)
 
         Returns:
             str -- Human readable finding (possibly with color codes)
@@ -80,6 +81,7 @@ class Rule:
             return []  # pragma: no cover
         if override_msg is None:
             override_msg = self.Msg
+        _suppression_offset = blockoffset or _line
         _id = [self.ID]
         _display_id = self.ID
         if appendix:
@@ -101,7 +103,7 @@ class Rule:
             _line = 1
 
         # filter out inline suppressions
-        if any(x for x in _id if x in get_inlinesuppressions().get(_file, {}).get(max(1, _line - 1), [])):
+        if any(x for x in _id if x in get_inlinesuppressions().get(_file, {}).get(max(1, _suppression_offset - 1), [])):
             return []
 
         _path = os.path.abspath(_file)

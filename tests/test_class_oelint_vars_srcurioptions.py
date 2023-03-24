@@ -825,6 +825,17 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'SRC_URI += "git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-5.10;destsuffix=${KMETA};protocol=foo"',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     # nooelint: oelint.vars.srcurioptions
+                                     SRC_URI += "\\
+                                         file://kmeta/common;type=kmeta \\
+                                         abc://some.corp.com \\
+                                         foo://some.other.corp \\
+                                     "
+                                     ''',
+                                 },
                              ],
                              )
     def test_type_kmeta_allowed(self, input_, id_, occurrence):
