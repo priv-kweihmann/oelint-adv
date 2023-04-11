@@ -1,6 +1,6 @@
 bump2version == 1.0.1
 codespell == 2.2.4
-dlint == 0.14.0
+dlint == 0.14.1
 flake8 == 5.0.4
 flake8-2020 == 1.7.0
 flake8-bandit == 4.1.1
