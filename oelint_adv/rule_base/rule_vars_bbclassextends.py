@@ -17,7 +17,7 @@ class VarBbclassextend(Rule):
         if not any(items):
             _safe = False
             for _class in ['native', 'nativesdk', 'cross']:
-                if any([x for x in items_inherit if x.VarValue.find(_class) != -1]):
+                if any(x for x in items_inherit if x.VarValue.find(_class) != -1):
                     _safe = True
                     break
             if not _file.endswith('.bbappend') and not _safe:

@@ -20,7 +20,7 @@ class FilePatchIsSignedOff(Rule):
             with open(i) as _input:
                 try:
                     content = _input.readlines()
-                    if not any([x for x in content if x.startswith('Signed-off-by: ')]):
+                    if not any(x for x in content if x.startswith('Signed-off-by: ')):
                         # Find matching SRC_URI assignment
                         _assign = [x for x in _items if x.VarValue.find(
                             os.path.basename(i)) != -1]

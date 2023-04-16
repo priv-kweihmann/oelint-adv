@@ -16,7 +16,7 @@ class VarSRCUriGitTag(Rule):
                                   attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
         _fetcher = []
         for item in items:
-            if any([item.Flag.endswith(x) for x in ['md5sum', 'sha256sum']]):
+            if any(item.Flag.endswith(x) for x in ['md5sum', 'sha256sum']):
                 # These are just the hashes
                 continue
             lines = [y.strip('"') for y in item.get_items() if y]

@@ -28,7 +28,7 @@ class TaskAddNoTaskBody(Rule):
             if not any(_filt):
                 res += self.finding(item.Origin, item.InFileLine,
                                     self.Msg.replace('{FUNC}', item.FuncName))
-            elif not any([x for x in _filt if x.FuncBodyStripped]):
+            elif not any(x for x in _filt if x.FuncBodyStripped):
                 res += self.finding(item.Origin, item.InFileLine,
                                     self.Msg.replace('{FUNC}', item.FuncName))
         return res

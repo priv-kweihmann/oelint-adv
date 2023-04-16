@@ -20,6 +20,6 @@ class VarSRCURIWildcard(Rule):
                     continue
                 components = get_scr_components(f)
                 if components['scheme'] == 'file':
-                    if any([x for x in ['*'] if x in components['src']]):
+                    if any(x for x in ['*'] if x in components['src']):
                         res += self.finding(item.Origin, item.InFileLine)
         return res
