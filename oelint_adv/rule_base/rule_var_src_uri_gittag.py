@@ -15,7 +15,7 @@ class VarSRCUriGitTag(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
         for item in items:
-            if any([item.Flag.endswith(x) for x in ['md5sum', 'sha256sum']]):
+            if any(item.Flag.endswith(x) for x in ['md5sum', 'sha256sum']):
                 # These are just the hashes
                 continue
             lines = [y.strip('\'') for y in item.get_items() if y]

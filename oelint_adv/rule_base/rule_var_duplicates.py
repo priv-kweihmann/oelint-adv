@@ -29,13 +29,13 @@ class VarDuplicates(Rule):
                     if x in _items[machine_mods_cleaned]:
                         if x == '!!!inlineblock!!!':
                             continue
-                        if not any([x in ['append', 'prepend', ' += ', ' =+ '] for x in _operations]):
+                        if not any(x in ['append', 'prepend', ' += ', ' =+ '] for x in _operations):
                             _items[machine_mods_cleaned] = [x]
                         else:
                             res += self.finding(i.Origin, i.InFileLine,
                                                 'Item \'{x}\' was added multiple times to {c}'.format(x=x, c=c))
                     else:
-                        if any([x in ['append', 'prepend', ' += ', ' =+ '] for x in _operations]):
+                        if any(x in ['append', 'prepend', ' += ', ' =+ '] for x in _operations):
                             _items[machine_mods_cleaned].append(x)
                         elif 'remove' in _operations:
                             if x in _items[machine_mods_cleaned]:
