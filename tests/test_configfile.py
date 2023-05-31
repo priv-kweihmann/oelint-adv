@@ -119,8 +119,6 @@ class TestConfigFile(TestBaseClass):
         # Test if the following options remain untouched
         for _option in [
             'output',
-            'addrules',
-            'customrules',
             'messageformat',
         ]:
             _cstfile = self._create_tempfile(
@@ -141,7 +139,9 @@ class TestConfigFile(TestBaseClass):
     def test_config_file_multiple(self, input_):
         # Test if the following options are converted to lists
         for _option in [
-            'suppress'
+            'addrules',
+            'customrules',
+            'suppress',
         ]:
             _cstfile = self._create_tempfile(
                 '.oelint.cfg', '[oelint]\n{item}=\t+True\n\t-False'.format(item=_option))
