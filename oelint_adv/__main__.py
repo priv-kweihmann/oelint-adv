@@ -158,8 +158,10 @@ def arguments_post(args):  # noqa: C901 - complexity is still okay
 
     # Convert list symbols
     for _option in [
-        'suppress',
+        'addrules',
         'constantmods',
+        'customrules',
+        'suppress',
     ]:
         try:
             if not isinstance(getattr(args, _option), list):
