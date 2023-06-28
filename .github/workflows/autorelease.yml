@@ -15,6 +15,10 @@ on:
         default: 'patch'
         required: false
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 env:
   VERSION_FILE: oelint_adv/version.py
   MODULE_CODE: oelint_adv/*
