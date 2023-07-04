@@ -350,14 +350,11 @@ def run(args):
                 pool.join()
 
         return sorted(set(issues), key=lambda x: x[0])
-    except Exception:
+    except Exception:  # pragma: no cover - that shouldn't be covered anyway
         import traceback
-
-        # pragma: no cover
-        print('OOPS - That shouldn\'t happen - {files}'.format(files=args.files))   # noqa: T201 - it's here for a reason
-        # pragma: no cover
+        print('OOPS - That shouldn\'t happen - {files}'.format(files=args.files))
         traceback.print_exc()
-    return []
+    return []  # pragma: no cover - that shouldn't be covered anyway
 
 
 def main():  # pragma: no cover
