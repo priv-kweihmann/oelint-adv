@@ -28,7 +28,7 @@ class NoSpaceTrailingRule(Rule):
     def fix(self, _file, stash):
         res = []
         for i in self.__getMatches(_file, stash):
-            i.RealRaw = RegexRpl.sub(r'\s{2,}\n', '\n', i[0].RealRaw)
-            i.Raw = RegexRpl.sub(r'\s{2,}\n', '\n', i[0].Raw)  # pragma: no cover
-            res.append(_file)  # pragma: no cover
-        return res  # pragma: no cover
+            i[0].RealRaw = RegexRpl.sub(r'\s+\n', '\n', i[0].RealRaw)
+            i[0].Raw = RegexRpl.sub(r'\s+\n', '\n', i[0].Raw)
+            res.append(_file)
+        return res
