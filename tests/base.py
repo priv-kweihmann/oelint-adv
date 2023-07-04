@@ -1,4 +1,5 @@
 import os
+import shutil
 import tempfile
 import textwrap
 
@@ -15,7 +16,9 @@ class TestBaseClass:
 
     def _create_tempfile(self, _file, _input):
         self.__created_files = getattr(self, '__created_files', {})
+        self._collected_tmpdirs = getattr(self, '_collect_tmpdirs', [])
         self._tmpdir = getattr(self, '_tmpdir', tempfile.mkdtemp())
+        self._collected_tmpdirs.append(self._tmpdir)
         _path = os.path.join(self._tmpdir, _file)
         os.makedirs(os.path.dirname(_path), exist_ok=True)
 
@@ -51,9 +54,11 @@ class TestBaseClass:
 
     def fix_and_check(self, args, id_):
         from oelint_adv.__main__ import run
-
         # run for auto fixing
         run(args)
+
+        args.fix = False
+
         # check run
         self.check_for_id(args, id_, 0)
 
@@ -68,3 +73,8 @@ class TestBaseClass:
                                  for k, v in self.__created_files.items()])
         assert(len([x for x in issues if ':{id}:'.format(id=id_) in x]) ==
                occurrences), '{id} expected {o} time(s) in:\n{i}\n\n---\n{f}'.format(id=id_, o=occurrences, i='\n'.join(issues), f=_files)
+
+    def teardown(self):
+        if getattr(self, '_collected_tmpdirs', None) is not None:
+            for x in self._collected_tmpdirs:
+                shutil.rmtree(x, ignore_errors=True)
