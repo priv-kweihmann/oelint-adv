@@ -52,6 +52,18 @@ class TestBaseClass:
             [self._create_tempfile(k, v) for k, v in input_.items()],
         ))
 
+    def _create_args_plain(self, args, extraopts=None):
+        if extraopts is None:
+            extraopts = []
+        from oelint_adv.__main__ import arguments_post
+        return arguments_post(self._create_args_parser().parse_args(
+            # noqa: W504 - we need to concat lists here
+            ['--quiet', '--jobs=1'] +
+            # noqa: W504 - we need to concat lists here
+            self.__pytest_empty_object_fixture(extraopts, []) +
+            args,
+        ))
+
     def fix_and_check(self, args, id_):
         from oelint_adv.__main__ import run
         # run for auto fixing

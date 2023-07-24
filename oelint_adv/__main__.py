@@ -19,6 +19,7 @@ from oelint_parser.rpl_regex import RegexRpl
 
 from oelint_adv.cls_rule import load_rules
 from oelint_adv.color import set_colorize
+from oelint_adv.rule_file import get_rulefile
 from oelint_adv.rule_file import set_inlinesuppressions
 from oelint_adv.rule_file import set_messageformat
 from oelint_adv.rule_file import set_noinfo
@@ -334,8 +335,9 @@ def run(args):
         rules = load_rules(args, add_rules=args.addrules,
                            add_dirs=args.customrules)
         _loaded_ids = []
+        _rule_file = get_rulefile()
         for r in rules:
-            _loaded_ids += r.get_ids()
+            _loaded_ids += [x for x in r.get_ids() if not _rule_file or x in _rule_file]
         if not args.quiet:
             print('Loaded rules:\n\t{rules}'.format(  # noqa: T201 - it's here for a reason
                 rules='\n\t'.join(sorted(_loaded_ids))))
