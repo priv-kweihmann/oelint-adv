@@ -128,7 +128,7 @@ class TestClassIntegration(TestBaseClass):
     def test_constmod_override(self, input_):
         # local imports only
         from oelint_parser.constants import CONSTANTS
-        
+
         __cnt = '''
         {
             "functions": {
@@ -190,6 +190,17 @@ class TestClassIntegration(TestBaseClass):
             '--rulefile={file}'.format(file=self._create_tempfile('rulefile', __cnt)), '--noinfo']
         self.check_for_id(self._create_args(input_, _extra_opts),
                           'oelint.var.suggestedvar.CVE_PRODUCT', 0)
+
+    def test_rulefile_subrules_printout(self, capsys):
+        from oelint_adv.__main__ import print_rulefile
+        __cnt = {
+            "oelint.var.suggestedvar.AUTHOR": "error",
+        }
+        _extra_opts = ['--rulefile={file}'.format(file=self._create_tempfile('rulefile', json.dumps(__cnt)))]
+
+        print_rulefile(self._create_args_plain(['--print-rulefile'], _extra_opts))
+        captured = capsys.readouterr()
+        assert json.loads(captured.out) == __cnt
 
     @pytest.mark.parametrize('input_',
                              [
