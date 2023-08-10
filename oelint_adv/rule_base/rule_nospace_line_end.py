@@ -15,7 +15,7 @@ class NoSpaceTrailingRule(Rule):
             _linecnt = 0
             for line in i.Raw.split('\n'):
                 if line.endswith(' '):
-                    res.append((i, i.Line + _linecnt))
+                    res.append((i, i.InFileLine + _linecnt))
                 _linecnt += 1
         return res
 
