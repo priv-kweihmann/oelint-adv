@@ -119,7 +119,7 @@ class Rule:
         _msg = get_messageformat().format(path=_path, line=_line, severity=_severity,
                                           id=_display_id, msg=override_msg)
 
-        return [(_line, f'{_color}{_msg}{_style}')]
+        return [((_path, _line), f'{_color}{_msg}{_style}')]
 
     def __repr__(self):
         return '{id}'.format(id=self.ID)  # pragma: no cover

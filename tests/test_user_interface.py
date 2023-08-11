@@ -809,3 +809,30 @@ class TestClassIntegration(TestBaseClass):
     def test_exit_zero(self, input_):
         _args = self._create_args(input_, extraopts=['--exit-zero'])
         assert(_args.exit_zero)
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint_adv-test_2.bb':
+                                     '''
+                                     VAR = "1"
+                                     INSANE_SKIP_${PN} = "foo"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint adv-test_1.bb':
+                                     '''
+                                     VAR = "1"
+                                     INSANE_SKIP_${PN} = "foo"
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_sorted_by_file_and_line(self, capsys, input_):
+        # local imports only
+        from oelint_adv.__main__ import run
+
+        _args = self._create_args(input_)
+        issues = [x[0] for x in run(_args)]
+
+        assert sorted(issues, key=lambda x: x[0]) == issues
