@@ -91,9 +91,6 @@ class Rule:
         if any(x in get_suppressions() for x in _id):
             return []
         _severity = self.get_severity(appendix)
-        if _severity is None:
-            # the rule is disabled
-            return []
         if _severity == 'info' and get_noinfo():
             return []
         if _severity == 'warning' and get_nowarn():
@@ -162,8 +159,8 @@ class Rule:
             dict -- list of rulefile entries
         """
         return {
-            **({} if self.get_severity() is None else {self.ID: self.get_severity()}),
-            **{f'{self.ID}.{x}': self.get_severity(x) for x in self.Appendix if self.get_severity(x) is not None},
+            **({} if (self.get_severity() is None or self.ID in get_suppressions()) else {self.ID: self.get_severity()}),
+            **{f'{self.ID}.{x}': self.get_severity(x) for x in self.Appendix if (self.get_severity(x) is not None and self.ID not in get_suppressions())},
         }
 
     def format_message(self, *args, **kwargs):

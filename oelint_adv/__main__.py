@@ -17,9 +17,11 @@ from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
 from oelint_parser.rpl_regex import RegexRpl
 
+from oelint_adv.cls_rule import Rule
 from oelint_adv.cls_rule import load_rules
 from oelint_adv.color import set_colorize
 from oelint_adv.rule_file import get_rulefile
+from oelint_adv.rule_file import get_suppressions
 from oelint_adv.rule_file import set_inlinesuppressions
 from oelint_adv.rule_file import set_messageformat
 from oelint_adv.rule_file import set_noinfo
@@ -336,8 +338,20 @@ def run(args):
                            add_dirs=args.customrules)
         _loaded_ids = []
         _rule_file = get_rulefile()
+
+        def rule_applicable(rule):
+            if isinstance(rule, Rule):
+                res = not _rule_file or rule.ID in _rule_file
+                res &= rule.ID not in get_suppressions()
+            else:
+                res = not _rule_file or rule in _rule_file
+                res &= rule not in get_suppressions()
+            return res
+
+        rules = [x for x in rules if rule_applicable(x)]
+
         for r in rules:
-            _loaded_ids += [x for x in r.get_ids() if not _rule_file or x in _rule_file]
+            _loaded_ids += [x for x in r.get_ids() if rule_applicable(x)]
         if not args.quiet:
             print('Loaded rules:\n\t{rules}'.format(  # noqa: T201 - it's here for a reason
                 rules='\n\t'.join(sorted(_loaded_ids))))
