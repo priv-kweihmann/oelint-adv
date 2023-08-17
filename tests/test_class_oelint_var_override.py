@@ -89,6 +89,27 @@ class TestClassOelintVarOverride(TestBaseClass):
                                      FILESEXTRAPATH_append := ":b"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A = "2"
+                                     A  ?= "1"
+                                     '''
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A = "2"
+                                     A  ??= "1"
+                                     '''
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A = "2"
+                                     A  := "1"
+                                     '''
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
