@@ -149,6 +149,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.var.filesoverride - FILES:*(FILES_*) variables should not be overridden
 * oelint.var.improperinherit - Warn about improperly named inherits
 * oelint.var.licenseremotefile - License shall be a file in remote source not a local file
+* oelint.var.licensesdpx - Check for correct SPDX syntax in licenses
 * oelint.var.mandatoryvar - Check for mandatory variables **[S]**
 * oelint.var.multiinclude - Warn on including the same file more than once
 * oelint.var.multiinherit - Warn on inherit the same file more than once
@@ -189,8 +190,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.pbpusage - \$\{BP\} should be used instead of \$\{P\} **[F]**
 * oelint.vars.pkgspecific - Variable is package-specific, but isn't set in that way **[S]**
 * oelint.vars.pnbpnusage - \$\{BPN\} should be used instead of \$\{PN\} **[F]**
-* oelint.vars.pnusagediscouraged - Variable shouldn't contain \$\{PN\} or
-* \$\{BPN\}
+* oelint.vars.pnusagediscouraged - Variable shouldn't contain \$\{PN\} or \$\{BPN\}
 * oelint.vars.sectionlowercase - SECTION should be lowercase only **[F]**
 * oelint.vars.spacesassignment - ' = ' should be correct variable assignment
 * oelint.vars.specific - Variable is specific to an unknown identifier
