@@ -16,6 +16,13 @@ class TestClassOelintVarsSRCURIappend(TestBaseClass):
                                      inherit abc
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SRC_URI  += "file://abc"
+                                     inherit abc
+                                     ''',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -28,6 +35,10 @@ class TestClassOelintVarsSRCURIappend(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      'SRC_URI += "file://abc"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI  += "file://abc"',
                                  },
                                  {
                                      'oelint_adv_test.bb':

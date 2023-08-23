@@ -14,6 +14,6 @@ class VarBugtrackerIsUrl(Rule):
                                   attribute=Variable.ATTR_VAR)
         for i in items:
             if i.VarName in ['FILESEXTRAPATHS']:
-                if i.VarOp != ' := ':
+                if i.VarOp.strip() != ':=':
                     res += self.finding(i.Origin, i.InFileLine)
         return res

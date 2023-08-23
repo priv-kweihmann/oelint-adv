@@ -41,6 +41,10 @@ class TestClassOelintVarsFilextrapaths(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'FILESEXTRAPATHS =+ "${THISDIR}/file"',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'FILESEXTRAPATHS  =+ "${THISDIR}/file"',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -69,6 +73,10 @@ class TestClassOelintVarsFilextrapaths(TestBaseClass):
                                  {
                                      'oelint_adv_test.bbappend':
                                      'FILESEXTRAPATHS := "${THISDIR}/file"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bbappend':
+                                     'FILESEXTRAPATHS  := "${THISDIR}/file"',
                                  },
                              ],
                              )

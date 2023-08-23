@@ -21,7 +21,7 @@ class VarSRCUriGitTag(Rule):
             if any(item.Flag.endswith(x) for x in ['md5sum', 'sha256sum']):
                 # These are just the hashes
                 continue
-            if item.VarOp in [' += ']:
+            if item.VarOp.strip() in ['+=']:
                 override_delimiter = item.OverrideDelimiter
                 res += self.finding(item.Origin, item.InFileLine,
                                     'Use SRC_URI{od}append otherwise this will override weak defaults by inherit'.format(

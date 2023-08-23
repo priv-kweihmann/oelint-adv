@@ -15,7 +15,7 @@ class VarQuoted(Rule):
         items = stash.GetItemsFor(
             filename=_file, classifier=Variable.CLASSIFIER)
         for i in [x for x in items if x.VarName in CONSTANTS.VariablesProtected]:
-            if i.VarOp not in [' ??= ', ' ?= ']:
+            if i.VarOp.strip() not in ['??=', '?=']:
                 res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.replace(
                     '{VAR}', i.VarName), appendix=i.VarName)
         return res

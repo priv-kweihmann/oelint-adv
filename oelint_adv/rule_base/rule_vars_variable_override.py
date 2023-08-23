@@ -26,7 +26,7 @@ class VarOverride(Rule):
                 # as these will be handled during parse time
                 # and apply to different rules
                 _items = [x for x in items if x.SubItem == sub and not x.IsAppend(
-                ) and x.VarOp not in [' := ', ' ?= ', ' ??= '] and not x.Flag]
+                ) and x.VarOp.strip() not in [':=', '?=', '??='] and not x.Flag]
                 if len(_items) > 1:
                     _files = {os.path.basename(x.Origin) for x in _items}
                     res += self.finding(_items[0].Origin, _items[0].InFileLine,
