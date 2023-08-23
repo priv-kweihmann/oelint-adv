@@ -14,9 +14,9 @@ class VarAppendOperation(Rule):
             filename=_file, classifier=Variable.CLASSIFIER)
         _names = {x.VarName for x in items if x.VarName != 'inherit'}
         for name in _names:
-            _weakest = [x for x in items if x.VarName == name and x.VarOp == ' ??= ']
-            _weak = [x for x in items if x.VarName == name and x.VarOp == ' ?= ']
-            _items = [x for x in items if x.VarName == name and x not in _weakest + _weak and x.VarOp in [' .= ', ' += ']]
+            _weakest = [x for x in items if x.VarName == name and x.VarOp.strip() == '??=']
+            _weak = [x for x in items if x.VarName == name and x.VarOp.strip() == '?=']
+            _items = [x for x in items if x.VarName == name and x not in _weakest + _weak and x.VarOp.strip() in ['.=', '+=']]
             for i in _items:
                 override_delimiter = i.OverrideDelimiter
                 if any(_weakest):
@@ -25,7 +25,7 @@ class VarAppendOperation(Rule):
                 elif any(x.Line > i.Line for x in _weak):
                     res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.format(
                         a='{od}append'.format(od=override_delimiter), b=i.VarOp, c=_weak[0].Raw))
-            _items = [x for x in items if x.VarName == name and x not in _weakest + _weak and x.VarOp in [' =. ', ' =+ ']]
+            _items = [x for x in items if x.VarName == name and x not in _weakest + _weak and x.VarOp.strip() in ['=.', '=+']]
             for i in _items:
                 override_delimiter = i.OverrideDelimiter
                 if any(_weakest):

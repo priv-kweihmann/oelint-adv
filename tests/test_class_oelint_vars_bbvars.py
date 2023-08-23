@@ -86,7 +86,7 @@ class TestClassOelintVarsBBVars(TestBaseClass):
         'STAMP',
         'TOPDIR',
     ])
-    @pytest.mark.parametrize('operation', ['=', ':=', '.=', '=.', '+=', '=+'])
+    @pytest.mark.parametrize('operation', ['=', ':=', '.=', '=.', '+=', '=+', ' =+'])
     def test_bad(self, id_, occurrence, var, operation):
         input_ = {
             'oelint_adv_test.bb': self.__generate_sample_code(var, operation),
@@ -171,7 +171,7 @@ class TestClassOelintVarsBBVars(TestBaseClass):
         'STAMP',
         'TOPDIR',
     ])
-    @pytest.mark.parametrize('operation', ['?=', '??='])
+    @pytest.mark.parametrize('operation', ['?=', '??=', ' ??='])
     def test_good_weak(self, id_, occurrence, var, operation):
         input_ = {
             'oelint_adv_test.bb': self.__generate_sample_code(var, operation),

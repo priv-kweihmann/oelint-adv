@@ -78,6 +78,13 @@ class TestClassOelintVarOverride(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
+                                     A  = "1"
+                                     A ??= "1"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
                                      FILESEXTRAPATH_prepend := "a:"
                                      FILESEXTRAPATH_prepend := "b:"
                                      ''',
