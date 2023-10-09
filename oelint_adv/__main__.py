@@ -38,9 +38,9 @@ class TypeSafeAppendAction(argparse.Action):
 
     def __call__(self, parser, namespace, values, option_string=None):
         items = getattr(namespace, self.dest) or []
-        if isinstance(items, str):
-            items = RegexRpl.split(r'\s+|\t+|\n+', items)  # pragma: no cover
-        items.append(values)  # pragma: no cover
+        if isinstance(values, str):
+            split_values = RegexRpl.split(r'\s+|\t+|\n+', values)  # pragma: no cover
+            items.extend(split_values)  # pragma: no cover
         setattr(namespace, self.dest, items)  # pragma: no cover
 
 
