@@ -37,11 +37,11 @@ sys.path.append(os.path.abspath(os.path.join(__file__, '..')))
 class TypeSafeAppendAction(argparse.Action):
 
     def __call__(self, parser, namespace, values, option_string=None):
+        if not isinstance(values, str):
+            return  # pragma: no cover
         items = getattr(namespace, self.dest) or []
-        if isinstance(items, str):
-            items = RegexRpl.split(r'\s+|\t+|\n+', items)  # pragma: no cover
-        items.append(values)  # pragma: no cover
-        setattr(namespace, self.dest, items)  # pragma: no cover
+        items.extend(RegexRpl.split(r'\s+|\t+|\n+', values.strip('"').strip("'")))
+        setattr(namespace, self.dest, items)
 
 
 def deserialize_boolean_options(options: Dict) -> Dict[str, Union[str, bool]]:

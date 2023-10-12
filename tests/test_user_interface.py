@@ -836,3 +836,22 @@ class TestClassIntegration(TestBaseClass):
         issues = [x[0] for x in run(_args)]
 
         assert sorted(issues, key=lambda x: x[0]) == issues
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint_adv-test_2.bb':
+                                     '''
+                                     VAR = "1"
+                                     INSANE_SKIP_${PN} = "foo"
+                                     ''',
+                                 }
+                             ],
+                             )
+    def test_suppress(self, capsys, input_):
+        _args = self._create_args(input_, ['--suppress="a b c"', '--suppress="d"'])
+
+        assert "a" in _args.suppress
+        assert "b" in _args.suppress
+        assert "c" in _args.suppress
+        assert "d" in _args.suppress
