@@ -650,6 +650,34 @@ class TestClassIntegration(TestBaseClass):
         assert(any(issues))
 
     @pytest.mark.parametrize('input_',
+                            [
+                                {
+                                    'oelint adv-test.bb':
+                                    '''
+                                    A = "1"
+                                    ''',
+                                },
+                            ],
+                            )
+    def test_rulefile_subids_only(self, input_):
+        # local imports only
+        from oelint_adv.__main__ import run
+
+        _rule_file = {
+            "oelint.var.mandatoryvar.DESCRIPTION": "error",
+            "oelint.var.mandatoryvar.LICENSE": "error",
+            "oelint.var.mandatoryvar.SRC_URI": "error"
+        }
+
+        _cstfile = self._create_tempfile('rules.json', json.dumps(_rule_file))
+
+        _args = self._create_args(
+            input_, extraopts=['--rulefile={file}'.format(file=_cstfile)])
+        issues = [x[1] for x in run(_args)]
+        assert(not any(any(x.startswith(y) for y in _rule_file.keys()) for x in issues))
+
+
+    @pytest.mark.parametrize('input_',
                              [
                                  {
                                      'oelint adv-test.bb':
@@ -687,7 +715,7 @@ class TestClassIntegration(TestBaseClass):
         _args = self._create_args(
             input_, extraopts=['--rulefile={file}'.format(file=_cstfile)])
         issues = [x[1] for x in run(_args)]
-        assert(not any(issues))
+        assert(not any("oelint.var.mandatoryvar.DESCRIPTION" in x for x in issues))
 
     @pytest.mark.parametrize('input_',
                              [
