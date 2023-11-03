@@ -19,7 +19,7 @@ flake8-functions == 0.0.8
 flake8-isort == 6.1.0
 flake8-logging-format == 0.9.0
 flake8-mutable == 1.2.0
-flake8-pep3101 == 2.0.0
+flake8-pep3101 == 2.1.0
 flake8-print == 5.0.0
 flake8-quotes == 3.3.2
 flake8-requirements == 1.7.8
