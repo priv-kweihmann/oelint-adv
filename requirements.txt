@@ -1,5 +1,5 @@
 anytree ~= 2.12
 colorama ~= 0.4
-oelint-parser ~= 2.12
+oelint-parser ~= 2.13
 urllib3 ~= 2.1
 wheel ~= 0.42
