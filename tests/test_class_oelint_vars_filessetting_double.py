@@ -38,15 +38,15 @@ class TestClassOelintVarsFileSettingsDouble(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                     FILES_${PN} += "${bindir}"
-                                     FILES_${PN}:ping = "${base_bindir}/ping.${BPN}"
+                                     FILES:${PN} += "${bindir}"
+                                     FILES:${PN}-ping = "${base_bindir}/ping.${BPN}"
                                      ''',
                                  },
                                  {
                                      'oelint_adv_test.bbappend':
                                      '''
-                                     FILES_${PN} += "${bindir}"
-                                     FILES_${PN}:ping = "${base_bindir}/ping.${BPN}"
+                                     FILES:${PN} += "${bindir}"
+                                     FILES:${PN}-ping = "${base_bindir}/ping.${BPN}"
                                      ''',
                                  },
                                  {
