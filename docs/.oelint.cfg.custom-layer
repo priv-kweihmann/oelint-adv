@@ -1,0 +1,4 @@
+[oelint]
+constantmods=
+    +.oelint-custom-distros.json
+    +.oelint-custom-machines.json

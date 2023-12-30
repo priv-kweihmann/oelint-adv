@@ -370,6 +370,34 @@ INSANE_SKIP:${PN} = "foo"
 
 will not warn about the usage of `INSANE_SKIP`.
 
+## Configure your custom machine or distro settings
+
+You can let `oelint-adv` know about your custom `MACHINE` and `DISTRO` overrides, so they won't produce any findings, when
+used in your setup.
+
+### Create a layer specific oelint configuration file
+
+Copy over the template this [file](docs/.oelint.cfg.custom-layer) to the root of your layer
+
+```shell
+LAYER_PATH=<path to your layer>
+cp docs/.oelint.cfg.custom-layer $LAYER_PATH/.oelint.cfg
+```
+
+### Create the known MACHINE and DISTRO settings
+
+Source your bitbake build directory and run the following commands (**) (***)
+
+```shell
+LAYER_PATH=<path to your layer>
+bitbake-getvar --value MACHINEOVERRIDES | tr ':' '\n' | jq -Rn  '{replacements:{ machines: [inputs]}}' > $LAYER_PATH/.oelint-custom-machines.json
+bitbake-getvar --value DISTROOVERRIDES | tr ':' '\n' | jq -Rn  '{replacements:{ distros: [inputs]}}' > $LAYER_PATH/.oelint-custom-distros.json
+```
+
+(**) you'll need to have `jq` installed on your local machine.
+
+(***) `bitbake-getvar` command is available since `kirkstone` release. For older release you can use `bitbake core-image-minial -e | grep ^MACHINEOVERRIDES` resp. `bitbake core-image-minial -e | grep ^DISTROOVERRIDES` and pass them into the rest of the pipe.
+
 ## vscode extension
 
 Find the extension in the [marketplace](https://marketplace.visualstudio.com/items?itemName=kweihmann.oelint-vscode), or search for `oelint-vscode`.
