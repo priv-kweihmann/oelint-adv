@@ -386,7 +386,7 @@ cp docs/.oelint.cfg.custom-layer $LAYER_PATH/.oelint.cfg
 
 ### Create the known MACHINE and DISTRO settings
 
-Source your bitbake build directory and run the following commands (**) (***)
+Source your bitbake build directory and run the following commands (\*\*) (\*\*\*)
 
 ```shell
 LAYER_PATH=<path to your layer>
