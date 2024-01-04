@@ -57,7 +57,11 @@ class TestClassOelintVarsSRCURIfile(TestBaseClass):
                                  },
                                  {
                                      'oelint_adv_test.bb':
-                                     'SRC_URI[md5sum] = "file://abc"',
+                                     'SRC_URI += "file://abc"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI = "file://foo ${@bb.utils.contains(\'FOO\', \'bar\', \'file://bar\', \'\', d)}"',
                                  },
                                  {
                                      'oelint_adv_test.bb':
