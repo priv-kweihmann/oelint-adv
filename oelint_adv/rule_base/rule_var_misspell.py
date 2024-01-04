@@ -4,6 +4,7 @@ from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Variable
 from oelint_parser.constants import CONSTANTS
 from oelint_parser.helper_files import get_valid_package_names
+from oelint_parser.helper_files import get_valid_named_resources
 
 
 class VarMisspell(Rule):
@@ -12,7 +13,7 @@ class VarMisspell(Rule):
                          severity='warning',
                          message='<FOO>')
 
-    def get_best_match(self, item, _list, minconfidence=0.8):
+    def get_best_match(self, item, _list, minconfidence=0.5):
         _dict = sorted([(SequenceMatcher(None, item, k).ratio(), k)
                         for k in _list], key=lambda x: x[0], reverse=True)
         if _dict and _dict[0][0] >= minconfidence:
@@ -24,6 +25,7 @@ class VarMisspell(Rule):
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR)
         _all = stash.GetItemsFor(filename=_file)
+        _extras = [f'SRCREV_{x}' for x in get_valid_named_resources(stash, _file)]
         for i in items:
             _cleanvarname = i.VarName
             for pkg in get_valid_package_names(stash, _file, strippn=True):
@@ -33,6 +35,8 @@ class VarMisspell(Rule):
                     _cleanvarname = ''.join(
                         _cleanvarname.rsplit(pkg, 1))  # pragma: no cover
             if _cleanvarname in CONSTANTS.VariablesKnown:
+                continue
+            if _cleanvarname in _extras:
                 continue
             _used = False
             for a in _all:
