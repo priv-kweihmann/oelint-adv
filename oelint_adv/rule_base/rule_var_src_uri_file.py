@@ -29,6 +29,6 @@ class VarSRCUriGitTag(Rule):
                 if _url['scheme']:
                     _fetcher.append((_url['scheme'], item.InFileLine))
         if _fetcher:
-            if any(x[0] != 'file' for x in _fetcher) and _fetcher[0][0] == 'file':
+            if any(x[0] not in ['file', 'inline'] for x in _fetcher) and _fetcher[0][0] == 'file':
                 res += self.finding(item.Origin, _fetcher[0][1])
         return res
