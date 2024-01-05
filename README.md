@@ -396,7 +396,7 @@ bitbake-getvar --value DISTROOVERRIDES | tr ':' '\n' | jq -Rn  '{replacements:{ 
 
 (**) you'll need to have `jq` installed on your local machine.
 
-(***) `bitbake-getvar` command is available since `kirkstone` release. For older release you can use `bitbake core-image-minial -e | grep ^MACHINEOVERRIDES` resp. `bitbake core-image-minial -e | grep ^DISTROOVERRIDES` and pass them into the rest of the pipe.
+(***) `bitbake-getvar` command is available since `kirkstone` release. For older release you can use `bitbake core-image-minimal -e | grep ^MACHINEOVERRIDES` resp. `bitbake core-image-minimal -e | grep ^DISTROOVERRIDES` and pass them into the rest of the pipe.
 
 ## vscode extension
 
