@@ -20,6 +20,7 @@ from oelint_parser.rpl_regex import RegexRpl
 from oelint_adv.cls_rule import Rule
 from oelint_adv.cls_rule import load_rules
 from oelint_adv.color import set_colorize
+from oelint_adv.rule_file import get_messageformat
 from oelint_adv.rule_file import get_rulefile
 from oelint_adv.rule_file import get_suppressions
 from oelint_adv.rule_file import set_inlinesuppressions
@@ -281,7 +282,9 @@ def flatten(list_):
     return flat
 
 
-def group_run(group, quiet, fix, jobs, rules, nobackup):
+def group_run(group, quiet, fix, jobs, rules, nobackup, messageformat):
+    set_messageformat(messageformat)
+
     fixedfiles = []
     stash = Stash(quiet)
     for f in group:
@@ -360,7 +363,8 @@ def run(args):
         with mp.Pool(processes=args.jobs) as pool:
             try:
                 issues = flatten(pool.map(partial(group_run, quiet=args.quiet, fix=args.fix,
-                                                  jobs=args.jobs, rules=rules, nobackup=args.nobackup), groups))
+                                                  jobs=args.jobs, rules=rules, nobackup=args.nobackup,
+                                                  messageformat=get_messageformat()), groups))
             finally:
                 pool.close()
                 pool.join()
