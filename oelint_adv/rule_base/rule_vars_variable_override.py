@@ -12,14 +12,12 @@ class VarOverride(Rule):
 
     def check(self, _file, stash):
         res = []
-        __varnames = [x.VarName for x in stash.GetItemsFor(
-            filename=_file, classifier=Variable.CLASSIFIER)]
-        for v in __varnames:
+        _all = list(x for x in stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER))  # noqa: C400
+        for v in {x.VarName for x in _all}:
             if v == 'inherit' or not v:
                 # This will be done by another rule
                 continue  # pragma: no cover
-            items = stash.GetItemsFor(
-                filename=_file, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR, attributeValue=v)
+            items = [x for x in _all if x.VarName == v]
             items = sorted(items, key=lambda x: x.Line, reverse=False)
             for sub in [x.SubItem for x in items]:
                 # Get all entries but not the only that do immediate expansion,
