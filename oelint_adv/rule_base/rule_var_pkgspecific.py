@@ -10,7 +10,7 @@ class VarPkgSpecific(Rule):
                         'FILES', 'pkg_preinst', 'pkg_postinst', 'pkg_prerm', 'pkg_postrm', 'ALLOW_EMPTY']
         super().__init__(id='oelint.vars.pkgspecific',
                          severity='error',
-                         message='Variable {VAR} is package-specific and therefore it should be {VAR}_${PN} or {VAR}:${PN}',
+                         message='Variable {VAR} is package-specific and therefore it should be {VAR}{DEL}<known package name>',
                          appendix=self.needles)
 
     def check(self, _file, stash):
@@ -22,6 +22,9 @@ class VarPkgSpecific(Rule):
         _packages = list(get_valid_package_names(stash, _file))
         items = stash.GetItemsFor(
             filename=_file, classifier=Variable.CLASSIFIER)
+        if not items:
+            return res
+        delimiter = items[-1].OverrideDelimiter
         for i in items:
             if i.VarName == 'inherit':
                 continue
@@ -32,5 +35,5 @@ class VarPkgSpecific(Rule):
                         stash, _file, i.GetMachineEntry())]
                 if not _machine or not any(x in _packages for x in _machine):
                     res += self.finding(i.Origin, i.InFileLine,
-                                        override_msg=self.Msg.replace('{VAR}', i.VarName), appendix=i.VarName)
+                                        override_msg=self.Msg.format(self.Msg, VAR=i.VarName, DEL=delimiter), appendix=i.VarName)
         return res
