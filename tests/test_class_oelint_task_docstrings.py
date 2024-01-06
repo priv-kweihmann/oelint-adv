@@ -47,6 +47,22 @@ class TestClassOelintTaskDocstrings(TestBaseClass):
                                      addtask do_foo
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     python () {
+                                         print("Hello world")
+                                     }
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     python __anonymous () {
+                                         print("Hello world")
+                                     }
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):

@@ -13,8 +13,8 @@ class TaskDocStrings(Rule):
     def check(self, _file, stash):
         res = []
         for item in stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER):
-            if item.FuncName in CONSTANTS.FunctionsKnown or not item.FuncName:
-                # Skip for buildin tasks or anonymous python functions
+            if item.FuncName in CONSTANTS.FunctionsKnown or item.FuncName in ['', 'anonymous']:
+                # Skip for builtin tasks or anonymous python functions
                 continue
             if item.IsAppend():
                 # In case it's an append operation, there has to be an original
