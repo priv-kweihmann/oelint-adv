@@ -22,13 +22,13 @@ class VarMisspell(Rule):
 
     def check(self, _file, stash):
         res = []
-        items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                  attribute=Variable.ATTR_VAR)
+        items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER)
         _all = stash.GetItemsFor(filename=_file)
         _extras = [f'SRCREV_{x}' for x in get_valid_named_resources(stash, _file)]
+        _pkgs = get_valid_package_names(stash, _file, strippn=True)
         for i in items:
             _cleanvarname = i.VarName
-            for pkg in get_valid_package_names(stash, _file, strippn=True):
+            for pkg in _pkgs:
                 if not pkg:
                     continue  # pragma: no cover
                 if _cleanvarname.endswith(pkg):

@@ -1,8 +1,7 @@
 from collections import OrderedDict
 
 from oelint_adv.cls_rule import Rule
-from oelint_parser.cls_item import Comment
-from oelint_parser.cls_item import Variable
+from oelint_parser.cls_item import Variable, Export, Function, FunctionExports, PythonBlock
 from oelint_parser.rpl_regex import RegexRpl
 
 
@@ -34,12 +33,14 @@ class VarsPathHardcode(Rule):
 
     def check(self, _file, stash):
         res = []
-        items = stash.GetItemsFor(filename=_file)
+        items = stash.GetItemsFor(filename=_file,
+                                  classifier=[Variable.CLASSIFIER, Export.CLASSIFIER,
+                                              Function.CLASSIFIER, FunctionExports.CLASSIFIER,
+                                              PythonBlock.CLASSIFIER])
 
         for i in items:
-            if isinstance(i, Variable) and i.VarName in ['SUMMARY', 'DESCRIPTION', 'HOMEPAGE', 'AUTHOR', 'BUGTRACKER', 'FILES']:
-                continue
-            if isinstance(i, Comment):
+            if isinstance(i, Variable) and i.VarName in ['SUMMARY', 'DESCRIPTION', 'HOMEPAGE', 'AUTHOR',
+                                                         'BUGTRACKER', 'FILES', 'CVE_STATUS']:
                 continue
             _matches = []
             for k, v in self._map.items():
