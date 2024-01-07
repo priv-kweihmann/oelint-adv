@@ -28,16 +28,16 @@ class VarMisspell(Rule):
         _pkgs = get_valid_package_names(stash, _file, strippn=True)
         for i in items:
             _cleanvarname = i.VarName
+            if _cleanvarname in CONSTANTS.VariablesKnown:
+                continue
+            if _cleanvarname in _extras:
+                continue
             for pkg in _pkgs:
                 if not pkg:
                     continue  # pragma: no cover
                 if _cleanvarname.endswith(pkg):
                     _cleanvarname = ''.join(
                         _cleanvarname.rsplit(pkg, 1))  # pragma: no cover
-            if _cleanvarname in CONSTANTS.VariablesKnown:
-                continue
-            if _cleanvarname in _extras:
-                continue
             _used = False
             for a in _all:
                 if a == i:
