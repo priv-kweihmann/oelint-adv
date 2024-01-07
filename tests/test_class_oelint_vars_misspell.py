@@ -81,6 +81,12 @@ class TestClassOelintVarsMispell(TestBaseClass):
                                      SRCREV_Csocket = "e8d9e0bb248c521c2c7fa01e1c6a116d929c41b4"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     do_install[prefuncs] += "foo"
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):

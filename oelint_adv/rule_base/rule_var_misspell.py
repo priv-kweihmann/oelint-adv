@@ -1,6 +1,7 @@
 from difflib import SequenceMatcher
 
 from oelint_adv.cls_rule import Rule
+from oelint_parser.cls_item import Function
 from oelint_parser.cls_item import Variable
 from oelint_parser.constants import CONSTANTS
 from oelint_parser.helper_files import get_valid_package_names
@@ -26,11 +27,14 @@ class VarMisspell(Rule):
         _all = stash.GetItemsFor(filename=_file)
         _extras = [f'SRCREV_{x}' for x in get_valid_named_resources(stash, _file)]
         _pkgs = get_valid_package_names(stash, _file, strippn=True)
+        _taskname = CONSTANTS.FunctionsKnown + [x.FuncName for x in _all if isinstance(x, Function)]
         for i in items:
             _cleanvarname = i.VarName
             if _cleanvarname in CONSTANTS.VariablesKnown:
                 continue
             if _cleanvarname in _extras:
+                continue
+            if i.Flag and _cleanvarname in _taskname:
                 continue
             for pkg in _pkgs:
                 if not pkg:
