@@ -1,11 +1,14 @@
+import os
 from difflib import SequenceMatcher
 
-from oelint_adv.cls_rule import Rule
-from oelint_parser.cls_item import Function
-from oelint_parser.cls_item import Variable
+from oelint_parser.cls_item import Function, Variable
 from oelint_parser.constants import CONSTANTS
-from oelint_parser.helper_files import get_valid_package_names
-from oelint_parser.helper_files import get_valid_named_resources
+from oelint_parser.helper_files import (
+    get_valid_named_resources,
+    get_valid_package_names,
+)
+
+from oelint_adv.cls_rule import Rule
 
 
 class VarMisspell(Rule):
@@ -13,11 +16,15 @@ class VarMisspell(Rule):
         super().__init__(id='oelint.vars.mispell',
                          severity='warning',
                          message='<FOO>')
+        try:
+            self._minconfidence = float(os.environ.get('OELINT_MISSPELL_CONFIDENCE', 'not-a-float'))
+        except ValueError:
+            self._minconfidence = 0.8
 
-    def get_best_match(self, item, _list, minconfidence=0.5):
+    def get_best_match(self, item, _list):
         _dict = sorted([(SequenceMatcher(None, item, k).ratio(), k)
                         for k in _list], key=lambda x: x[0], reverse=True)
-        if _dict and _dict[0][0] >= minconfidence:
+        if _dict and _dict[0][0] >= self._minconfidence:
             return _dict[0][1]
         return ''
 
