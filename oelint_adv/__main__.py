@@ -360,7 +360,7 @@ def run(args):
                 rules='\n\t'.join(sorted(_loaded_ids))))
         issues = []
         groups = group_files(args.files)
-        with mp.Pool(processes=args.jobs) as pool:
+        with mp.Pool(processes=min(args.jobs, len(groups))) as pool:
             try:
                 issues = flatten(pool.map(partial(group_run, quiet=args.quiet, fix=args.fix,
                                                   jobs=args.jobs, rules=rules, nobackup=args.nobackup,
