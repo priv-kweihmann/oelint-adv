@@ -4,32 +4,17 @@ import multiprocessing as mp
 import os
 import re
 import sys
-from configparser import ConfigParser
-from configparser import NoOptionError
-from configparser import NoSectionError
-from configparser import ParsingError
+from configparser import ConfigParser, NoOptionError, NoSectionError, ParsingError
 from functools import partial
-from typing import Dict
-from typing import Union
+from typing import Dict, Union
 
 from oelint_parser.cls_item import Comment
 from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
 from oelint_parser.rpl_regex import RegexRpl
 
-from oelint_adv.cls_rule import Rule
-from oelint_adv.cls_rule import load_rules
-from oelint_adv.color import set_colorize
-from oelint_adv.rule_file import get_messageformat
-from oelint_adv.rule_file import get_rulefile
-from oelint_adv.rule_file import get_suppressions
-from oelint_adv.rule_file import set_inlinesuppressions
-from oelint_adv.rule_file import set_messageformat
-from oelint_adv.rule_file import set_noinfo
-from oelint_adv.rule_file import set_nowarn
-from oelint_adv.rule_file import set_relpaths
-from oelint_adv.rule_file import set_rulefile
-from oelint_adv.rule_file import set_suppressions
+from oelint_adv.cls_rule import Rule, load_rules
+from oelint_adv.state import State
 from oelint_adv.version import __version__
 
 sys.path.append(os.path.abspath(os.path.join(__file__, '..')))
@@ -143,6 +128,8 @@ def parse_arguments():
 
 
 def arguments_post(args):  # noqa: C901 - complexity is still okay
+    setattr(args, 'state', State())
+
     # Convert boolean symbols
     for _option in [
         'color',
@@ -180,7 +167,7 @@ def arguments_post(args):  # noqa: C901 - complexity is still okay
     if args.rulefile:
         try:
             with open(args.rulefile) as i:
-                set_rulefile(json.load(i))
+                args.state.rule_file = json.load(i)
         except (FileNotFoundError, json.JSONDecodeError):
             raise argparse.ArgumentTypeError(
                 '\'rulefile\' is not a valid file')
@@ -207,17 +194,20 @@ def arguments_post(args):  # noqa: C901 - complexity is still okay
             raise argparse.ArgumentTypeError(
                 'mod file \'{file}\' is not a valid file'.format(file=mod))
 
-    set_colorize(args.color)
-    set_nowarn(args.nowarn)
-    set_noinfo(args.noinfo)
-    set_relpaths(args.relpaths)
-    set_suppressions(args.suppress)
+    args.state.color = args.color
+    args.state.no_warn = args.nowarn
+    args.state.no_info = args.noinfo
+    args.state.nobackup = args.nobackup
+    args.state.rel_path = args.relpaths
+    args.state.suppression = args.suppress
+
     if args.noid:
         # just strip id from message format if noid is requested
         args.messageformat = args.messageformat.replace('{id}', '')
         # strip any double : resulting from the previous operation
         args.messageformat = args.messageformat.replace('::', ':')
-    set_messageformat(args.messageformat)
+    args.state.messageformat = args.messageformat
+
     return args
 
 
@@ -282,9 +272,7 @@ def flatten(list_):
     return flat
 
 
-def group_run(group, quiet, fix, jobs, rules, nobackup, messageformat):
-    set_messageformat(messageformat)
-
+def group_run(group, quiet, fix, rules, state: State):
     fixedfiles = []
     stash = Stash(quiet)
     for f in group:
@@ -307,7 +295,7 @@ def group_run(group, quiet, fix, jobs, rules, nobackup, messageformat):
                 inline_supp_map[item.Origin][item.InFileLine] = m.group(
                     'ids').strip().split(',')
 
-    set_inlinesuppressions(inline_supp_map)
+    state.inline_suppressions = inline_supp_map
 
     _files = list(set(stash.GetRecipes() + stash.GetLoneAppends()))
     issues = []
@@ -325,7 +313,7 @@ def group_run(group, quiet, fix, jobs, rules, nobackup, messageformat):
         _items = [f] + stash.GetLinksForFile(f)
         for i in _items:
             items = stash.GetItemsFor(filename=i, nolink=True)
-            if not nobackup:
+            if not state.nobackup:
                 os.rename(i, i + '.bak')  # pragma: no cover
             with open(i, 'w') as o:
                 o.write(''.join([x.RealRaw for x in items]))
@@ -340,15 +328,15 @@ def run(args):
         rules = load_rules(args, add_rules=args.addrules,
                            add_dirs=args.customrules)
         _loaded_ids = []
-        _rule_file = get_rulefile()
+        _rule_file = args.state.get_rulefile()
 
         def rule_applicable(rule):
             if isinstance(rule, Rule):
                 res = not _rule_file or any(x in _rule_file for x in rule.get_ids())  # pragma: no cover
-                res &= rule.ID not in get_suppressions()
+                res &= rule.ID not in args.state.get_suppressions()
             else:
                 res = not _rule_file or rule in _rule_file
-                res &= rule not in get_suppressions()
+                res &= rule not in args.state.get_suppressions()
             return res
 
         rules = [x for x in rules if rule_applicable(x)]
@@ -363,8 +351,7 @@ def run(args):
         with mp.Pool(processes=min(args.jobs, len(groups))) as pool:
             try:
                 issues = flatten(pool.map(partial(group_run, quiet=args.quiet, fix=args.fix,
-                                                  jobs=args.jobs, rules=rules, nobackup=args.nobackup,
-                                                  messageformat=get_messageformat()), groups))
+                                                  rules=rules, state=args.state), groups))
             finally:
                 pool.close()
                 pool.join()

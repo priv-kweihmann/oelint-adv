@@ -5,10 +5,10 @@ class TestColor(TestBaseClass):
 
     def test_get_color_by_severity(self):
         # local scoped import required due PATH manipulation
-        from oelint_adv import color
-        assert isinstance(color.get_color_by_severity('info'), str)
+        from oelint_adv import state
+        assert isinstance(state.State().get_color_by_severity('info'), str)
 
     def test_get_color_by_severity_missing(self):
         # local scoped import required due PATH manipulation
-        from oelint_adv import color
-        assert color.get_color_by_severity('unknown') == ''
+        from oelint_adv import state
+        assert state.State().get_color_by_severity('unknown') == ''
