@@ -6,19 +6,17 @@ import sys
 
 from colorama import Style
 
-from oelint_adv.color import get_color_by_severity
-from oelint_adv.color import get_colorize
-from oelint_adv.rule_file import get_inlinesuppressions
-from oelint_adv.rule_file import get_messageformat
-from oelint_adv.rule_file import get_noinfo
-from oelint_adv.rule_file import get_nowarn
-from oelint_adv.rule_file import get_relpaths
-from oelint_adv.rule_file import get_rulefile
-from oelint_adv.rule_file import get_suppressions
+from oelint_adv.state import State
 
 
 class Rule:
-    def __init__(self, id='', severity='', message='', onappend=True, onlyappend=False, appendix=()):  # noqa: A002, VNE003
+    def __init__(self,
+                 id='',
+                 severity='',
+                 message='',
+                 onappend=True,
+                 onlyappend=False,
+                 appendix=()):  # noqa: A002, VNE003
         """constructor
 
         Keyword Arguments:
@@ -35,6 +33,7 @@ class Rule:
         self.OnAppend = onappend
         self.OnlyAppend = onlyappend
         self.Appendix = appendix
+        self._state: State = None
 
     def check(self, _file, stash):
         """Stub for running check - is overridden by each rule
@@ -88,33 +87,33 @@ class Rule:
             _id.append(self.ID + '.' + appendix)
             _display_id += '.' + appendix
         # filter out suppressions
-        if any(x in get_suppressions() for x in _id):
+        if any(x in self._state.get_suppressions() for x in _id):
             return []
         _severity = self.get_severity(appendix)
-        if _severity == 'info' and get_noinfo():
+        if _severity == 'info' and self._state.get_noinfo():
             return []
-        if _severity == 'warning' and get_nowarn():
+        if _severity == 'warning' and self._state.get_nowarn():
             return []
         if _line <= 0:
             # Fix those issues, that don't come with a line
             _line = 1
 
         # filter out inline suppressions
-        if any(x for x in _id if x in get_inlinesuppressions().get(_file, {}).get(max(1, _suppression_offset - 1), [])):
+        if any(x for x in _id if x in self._state.get_inlinesuppressions().get(_file, {}).get(max(1, _suppression_offset - 1), [])):
             return []
 
         _path = os.path.abspath(_file)
-        if get_relpaths():
+        if self._state.get_relpaths():
             _path = os.path.relpath(_path, os.getcwd())
 
         _style = ''
         _color = ''
-        if get_colorize():
-            _color = get_color_by_severity(_severity)
+        if self._state.get_colorize():
+            _color = self._state.get_color_by_severity(_severity)
             _style = Style.RESET_ALL
 
-        _msg = get_messageformat().format(path=_path, line=_line, severity=_severity,
-                                          id=_display_id, msg=override_msg)
+        _msg = self._state.get_messageformat().format(path=_path, line=_line, severity=_severity,
+                                                      id=_display_id, msg=override_msg)
 
         return [((_path, _line), f'{_color}{_msg}{_style}')]
 
@@ -130,7 +129,7 @@ class Rule:
         Returns:
             str -- Severity for this rule if it is enabled, {None} if disabled.
         """
-        _rule_file = get_rulefile()
+        _rule_file = self._state.get_rulefile()
         if not _rule_file:
             return self.Severity
         _subid = None if appendix is None else f'{self.ID}.{appendix}'
@@ -159,8 +158,8 @@ class Rule:
             dict -- list of rulefile entries
         """
         return {
-            **({} if (self.get_severity() is None or self.ID in get_suppressions()) else {self.ID: self.get_severity()}),
-            **{f'{self.ID}.{x}': self.get_severity(x) for x in self.Appendix if (self.get_severity(x) is not None and self.ID not in get_suppressions())},
+            **({} if (self.get_severity() is None or self.ID in self._state.get_suppressions()) else {self.ID: self.get_severity()}),
+            **{f'{self.ID}.{x}': self.get_severity(x) for x in self.Appendix if (self.get_severity(x) is not None and self.ID not in self._state.get_suppressions())},
         }
 
     def format_message(self, *args, **kwargs):
@@ -202,7 +201,7 @@ def load_rules(args, add_rules=(), add_dirs=()):
         list -- Class instances of loaded rules
     """
     res = []
-    _rule_file = get_rulefile()
+    _rule_file = args.state.get_rulefile()
     _path_list = {
         'base': {'path': 'rule_base', 'builtin': True},
     }
@@ -230,6 +229,7 @@ def load_rules(args, add_rules=(), add_dirs=()):
                     try:
                         if issubclass(m[1], Rule):
                             inst = m[1]()
+                            inst._state = args.state
                             _potential_ids = [
                                 inst.ID] + ['{a}.{b}'.format(a=inst.ID, b=x) for x in inst.Appendix]
                             if any(_potential_ids):

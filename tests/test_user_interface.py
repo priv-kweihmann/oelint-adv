@@ -29,12 +29,12 @@ class TestClassIntegration(TestBaseClass):
         _args = self._create_args(input_, extraopts=['--color'])
         issues = [x[1] for x in run(_args)]
         issues_formatted = '\n'.join(issues)
-        assert(any(Fore.RED in x for x in issues)
-               ), f'red expected in:\n{issues_formatted}'
-        assert(any(Fore.YELLOW in x for x in issues)
-               ), f'yellow expected in:\n{issues_formatted}'
-        assert(any(Fore.GREEN in x for x in issues)
-               ), f'green expected in:\n{issues_formatted}'
+        assert (any(Fore.RED in x for x in issues)
+                ), f'red expected in:\n{issues_formatted}'
+        assert (any(Fore.YELLOW in x for x in issues)
+                ), f'yellow expected in:\n{issues_formatted}'
+        assert (any(Fore.GREEN in x for x in issues)
+                ), f'green expected in:\n{issues_formatted}'
 
     @pytest.mark.parametrize('input_',
                              [
@@ -55,8 +55,7 @@ class TestClassIntegration(TestBaseClass):
         _cwd = os.getcwd()
         os.chdir('/tmp')  # noqa: S108 - usage of tmp is fine for our purposes
         issues = [x[1] for x in run(_args)]
-        assert(not any(x.startswith('/tmp/') for x in issues),  # noqa: S108 - usage of tmp is fine for our purposes
-               'Expected relpaths in:\n{}'.format('\n'.join(issues)))
+        assert (not any(x.startswith('/tmp/') for x in issues))  # noqa: S108 - usage of tmp is fine for our purposes
         os.chdir(_cwd)
 
     def test_missing_file_args(self):
@@ -88,7 +87,7 @@ class TestClassIntegration(TestBaseClass):
             '--constantmod=+{mod}'.format(mod=self._create_tempfile('constmod', __cnt))]
         _args = self._create_args(input_, extraopts=_extra_opts)
 
-        assert('do_foo_bar' in CONSTANTS.FunctionsKnown)
+        assert ('do_foo_bar' in CONSTANTS.FunctionsKnown)
 
     @pytest.mark.parametrize('input_',
                              [
@@ -115,7 +114,7 @@ class TestClassIntegration(TestBaseClass):
             '--constantmod=-{mod}'.format(mod=self._create_tempfile('constmod', __cnt))]
         self._create_args(input_, extraopts=_extra_opts)
 
-        assert('do_ar_patched' not in CONSTANTS.FunctionsKnown)
+        assert ('do_ar_patched' not in CONSTANTS.FunctionsKnown)
 
     @pytest.mark.parametrize('input_',
                              [
@@ -142,7 +141,7 @@ class TestClassIntegration(TestBaseClass):
             '--constantmod={mod}'.format(mod=self._create_tempfile('constmod', __cnt))]
         _args = self._create_args(input_, extraopts=_extra_opts)
 
-        assert(['do_ar_patched'] == CONSTANTS.FunctionsKnown)
+        assert (['do_ar_patched'] == CONSTANTS.FunctionsKnown)
 
     @pytest.mark.parametrize('input_',
                              [
@@ -505,7 +504,7 @@ class TestClassIntegration(TestBaseClass):
                                  }
                              ],
                              )
-    def test_grouping_with_noversion(self, input_, id_, occurrence):
+    def test_grouping_with_noversion2(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(input_), id_, occurrence)
 
     @pytest.mark.parametrize('input_',
@@ -525,7 +524,7 @@ class TestClassIntegration(TestBaseClass):
 
         _args = self._create_args(input_, extraopts=['--noinfo'])
         issues = [x[1] for x in run(_args)]
-        assert(not any([x for x in issues if ':info:' in x]))
+        assert (not any([x for x in issues if ':info:' in x]))
 
     @pytest.mark.parametrize('input_',
                              [
@@ -544,7 +543,7 @@ class TestClassIntegration(TestBaseClass):
 
         _args = self._create_args(input_, extraopts=['--nowarn'])
         issues = [x[1] for x in run(_args)]
-        assert(not any([x for x in issues if ':warning:' in x]))
+        assert (not any([x for x in issues if ':warning:' in x]))
 
     @pytest.mark.parametrize('input_',
                              [
@@ -563,7 +562,7 @@ class TestClassIntegration(TestBaseClass):
 
         _args = self._create_args(input_, extraopts=['--noid'])
         issues = [x[1] for x in run(_args)]
-        assert(not any([x for x in issues if ':oelint.vars.insaneskip:' in x]))
+        assert (not any([x for x in issues if ':oelint.vars.insaneskip:' in x]))
 
     @pytest.mark.parametrize('input_',
                              [
@@ -583,7 +582,7 @@ class TestClassIntegration(TestBaseClass):
         _args = self._create_args(
             input_, extraopts=['--messageformat="BAR:FOO"'])
         issues = [x[1] for x in run(_args)]
-        assert(any([x for x in issues if 'BAR:FOO' in x]))
+        assert (any([x for x in issues if 'BAR:FOO' in x]))
 
     @pytest.mark.parametrize('input_',
                              [
@@ -603,7 +602,7 @@ class TestClassIntegration(TestBaseClass):
         _args = self._create_args(
             input_, extraopts=['--messageformat="{id}:{severity}:{msg}"'])
         issues = [x[1] for x in run(_args)]
-        assert(any([x for x in issues if 'oelint.vars.insaneskip:error:' in x]))
+        assert (any([x for x in issues if 'oelint.vars.insaneskip:error:' in x]))
 
     @pytest.mark.parametrize('input_',
                              [
@@ -625,7 +624,7 @@ class TestClassIntegration(TestBaseClass):
         _args = self._create_args(
             input_, extraopts=['--constantfile={file}'.format(file=_cstfile)])
         issues = [x[1] for x in run(_args)]
-        assert(any(issues))
+        assert (any(issues))
 
     @pytest.mark.parametrize('input_',
                              [
@@ -647,18 +646,18 @@ class TestClassIntegration(TestBaseClass):
         _args = self._create_args(
             input_, extraopts=['--rulefile={file}'.format(file=_cstfile)])
         issues = [x[1] for x in run(_args)]
-        assert(any(issues))
+        assert (any(issues))
 
     @pytest.mark.parametrize('input_',
-                            [
-                                {
-                                    'oelint adv-test.bb':
-                                    '''
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
                                     A = "1"
                                     ''',
-                                },
-                            ],
-                            )
+                                 },
+                             ],
+                             )
     def test_rulefile_subids_only(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
@@ -674,8 +673,7 @@ class TestClassIntegration(TestBaseClass):
         _args = self._create_args(
             input_, extraopts=['--rulefile={file}'.format(file=_cstfile)])
         issues = [x[1] for x in run(_args)]
-        assert(not any(any(x.startswith(y) for y in _rule_file.keys()) for x in issues))
-
+        assert (not any(any(x.startswith(y) for y in _rule_file.keys()) for x in issues))
 
     @pytest.mark.parametrize('input_',
                              [
@@ -695,7 +693,7 @@ class TestClassIntegration(TestBaseClass):
         _args = self._create_args(
             input_, extraopts=['--rulefile={file}'.format(file=_cstfile), '--noinfo'])
         issues = [x[1] for x in run(_args)]
-        assert(not any(issues))
+        assert (not any(issues))
 
     @pytest.mark.parametrize('input_',
                              [
@@ -715,7 +713,7 @@ class TestClassIntegration(TestBaseClass):
         _args = self._create_args(
             input_, extraopts=['--rulefile={file}'.format(file=_cstfile)])
         issues = [x[1] for x in run(_args)]
-        assert(not any("oelint.var.mandatoryvar.DESCRIPTION" in x for x in issues))
+        assert (not any("oelint.var.mandatoryvar.DESCRIPTION" in x for x in issues))
 
     @pytest.mark.parametrize('input_',
                              [
@@ -735,7 +733,7 @@ class TestClassIntegration(TestBaseClass):
         _args = self._create_args(
             input_, extraopts=['--rulefile={file}'.format(file=_cstfile), '--noinfo'])
         issues = [x[1] for x in run(_args)]
-        assert(any(issues))
+        assert (any(issues))
 
     @pytest.mark.parametrize('input_',
                              [
@@ -810,7 +808,7 @@ class TestClassIntegration(TestBaseClass):
             [self._create_tempfile(k, v) for k, v in input_.items()]
         ))
         issues = [x[1] for x in run(_args)]
-        assert(any(issues))
+        assert (any(issues))
 
     def test_invalidfile(self):
         # local imports only
@@ -821,7 +819,7 @@ class TestClassIntegration(TestBaseClass):
             ['/does/not/exist']
         ))
         issues = [x[1] for x in run(_args)]
-        assert(not any(issues))
+        assert (not any(issues))
 
     @pytest.mark.parametrize('input_',
                              [
@@ -836,7 +834,7 @@ class TestClassIntegration(TestBaseClass):
                              )
     def test_exit_zero(self, input_):
         _args = self._create_args(input_, extraopts=['--exit-zero'])
-        assert(_args.exit_zero)
+        assert (_args.exit_zero)
 
     @pytest.mark.parametrize('input_',
                              [
