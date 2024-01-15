@@ -6,7 +6,7 @@ import re
 import sys
 from configparser import ConfigParser, NoOptionError, NoSectionError, ParsingError
 from functools import partial
-from typing import Dict, Union
+from typing import Dict, Iterable, List, Tuple, Union
 
 from oelint_parser.cls_item import Comment
 from oelint_parser.cls_stash import Stash
@@ -22,7 +22,7 @@ sys.path.append(os.path.abspath(os.path.join(__file__, '..')))
 
 class TypeSafeAppendAction(argparse.Action):
 
-    def __call__(self, parser, namespace, values, option_string=None):
+    def __call__(self, parser, namespace, values, option_string=None) -> None:
         if not isinstance(values, str):
             return  # pragma: no cover
         items = getattr(namespace, self.dest) or []
@@ -44,7 +44,7 @@ def deserialize_boolean_options(options: Dict) -> Dict[str, Union[str, bool]]:
     return options
 
 
-def parse_configfile():
+def parse_configfile() -> Dict:
     config = ConfigParser()
     for conffile in [os.environ.get('OELINT_CONFIG', '/does/not/exist'),
                      os.path.join(os.getcwd(), '.oelint.cfg'),
@@ -65,7 +65,7 @@ def parse_configfile():
     return {}
 
 
-def create_argparser():
+def create_argparser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog='oelint-adv',
                                      description='Advanced OELint - Check bitbake recipes against OECore styleguide')
     parser.register('action', 'tsappend', TypeSafeAppendAction)
@@ -85,7 +85,6 @@ def create_argparser():
                         help='Rulefile')
     parser.add_argument('--jobs', type=int, default=mp.cpu_count(),
                         help='Number of jobs to run (default all cores)')
-    parser.add_argument('--constantfile', default=None, help='Constantfile')
     parser.add_argument('--color', action='store_true', default=False,
                         help='Add color to the output based on the severity')
     parser.add_argument('--quiet', action='store_true', default=False,
@@ -123,11 +122,11 @@ def create_argparser():
     return parser
 
 
-def parse_arguments():
+def parse_arguments() -> argparse.Namespace:
     return create_argparser().parse_args()  # pragma: no cover
 
 
-def arguments_post(args):  # noqa: C901 - complexity is still okay
+def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C901 - complexity is still okay
     setattr(args, 'state', State())
 
     # Convert boolean symbols
@@ -172,14 +171,6 @@ def arguments_post(args):  # noqa: C901 - complexity is still okay
             raise argparse.ArgumentTypeError(
                 '\'rulefile\' is not a valid file')
 
-    if args.constantfile:
-        try:
-            with open(args.constantfile) as i:
-                CONSTANTS.AddFromConstantFile(json.load(i))
-        except (FileNotFoundError, json.JSONDecodeError):
-            raise argparse.ArgumentTypeError(
-                '\'constantfile\' is not a valid file')
-
     for mod in args.constantmods:
         try:
             with open(mod.lstrip('+-')) as _in:
@@ -211,7 +202,7 @@ def arguments_post(args):  # noqa: C901 - complexity is still okay
     return args
 
 
-def group_files(files):
+def group_files(files: Iterable[str]) -> List[List[str]]:
     # in case multiple bb files are passed at once we might need to group them to
     # avoid having multiple, potentially wrong hits of include files shared across
     # the bb files in the stash
@@ -254,7 +245,7 @@ def group_files(files):
     return res.values()
 
 
-def print_rulefile(args):
+def print_rulefile(args: argparse.Namespace) -> None:
     rules = load_rules(args, add_rules=args.addrules,
                        add_dirs=args.customrules)
     ruleset = {}
@@ -263,7 +254,7 @@ def print_rulefile(args):
     print(json.dumps(ruleset, indent=2))  # noqa: T201 - it's here for a reason
 
 
-def flatten(list_):
+def flatten(list_: Iterable) -> List:
     if not isinstance(list_, list):
         return [list_]
     flat = []
@@ -272,7 +263,7 @@ def flatten(list_):
     return flat
 
 
-def group_run(group, quiet, fix, rules, state: State):
+def group_run(group, quiet, fix, rules, state: State) -> List[Tuple[str, int, str]]:
     fixedfiles = []
     stash = Stash(quiet)
     for f in group:
@@ -323,7 +314,7 @@ def group_run(group, quiet, fix, rules, state: State):
     return issues
 
 
-def run(args):
+def run(args: argparse.Namespace) -> List[Tuple[str, int, str]]:
     try:
         rules = load_rules(args, add_rules=args.addrules,
                            add_dirs=args.customrules)
@@ -364,7 +355,7 @@ def run(args):
     return []  # pragma: no cover - that shouldn't be covered anyway
 
 
-def main():  # pragma: no cover
+def main() -> int:  # pragma: no cover
     args = arguments_post(parse_arguments())
 
     if args.print_rulefile:

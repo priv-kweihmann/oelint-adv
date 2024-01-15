@@ -17,6 +17,10 @@ class TestClassOelintVarsMispell(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'FILS = "foo"',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRR_URI[sha256sum] = "1234"',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -82,9 +86,23 @@ class TestClassOelintVarsMispell(TestBaseClass):
                                      ''',
                                  },
                                  {
+                                     'abc.bb':
+                                     '''
+                                     SRC_URI = "git://github.com/znc/znc.git;name=abc;branch=master;protocol=https \\
+                                                git://github.com/jimloco/Csocket.git;destsuffix=git/third_party/Csocket;name=Csocket;branch=master;protocol=https"
+                                     SRCREV_Csocket[doc] = "foo"
+                                     ''',
+                                 },
+                                 {
                                      'oelint_adv_test.bb':
                                      '''
                                      do_install[prefuncs] += "foo"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     dskfdsfkjfhsjkfsdjfkj = "1"
                                      ''',
                                  },
                              ],

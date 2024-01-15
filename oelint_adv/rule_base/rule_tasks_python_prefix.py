@@ -1,18 +1,22 @@
 import ast
+from typing import List, Tuple
+
+from oelint_parser.cls_item import Function
+from oelint_parser.cls_stash import Stash
 
 from oelint_adv.cls_rule import Rule
-from oelint_parser.cls_item import Function
 
 
 class TaskPythonPrefix(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.task.pythonprefix',
                          severity='warning',
                          message='Tasks containing python code, should be prefixed with python in function header')
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
-        for item in stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER):
+        items: List[Function] = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER)
+        for item in items:
             # Don't make assumptions about functions that consist of single
             # line only
             if len([x for x in item.FuncBodyRaw.split('\n') if x.strip()]) < 2:

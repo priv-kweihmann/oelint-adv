@@ -1,5 +1,9 @@
-from oelint_adv.cls_rule import Rule
+from typing import List, Tuple
+
 from oelint_parser.cls_item import Variable
+from oelint_parser.cls_stash import Stash
+
+from oelint_adv.cls_rule import Rule
 
 
 class VarDescSameTooBrief(Rule):
@@ -8,15 +12,14 @@ class VarDescSameTooBrief(Rule):
                          severity='warning',
                          message='\'DESCRIPTION\' is the shorter than \'SUMMARY\'')
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
-        items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                  attribute=Variable.ATTR_VAR, attributeValue='DESCRIPTION')
-        items_sum = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                      attribute=Variable.ATTR_VAR, attributeValue='SUMMARY')
+        items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                                                  attribute=Variable.ATTR_VAR, attributeValue='DESCRIPTION')
+        items_sum: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                                                      attribute=Variable.ATTR_VAR, attributeValue='SUMMARY')
         for i in items:
-            _same = [x for x in items_sum if len(
-                x.VarValueStripped) > len(i.VarValueStripped)]
+            _same = [x for x in items_sum if len(x.VarValueStripped) > len(i.VarValueStripped)]
             if any(_same):
                 res += self.finding(i.Origin, i.InFileLine)
         return res

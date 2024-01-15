@@ -1,9 +1,13 @@
-from oelint_adv.cls_rule import Rule
+from typing import List, Tuple
+
 from oelint_parser.cls_item import Variable
+from oelint_parser.cls_stash import Stash
+
+from oelint_adv.cls_rule import Rule
 
 
 class VarOverrideAppend(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.vars.overrideappend',
                          severity='warning',
                          message='This creates an empty scope which is then appended. It should be {op}:{_class} instead')
@@ -43,10 +47,10 @@ class VarOverrideAppend(Rule):
             'USERADD_PARAM',
         ]
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
-        items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                  attribute=Variable.ATTR_VAR)
+        items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                                                  attribute=Variable.ATTR_VAR)
 
         _store = set()
 
@@ -61,7 +65,7 @@ class VarOverrideAppend(Rule):
             _scope_key = i.VarName + ':' + '-'.join(_scope)
             if _op:
                 if _items[0] not in _op and _scope_key not in _store:
-                    res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.format(
-                        op=_op[0], _class=':'.join(_scope)))
+                    res += self.finding(i.Origin, i.InFileLine,
+                                        override_msg=self.Msg.format(op=_op[0], _class=':'.join(_scope)))
             _store.add(_scope_key)
         return res

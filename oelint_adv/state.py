@@ -97,4 +97,4 @@ class State():
         Returns:
             bool: nobackup is set
         """
-        return self.nobackup
+        return self.nobackup  # pragma: no cover

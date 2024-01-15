@@ -1,22 +1,23 @@
 import os
+from typing import List, Tuple
+
+from oelint_parser.cls_stash import Stash
 
 from oelint_adv.cls_rule import Rule
-from oelint_parser.helper_files import is_image
-from oelint_parser.helper_files import is_packagegroup
 
 
 class FileNoSpaces(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.file.underscores',
                          severity='error',
                          message='FOO',
                          onappend=False)
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         _basename, _ext = os.path.splitext(os.path.basename(_file))
         if _ext in ['.bb']:  # pragma: no cover
-            if is_packagegroup(stash, _file) or is_image(stash, _file):
+            if stash.IsPackageGroup(_file) or stash.IsImage(_file):
                 return []
             _sep = [x for x in _basename if x in ['_', '-']]
             _us = [x for x in _sep if x == '_']

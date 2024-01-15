@@ -1,15 +1,25 @@
-from oelint_adv.cls_rule import Rule
+from typing import List, Tuple
+
 from oelint_parser.cls_item import Variable
+from oelint_parser.cls_stash import Stash
+
+from oelint_adv.cls_rule import Rule
 
 
 class VarUnneededFilesSetting(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.vars.filessetting',
                          severity='warning',
                          message='Check for improvable FILES settings',
                          appendix=['hidden', 'double'])
 
-    def __find_match_from_stash(self, _files, variable_, needle, msg, appendix, onappendonly=False):
+    def __find_match_from_stash(self,
+                                _files: List[Variable],
+                                variable_: str,
+                                needle: str,
+                                msg: str,
+                                appendix: str,
+                                onappendonly: bool = False) -> List[Tuple[str, int, str]]:
         res = []
         for i in _files:
             if variable_ in i.SubItems and 'remove' not in i.SubItems and needle in i.VarValue:  # pragma: no cover
@@ -18,7 +28,7 @@ class VarUnneededFilesSetting(Rule):
                                         override_msg=msg, appendix=appendix)
         return res
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         _expanded = stash.ExpandVar(filename=_file, attribute=Variable.ATTR_VAR)
         _all_files = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,

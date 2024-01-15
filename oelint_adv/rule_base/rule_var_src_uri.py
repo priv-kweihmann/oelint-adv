@@ -1,13 +1,14 @@
+from typing import List, Tuple
+
 from oelint_parser.cls_item import Variable
-from oelint_parser.helper_files import expand_term
-from oelint_parser.helper_files import get_scr_components
+from oelint_parser.cls_stash import Stash
 from oelint_parser.parser import INLINE_BLOCK
 
 from oelint_adv.cls_rule import Rule
 
 
 class VarSRCUriOptions(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.vars.srcurioptions',
                          severity='warning',
                          message='<FOO>')
@@ -151,8 +152,8 @@ class VarSRCUriOptions(Rule):
             'gitsm': {'branch': ['nobranch']},
         }
 
-    def __analyse(self, item, _input, _index):
-        _url = get_scr_components(_input)
+    def __analyse(self, stash: Stash, item: Variable, _input: str, _index: int) -> List[Tuple[str, int, str]]:
+        _url = stash.GetScrComponents(_input)
         res = []
         if 'scheme' not in _url:
             return res  # pragma: no cover
@@ -186,17 +187,12 @@ class VarSRCUriOptions(Rule):
                                         blockoffset=item.InFileLine)
         return res
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
-        items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                  attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
+        items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                                                  attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
         for item in items:
-            if any(item.Flag.endswith(x) for x in ['md5sum', 'sha256sum']):
-                # These are just the hashes
-                continue
-            lines = [y.strip('"') for y in item.get_items() if y]
+            lines = [y.strip('"') for y in item.get_items() if y and INLINE_BLOCK not in y]
             for x in lines:
-                if x == INLINE_BLOCK:
-                    continue
-                res += self.__analyse(item, expand_term(stash, _file, x), lines.index(x))
+                res += self.__analyse(stash, item, stash.ExpandTerm(_file, x), lines.index(x))
         return res

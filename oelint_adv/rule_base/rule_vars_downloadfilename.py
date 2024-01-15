@@ -1,26 +1,27 @@
-from oelint_adv.cls_rule import Rule
+from typing import List, Tuple
+
 from oelint_parser.cls_item import Variable
-from oelint_parser.helper_files import expand_term
-from oelint_parser.helper_files import get_scr_components
-from oelint_parser.helper_files import guess_recipe_version
+from oelint_parser.cls_stash import Stash
+
+from oelint_adv.cls_rule import Rule
 
 
 class VarsDownloadfilename(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.vars.downloadfilename',
                          severity='warning',
                          message='Fetcher does create a download artifact without \'PV\' in the filename')
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
-        items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                  attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
+        items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                                                  attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
 
-        _pv = expand_term(stash, _file, '${PV}') or guess_recipe_version(_file)
+        _pv = stash.ExpandTerm(_file, '${PV}')
 
         for i in items:
-            for item in [expand_term(stash, _file, x) for x in i.get_items()]:
-                _scrcomp = get_scr_components(item)
+            for item in [stash.ExpandTerm(_file, x) for x in i.get_items()]:
+                _scrcomp = stash.GetScrComponents(item)
                 if _scrcomp.get('scheme', '') in ['https', 'http', 'ftp']:
                     _src = _scrcomp.get('src', '')
                     _dfn = _scrcomp.get('options', {}).get(
