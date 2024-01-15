@@ -615,28 +615,6 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
-    def test_constantfile(self, input_):
-        # local imports only
-        from oelint_adv.__main__ import run
-
-        _cstfile = self._create_tempfile('constants.json', '{}')
-
-        _args = self._create_args(
-            input_, extraopts=['--constantfile={file}'.format(file=_cstfile)])
-        issues = [x[1] for x in run(_args)]
-        assert (any(issues))
-
-    @pytest.mark.parametrize('input_',
-                             [
-                                 {
-                                     'oelint adv-test.bb':
-                                     '''
-                                     VAR = "1"
-                                     INSANE_SKIP_${PN} = "foo"
-                                     ''',
-                                 },
-                             ],
-                             )
     def test_rulefile(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
@@ -771,22 +749,6 @@ class TestClassIntegration(TestBaseClass):
         out = json.loads(capsys.readouterr().out)
         for k, v in input_.items():
             assert out[k] == v
-
-    @pytest.mark.parametrize('input_',
-                             [
-                                 {
-                                     'oelint adv-test.bb':
-                                     '''
-                                     VAR = "1"
-                                     INSANE_SKIP_${PN} = "foo"
-                                     ''',
-                                 },
-                             ],
-                             )
-    def test_broken_constantfile(self, input_):
-        with pytest.raises(ArgumentTypeError):
-            _args = self._create_args(
-                input_, extraopts=['--constantfile=/does/not/exist'])
 
     @pytest.mark.parametrize('input_',
                              [

@@ -1,19 +1,24 @@
-from oelint_adv.cls_rule import Rule
-from oelint_parser.cls_item import Variable
+from typing import List, Tuple
 
+from oelint_parser.cls_item import Variable
+from oelint_parser.cls_stash import Stash
+from oelint_parser.parser import INLINE_BLOCK
 from oelint_parser.rpl_regex import RegexRpl
 
+from oelint_adv.cls_rule import Rule
+
+
 class VarDuplicates(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.vars.duplicate',
                          severity='warning',
                          message='<FOO>')
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         for c in ['DEPENDS', 'RDEPENDS']:
-            items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                      attribute=Variable.ATTR_VAR, attributeValue=c)
+            items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                                                      attribute=Variable.ATTR_VAR, attributeValue=c)
             _items = {}
             for i in items:
                 for x in [y for y in i.get_items(versioned=True) if y]:
@@ -27,7 +32,7 @@ class VarDuplicates(Rule):
                         _items[machine_mods_cleaned] = []
                     _operations = i.AppendOperation()
                     if x in _items[machine_mods_cleaned]:
-                        if x == '!!!inlineblock!!!':
+                        if x == INLINE_BLOCK:
                             continue
                         if not any(x in ['append', 'prepend', ' += ', ' =+ '] for x in _operations):
                             _items[machine_mods_cleaned] = [x]
@@ -39,8 +44,7 @@ class VarDuplicates(Rule):
                             _items[machine_mods_cleaned].append(x)
                         elif 'remove' in _operations:
                             if x in _items[machine_mods_cleaned]:
-                                _items[machine_mods_cleaned].remove(
-                                    x)  # pragma: no cover
+                                _items[machine_mods_cleaned].remove(x)  # pragma: no cover
                         else:
                             _items[machine_mods_cleaned] = [x]
         return res

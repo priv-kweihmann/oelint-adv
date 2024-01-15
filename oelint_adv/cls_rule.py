@@ -3,10 +3,12 @@ import inspect
 import os
 import pkgutil
 import sys
+from typing import Iterable, List, Tuple
 
 from colorama import Style
 
 from oelint_adv.state import State
+from oelint_parser.cls_stash import Stash
 
 
 class Rule:
@@ -35,7 +37,7 @@ class Rule:
         self.Appendix = appendix
         self._state: State = None
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         """Stub for running check - is overridden by each rule
 
         Arguments:
@@ -47,7 +49,7 @@ class Rule:
         """
         return []  # pragma: no cover
 
-    def fix(self, _file, stash):
+    def fix(self, _file: str, stash: Stash) -> List[str]:
         """Stub for fix function - can be overridden by each rule
 
         Arguments:
@@ -59,7 +61,12 @@ class Rule:
         """
         return []
 
-    def finding(self, _file, _line, override_msg=None, appendix=None, blockoffset=0):
+    def finding(self,
+                _file: str,
+                _line: int,
+                override_msg: str = None,
+                appendix: str = None,
+                blockoffset: int = 0) -> Tuple[str, int, str]:
         """Called by rule to indicate a finding
 
         Arguments:
@@ -72,7 +79,7 @@ class Rule:
             blockoffset {int} -- line number to look for inline suppressions instead of _line (default: 0 == use _line)
 
         Returns:
-            str -- Human readable finding (possibly with color codes)
+            Tuple[str, int, str] -- Path, line, Human readable finding (possibly with color codes)
         """
         if not self.OnAppend and _file.endswith('.bbappend'):
             return []  # pragma: no cover
@@ -117,10 +124,10 @@ class Rule:
 
         return [((_path, _line), f'{_color}{_msg}{_style}')]
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '{id}'.format(id=self.ID)  # pragma: no cover
 
-    def get_severity(self, appendix=None):
+    def get_severity(self, appendix: str = None) -> str:
         """Get the configured severity for this rule, if it is enabled.
 
         Keyword Arguments:
@@ -142,7 +149,7 @@ class Rule:
             return None
         return _severity if _severity != '' else self.Severity
 
-    def get_ids(self):
+    def get_ids(self) -> List[str]:
         """Returns all possible IDs of the rule
 
         Returns:
@@ -150,7 +157,7 @@ class Rule:
         """
         return [self.ID] + ['{id}.{app}'.format(id=self.ID, app=x) for x in self.Appendix]
 
-    def get_rulefile_entries(self):
+    def get_rulefile_entries(self) -> dict:
         """Returns a dictionary of entries which would represent the currently
         enabled ruleset (for this rule) in a rulefile.
 
@@ -162,7 +169,7 @@ class Rule:
             **{f'{self.ID}.{x}': self.get_severity(x) for x in self.Appendix if (self.get_severity(x) is not None and self.ID not in self._state.get_suppressions())},
         }
 
-    def format_message(self, *args, **kwargs):
+    def format_message(self, *args, **kwargs) -> str:
         """Format message
 
         Returns:
@@ -171,7 +178,7 @@ class Rule:
         return self.Msg.format(*args, **kwargs)
 
     @staticmethod
-    def is_lone_append(stash, file):
+    def is_lone_append(stash, file: str) -> bool:
         """Check if the file is a bbappend file without any matching
            bb file
 
@@ -190,7 +197,7 @@ class Rule:
         return True
 
 
-def load_rules(args, add_rules=(), add_dirs=()):
+def load_rules(args, add_rules: Iterable[str] = (), add_dirs: Iterable[str] = ()) -> List['Rule']:
     """Load rules from set directories
 
     Keyword Arguments:

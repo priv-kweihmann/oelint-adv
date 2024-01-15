@@ -1,19 +1,21 @@
 import os
+from typing import List, Tuple
+
+from oelint_parser.cls_item import Variable
+from oelint_parser.cls_stash import Stash
 
 from oelint_adv.cls_rule import Rule
-from oelint_parser.cls_item import Variable
-from oelint_parser.helper_files import get_files
 
 
 class FilePatchIsSignedOff(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.file.patchsignedoff',
                          severity='warning',
                          message='Patch \'{FILE}\' should contain a Signed-off-by entry')
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
-        items = get_files(stash, _file, '*.patch')
+        items = stash.GetFiles(_file, '*.patch')
         _items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                    attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
         for i in items:

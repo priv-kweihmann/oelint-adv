@@ -1,22 +1,26 @@
-from oelint_adv.cls_rule import Rule
+from typing import List, Tuple
+
 from oelint_parser.cls_item import Function
+from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
+
+from oelint_adv.cls_rule import Rule
 
 
 class TaskOrder(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.task.order',
                          severity='warning',
                          message='<FOO>',
                          appendix=CONSTANTS.FunctionsOrder)
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         _files = {item.Origin for item in stash.GetItemsFor(
             filename=_file, classifier=Function.CLASSIFIER)}
 
         for _single_file in _files:
-            items = stash.GetItemsFor(
+            items: List[Function] = stash.GetItemsFor(
                 filename=_single_file, classifier=Function.CLASSIFIER, nolink=True)
             for item in items:
                 _func_before = sorted(

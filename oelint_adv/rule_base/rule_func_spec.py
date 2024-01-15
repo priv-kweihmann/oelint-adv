@@ -1,26 +1,28 @@
-from oelint_adv.cls_rule import Rule
-from oelint_parser.cls_item import Function
-from oelint_parser.cls_item import Variable
+from typing import List, Tuple
+
+from oelint_parser.cls_item import Function, Variable
+from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
-from oelint_parser.helper_files import get_valid_package_names
 from oelint_parser.parser import INLINE_BLOCK
 from oelint_parser.rpl_regex import RegexRpl
 
+from oelint_adv.cls_rule import Rule
+
 
 class VarPnBpnUsage(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.func.specific',
                          severity='error',
                          message='\'{func}\' is set specific to [\'{machine}\'] or [\'{distro}\'], but isn\'t known from PACKAGES, MACHINE, DISTRO, or resources')
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER,
                                   attribute=Function.ATTR_FUNCNAME)
         _comp = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR,
                                   attributeValue='COMPATIBLE_MACHINE')
-        _packages = get_valid_package_names(stash, _file)
+        _packages = stash.GetValidPackageNames(_file)
         _valid_funcs = ['pkg_preinst',
                         'pkg_postinst', 'pkg_prerm', 'pkg_postrm']
         for b in ['pkg_preinst', 'pkg_postinst', 'pkg_prerm', 'pkg_postrm']:

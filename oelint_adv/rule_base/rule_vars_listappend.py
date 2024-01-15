@@ -1,26 +1,25 @@
-from oelint_adv.cls_rule import Rule
+from typing import List, Tuple
+
 from oelint_parser.cls_item import Variable
+from oelint_parser.cls_stash import Stash
+
+from oelint_adv.cls_rule import Rule
 
 
 class VarListAppend(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.vars.listappend',
                          severity='error',
                          message='<FOO>')
 
-    def __getMatches(self, _file, stash):
+    def __getMatches(self, _file: str, stash: Stash) -> Tuple[List[Variable], List[Variable]]:
         res_app = []
         res_pre = []
-        items = stash.GetItemsFor(
-            filename=_file, classifier=Variable.CLASSIFIER)
-        needles = ['PACKAGES', 'SRC_URI', 'FILES', 'RDEPENDS', 'DEPENDS']
+        items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                                                  attribute=Variable.ATTR_VAR,
+                                                  attributeValue=['PACKAGES', 'SRC_URI', 'FILES', 'RDEPENDS', 'DEPENDS'])
 
         for i in items:
-            if not any(i.VarName.startswith(x) for x in needles):
-                continue
-            if i.VarName.startswith(('FILESEXTRAPATHS', 'FILESPATH')):
-                # Caught by the `FILES` above but this list is colon separated.
-                continue
             ops = i.AppendOperation()
             if not i.VarValue.startswith('" ') and any(x in ops for x in ['append', ' .= ']):
                 res_app.append(i)
@@ -28,7 +27,7 @@ class VarListAppend(Rule):
                 res_pre.append(i)
         return (res_app, res_pre)
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         res_app, res_pre = self.__getMatches(_file, stash)
         for i in res_app:
@@ -39,7 +38,7 @@ class VarListAppend(Rule):
                                 override_msg='Prepend to list should end with a blank')
         return res
 
-    def fix(self, _file, stash):
+    def fix(self, _file: str, stash: Stash) -> List[str]:
         res = []
         res_app, res_pre = self.__getMatches(_file, stash)
         for i in res_app:

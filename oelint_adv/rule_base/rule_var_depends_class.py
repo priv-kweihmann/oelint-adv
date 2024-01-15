@@ -1,20 +1,23 @@
-from oelint_adv.cls_rule import Rule
-from oelint_parser.cls_item import Variable
+from typing import List, Tuple
+
+from oelint_parser.cls_item import Inherit, Variable
+from oelint_parser.cls_stash import Stash
 from oelint_parser.rpl_regex import RegexRpl
+
+from oelint_adv.cls_rule import Rule
 
 
 class VarDependsClass(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.vars.dependsclass',
                          severity='error',
                          message='{org} should be {patched} as it\'s a {class_} only recipe')
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
-        items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                  attribute=Variable.ATTR_VAR, attributeValue='DEPENDS')
-        inherits = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                     attribute=Variable.ATTR_VAR, attributeValue='inherit')
+        items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
+                                                  attribute=Variable.ATTR_VAR, attributeValue='DEPENDS')
+        inherits: List[Inherit] = stash.GetItemsFor(filename=_file, classifier=Inherit.CLASSIFIER)
 
         class_ = ''
         class_name = ''

@@ -1,3 +1,7 @@
+from typing import List, Tuple
+
+from oelint_parser.cls_stash import Stash
+
 from oelint_adv.cls_rule import Rule
 
 
@@ -7,7 +11,7 @@ class NewLineConsecutive(Rule):
                          severity='warning',
                          message='Consecutive blank lines should be avoided')
 
-    def __getMatches(self, _file, stash):
+    def __getMatches(self, _file: str, stash: Stash) -> dict:
         res = {}
         items = stash.GetItemsFor(filename=_file)
         for _uniqname in {x.Origin for x in items}:
@@ -15,7 +19,7 @@ class NewLineConsecutive(Rule):
                 filename=_uniqname, nolink=True), key=lambda x: x.InFileLine)
         return res
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         for _, v in self.__getMatches(_file, stash).items():
             for index, value in enumerate(v):
@@ -25,7 +29,7 @@ class NewLineConsecutive(Rule):
                     res += self.finding(value.Origin, value.InFileLine)
         return res
 
-    def fix(self, _file, stash):
+    def fix(self, _file: str, stash: Stash) -> List[str]:
         res = set()
         for f, v in self.__getMatches(_file, stash).items():
             for index, value in enumerate(v):

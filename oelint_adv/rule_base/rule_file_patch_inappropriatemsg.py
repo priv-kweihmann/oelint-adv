@@ -1,10 +1,12 @@
 import os
+from typing import List, Tuple
 
 import regex  # noqa: I900
-from oelint_adv.cls_rule import Rule
 from oelint_parser.cls_item import Variable
-from oelint_parser.helper_files import get_files
+from oelint_parser.cls_stash import Stash
 from oelint_parser.rpl_regex import RegexRpl
+
+from oelint_adv.cls_rule import Rule
 
 
 class FilePatchIsUpstreamStatusInAppMsg(Rule):
@@ -17,9 +19,9 @@ class FilePatchIsUpstreamStatusInAppMsg(Rule):
         # Find matching SRC_URI assignment
         return [x for x in items if x.VarValue.find(os.path.basename(path)) != -1]
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
-        patches = get_files(stash, _file, '*.patch')
+        patches = stash.GetFiles(_file, '*.patch')
         _items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                    attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
 

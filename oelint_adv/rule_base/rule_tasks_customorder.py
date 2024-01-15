@@ -1,23 +1,26 @@
-from anytree import LoopError
-from anytree import Node
-from oelint_adv.cls_rule import Rule
+from typing import List, Tuple
+
+from anytree import LoopError, Node
 from oelint_parser.cls_item import TaskAdd
+from oelint_parser.cls_stash import Stash
 from oelint_parser.rpl_regex import RegexRpl
+
+from oelint_adv.cls_rule import Rule
 
 
 class TaskCustomOrder(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.task.customorder',
                          severity='error',
                          message='<FOO>')
 
-    def __getNodeFromException(self, msg):
+    def __getNodeFromException(self, msg: str) -> List[str]:
         m = RegexRpl.match(r'^.*Node\(\'(?P<path>.*)\'\)\.$', msg)
         if m:
             return [x for x in m.group('path').split('/') if x]
         return []  # pragma: no cover
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         items = stash.GetItemsFor(
             filename=_file, classifier=TaskAdd.CLASSIFIER)

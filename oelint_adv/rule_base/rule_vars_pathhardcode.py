@@ -1,12 +1,22 @@
 from collections import OrderedDict
+from typing import List, Tuple
+
+from oelint_parser.cls_item import (
+    Export,
+    Function,
+    FunctionExports,
+    Item,
+    PythonBlock,
+    Variable,
+)
+from oelint_parser.cls_stash import Stash
+from oelint_parser.rpl_regex import RegexRpl
 
 from oelint_adv.cls_rule import Rule
-from oelint_parser.cls_item import Variable, Export, Function, FunctionExports, PythonBlock
-from oelint_parser.rpl_regex import RegexRpl
 
 
 class VarsPathHardcode(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         self._map = OrderedDict({
             '/usr/lib/systemd/user': '${systemd_user_unitdir}',
             '/lib/systemd/system': '${systemd_system_unitdir}',
@@ -31,12 +41,12 @@ class VarsPathHardcode(Rule):
                          message='<FOO>',
                          appendix=[v.strip('$').strip('{').strip('}') for v in self._map.values()])
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
-        items = stash.GetItemsFor(filename=_file,
-                                  classifier=[Variable.CLASSIFIER, Export.CLASSIFIER,
-                                              Function.CLASSIFIER, FunctionExports.CLASSIFIER,
-                                              PythonBlock.CLASSIFIER])
+        items: List[Item] = stash.GetItemsFor(filename=_file,
+                                              classifier=[Variable.CLASSIFIER, Export.CLASSIFIER,
+                                                          Function.CLASSIFIER, FunctionExports.CLASSIFIER,
+                                                          PythonBlock.CLASSIFIER])
 
         for i in items:
             if isinstance(i, Variable) and i.VarName in ['SUMMARY', 'DESCRIPTION', 'HOMEPAGE', 'AUTHOR',

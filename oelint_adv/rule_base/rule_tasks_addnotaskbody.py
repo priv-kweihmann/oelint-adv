@@ -1,16 +1,19 @@
-from oelint_adv.cls_rule import Rule
-from oelint_parser.cls_item import Function
-from oelint_parser.cls_item import TaskAdd
+from typing import List, Tuple
+
+from oelint_parser.cls_item import Function, TaskAdd
+from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
+
+from oelint_adv.cls_rule import Rule
 
 
 class TaskAddNoTaskBody(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.task.addnotaskbody',
                          severity='warning',
                          message='The added task \'{FUNC}\' is not existing or has no body')
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         for item in stash.GetItemsFor(filename=_file, classifier=TaskAdd.CLASSIFIER):
             if item.FuncName in CONSTANTS.FunctionsOrder:

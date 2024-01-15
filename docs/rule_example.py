@@ -1,13 +1,17 @@
+from typing import List, Tuple
+
+from oelint_parser.cls_stash import Stash
+
 from oelint_adv.cls_rule import Rule
 
 
 class FooMagicRule(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='foocorp.foo.magic',
                          severity='error',
                          message='Too much foo happening here')
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         items = stash.GetItemsFor(filename=_file)
         for i in items:
@@ -17,7 +21,7 @@ class FooMagicRule(Rule):
 
     # To provide automatic fixing capability
     # add the following optional function
-    def fix(self, _file, stash):
+    def fix(self, _file: str, stash: Stash) -> List[str]:
         res = []
         items = stash.GetItemsFor(filename=_file)
         for i in items:

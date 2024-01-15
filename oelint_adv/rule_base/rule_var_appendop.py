@@ -1,19 +1,21 @@
-from oelint_adv.cls_rule import Rule
+from typing import List, Tuple
+
 from oelint_parser.cls_item import Variable
+from oelint_parser.cls_stash import Stash
+
+from oelint_adv.cls_rule import Rule
 
 
 class VarAppendOperation(Rule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(id='oelint.vars.appendop',
                          severity='error',
                          message='Use \'{a}\' instead of \'{b}\' as it overwrites \'{c}\'')
 
-    def check(self, _file, stash):
+    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
-        items = stash.GetItemsFor(
-            filename=_file, classifier=Variable.CLASSIFIER)
-        _names = {x.VarName for x in items if x.VarName != 'inherit'}
-        for name in _names:
+        items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER)
+        for name in {x.VarName for x in items}:
             _weakest = [x for x in items if x.VarName == name and x.VarOp.strip() == '??=']
             _weak = [x for x in items if x.VarName == name and x.VarOp.strip() == '?=']
             _items = [x for x in items if x.VarName == name and x not in _weakest + _weak and x.VarOp.strip() in ['.=', '+=']]
