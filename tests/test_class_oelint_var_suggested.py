@@ -14,7 +14,6 @@ class TestClassOelintVarSuggestedVar(TestBaseClass):
     @pytest.mark.parametrize('id_', ['oelint.var.suggestedvar'])
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('var', [
-        'AUTHOR',
         'BUGTRACKER',
         'CVE_PRODUCT',
         'SECTION',
@@ -42,7 +41,6 @@ class TestClassOelintVarSuggestedVar(TestBaseClass):
         self.check_for_id(_x, 'oelint.var.suggestedvar.BUGTRACKER', 1)
 
     @pytest.mark.parametrize('id_', [
-        'oelint.var.suggestedvar.AUTHOR',
         'oelint.var.suggestedvar.BUGTRACKER',
         'oelint.var.suggestedvar.BBCLASSEXTEND',
         'oelint.var.suggestedvar.CVE_PRODUCT',
@@ -57,7 +55,6 @@ class TestClassOelintVarSuggestedVar(TestBaseClass):
                                      BUGTRACKER = "1"
                                      BBCLASSEXTEND = "1"
                                      CVE_PRODUCT = "1"
-                                     AUTHOR = "foo"
                                      SECTION = "foo"
                                      ''',
                                  },

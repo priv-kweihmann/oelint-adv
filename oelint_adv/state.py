@@ -16,6 +16,7 @@ class State():
         self.rule_file = {}
         self.suppression = []
         self.nobackup = False
+        self.additional_stash_args = {}
 
         self.__colors_by_severity = {
             'info': Fore.GREEN,
@@ -98,3 +99,11 @@ class State():
             bool: nobackup is set
         """
         return self.nobackup  # pragma: no cover
+    
+    def get_additional_stash_args(self) -> dict:
+        """Additional arguments for the Stash init
+
+        Returns:
+            dict: additional args
+        """
+        return self.additional_stash_args

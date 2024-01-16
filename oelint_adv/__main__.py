@@ -15,6 +15,7 @@ from oelint_parser.rpl_regex import RegexRpl
 
 from oelint_adv.cls_rule import Rule, load_rules
 from oelint_adv.state import State
+from oelint_adv.tweaks import Tweaks
 from oelint_adv.version import __version__
 
 sys.path.append(os.path.abspath(os.path.join(__file__, '..')))
@@ -111,6 +112,8 @@ def create_argparser() -> argparse.ArgumentParser:
                         help='Print loaded rules as a rulefile and exit')
     parser.add_argument('--exit-zero', action='store_true', default=False,
                         help='Always return a 0 (non-error) status code, even if lint errors are found')
+    parser.add_argument('--release', default=list(Tweaks.map.keys())[-1], choices=Tweaks.map.keys(),
+                        help='Run against a specific Yocto release')
     # Override the defaults with the values from the config file
     parser.set_defaults(**parse_configfile())
 
@@ -128,6 +131,9 @@ def parse_arguments() -> argparse.Namespace:
 
 def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C901 - complexity is still okay
     setattr(args, 'state', State())
+
+    # Apply release specific tweaks
+    args = Tweaks.tweak_args(args)
 
     # Convert boolean symbols
     for _option in [
@@ -172,18 +178,22 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
                 '\'rulefile\' is not a valid file')
 
     for mod in args.constantmods:
-        try:
-            with open(mod.lstrip('+-')) as _in:
-                _cnt = json.load(_in)
-            if mod.startswith('+'):
-                CONSTANTS.AddConstants(_cnt)
-            elif mod.startswith('-'):
-                CONSTANTS.RemoveConstants(_cnt)
-            else:
-                CONSTANTS.OverrideConstants(_cnt)
-        except (FileNotFoundError, json.JSONDecodeError):
-            raise argparse.ArgumentTypeError(
-                'mod file \'{file}\' is not a valid file'.format(file=mod))
+        if isinstance(mod, str):
+            try:
+                with open(mod.lstrip('+-')) as _in:
+                    _cnt = json.load(_in)
+                if mod.startswith('+'):
+                    CONSTANTS.AddConstants(_cnt)
+                elif mod.startswith('-'):
+                    CONSTANTS.RemoveConstants(_cnt)
+                else:
+                    CONSTANTS.OverrideConstants(_cnt)
+            except (FileNotFoundError, json.JSONDecodeError):
+                raise argparse.ArgumentTypeError(
+                    'mod file \'{file}\' is not a valid file'.format(file=mod))
+        else:
+            CONSTANTS.AddConstants(mod.get('+', {}))
+            CONSTANTS.RemoveConstants(mod.get('-', {}))
 
     args.state.color = args.color
     args.state.no_warn = args.nowarn
@@ -263,9 +273,13 @@ def flatten(list_: Iterable) -> List:
     return flat
 
 
-def group_run(group, quiet, fix, rules, state: State) -> List[Tuple[str, int, str]]:
+def group_run(group: List[str],
+              quiet: bool,
+              fix: bool,
+              rules: List[Rule],
+              state: State) -> List[Tuple[str, int, str]]:
     fixedfiles = []
-    stash = Stash(quiet)
+    stash = Stash(quiet=quiet, **state.get_additional_stash_args())
     for f in group:
         try:
             stash.AddFile(f)
