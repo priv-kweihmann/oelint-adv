@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 from argparse import ArgumentTypeError
@@ -193,7 +194,7 @@ class TestClassIntegration(TestBaseClass):
     def test_rulefile_subrules_printout(self, capsys):
         from oelint_adv.__main__ import print_rulefile
         __cnt = {
-            "oelint.var.suggestedvar.AUTHOR": "error",
+            "oelint.var.suggestedvar.BUGTRACKER": "error",
         }
         _extra_opts = ['--rulefile={file}'.format(file=self._create_tempfile('rulefile', json.dumps(__cnt)))]
 
@@ -843,3 +844,55 @@ class TestClassIntegration(TestBaseClass):
         assert "b" in _args.suppress
         assert "c" in _args.suppress
         assert "d" in _args.suppress
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     VAR = "1"
+                                     ''',
+                                 }
+                             ],
+                             )
+    def test_release_author(self, input_):
+        # local imports only
+        from oelint_adv.__main__ import run
+
+        _args = self._create_args(
+            input_, extraopts=['--release=sumo'])
+        issues = [x[1] for x in run(_args)]
+        assert (any([x for x in issues if 'AUTHOR' in x]))
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     VAR = "1"
+                                     ''',
+                                 }
+                             ],
+                             )
+    def test_release_no_author(self, input_):
+        # local imports only
+        from oelint_adv.__main__ import run
+
+        _args = self._create_args(
+            input_, extraopts=['--release=nanbield'])
+        issues = [x[1] for x in run(_args)]
+        assert not any([x for x in issues if 'AUTHOR' in x])
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     VAR = "1"
+                                     ''',
+                                 }
+                             ],
+                             )
+    def test_release_invalid(self, input_):
+        with pytest.raises(SystemExit):
+            self._create_args(input_, extraopts=['--release=doesnotexist'])
