@@ -30,6 +30,6 @@ class VarHomepagePing(Rule):
                     res += self.finding(i.Origin, i.InFileLine)
             except ValueError:
                 res += self.finding(i.Origin, i.InFileLine)
-            except BaseException:  # noqa: S110, pragma: no cover
+            except Exception:  # noqa: S110, pragma: no cover
                 pass  # pragma: no cover
         return res
