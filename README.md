@@ -81,6 +81,7 @@ options:
                         Modifications to the constant db.
                         prefix with: + - to add to DB, - - to remove from DB, None - to override DB
   --print-rulefile      Print loaded rules as a rulefile and exit
+  --release             Run against a specific Yocto release (default: latest)
   --exit-zero           Always return a 0 (non-error) status code, even if lint errors are found
   --version             show program's version number and exit
 ```
