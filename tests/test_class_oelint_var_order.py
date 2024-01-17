@@ -52,7 +52,7 @@ class TestClassOelintVarOrder(TestBaseClass):
                     'oelint_adv_test.bb': self.__generate_sample_code(item, var),
                 }
                 self.check_for_id(self._create_args(input_), id_, occurrence)
-        except BaseException:
+        except Exception:
             pass
 
     @pytest.mark.parametrize('id_', ['oelint.var.order'])
@@ -66,7 +66,7 @@ class TestClassOelintVarOrder(TestBaseClass):
                     'oelint_adv_test.bb': self.__generate_sample_code(item, var),
                 }
                 self.check_for_id(self._create_args(input_), id_, occurrence)
-        except BaseException:
+        except Exception:
             pass
 
     @pytest.mark.parametrize('id_', ['oelint.var.order.SRCREV'])
