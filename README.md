@@ -151,6 +151,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.var.bbclassextend - Use BBCLASSEXTEND when possible
 * oelint.var.filesoverride - FILES:*(FILES_*) variables should not be overridden
 * oelint.var.improperinherit - Warn about improperly named inherits
+* oelint.var.inherit - Check the correct usage of inherit and inherit_defer ('scarthgap' release and newer)
 * oelint.var.licenseremotefile - License shall be a file in remote source not a local file
 * oelint.var.licensesdpx - Check for correct SPDX syntax in licenses
 * oelint.var.mandatoryvar - Check for mandatory variables **[S]**
