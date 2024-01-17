@@ -122,6 +122,9 @@ OPTION_MAPPING = {
         'subdir',
         'unpack',
     ],
+    'gs': [
+        'downloadfilename',
+    ],
     'git': [
         'apply',
         'branch',
@@ -464,6 +467,22 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
         input_ = {
             'oelint_adv_test.bb': self.__generate_sample_code(protocol, option),
         }
+        self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurrence', [1])
+    @pytest.mark.parametrize('protocol', ['gs'])
+    @pytest.mark.parametrize('option', ['foo', 'bar', 'baz'])
+    def test_bad_gcp(self, id_, occurrence, protocol, option):
+        input_ = {'oelint_adv_test.bb': self.__generate_sample_code(protocol, option), }
+        self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('protocol', ['gs'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['gs'])
+    def test_good_gcp(self, id_, occurrence, protocol, option):
+        input_ = {'oelint_adv_test.bb': self.__generate_sample_code(protocol, option), }
         self.check_for_id(self._create_args(input_), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])

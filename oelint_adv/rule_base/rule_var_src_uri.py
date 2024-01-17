@@ -52,6 +52,9 @@ class VarSRCUriOptions(Rule):
             'ftp': [
                 'downloadfilename',
             ],
+            'gs': [
+                'downloadfilename',
+            ],
             'git': [
                 'branch',
                 'destsuffix',
@@ -196,3 +199,9 @@ class VarSRCUriOptions(Rule):
             for x in lines:
                 res += self.__analyse(stash, item, stash.ExpandTerm(_file, x), lines.index(x))
         return res
+
+    def check_release_range(self, release_range: List[str]) -> bool:
+        if 'nanbield' not in release_range:
+            # GCP/gs fetcher is only supported from nanbield on
+            del self._valid_options['gs']
+        return super().check_release_range(release_range)
