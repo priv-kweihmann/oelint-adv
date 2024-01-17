@@ -19,7 +19,7 @@ class VarSRCURIAppend(Rule):
             return res
 
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                                        attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
+                                                  attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
         for item in items:
             if item.VarOp.strip() in ['+=']:
                 override_delimiter = item.OverrideDelimiter

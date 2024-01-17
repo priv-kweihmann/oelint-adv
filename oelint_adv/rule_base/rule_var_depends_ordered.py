@@ -33,17 +33,21 @@ class VarDependsOrdered(Rule):
         _keys = {x.VarName for x in items if RegexRpl.match(r'DEPENDS|RDEPENDS', x.VarName)}
         _filegroups = {x.Origin for x in items}
 
+        def applicable_all(_file, x):
+            return (x.Origin == _file or _file in x.IncludedFrom) and x.VarName == _key
+
+        def applicable_machine(_m, x):
+            return _m == x.GetMachineEntry() or _m == x.GetClassOverride()
+
         for _file in _filegroups:
             _, _ext = os.path.splitext(_file)
             if _ext not in ['.bb', '.bbappend']:
                 continue
             for _key in _keys:
-                _all_findings = sorted([x for x in items if (x.Origin == _file or _file in x.IncludedFrom)
-                                       and x.VarName == _key], key=lambda x: x.Line)
+                _all_findings = sorted([x for x in items if applicable_all(_file, x)], key=lambda x: x.Line)
                 for _m in sorted(self.__overrides(_all_findings), key=lambda x: len(x), reverse=True):
                     _raw_list = []
-                    _machine_findings = sorted([x for x in _all_findings if _m == x.GetMachineEntry()
-                                               or _m == x.GetClassOverride()], key=lambda x: x.Line)
+                    _machine_findings = sorted([x for x in _all_findings if applicable_machine(_m, x)], key=lambda x: x.Line)
                     for item in _machine_findings:
                         _raw_list += item.get_items(versioned=True)
                         if _raw_list != sorted(_raw_list, key=str.lower):

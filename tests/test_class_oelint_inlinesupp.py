@@ -48,7 +48,7 @@ class TestClassOelintNAInlineSuppression(TestBaseClass):
                                      # nooelint: oelint.vars.mispell
                                      SRR_URI = "2"
                                      ''',
-                                 }
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):

@@ -1,9 +1,9 @@
 from typing import List, Tuple
-from oelint_adv.cls_rule import Rule
-from oelint_parser.cls_item import Inherit
-from oelint_parser.rpl_regex import RegexRpl
 
+from oelint_parser.cls_item import Inherit
 from oelint_parser.cls_stash import Stash
+
+from oelint_adv.cls_rule import Rule
 
 
 class VarMultiInherit(Rule):
