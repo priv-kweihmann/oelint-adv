@@ -147,6 +147,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.task.nopythonprefix - Tasks containing shell code should NOT be prefixed with 'python' in function header
 * oelint.task.order - Order of tasks **[S]**
 * oelint.task.pythonprefix - Tasks containing python code should be prefixed with 'python' in function header
+* oelint.var.addpylib - addpylib is only valid in .conf files
 * oelint.var.bbclassextend - Use BBCLASSEXTEND when possible
 * oelint.var.filesoverride - FILES:*(FILES_*) variables should not be overridden
 * oelint.var.improperinherit - Warn about improperly named inherits
