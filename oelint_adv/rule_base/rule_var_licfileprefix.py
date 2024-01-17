@@ -3,7 +3,6 @@ from typing import List, Tuple
 
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
-from oelint_parser.helper_files import get_scr_components
 
 from oelint_adv.cls_rule import Rule
 

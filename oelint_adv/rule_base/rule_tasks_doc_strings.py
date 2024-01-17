@@ -27,6 +27,6 @@ class TaskDocStrings(Rule):
                                                           classifier=FlagAssignment.CLASSIFIER,
                                                           attribute=FlagAssignment.ATTR_NAME,
                                                           attributeValue=item.FuncName)
-            if not any([x.Flag == 'doc' for x in _ta]):
+            if not any(x.Flag == 'doc' for x in _ta):
                 res += self.finding(item.Origin, item.InFileLine)
         return res

@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import List
 from colorama import Fore
 from colorama.ansi import AnsiCodes
 
@@ -120,15 +120,15 @@ class State():
         """
         self._seen_inline_suppressions += [(file, line, x) for x in ids]
 
-    def get_inline_suppression_seen(self, file: str, line: int, id: str) -> bool:
+    def get_inline_suppression_seen(self, file: str, line: int, id_: str) -> bool:
         """Check if inline suppression have been used
 
         Args:
             file (str): File path
             line (int): Line
-            id (str): ID of suppression
+            id_ (str): ID of suppression
 
         Returns:
             bool: True if found
         """
-        return (file, line, id) in self._seen_inline_suppressions
+        return (file, line, id_) in self._seen_inline_suppressions

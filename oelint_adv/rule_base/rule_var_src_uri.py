@@ -197,7 +197,7 @@ class VarSRCUriOptions(Rule):
         for item in items:
             lines = [y.strip('"') for y in item.get_items() if y and INLINE_BLOCK not in y]
             for x in lines:
-                res += self.__analyse(stash, item, stash.ExpandTerm(_file, x), lines.index(x))
+                res += self.__analyse(stash, item, stash.ExpandTerm(_file, x), lines.index(x))  # noqa: B038
         return res
 
     def check_release_range(self, release_range: List[str]) -> bool:

@@ -13,7 +13,7 @@ from oelint_parser.cls_stash import Stash
 
 class Rule:
     def __init__(self,
-                 id: str = '',
+                 id: str = '',  # noqa: A002, VNE003
                  severity: str = '',
                  message: str = '',
                  onappend: bool = True,
@@ -270,7 +270,7 @@ def load_rules(args, add_rules: Iterable[str] = (), add_dirs: Iterable[str] = ()
                                 if _rule_file and not any(x in _rule_file for x in _potential_ids):
                                     continue  # pragma: no cover
                                 res.append(inst)
-                    except Exception:  # pragma: no cover
+                    except Exception:  # pragma: no cover, # noqa: S110
                         pass  # pragma: no cover
             except Exception as e:  # pragma: no cover
                 if not args.quiet:  # pragma: no cover

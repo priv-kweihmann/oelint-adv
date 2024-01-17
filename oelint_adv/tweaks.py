@@ -4,7 +4,7 @@ import argparse
 class Tweaks:
     """Release specific tweaks"""
 
-    map = {
+    _map = {
         "inky": {},
         "clyde": {},
         "blinky": {},
@@ -65,7 +65,7 @@ class Tweaks:
 
         _tweaked_options = {}
         _release_range = []
-        for k, v in Tweaks.map.items():   # pragma: no cover
+        for k, v in Tweaks._map.items():   # pragma: no cover
             _tweaked_options = recursive_merge(_tweaked_options, v)
             _release_range.append(k)
             if k == args.release:
@@ -79,5 +79,5 @@ class Tweaks:
             else:
                 setattr(args, k, v)
 
-        setattr(args, '_release_range', _release_range)
+        setattr(args, '_release_range', _release_range)  # noqa: B010
         return args

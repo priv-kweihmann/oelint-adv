@@ -474,7 +474,7 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
     @pytest.mark.parametrize('protocol', ['gs'])
     @pytest.mark.parametrize('option', ['foo', 'bar', 'baz'])
     def test_bad_gcp(self, id_, occurrence, protocol, option):
-        input_ = {'oelint_adv_test.bb': self.__generate_sample_code(protocol, option), }
+        input_ = {'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)}
         self.check_for_id(self._create_args(input_), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])
@@ -482,7 +482,7 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
     @pytest.mark.parametrize('protocol', ['gs'])
     @pytest.mark.parametrize('option', OPTION_MAPPING['gs'])
     def test_good_gcp(self, id_, occurrence, protocol, option):
-        input_ = {'oelint_adv_test.bb': self.__generate_sample_code(protocol, option), }
+        input_ = {'oelint_adv_test.bb': self.__generate_sample_code(protocol, option)}
         self.check_for_id(self._create_args(input_), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])

@@ -1,10 +1,9 @@
 from typing import List, Tuple
-from oelint_adv.cls_rule import Rule
-from oelint_parser.cls_item import Variable
-from oelint_parser.helper_files import expand_term
-from oelint_parser.helper_files import get_valid_package_names
 
+from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
+
+from oelint_adv.cls_rule import Rule
 
 
 class VarPkgSpecific(Rule):
@@ -24,7 +23,7 @@ class VarPkgSpecific(Rule):
 
         _packages = stash.GetValidPackageNames(_file)
         items: List[Variable] = stash.GetItemsFor(filename=_file,
-                                                  classifier=Variable.CLASSIFIER, 
+                                                  classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR,
                                                   attributeValue=self.needles)
         if not items:
