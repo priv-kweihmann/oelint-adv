@@ -88,7 +88,8 @@ class Rule:
                 _line: int,
                 override_msg: str = None,
                 appendix: str = None,
-                blockoffset: int = 0) -> Tuple[str, int, str]:
+                blockoffset: int = 0,
+                severity_override: str = '') -> Tuple[str, int, str]:
         """Called by rule to indicate a finding
 
         Arguments:
@@ -99,6 +100,7 @@ class Rule:
             override_msg {str} -- Optional string which overrides the set standard message (default: {None})
             appendix {str} -- Optional appendix to rule ID (default: {None})
             blockoffset {int} -- line number to look for inline suppressions instead of _line (default: 0 == use _line)
+            severity_override {str} -- override the base severity (empty == use base)
 
         Returns:
             Tuple[str, int, str] -- Path, line, Human readable finding (possibly with color codes)
@@ -118,7 +120,7 @@ class Rule:
         # filter out suppressions
         if any(x in self._state.get_suppressions() for x in _id):
             return []
-        _severity = self.get_severity(appendix)
+        _severity = severity_override or self.get_severity(appendix)
         if _severity == 'info' and self._state.get_noinfo():
             return []
         if _severity == 'warning' and self._state.get_nowarn():
