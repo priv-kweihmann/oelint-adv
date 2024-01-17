@@ -115,7 +115,7 @@ def create_argparser() -> argparse.ArgumentParser:
                         help='Print loaded rules as a rulefile and exit')
     parser.add_argument('--exit-zero', action='store_true', default=False,
                         help='Always return a 0 (non-error) status code, even if lint errors are found')
-    parser.add_argument('--release', default=list(Tweaks._map.keys())[-1], choices=Tweaks._map.keys(),
+    parser.add_argument('--release', default='nanbield', choices=Tweaks._map.keys(),
                         help='Run against a specific Yocto release')
     # Override the defaults with the values from the config file
     parser.set_defaults(**parse_configfile())
