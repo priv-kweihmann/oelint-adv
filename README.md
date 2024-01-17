@@ -270,6 +270,67 @@ You can find this example also in the development [source tree](https://github.c
 
 Additional real-life examples can be found in e.g. [meta-rubygems](https://github.com/priv-kweihmann/meta-rubygems/tree/master/files/lint/oelint-custom)
 
+### Release constrained rules
+
+Rules can be also configured to work on specific releases of YP only, if determined not to be applicable, the rules will
+be skipped during the loading process and therefore won't show up if e.g. `--print-rulefile` is used
+
+#### Rules working up to a certain release
+
+```python
+from oelint_adv.cls_rule import Rule
+
+
+class FooMagicRule(Rule):
+    def __init__(self):
+        super().__init__(id="foocorp.foo.magic",
+                         severity="error",
+                         message="Too much foo happening here",
+                         valid_till_release="kirkstone")
+```
+
+Would enable the rule, but only if `--release` is set to a YP release earlier than `kirkstone`
+
+#### Rules working from a certain release
+
+```python
+from oelint_adv.cls_rule import Rule
+
+
+class FooMagicRule(Rule):
+    def __init__(self):
+        super().__init__(id="foocorp.foo.magic",
+                         severity="error",
+                         message="Too much foo happening here",
+                         valid_from_release="kirkstone")
+```
+
+Would enable the rule, but only if `--release` is set to a YP release later than `kirkstone` (including `kirkstone`)
+
+#### Enable special settings per release
+
+```python
+from oelint_adv.cls_rule import Rule
+
+
+class FooMagicRule(Rule):
+    def __init__(self):
+        super().__init__(id="foocorp.foo.magic",
+                         severity="error",
+                         message="Too much foo happening here")
+
+    def check_release_range(self, release_range: List[str]) -> bool:
+        if 'kirkstone' in release_range:
+            self._we_are_running_on_kirkstone = True
+            self.Appendix.append('kirkstone')
+        return super().check_release_range(release_range)
+```
+
+Enables the special `Appendix` `kirkstone`, if `kirkstone` is part of the calculated `--release` list.
+
+It also sets the variable `self._we_are_running_on_kirkstone`, which can be used as part of `check()` to
+code special code paths.
+
 ## Defining a ruleset
 
 If you pass the option `--rulefile` you could define the rules to be checked and their severity via a simple json file.
