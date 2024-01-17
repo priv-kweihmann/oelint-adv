@@ -121,6 +121,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.file.inappropriatemsg - Patches with Upstream-Status: Inappropriate should provide a valid reasoning
 * oelint.file.includenotfound - File to be included not found
 * oelint.file.includerelpath - Require should be used instead of include
+* oelint.file.inlinesuppress_na - A not applicable inline suppression has been found
 * oelint.file.nospaces - Path to file should not contain spaces
 * oelint.file.patchsignedoff - Patches should contain a Signed-Of-By entry
 * oelint.file.requireinclude - Require should be used instead of include

@@ -129,6 +129,7 @@ class Rule:
 
         # filter out inline suppressions
         if any(x for x in _id if x in self._state.get_inlinesuppressions().get(_file, {}).get(max(1, _suppression_offset - 1), [])):
+            self._state.set_inline_suppression_seen(_file, _suppression_offset - 1, _id)
             return []
 
         _path = os.path.abspath(_file)

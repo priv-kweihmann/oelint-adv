@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 from colorama import Fore
 from colorama.ansi import AnsiCodes
 
@@ -23,6 +23,8 @@ class State():
             'warning': Fore.YELLOW,
             'error': Fore.RED,
         }
+
+        self._seen_inline_suppressions = []
 
     def get_colorize(self) -> bool:
         """Returns weather or not the terminal output is to be colorized"""
@@ -99,7 +101,7 @@ class State():
             bool: nobackup is set
         """
         return self.nobackup  # pragma: no cover
-    
+
     def get_additional_stash_args(self) -> dict:
         """Additional arguments for the Stash init
 
@@ -107,3 +109,26 @@ class State():
             dict: additional args
         """
         return self.additional_stash_args
+
+    def set_inline_suppression_seen(self, file: str, line: int, ids: List[str]) -> None:
+        """Announce that inline suppression have been used
+
+        Args:
+            file (str): File path
+            line (int): Line
+            ids (List[str]): IDs of suppression
+        """
+        self._seen_inline_suppressions += [(file, line, x) for x in ids]
+
+    def get_inline_suppression_seen(self, file: str, line: int, id: str) -> bool:
+        """Check if inline suppression have been used
+
+        Args:
+            file (str): File path
+            line (int): Line
+            id (str): ID of suppression
+
+        Returns:
+            bool: True if found
+        """
+        return (file, line, id) in self._seen_inline_suppressions
