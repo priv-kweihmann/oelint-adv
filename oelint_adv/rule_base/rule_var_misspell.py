@@ -13,7 +13,8 @@ class VarMisspell(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.mispell',
                          severity='warning',
-                         message='<FOO>')
+                         message='<FOO>',
+                         appendix=['unknown'])
         try:
             self._minconfidence = float(os.environ.get('OELINT_MISSPELL_CONFIDENCE', 'not-a-float'))
         except ValueError:
@@ -66,4 +67,9 @@ class VarMisspell(Rule):
                 res += self.finding(i.Origin, i.InFileLine,
                                     '\'{a}\' is unknown, maybe you meant \'{b}\''.format(
                                         a=_cleanvarname, b=_bestmatch))
+            else:
+                res += self.finding(i.Origin, i.InFileLine,
+                                    '\'{a}\' is unknown. Consider adding it via --constantmods'.format(a=_cleanvarname),
+                                    appendix='unknown',
+                                    severity_override='info')
         return res

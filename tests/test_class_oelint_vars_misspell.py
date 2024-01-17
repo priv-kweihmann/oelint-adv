@@ -26,6 +26,19 @@ class TestClassOelintVarsMispell(TestBaseClass):
     def test_bad(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(input_), id_, occurrence)
 
+    @pytest.mark.parametrize('id_', ['oelint.vars.mispell.unknown'])
+    @pytest.mark.parametrize('occurrence', [1])
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'A += "foo"',
+                                 },
+                             ],
+                             )
+    def test_bad_unknown(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_), id_, occurrence)
+
     @pytest.mark.parametrize('id_', ['oelint.vars.mispell'])
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
@@ -108,4 +121,26 @@ class TestClassOelintVarsMispell(TestBaseClass):
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.mispell.unknown'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A = "a"
+                                     B = "c"
+                                     do_configure() {
+                                         ./configure ${A}
+                                     }
+                                     python do_foo() {
+                                         d.getVar("B")
+                                     }
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_good_unknown(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(input_), id_, occurrence)

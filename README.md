@@ -184,6 +184,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.licfileprefix - Unnecessary prefix to LIC_FILES_CHKSUM detected **[F]**
 * oelint.vars.listappend - Proper append/prepend to lists **[F]**
 * oelint.vars.mispell - Possible typo detected
+* oelint.vars.mispell.unknown - Variable is not known from CONSTANTS, typo is unlikely
 * oelint.vars.multilineident - On a multiline assignment, line indent is desirable
 * oelint.vars.notneededspace - Space at the beginning of the var is not needed **[F]**
 * oelint.vars.notrailingslash - Variable shall not end on a slash
