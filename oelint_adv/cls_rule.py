@@ -13,12 +13,15 @@ from oelint_parser.cls_stash import Stash
 
 class Rule:
     def __init__(self,
-                 id='',
-                 severity='',
-                 message='',
-                 onappend=True,
-                 onlyappend=False,
-                 appendix=()):  # noqa: A002, VNE003
+                 id: str = '',
+                 severity: str = '',
+                 message: str = '',
+                 onappend: bool = True,
+                 onlyappend: bool = False,
+                 appendix: List[str] = (),
+                 valid_till_release: str = '',
+                 valid_from_release: str = '',
+                 ) -> None:  # noqa: A002, VNE003
         """constructor
 
         Keyword Arguments:
@@ -27,7 +30,9 @@ class Rule:
             message {str} -- Rule message (default: {''})
             onappend {bool} -- true if rule should be run on bbappends (default: {True})
             onlyappend {bool} -- true if rule applies to bbappends only (default: {False})
-            appendix {tuple} -- possible appendix to id
+            appendix {List[str]} -- possible appendix to id
+            valid_till_release {str} -- rule only valid till (excluding) this release (default: '' = all)
+            valid_from_release {str} -- rule only valid from (including) this release (default: '' = all)
         """
         self.ID = id
         self.Severity = severity
@@ -35,7 +40,24 @@ class Rule:
         self.OnAppend = onappend
         self.OnlyAppend = onlyappend
         self.Appendix = appendix
+        self._valid_till_release = valid_till_release
+        self._valid_from_release = valid_from_release
         self._state: State = None
+
+    def check_release_range(self, release_range: List[str]) -> bool:
+        """Check if rule is applicable with currently configured release(s)
+
+        Args:
+            release_range (List[str]): Range of supported releases (as passed by tweaks)
+
+        Returns:
+            bool: Rule is applicable with release range
+        """
+        if self._valid_from_release and self._valid_from_release not in release_range:
+            return False
+        if self._valid_till_release and self._valid_till_release in release_range:
+            return False
+        return True
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         """Stub for running check - is overridden by each rule
@@ -236,6 +258,8 @@ def load_rules(args, add_rules: Iterable[str] = (), add_dirs: Iterable[str] = ()
                     try:
                         if issubclass(m[1], Rule):
                             inst = m[1]()
+                            if not inst.check_release_range(args._release_range):
+                                continue
                             inst._state = args.state
                             _potential_ids = [
                                 inst.ID] + ['{a}.{b}'.format(a=inst.ID, b=x) for x in inst.Appendix]
