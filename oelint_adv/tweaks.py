@@ -36,7 +36,7 @@ class Tweaks:
         "honister": {},
         "kirkstone": {"_stash_args": {"new_style_override_syntax": True}},
         "langdale": {},
-        "mickledore": {},
+        "mickledore": {"constantmods": {"-": {"variables": {"known": ["PACKAGEBUILDPKGD"]}}}},
         "nanbield": {"constantmods": {"-": {"variables": {"suggested": ["AUTHOR"]}}}},
         "scarthgap": {},
     }
