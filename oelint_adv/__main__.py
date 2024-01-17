@@ -14,6 +14,9 @@ from oelint_parser.constants import CONSTANTS
 from oelint_parser.rpl_regex import RegexRpl
 
 from oelint_adv.cls_rule import Rule, load_rules
+from oelint_adv.rule_base.rule_file_inlinesuppress_na import (
+    FileNotApplicableInlineSuppression,
+)
 from oelint_adv.state import State
 from oelint_adv.tweaks import Tweaks
 from oelint_adv.version import __version__
@@ -293,12 +296,12 @@ def group_run(group: List[str],
     for item in stash.GetItemsFor(classifier=Comment.CLASSIFIER):
         for line in item.get_items():
             m = re.match(
-                r'^#\s+nooelint:\s+(?P<ids>[A-Za-z0-9\.,_]*)', line)
+                r'^#\s+nooelint:\s+(?P<ids>[A-Za-z0-9\.,_ ]*)', line)
             if m:
                 if item.Origin not in inline_supp_map:  # pragma: no cover
                     inline_supp_map[item.Origin] = {}
-                inline_supp_map[item.Origin][item.InFileLine] = m.group(
-                    'ids').strip().split(',')
+                inline_supp_map[item.Origin][item.InFileLine] = [
+                    x.strip() for x in m.group('ids').split(',') if x]
 
     state.inline_suppressions = inline_supp_map
 
@@ -325,6 +328,15 @@ def group_run(group: List[str],
                 if not quiet:
                     print('{path}:{lvl}:{msg}'.format(path=os.path.abspath(i),  # noqa: T201 - it's fine here; # pragma: no cover
                           lvl='debug', msg='Applied automatic fixes'))
+
+    if any(isinstance(x, FileNotApplicableInlineSuppression) for x in rules):
+        for _file, _lineobj in inline_supp_map.items():
+            for _line, _ids in _lineobj.items():
+                for _id in _ids:
+                    if not state.get_inline_suppression_seen(_file, _line, _id):
+                        obj = FileNotApplicableInlineSuppression(state)
+                        issues += obj.finding(_file, _line, override_msg=obj.Msg.format(id=_id))
+
     return issues
 
 
