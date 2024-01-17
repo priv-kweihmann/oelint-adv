@@ -28,7 +28,7 @@ class TestClassOelintVarInherit(TestBaseClass):
                              ],
                              )
     def test_bad_inherit(self, input_, id_, occurrence):
-        self.check_for_id(self._create_args(input_), id_, occurrence)
+        self.check_for_id(self._create_args(input_, ['--release=scarthgap']), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.var.inherit.inherit'])
     @pytest.mark.parametrize('occurrence', [1])
@@ -41,7 +41,7 @@ class TestClassOelintVarInherit(TestBaseClass):
                              ],
                              )
     def test_bad_inherit_defer(self, input_, id_, occurrence):
-        self.check_for_id(self._create_args(input_), id_, occurrence)
+        self.check_for_id(self._create_args(input_, ['--release=scarthgap']), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.var.inherit.inherit'])
     @pytest.mark.parametrize('occurrence', [0])
@@ -56,7 +56,7 @@ class TestClassOelintVarInherit(TestBaseClass):
                              ],
                              )
     def test_good_inherit(self, input_, id_, occurrence):
-        self.check_for_id(self._create_args(input_), id_, occurrence)
+        self.check_for_id(self._create_args(input_, ['--release=scarthgap']), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.var.inherit.inherit_defer'])
     @pytest.mark.parametrize('occurrence', [0])
@@ -83,4 +83,4 @@ class TestClassOelintVarInherit(TestBaseClass):
                              ],
                              )
     def test_good_inherit_defer(self, input_, id_, occurrence):
-        self.check_for_id(self._create_args(input_), id_, occurrence)
+        self.check_for_id(self._create_args(input_, ['--release=scarthgap']), id_, occurrence)
