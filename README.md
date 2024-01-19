@@ -412,6 +412,8 @@ suppress =
   B
 # this will set messageformat parameter
 messageformat = {severity}:{id}:{msg}
+# will configure --release to dunfell
+release=dunfell
 ```
 
 You can find an example file [here](docs/.oelint.cfg.example)
