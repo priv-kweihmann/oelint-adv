@@ -209,6 +209,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.summary80chars - SUMMARY should max. be 80 characters long
 * oelint.vars.summarylinebreaks - No line breaks in SUMMARY
 * oelint.vars.valuequoted - Variable values should be properly quoted
+* oelint.vars.virtual - no virtual/ items in RDEPENDS/RPROVIDES
 
 ### Non-default rulesets
 
