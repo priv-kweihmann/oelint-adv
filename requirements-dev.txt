@@ -31,7 +31,7 @@ pytest-cov == 3.0.0
 pytest-forked == 1.6.0
 pytest-icdiff == 0.9
 pytest-random-order == 1.1.1
-pytest-socket == 0.6.0
+pytest-socket == 0.7.0
 pytest-sugar == 0.9.7
 pytest-tldr == 0.2.5
 twine == 4.0.2
