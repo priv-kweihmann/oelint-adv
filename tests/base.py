@@ -86,7 +86,7 @@ class TestBaseClass:
         assert(len([x for x in issues if ':{id}:'.format(id=id_) in x]) ==
                occurrences), '{id} expected {o} time(s) in:\n{i}\n\n---\n{f}'.format(id=id_, o=occurrences, i='\n'.join(issues), f=_files)
 
-    def teardown(self):
+    def teardown_method(self):
         if getattr(self, '_collected_tmpdirs', None) is not None:
             for x in self._collected_tmpdirs:
                 shutil.rmtree(x, ignore_errors=True)
