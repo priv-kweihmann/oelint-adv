@@ -459,8 +459,8 @@ Source your bitbake build directory and run the following commands (\*\*) (\*\*\
 
 ```shell
 LAYER_PATH=<path to your layer>
-bitbake-getvar --value MACHINEOVERRIDES | tr ':' '\n' | jq -Rn  '{replacements:{ machines: [inputs]}}' > $LAYER_PATH/.oelint-custom-machines.json
-bitbake-getvar --value DISTROOVERRIDES | tr ':' '\n' | jq -Rn  '{replacements:{ distros: [inputs]}}' > $LAYER_PATH/.oelint-custom-distros.json
+bitbake-getvar --quiet --value MACHINEOVERRIDES | tr ':' '\n' | jq -Rn  '{replacements:{ machines: [inputs]}}' > $LAYER_PATH/.oelint-custom-machines.json
+bitbake-getvar --quiet --value DISTROOVERRIDES | tr ':' '\n' | jq -Rn  '{replacements:{ distros: [inputs]}}' > $LAYER_PATH/.oelint-custom-distros.json
 ```
 
 (**) you'll need to have `jq` installed on your local machine.
