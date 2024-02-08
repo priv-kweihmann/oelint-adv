@@ -117,6 +117,8 @@ Rules marked with **[F]** are able to perform automatic fixing
 Rules marked with **[S]** can have multiple sub-IDs
 
 * oelint.append.protvars - Variables that shouldn't be set in a bbappend **[S]**
+* oelint.bbclass.underscores - bbclass filenames shall not contain underscores
+* oelint.exportfunction.dash - EXPORT_FUNCTIONS shall not contain dashes
 * oelint.file.inactiveupstreamdetails - Patches with Upstream-Status: Inactive-Upstream require more details
 * oelint.file.inappropriatemsg - Patches with Upstream-Status: Inappropriate should provide a valid reasoning
 * oelint.file.includenotfound - File to be included not found
@@ -138,6 +140,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.tabs.notabs - No tabs allowed **[F]**
 * oelint.task.addnotaskbody - Task added by addtask cannot be found
 * oelint.task.customorder - order of custom tasks added via addtask
+* oelint.task.dash - Functions and related statements shall not contain dashes
 * oelint.task.docstrings - Custom tasks should have docstrings
 * oelint.task.heredocs - Usage of heredocs should be avoided. Use files instead
 * oelint.task.multifragments - Multiple fragments of the same function in the same file should be merged
@@ -152,6 +155,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.var.filesoverride - FILES:*(FILES_*) variables should not be overridden
 * oelint.var.improperinherit - Warn about improperly named inherits
 * oelint.var.inherit - Check the correct usage of inherit and inherit_defer ('scarthgap' release and newer)
+* oelint.var.inheritdevtool - inherit_defer is recommended for native and nativesdk class **[S]**
 * oelint.var.licenseremotefile - License shall be a file in remote source not a local file
 * oelint.var.licensesdpx - Check for correct SPDX syntax in licenses
 * oelint.var.mandatoryvar - Check for mandatory variables **[S]**
