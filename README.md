@@ -45,7 +45,7 @@ required python libraries on your own. See [requirements.txt](requirements.txt) 
 
 ```shell
 usage: oelint-adv [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix] [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
-                  [--customrules CUSTOMRULES [CUSTOMRULES ...]] [--rulefile RULEFILE] [--jobs JOBS] [--constantfile CONSTANTFILE] [--color] [--quiet] [--noinfo]
+                  [--customrules CUSTOMRULES [CUSTOMRULES ...]] [--rulefile RULEFILE] [--jobs JOBS] [--color] [--quiet] [--noinfo]
                   [--nowarn] [--relpaths] [--noid] [--messageformat MESSAGEFORMAT] [--constantmods CONSTANTMODS [CONSTANTMODS ...]] [--print-rulefile] [--exit-zero]
                   [--version]
                   [files ...]
@@ -67,8 +67,6 @@ options:
                         Additional directories to parse for rulessets
   --rulefile RULEFILE   Rulefile
   --jobs JOBS           Number of jobs to run (default all cores)
-  --constantfile CONSTANTFILE
-                        Constantfile
   --color               Add color to the output based on the severity
   --quiet               Print findings only
   --noinfo              Don't print information level findings
