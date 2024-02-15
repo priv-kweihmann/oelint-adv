@@ -10,12 +10,12 @@ class TestClassOelintBBClassUnderscore(TestBaseClass):
     @pytest.mark.parametrize('input_',
                              [
                                  {
-                                     'classes/oelint_test.bbclass':
+                                     'classes/oelint-test.bbclass':
                                      'VAR = "1"',
                                      'conf/layer.conf':
                                      '',
-                                     'oelinttest.bb':
-                                     'inherit oelint_test',
+                                     'oelint_test.bb':
+                                     'inherit oelint-test',
                                  },
                              ],
                              )
@@ -27,12 +27,12 @@ class TestClassOelintBBClassUnderscore(TestBaseClass):
     @pytest.mark.parametrize('input_',
                              [
                                  {
-                                     'classes/oelint-test.bbclass':
+                                     'classes/oelint_test.bbclass':
                                      'VAR = "1"',
                                      'conf/layer.conf':
                                      '',
-                                     'oelint_test.bb':
-                                     'inherit oelint-test',
+                                     'oelinttest.bb':
+                                     'inherit oelint_test',
                                  },
                              ],
                              )

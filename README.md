@@ -115,7 +115,7 @@ Rules marked with **[F]** are able to perform automatic fixing
 Rules marked with **[S]** can have multiple sub-IDs
 
 * oelint.append.protvars - Variables that shouldn't be set in a bbappend **[S]**
-* oelint.bbclass.underscores - bbclass filenames shall not contain underscores
+* oelint.bbclass.underscores - bbclass filenames shall not contain dashes
 * oelint.exportfunction.dash - EXPORT_FUNCTIONS shall not contain dashes
 * oelint.file.inactiveupstreamdetails - Patches with Upstream-Status: Inactive-Upstream require more details
 * oelint.file.inappropriatemsg - Patches with Upstream-Status: Inappropriate should provide a valid reasoning
