@@ -80,4 +80,5 @@ class Tweaks:
                 setattr(args, k, v)
 
         setattr(args, '_release_range', _release_range)  # noqa: B010
+        args.state.additional_stash_args = getattr(args, '_stash_args', {})
         return args
