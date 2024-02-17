@@ -48,13 +48,28 @@ class TestClassInlineSuppressions(TestBaseClass):
                                      'oelint adv-test.bb':
                                      '''
                                      # nooelint: oelint.vars.someother
-                                     INSANE_SKIP_${PN} = "foo"
+                                     INSANE_SKIP:${PN} = "foo"
                                      ''',
                                  }
                              ],
                              )
     def test_inlinesuppressions_single_notmatching(self, input_):
         self.check_for_id(self._create_args(input_),
+                          'oelint.vars.insaneskip', 1)
+        
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     # nooelint: oelint.vars.someother
+                                     INSANE_SKIP_${PN} = "foo"
+                                     ''',
+                                 }
+                             ],
+                             )
+    def test_inlinesuppressions_single_notmatching_old(self, input_):
+        self.check_for_id(self._create_args(input_, ['--release=dunfell']),
                           'oelint.vars.insaneskip', 1)
 
     @pytest.mark.parametrize('input_',

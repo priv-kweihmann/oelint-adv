@@ -40,6 +40,14 @@ class TestClassOelintTaskDocstrings(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
+                                     do_foo:append() {
+                                         :
+                                     }
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
                                      do_foo[doc] = "Fooo!!!!"
                                      do_foo() {
                                          :
