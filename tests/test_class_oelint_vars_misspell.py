@@ -45,7 +45,7 @@ class TestClassOelintVarsMispell(TestBaseClass):
                              [
                                  {
                                      'oelint_adv_test.bb':
-                                     'RDEPENDS_${PN} = "foo"',
+                                     'RDEPENDS:${PN} = "foo"',
                                  },
                                  {
                                      'oelint_adv_test.bb':
@@ -72,7 +72,7 @@ class TestClassOelintVarsMispell(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      '''
                                      PACKAGES += "${PN}-foo"
-                                     INITSCRIPT_PARAMS_${PN}-foo = "bar"
+                                     INITSCRIPT_PARAMS:${PN}-foo = "bar"
                                      ''',
                                  },
                                  {
@@ -122,6 +122,26 @@ class TestClassOelintVarsMispell(TestBaseClass):
                              )
     def test_good(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.mispell'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'RDEPENDS_${PN} = "foo"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     PACKAGES += "${PN}-foo"
+                                     INITSCRIPT_PARAMS_${PN}-foo = "bar"
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_good_old(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_, ['--release=dunfell']), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.mispell.unknown'])
     @pytest.mark.parametrize('occurrence', [0])

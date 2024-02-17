@@ -591,7 +591,7 @@ class TestClassIntegration(TestBaseClass):
                                      'oelint adv-test.bb':
                                      '''
                                      VAR = "1"
-                                     INSANE_SKIP_${PN} = "foo"
+                                     INSANE_SKIP:${PN} = "foo"
                                      ''',
                                  },
                              ],
@@ -602,6 +602,26 @@ class TestClassIntegration(TestBaseClass):
 
         _args = self._create_args(
             input_, extraopts=['--messageformat="{id}:{severity}:{msg}"'])
+        issues = [x[1] for x in run(_args)]
+        assert (any([x for x in issues if 'oelint.vars.insaneskip:error:' in x]))
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     VAR = "1"
+                                     INSANE_SKIP_${PN} = "foo"
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_messageformat_2_old(self, input_):
+        # local imports only
+        from oelint_adv.__main__ import run
+
+        _args = self._create_args(
+            input_, extraopts=['--messageformat="{id}:{severity}:{msg}"', '--release=dunfell'])
         issues = [x[1] for x in run(_args)]
         assert (any([x for x in issues if 'oelint.vars.insaneskip:error:' in x]))
 
