@@ -16,7 +16,7 @@ class TaskDocStrings(Rule):
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         for item in stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER):
-            if item.FuncName in CONSTANTS.FunctionsKnown or item.FuncName in ['', 'anonymous']:
+            if item.FuncName in CONSTANTS.FunctionsKnown or item.FuncName in ['', 'anonymous', '__anonymous']:
                 # Skip for builtin tasks or anonymous python functions
                 continue
             if item.IsAppend():
