@@ -17,6 +17,6 @@ class TaskNoAnonPython(Rule):
         items = stash.GetItemsFor(
             filename=_file, classifier=Function.CLASSIFIER)
         for i in items:
-            if i.IsPython and i.FuncName.strip() in ['', 'anonymous']:
+            if i.IsPython and i.FuncName.strip() in ['', 'anonymous', '__anonymous']:
                 res += self.finding(i.Origin, i.InFileLine)
         return res
