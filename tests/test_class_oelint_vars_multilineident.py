@@ -18,6 +18,58 @@ class TestClassOelintVarsMultilineIdent(TestBaseClass):
                                      "
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     D = "a \\
+                                     e \\
+                                         "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     D = "    a \\
+                                         e \\
+                                         "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A = "a \\
+                                       b \\
+                                          c \\
+                                     "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A = "\\
+                                         b \\
+                                          c \\
+                                     "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A:append = "a \\
+                                              b \\
+                                                 c \\
+                                     "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A += "a \\
+                                        b \\
+                                           c \\
+                                     "
+                                     ''',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -32,6 +84,7 @@ class TestClassOelintVarsMultilineIdent(TestBaseClass):
                                      '''
                                      A = "a \\
                                      b \\
+                                     c \\
                                          "
                                      ''',
                                  },
@@ -40,6 +93,7 @@ class TestClassOelintVarsMultilineIdent(TestBaseClass):
                                      '''
                                      D = "a \\
                                      e \\
+                                     f \\
                                          "
                                      ''',
                                  },
@@ -74,10 +128,47 @@ class TestClassOelintVarsMultilineIdent(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
+                                     A = "    \\
+                                          a \\
+                                          b \\
+                                          e \\
+                                       "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
                                      A = "\\
                                          a \\
                                          b \\
                                          e \\
+                                     "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A = "a \\
+                                          b \\
+                                          c \\
+                                     "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A:append = "a \\
+                                                 b \\
+                                                 c \\
+                                     "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A += "a \\
+                                           b \\
+                                           c \\
                                      "
                                      ''',
                                  },
