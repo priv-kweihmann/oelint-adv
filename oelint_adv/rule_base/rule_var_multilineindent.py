@@ -13,16 +13,31 @@ class VarMultiLineIndent(Rule):
                          severity='info',
                          message='On a multiline assignment, line indent is desirable. {a} set, {b} desirable')
 
-    def __line_stats(self, raw: str) -> Tuple[int, List[str]]:
+    def __line_stats(self, raw: str, name: str, op: str) -> Tuple[int, List[str]]:
         _map = {}
+
+        first_line_determines_indent = False
+        # If the first line already has non-whitespace content, determine the alignment relative to the
+        # first quotation mark.
+        # Otherwise, try to guess the most common indentation from the other lines.
+        if RegexRpl.match(r'^\s*\S\s*\x1b', raw):
+            first_line_determines_indent = True
+
         _lines = [x for x in RegexRpl.split(r'\t|\x1b', raw) if x and x.strip()]
         for index, value in enumerate(_lines):
-            _map[index] = len(value) - len(value.lstrip())
+            if index == 0 and first_line_determines_indent:
+                # the actual variable content starts after the name, the operator and the initial quotation mark
+                _map[index] = len(name) + len(op) + 1
+            else:
+                _map[index] = len(value) - len(value.lstrip())
         _distribution = {x: list(_map.values()).count(x)
                          for x in set(_map.values())}
 
         if not any(_distribution):
             return (0, list(_map.values()))
+
+        if first_line_determines_indent:
+            return (_map[0], list(_map.values()))
 
         return (max(_distribution, key=lambda x: _distribution[x]), list(_map.values()))
 
@@ -32,7 +47,7 @@ class VarMultiLineIndent(Rule):
         for i in items:
             if not i.IsMultiLine():
                 continue
-            _likeliest_indent, _indent_map = self.__line_stats(i.VarValueStripped)
+            _likeliest_indent, _indent_map = self.__line_stats(i.VarValueStripped, i.VarNameComplete, i.VarOp)
             _likeliest_indent = max(4, _likeliest_indent)
             for index, value in enumerate(_indent_map):
                 if value != _likeliest_indent:
