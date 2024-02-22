@@ -46,6 +46,14 @@ class TestClassOelintVarBBClassExtend(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'inherit nativesdk',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'inherit core-image',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'inherit packagegroup',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
