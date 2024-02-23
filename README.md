@@ -178,6 +178,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.doublemodify - Multiple modifiers of append/prepend/remove/+= found in one operation
 * oelint.vars.downloadfilename - Fetcher does create a download artifact without 'PV' in the filename
 * oelint.vars.duplicate - No duplicates in DEPENDS and RDEPENDS
+* oelint.vars.dusageinpkgfuncs - use \$D instead of \$\{D\} in pkg functions **[F]**
 * oelint.vars.fileextrapaths - 'FILESEXTRAPATHS' shouldn't be used in a bb file
 * oelint.vars.fileextrapathsop - 'FILESEXTRAPATHS' should only be used in combination with ' := '
 * oelint.vars.filessetting - unnecessary FILES settings
