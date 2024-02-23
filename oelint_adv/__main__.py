@@ -365,6 +365,8 @@ def run(args: argparse.Namespace) -> List[Tuple[str, int, str]]:
                 rules='\n\t'.join(sorted(_loaded_ids))))
         issues = []
         groups = group_files(args.files)
+        if not any(groups):
+            return []
         with mp.Pool(processes=min(args.jobs, len(groups))) as pool:
             try:
                 issues = flatten(pool.map(partial(group_run, quiet=args.quiet, fix=args.fix,
