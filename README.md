@@ -198,6 +198,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * oelint.vars.pkgspecific - Variable is package-specific, but isn't set in that way **[S]**
 * oelint.vars.pnbpnusage - \$\{BPN\} should be used instead of \$\{PN\} **[F]**
 * oelint.vars.pnusagediscouraged - Variable shouldn't contain \$\{PN\} or \$\{BPN\}
+* oelint.vars.pythonpnusage - python3 should be used instead of \$\{PYTHON_PN\} **[F]** (scarthgap+)
 * oelint.vars.sectionlowercase - SECTION should be lowercase only **[F]**
 * oelint.vars.spacesassignment - ' = ' should be correct variable assignment
 * oelint.vars.specific - Variable is specific to an unknown identifier
