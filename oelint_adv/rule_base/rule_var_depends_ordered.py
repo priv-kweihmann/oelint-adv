@@ -34,7 +34,7 @@ class VarDependsOrdered(Rule):
         _filegroups = {x.Origin for x in items}
 
         def applicable_all(_file, x):
-            return (x.Origin == _file or _file in x.IncludedFrom) and x.VarName == _key
+            return x.VarName == _key
 
         def applicable_machine(_m, x):
             return _m == x.GetMachineEntry() or _m == x.GetClassOverride()

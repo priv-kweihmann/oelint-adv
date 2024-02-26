@@ -1,4 +1,4 @@
 anytree ~= 2.12
 colorama ~= 0.4
-oelint-parser ~= 3.2
+oelint-parser ~= 3.3
 urllib3 ~= 2.2
