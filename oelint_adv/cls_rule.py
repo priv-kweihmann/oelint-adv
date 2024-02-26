@@ -203,7 +203,7 @@ class Rule:
         return self.Msg.format(*args, **kwargs)
 
     @staticmethod
-    def is_lone_append(stash, file: str) -> bool:
+    def is_lone_append(stash: Stash, file: str) -> bool:
         """Check if the file is a bbappend file without any matching
            bb file
 
@@ -216,10 +216,7 @@ class Rule:
         """
         if not file.endswith('.bbappend'):
             return False
-        for item in stash.GetItemsFor(filename=file):
-            if any(x.endswith('.bb') for x in item.Links):  # pragma: no cover
-                return False  # pragma: no cover
-        return True
+        return file in stash.GetLoneAppends()
 
 
 def load_rules(args, add_rules: Iterable[str] = (), add_dirs: Iterable[str] = ()) -> List['Rule']:
