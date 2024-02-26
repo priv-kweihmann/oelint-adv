@@ -244,8 +244,7 @@ def group_files(files: Iterable[str]) -> List[List[str]]:
                 v.add(f)
                 _match = True
         if not _match:
-            _filename_key = '_'.join(os.path.basename(
-                _filename).split('_')[:-1]).replace('%', '')
+            _filename_key = os.path.basename(_filename).replace('%', '')
             if _filename_key not in res:  # pragma: no cover
                 res[_filename_key] = set()
             res[_filename_key].add(f)
