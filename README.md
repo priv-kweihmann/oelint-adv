@@ -114,106 +114,106 @@ As long as you don't pass **--nobackup** a backup copy (filename + .bak) will be
 Rules marked with **[F]** are able to perform automatic fixing
 Rules marked with **[S]** can have multiple sub-IDs
 
-* oelint.append.protvars - Variables that shouldn't be set in a bbappend **[S]**
-* oelint.bbclass.underscores - bbclass filenames shall not contain dashes
-* oelint.exportfunction.dash - EXPORT_FUNCTIONS shall not contain dashes
-* oelint.file.inactiveupstreamdetails - Patches with Upstream-Status: Inactive-Upstream require more details
-* oelint.file.inappropriatemsg - Patches with Upstream-Status: Inappropriate should provide a valid reasoning
-* oelint.file.includenotfound - File to be included not found
-* oelint.file.includerelpath - Require should be used instead of include
-* oelint.file.inlinesuppress_na - A not applicable inline suppression has been found
-* oelint.file.nospaces - Path to file should not contain spaces
-* oelint.file.patchsignedoff - Patches should contain a Signed-Of-By entry
-* oelint.file.requireinclude - Require should be used instead of include
-* oelint.file.requirenotfound - File to be required not found
-* oelint.file.underscores - Checks the correct usage of underscores in filename
-* oelint.file.upstreamstatus - Patches should contain a Upstream-Status entry
-* oelint.func.specific - Function is specific to an unknown identifier
-* oelint.newline.consecutive - Consecutive blank lines should be avoided **[F]**
-* oelint.newline.eof - File shall end on a newline **[F]**
-* oelint.spaces.emptyline - Empty line should not contain spaces or tabs **[F]**
-* oelint.spaces.linebeginning - No space at a line beginning **[F]**
-* oelint.spaces.linecont - Safe line continuation **[F]**
-* oelint.spaces.lineend - No spaces at line end **[F]**
-* oelint.tabs.notabs - No tabs allowed **[F]**
-* oelint.task.addnotaskbody - Task added by addtask cannot be found
-* oelint.task.customorder - order of custom tasks added via addtask
-* oelint.task.dash - Functions and related statements shall not contain dashes
-* oelint.task.docstrings - Custom tasks should have docstrings
-* oelint.task.heredocs - Usage of heredocs should be avoided. Use files instead
-* oelint.task.multifragments - Multiple fragments of the same function in the same file should be merged
-* oelint.task.noanonpython - Avoid anonymous python functions
-* oelint.task.nocopy - No cp usage in do_install
-* oelint.task.nomkdir - No mkdir usage in do_install
-* oelint.task.nopythonprefix - Tasks containing shell code should NOT be prefixed with 'python' in function header
-* oelint.task.order - Order of tasks **[S]**
-* oelint.task.pythonprefix - Tasks containing python code should be prefixed with 'python' in function header
-* oelint.var.addpylib - addpylib is only valid in .conf files
-* oelint.var.bbclassextend - Use BBCLASSEXTEND when possible
-* oelint.var.filesoverride - FILES:*(FILES_*) variables should not be overridden
-* oelint.var.improperinherit - Warn about improperly named inherits
-* oelint.var.inherit - Check the correct usage of inherit and inherit_defer (scarthgap+)
-* oelint.var.inheritdevtool - inherit_defer is recommended for native and nativesdk class **[S]** (scarthgap+)
-* oelint.var.licenseremotefile - License shall be a file in remote source not a local file
-* oelint.var.licensesdpx - Check for correct SPDX syntax in licenses
-* oelint.var.mandatoryvar - Check for mandatory variables **[S]**
-* oelint.var.multiinclude - Warn on including the same file more than once
-* oelint.var.multiinherit - Warn on inherit the same file more than once
-* oelint.var.nativefilename - Native only recipes should be named -native
-* oelint.var.nativesdkfilename - NativeSDK only recipes should be named nativesdk-
-* oelint.var.order - Variable order **[S]**
-* oelint.var.override - Check if include/append is overriding a variable
-* oelint.var.rootfspostcmd - ROOTFS_POSTPROCESS_COMMAND should not have trailing blanks
-* oelint.var.srcuriwildcard - 'SRC_URI' should not contain any wildcards
-* oelint.var.suggestedvar - Notice on suggested variables **[S]**
-* oelint.vars.appendop - Use ':append(_append)' instead of ' += '
-* oelint.vars.autorev - The usage of 'AUTOREV' for SRCREV leads to not reproducible builds
-* oelint.vars.bbvars - Variables that shouldn't be altered in recipe scope **[S]**
-* oelint.vars.bugtrackerisurl - BUGTRACKER should be an URL
-* oelint.vars.dependsappend - DEPENDS should only be appended, not overwritten
-* oelint.vars.dependsclass - DEPENDS should use the correct class variants
-* oelint.vars.dependsordered - RDEPENDS entries should be ordered alphabetically
-* oelint.vars.descriptionsame - 'DESCRIPTION' is the same a 'SUMMARY' - it can be removed then
-* oelint.vars.descriptiontoobrief - 'DESCRIPTION' is the shorter than 'SUMMARY'
-* oelint.vars.doublemodify - Multiple modifiers of append/prepend/remove/+= found in one operation
-* oelint.vars.downloadfilename - Fetcher does create a download artifact without 'PV' in the filename
-* oelint.vars.duplicate - No duplicates in DEPENDS and RDEPENDS
-* oelint.vars.dusageinpkgfuncs - use \$D instead of \$\{D\} in pkg functions **[F]**
-* oelint.vars.fileextrapaths - 'FILESEXTRAPATHS' shouldn't be used in a bb file
-* oelint.vars.fileextrapathsop - 'FILESEXTRAPATHS' should only be used in combination with ' := '
-* oelint.vars.filessetting - unnecessary FILES settings
-* oelint.vars.homepageping - 'HOMEPAGE' isn't reachable
-* oelint.vars.homepageprefix - HOMEPAGE should begin with https:// or http://
-* oelint.vars.inconspaces - Inconsistent use of spaces on append operation
-* oelint.vars.insaneskip - INSANE_SKIP should be avoided at any cost
-* oelint.vars.licfileprefix - Unnecessary prefix to LIC_FILES_CHKSUM detected **[F]**
-* oelint.vars.listappend - Proper append/prepend to lists **[F]**
-* oelint.vars.mispell - Possible typo detected
-* oelint.vars.mispell.unknown - Variable is not known from CONSTANTS, typo is unlikely
-* oelint.vars.multilineident - On a multiline assignment, line indent is desirable
-* oelint.vars.notneededspace - Space at the beginning of the var is not needed **[F]**
-* oelint.vars.notrailingslash - Variable shall not end on a slash
-* oelint.vars.overrideappend - Check correct order of append/prepend on variables with override syntax
-* oelint.vars.pathhardcode - Warn about the usage of hardcoded paths **[S]**
-* oelint.vars.pbpusage - \$\{BP\} should be used instead of \$\{P\} **[F]**
-* oelint.vars.pkgspecific - Variable is package-specific, but isn't set in that way **[S]**
-* oelint.vars.pnbpnusage - \$\{BPN\} should be used instead of \$\{PN\} **[F]**
-* oelint.vars.pnusagediscouraged - Variable shouldn't contain \$\{PN\} or \$\{BPN\}
-* oelint.vars.pythonpnusage - python3 should be used instead of \$\{PYTHON_PN\} **[F]** (scarthgap+)
-* oelint.vars.sectionlowercase - SECTION should be lowercase only **[F]**
-* oelint.vars.spacesassignment - ' = ' should be correct variable assignment
-* oelint.vars.specific - Variable is specific to an unknown identifier
-* oelint.vars.srcuriappend - Use SRC_URI:append(SRC_URI_append) otherwise this will override weak defaults by inherit
-* oelint.vars.srcurichecksum - If SRC_URI has URLs pointing single file that is not from VCS, then checksusm is required
-* oelint.vars.srcuridomains - Recipe is pulling from different domains, this will likely cause issues
-* oelint.vars.srcurifile - First item of SRC_URI should not be a file:// fetcher, if multiple fetcher are used
-* oelint.vars.srcurigittag - 'tag' in SRC_URI-options leads to not-reproducible builds
-* oelint.vars.srcurioptions - Unsupported fetcher or invalid options detected
-* oelint.vars.srcurisrcrevtag - 'tag' in SRC_URI and a SRCREV for the same component doesn't compute
-* oelint.vars.summary80chars - SUMMARY should max. be 80 characters long
-* oelint.vars.summarylinebreaks - No line breaks in SUMMARY
-* oelint.vars.valuequoted - Variable values should be properly quoted
-* oelint.vars.virtual - no virtual/ items in RDEPENDS/RPROVIDES
+* [oelint.append.protvars](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.append.protvars.md) - Variables that shouldn't be set in a bbappend **[S]**
+* [oelint.bbclass.underscores](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.bbclass.underscores.md) - bbclass filenames shall not contain dashes
+* [oelint.exportfunction.dash](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.exportfunction.dash.md) - EXPORT_FUNCTIONS shall not contain dashes
+* [oelint.file.inactiveupstreamdetails](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.inactiveupstreamdetails.md) - Patches with Upstream-Status: Inactive-Upstream require more details
+* [oelint.file.inappropriatemsg](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.inappropriatemsg.md) - Patches with Upstream-Status: Inappropriate should provide a valid reasoning
+* [oelint.file.includenotfound](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.includenotfound.md) - File to be included not found
+* [oelint.file.includerelpath](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.includerelpath.md) - Require should be used instead of include
+* [oelint.file.inlinesuppress_na](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.inlinesuppress_na.md) - A not applicable inline suppression has been found
+* [oelint.file.nospaces](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.nospaces.md) - Path to file should not contain spaces
+* [oelint.file.patchsignedoff](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.patchsignedoff.md) - Patches should contain a Signed-Of-By entry
+* [oelint.file.requireinclude](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.requireinclude.md) - Require should be used instead of include
+* [oelint.file.requirenotfound](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.requirenotfound.md) - File to be required not found
+* [oelint.file.underscores](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.underscores.md) - Checks the correct usage of underscores in filename
+* [oelint.file.upstreamstatus](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.upstreamstatus.md) - Patches should contain a Upstream-Status entry
+* [oelint.func.specific](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.func.specific.md) - Function is specific to an unknown identifier
+* [oelint.newline.consecutive](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.newline.consecutive.md) - Consecutive blank lines should be avoided **[F]**
+* [oelint.newline.eof](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.newline.eof.md) - File shall end on a newline **[F]**
+* [oelint.spaces.emptyline](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.spaces.emptyline.md) - Empty line should not contain spaces or tabs **[F]**
+* [oelint.spaces.linebeginning](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.spaces.linebeginning.md) - No space at a line beginning **[F]**
+* [oelint.spaces.linecont](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.spaces.linecont.md) - Safe line continuation **[F]**
+* [oelint.spaces.lineend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.spaces.lineend.md) - No spaces at line end **[F]**
+* [oelint.tabs.notabs](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.tabs.notabs.md) - No tabs allowed **[F]**
+* [oelint.task.addnotaskbody](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.addnotaskbody.md) - Task added by addtask cannot be found
+* [oelint.task.customorder](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.customorder.md) - order of custom tasks added via addtask
+* [oelint.task.dash](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.dash.md) - Functions and related statements shall not contain dashes
+* [oelint.task.docstrings](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.docstrings.md) - Custom tasks should have docstrings
+* [oelint.task.heredocs](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.heredocs.md) - Usage of heredocs should be avoided. Use files instead
+* [oelint.task.multifragments](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.multifragments.md) - Multiple fragments of the same function in the same file should be merged
+* [oelint.task.noanonpython](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.noanonpython.md) - Avoid anonymous python functions
+* [oelint.task.nocopy](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.nocopy.md) - No cp usage in do_install
+* [oelint.task.nomkdir](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.nomkdir.md) - No mkdir usage in do_install
+* [oelint.task.nopythonprefix](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.nopythonprefix.md) - Tasks containing shell code should NOT be prefixed with 'python' in function header
+* [oelint.task.order](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.order.md) - Order of tasks **[S]**
+* [oelint.task.pythonprefix](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.pythonprefix.md) - Tasks containing python code should be prefixed with 'python' in function header
+* [oelint.var.addpylib](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.addpylib.md) - addpylib is only valid in .conf files
+* [oelint.var.bbclassextend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.bbclassextend.md) - Use BBCLASSEXTEND when possible
+* [oelint.var.filesoverride](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.filesoverride.md) - FILES:*(FILES_*) variables should not be overridden
+* [oelint.var.improperinherit](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.improperinherit.md) - Warn about improperly named inherits
+* [oelint.var.inherit](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.inherit.md) - Check the correct usage of inherit and inherit_defer (scarthgap+)
+* [oelint.var.inheritdevtool](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.inheritdevtool.md) - inherit_defer is recommended for native and nativesdk class **[S]** (scarthgap+)
+* [oelint.var.licenseremotefile](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.licenseremotefile.md) - License shall be a file in remote source not a local file
+* [oelint.var.licensesdpx](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.licensesdpx.md) - Check for correct SPDX syntax in licenses
+* [oelint.var.mandatoryvar](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.mandatoryvar.md) - Check for mandatory variables **[S]**
+* [oelint.var.multiinclude](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.multiinclude.md) - Warn on including the same file more than once
+* [oelint.var.multiinherit](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.multiinherit.md) - Warn on inherit the same file more than once
+* [oelint.var.nativefilename - Native only recipes should be named](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.nativefilename - Native only recipes should be named.md) -native
+* [oelint.var.nativesdkfilename](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.nativesdkfilename.md) - NativeSDK only recipes should be named nativesdk-
+* [oelint.var.order](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.order.md) - Variable order **[S]**
+* [oelint.var.override](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.override.md) - Check if include/append is overriding a variable
+* [oelint.var.rootfspostcmd](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.rootfspostcmd.md) - ROOTFS_POSTPROCESS_COMMAND should not have trailing blanks
+* [oelint.var.srcuriwildcard](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.srcuriwildcard.md) - 'SRC_URI' should not contain any wildcards
+* [oelint.var.suggestedvar](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.suggestedvar.md) - Notice on suggested variables **[S]**
+* [oelint.vars.appendop](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.appendop.md) - Use ':append(_append)' instead of ' += '
+* [oelint.vars.autorev](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.autorev.md) - The usage of 'AUTOREV' for SRCREV leads to not reproducible builds
+* [oelint.vars.bbvars](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.bbvars.md) - Variables that shouldn't be altered in recipe scope **[S]**
+* [oelint.vars.bugtrackerisurl](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.bugtrackerisurl.md) - BUGTRACKER should be an URL
+* [oelint.vars.dependsappend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.dependsappend.md) - DEPENDS should only be appended, not overwritten
+* [oelint.vars.dependsclass](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.dependsclass.md) - DEPENDS should use the correct class variants
+* [oelint.vars.dependsordered](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.dependsordered.md) - RDEPENDS entries should be ordered alphabetically
+* [oelint.vars.descriptionsame - 'DESCRIPTION' is the same a 'SUMMARY'](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.descriptionsame - 'DESCRIPTION' is the same a 'SUMMARY'.md) - it can be removed then
+* [oelint.vars.descriptiontoobrief](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.descriptiontoobrief.md) - 'DESCRIPTION' is the shorter than 'SUMMARY'
+* [oelint.vars.doublemodify](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.doublemodify.md) - Multiple modifiers of append/prepend/remove/+= found in one operation
+* [oelint.vars.downloadfilename](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.downloadfilename.md) - Fetcher does create a download artifact without 'PV' in the filename
+* [oelint.vars.duplicate](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.duplicate.md) - No duplicates in DEPENDS and RDEPENDS
+* [oelint.vars.dusageinpkgfuncs](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.dusageinpkgfuncs.md) - use \$D instead of \$\{D\} in pkg functions **[F]**
+* [oelint.vars.fileextrapaths](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.fileextrapaths.md) - 'FILESEXTRAPATHS' shouldn't be used in a bb file
+* [oelint.vars.fileextrapathsop](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.fileextrapathsop.md) - 'FILESEXTRAPATHS' should only be used in combination with ' := '
+* [oelint.vars.filessetting](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.filessetting.md) - unnecessary FILES settings
+* [oelint.vars.homepageping](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.homepageping.md) - 'HOMEPAGE' isn't reachable
+* [oelint.vars.homepageprefix](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.homepageprefix.md) - HOMEPAGE should begin with https:// or http://
+* [oelint.vars.inconspaces](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.inconspaces.md) - Inconsistent use of spaces on append operation
+* [oelint.vars.insaneskip](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.insaneskip.md) - INSANE_SKIP should be avoided at any cost
+* [oelint.vars.licfileprefix](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.licfileprefix.md) - Unnecessary prefix to LIC_FILES_CHKSUM detected **[F]**
+* [oelint.vars.listappend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.listappend.md) - Proper append/prepend to lists **[F]**
+* [oelint.vars.mispell](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.mispell.md) - Possible typo detected
+* [oelint.vars.mispell.unknown](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.mispell.unknown.md) - Variable is not known from CONSTANTS, typo is unlikely
+* [oelint.vars.multilineident](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.multilineident.md) - On a multiline assignment, line indent is desirable
+* [oelint.vars.notneededspace](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.notneededspace.md) - Space at the beginning of the var is not needed **[F]**
+* [oelint.vars.notrailingslash](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.notrailingslash.md) - Variable shall not end on a slash
+* [oelint.vars.overrideappend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.overrideappend.md) - Check correct order of append/prepend on variables with override syntax
+* [oelint.vars.pathhardcode](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pathhardcode.md) - Warn about the usage of hardcoded paths **[S]**
+* [oelint.vars.pbpusage](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pbpusage.md) - \$\{BP\} should be used instead of \$\{P\} **[F]**
+* [oelint.vars.pkgspecific](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pkgspecific.md) - Variable is package-specific, but isn't set in that way **[S]**
+* [oelint.vars.pnbpnusage](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pnbpnusage.md) - \$\{BPN\} should be used instead of \$\{PN\} **[F]**
+* [oelint.vars.pnusagediscouraged](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pnusagediscouraged.md) - Variable shouldn't contain \$\{PN\} or \$\{BPN\}
+* [oelint.vars.pythonpnusage](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pythonpnusage.md) - python3 should be used instead of \$\{PYTHON_PN\} **[F]** (scarthgap+)
+* [oelint.vars.sectionlowercase](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.sectionlowercase.md) - SECTION should be lowercase only **[F]**
+* [oelint.vars.spacesassignment](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.spacesassignment.md) - ' = ' should be correct variable assignment
+* [oelint.vars.specific](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.specific.md) - Variable is specific to an unknown identifier
+* [oelint.vars.srcuriappend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.srcuriappend.md) - Use SRC_URI:append(SRC_URI_append) otherwise this will override weak defaults by inherit
+* [oelint.vars.srcurichecksum](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.srcurichecksum.md) - If SRC_URI has URLs pointing single file that is not from VCS, then checksusm is required
+* [oelint.vars.srcuridomains](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.srcuridomains.md) - Recipe is pulling from different domains, this will likely cause issues
+* [oelint.vars.srcurifile](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.srcurifile.md) - First item of SRC_URI should not be a file:// fetcher, if multiple fetcher are used
+* [oelint.vars.srcurigittag](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.srcurigittag.md) - 'tag' in SRC_URI-options leads to not-reproducible builds
+* [oelint.vars.srcurioptions](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.srcurioptions.md) - Unsupported fetcher or invalid options detected
+* [oelint.vars.srcurisrcrevtag](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.srcurisrcrevtag.md) - 'tag' in SRC_URI and a SRCREV for the same component doesn't compute
+* [oelint.vars.summary80chars](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.summary80chars.md) - SUMMARY should max. be 80 characters long
+* [oelint.vars.summarylinebreaks](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.summarylinebreaks.md) - No line breaks in SUMMARY
+* [oelint.vars.valuequoted](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.valuequoted.md) - Variable values should be properly quoted
+* [oelint.vars.virtual](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.virtual.md) - no virtual/ items in RDEPENDS/RPROVIDES
 
 ### Non-default rulesets
 
@@ -228,7 +228,7 @@ To enable pass **--addrules jetm** to CLI.
 
 Rules marked with **[F]** are able to perform automatic fixing.
 
-* oelint.jetm.vars.dependssingleline - Each [R]DEPENDS entry should be put into a single line
+* [oelint.jetm.vars.dependssingleline](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.jetm.vars.dependssingleline.md) - Each [R]DEPENDS entry should be put into a single line
   
 ### Writing your own additional rules
 
