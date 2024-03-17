@@ -39,6 +39,7 @@ class Tweaks:
         "mickledore": {"constantmods": {"-": {"variables": {"known": ["PACKAGEBUILDPKGD"]}}}},
         "nanbield": {"constantmods": {"-": {"variables": {"suggested": ["AUTHOR"]}}}},
         "scarthgap": {},
+        "latest": {},
     }
 
     @staticmethod
