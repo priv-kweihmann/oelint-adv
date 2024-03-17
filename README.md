@@ -159,7 +159,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * [oelint.var.mandatoryvar](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.mandatoryvar.md) - Check for mandatory variables **[S]**
 * [oelint.var.multiinclude](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.multiinclude.md) - Warn on including the same file more than once
 * [oelint.var.multiinherit](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.multiinherit.md) - Warn on inherit the same file more than once
-* [oelint.var.nativefilename - Native only recipes should be named](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.nativefilename - Native only recipes should be named.md) -native
+* [oelint.var.nativefilename](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.nativefilename) - Native only recipes should be named.md -native
 * [oelint.var.nativesdkfilename](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.nativesdkfilename.md) - NativeSDK only recipes should be named nativesdk-
 * [oelint.var.order](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.order.md) - Variable order **[S]**
 * [oelint.var.override](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.override.md) - Check if include/append is overriding a variable
@@ -173,7 +173,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * [oelint.vars.dependsappend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.dependsappend.md) - DEPENDS should only be appended, not overwritten
 * [oelint.vars.dependsclass](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.dependsclass.md) - DEPENDS should use the correct class variants
 * [oelint.vars.dependsordered](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.dependsordered.md) - RDEPENDS entries should be ordered alphabetically
-* [oelint.vars.descriptionsame - 'DESCRIPTION' is the same a 'SUMMARY'](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.descriptionsame - 'DESCRIPTION' is the same a 'SUMMARY'.md) - it can be removed then
+* [oelint.vars.descriptionsame](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.descriptionsame) - 'DESCRIPTION' is the same a 'SUMMARY'.md) - it can be removed then
 * [oelint.vars.descriptiontoobrief](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.descriptiontoobrief.md) - 'DESCRIPTION' is the shorter than 'SUMMARY'
 * [oelint.vars.doublemodify](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.doublemodify.md) - Multiple modifiers of append/prepend/remove/+= found in one operation
 * [oelint.vars.downloadfilename](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.downloadfilename.md) - Fetcher does create a download artifact without 'PV' in the filename
