@@ -155,11 +155,10 @@ Rules marked with **[S]** can have multiple sub-IDs
 * [oelint.var.inherit](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.inherit.md) - Check the correct usage of inherit and inherit_defer (scarthgap+)
 * [oelint.var.inheritdevtool](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.inheritdevtool.md) - inherit_defer is recommended for native and nativesdk class **[S]** (scarthgap+)
 * [oelint.var.licenseremotefile](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.licenseremotefile.md) - License shall be a file in remote source not a local file
-* [oelint.var.licensesdpx](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.licensesdpx.md) - Check for correct SPDX syntax in licenses
 * [oelint.var.mandatoryvar](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.mandatoryvar.md) - Check for mandatory variables **[S]**
 * [oelint.var.multiinclude](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.multiinclude.md) - Warn on including the same file more than once
 * [oelint.var.multiinherit](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.multiinherit.md) - Warn on inherit the same file more than once
-* [oelint.var.nativefilename](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.nativefilename) - Native only recipes should be named.md -native
+* [oelint.var.nativefilename](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.nativefilename.md) - Native only recipes should be named.md -native
 * [oelint.var.nativesdkfilename](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.nativesdkfilename.md) - NativeSDK only recipes should be named nativesdk-
 * [oelint.var.order](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.order.md) - Variable order **[S]**
 * [oelint.var.override](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.override.md) - Check if include/append is overriding a variable
@@ -173,7 +172,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * [oelint.vars.dependsappend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.dependsappend.md) - DEPENDS should only be appended, not overwritten
 * [oelint.vars.dependsclass](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.dependsclass.md) - DEPENDS should use the correct class variants
 * [oelint.vars.dependsordered](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.dependsordered.md) - RDEPENDS entries should be ordered alphabetically
-* [oelint.vars.descriptionsame](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.descriptionsame) - 'DESCRIPTION' is the same a 'SUMMARY'.md) - it can be removed then
+* [oelint.vars.descriptionsame](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.descriptionsame.md) - 'DESCRIPTION' is the same a 'SUMMARY'.md) - it can be removed then
 * [oelint.vars.descriptiontoobrief](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.descriptiontoobrief.md) - 'DESCRIPTION' is the shorter than 'SUMMARY'
 * [oelint.vars.doublemodify](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.doublemodify.md) - Multiple modifiers of append/prepend/remove/+= found in one operation
 * [oelint.vars.downloadfilename](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.downloadfilename.md) - Fetcher does create a download artifact without 'PV' in the filename
@@ -186,10 +185,11 @@ Rules marked with **[S]** can have multiple sub-IDs
 * [oelint.vars.homepageprefix](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.homepageprefix.md) - HOMEPAGE should begin with https:// or http://
 * [oelint.vars.inconspaces](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.inconspaces.md) - Inconsistent use of spaces on append operation
 * [oelint.vars.insaneskip](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.insaneskip.md) - INSANE_SKIP should be avoided at any cost
+* [oelint.vars.licensesdpx](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.licensesdpx.md) - Check for correct SPDX syntax in licenses
 * [oelint.vars.licfileprefix](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.licfileprefix.md) - Unnecessary prefix to LIC_FILES_CHKSUM detected **[F]**
 * [oelint.vars.listappend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.listappend.md) - Proper append/prepend to lists **[F]**
-* [oelint.vars.mispell](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.mispell.md) - Possible typo detected
 * [oelint.vars.mispell.unknown](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.mispell.unknown.md) - Variable is not known from CONSTANTS, typo is unlikely
+* [oelint.vars.mispell](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.mispell.md) - Possible typo detected
 * [oelint.vars.multilineident](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.multilineident.md) - On a multiline assignment, line indent is desirable
 * [oelint.vars.notneededspace](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.notneededspace.md) - Space at the beginning of the var is not needed **[F]**
 * [oelint.vars.notrailingslash](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.notrailingslash.md) - Variable shall not end on a slash
