@@ -16,6 +16,8 @@ class VarMultiLineIndent(Rule):
     def __line_stats(self, raw: str, name: str, op: str) -> Tuple[int, List[str]]:
         _map = {}
 
+        raw = raw.replace('\x1b"', '"')
+
         first_line_determines_indent = False
         # If the first line already has non-whitespace content, determine the alignment relative to the
         # first quotation mark.
