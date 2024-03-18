@@ -391,6 +391,7 @@ The following placeholder symbols will be automatically replaced
 | {severity} | severity of the finding    |
 | {id}       | error-ID of the finding    |
 | {msg}      | description of the finding |
+| {wikiurl}  | a link to the online wiki  |
 
 ## Configuration file
 

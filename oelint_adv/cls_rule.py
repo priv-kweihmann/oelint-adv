@@ -6,9 +6,10 @@ import sys
 from typing import Iterable, List, Tuple
 
 from colorama import Style
+from oelint_parser.cls_stash import Stash
 
 from oelint_adv.state import State
-from oelint_parser.cls_stash import Stash
+from oelint_adv.version import __version__
 
 
 class Rule:
@@ -144,8 +145,11 @@ class Rule:
             _color = self._state.get_color_by_severity(_severity)
             _style = Style.RESET_ALL
 
+        wikiurl = f'https://github.com/priv-kweihmann/oelint-adv/blob/{__version__}/docs/wiki/{self.ID}.md'
+
         _msg = self._state.get_messageformat().format(path=_path, line=_line, severity=_severity,
-                                                      id=_display_id, msg=override_msg)
+                                                      id=_display_id, msg=override_msg,
+                                                      wikiurl=wikiurl)
 
         return [((_path, _line), f'{_color}{_msg}{_style}')]
 
