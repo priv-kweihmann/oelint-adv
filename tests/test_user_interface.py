@@ -611,6 +611,28 @@ class TestClassIntegration(TestBaseClass):
                                      'oelint adv-test.bb':
                                      '''
                                      VAR = "1"
+                                     INSANE_SKIP:${PN} = "foo"
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_messageformat_wikiurl(self, input_):
+        # local imports only
+        from oelint_adv.__main__ import run
+        from oelint_adv.version import __version__
+
+        _args = self._create_args(
+            input_, extraopts=['--messageformat="{wikiurl}"'])
+        issues = [x[1] for x in run(_args)]
+        assert (any(
+            [x for x in issues if f'https://github.com/priv-kweihmann/oelint-adv/blob/{__version__}/docs/wiki/oelint.vars.insaneskip.md' in x]))
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     VAR = "1"
                                      INSANE_SKIP_${PN} = "foo"
                                      ''',
                                  },
