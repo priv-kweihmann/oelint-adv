@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-from oelint_parser.cls_item import Variable
+from oelint_parser.cls_item import Inherit, Variable
 from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
 
@@ -28,6 +28,10 @@ class VarMandatoryExists(Rule):
         'SRC_URI',
     ]
 
+    SRC_URI_EXLCUDES = [
+        'SRC_URI',
+    ]
+
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         _is_pkg_group = stash.IsPackageGroup(_file)
@@ -36,10 +40,16 @@ class VarMandatoryExists(Rule):
                                                   classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR,
                                                   attributeValue=CONSTANTS.VariablesMandatory)
+        inherits: List[Inherit] = stash.GetItemsFor(filename=_file,
+                                                    classifier=Inherit.CLASSIFIER)
+        # pypi and gnomebase base set SRC_URI on their own, do not warn here
+        src_setting_inherits = any(True for x in inherits if 'pypi' in x.get_items() or 'gnomebase' in x.get_items())
         for var_ in CONSTANTS.VariablesMandatory:
             if _is_pkg_group and var_ in VarMandatoryExists.PACKAGEGRP_EXCLUDES:
                 continue
             if _is_image and var_ in VarMandatoryExists.IMAGE_EXCLUDES:
+                continue
+            if src_setting_inherits and var_ in VarMandatoryExists.SRC_URI_EXLCUDES:
                 continue
             filtered = stash.Reduce(items, attribute=Variable.ATTR_VAR, attributeValue=var_)
             if not any(filtered):
