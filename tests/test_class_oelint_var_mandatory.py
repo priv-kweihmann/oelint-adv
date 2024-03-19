@@ -94,6 +94,26 @@ class TestClassOelintVarMandatoryVar(TestBaseClass):
                                      DESCRIPTION = "foo"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SUMMARY = "foo"
+                                     DESCRIPTION = "foo"
+                                     HOMEPAGE = "foo"
+                                     LICENSE = "foo"
+                                     inherit pypi
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SUMMARY = "foo"
+                                     DESCRIPTION = "foo"
+                                     HOMEPAGE = "foo"
+                                     LICENSE = "foo"
+                                     inherit gnomebase
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
