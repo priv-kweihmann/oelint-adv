@@ -18,7 +18,10 @@ class VarSRCUriFirstFile(Rule):
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
         _fetcher = []
-        for item in items:
+        _second_level_ops = []
+
+        def extract_fetcher(item, prepend=False):
+            nonlocal _fetcher
             lines = [y.strip('"') for y in item.get_items() if y]
 
             for x in lines:
@@ -27,7 +30,22 @@ class VarSRCUriFirstFile(Rule):
                     continue
                 _url = stash.GetScrComponents(x)
                 if _url['scheme']:
-                    _fetcher.append((_url['scheme'], item.InFileLine))
+                    if prepend:
+                        _fetcher.insert(0, (_url['scheme'], item.InFileLine))
+                    else:
+                        _fetcher.append((_url['scheme'], item.InFileLine))
+
+        for item in items:
+            if 'remove' in item.SubItems:
+                continue
+            if 'append' in item.SubItems or 'prepend' in item.SubItems:
+                _second_level_ops.append(item)
+                continue
+            extract_fetcher(item)
+
+        for item in _second_level_ops:
+            extract_fetcher(item, prepend='prepend' in item.SubItems)
+
         if _fetcher:
             if any(x[0] not in ['file', 'inline'] for x in _fetcher) and _fetcher[0][0] == 'file':
                 res += self.finding(item.Origin, _fetcher[0][1])
