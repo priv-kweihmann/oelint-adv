@@ -31,6 +31,20 @@ class TestClassOelintVarsSRCURIfile(TestBaseClass):
                                      SRC_URI += "http://foo.org/abc.tar.gz"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SRC_URI += "http://def.com/bar.zip"
+                                     SRC_URI:prepend = "file://abc"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SRC_URI:append = "file://abc"
+                                     SRC_URI:append = "http://def.com/bar.zip"
+                                     ''',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -77,6 +91,13 @@ class TestClassOelintVarsSRCURIfile(TestBaseClass):
                                      ' ',
                                      'classes/foo.bbclass':
                                      'SRC_URI ?= "https://some.corp.org/${PN}"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SRC_URI:append = "file://abc"
+                                     SRC_URI += "http://def.com/bar.zip"
+                                     ''',
                                  },
                              ],
                              )
