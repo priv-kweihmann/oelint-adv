@@ -118,3 +118,35 @@ class TestClassOelintVarMandatoryVar(TestBaseClass):
                              )
     def test_good(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', [
+        'oelint.var.mandatoryvar.SRC_URI',
+    ])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SUMMARY = "foo"
+                                     DESCRIPTION = "foo"
+                                     HOMEPAGE = "foo"
+                                     LICENSE = "foo"
+                                     inherit foo
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_good_custom_src_uri_class(self, input_, id_, occurrence):
+        __cnt = '''
+        {
+            "oelint-mandatoryvar": {
+                "srcuri-exclude-classes": [
+                    "foo"
+                ]
+            }
+        }
+        '''
+        _extra_opts = [
+            '--constantmod=+{mod}'.format(mod=self._create_tempfile('constmod', __cnt))]
+        self.check_for_id(self._create_args(input_, _extra_opts), id_, occurrence)
