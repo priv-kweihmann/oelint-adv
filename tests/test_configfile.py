@@ -3,7 +3,7 @@ import os
 import pytest  # noqa: I900
 
 from .base import TestBaseClass
-from oelint_adv.__main__ import deserialize_boolean_options
+from oelint_adv.core import deserialize_boolean_options
 
 # flake8: noqa S101 - n.a. for test files
 
