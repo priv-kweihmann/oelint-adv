@@ -8,6 +8,8 @@ from configparser import ConfigParser, NoOptionError, NoSectionError, ParsingErr
 from functools import partial
 from typing import Dict, Iterable, List, Tuple, Union
 
+# PYTHON_ARGCOMPLETE_OK
+import argcomplete
 from oelint_parser.cls_item import Comment
 from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
@@ -69,6 +71,16 @@ def parse_configfile() -> Dict:
     return {}
 
 
+def _constantmod_completer(prefix, parsed_args, **kwargs):
+    if prefix.startswith('+'):
+        return [f'+{x}' for x in argcomplete.FilesCompleter().__call__(prefix[1:], **kwargs)]
+    elif prefix.startswith('-'):
+        # doesn't seem to work with argcomplete, but maybe in this could be resolved
+        # by the upstream implementation
+        return [f'-{x}' for x in argcomplete.FilesCompleter().__call__(prefix[1:], **kwargs)]
+    return argcomplete.FilesCompleter().__call__(prefix, **kwargs) + ['+', '-']
+
+
 def create_argparser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog='oelint-adv',
                                      description='Advanced OELint - Check bitbake recipes against OECore styleguide')
@@ -84,7 +96,7 @@ def create_argparser() -> argparse.ArgumentParser:
     parser.add_argument('--addrules', nargs='+', default=[],
                         help='Additional non-default rulessets to add')
     parser.add_argument('--customrules', nargs='+', default=[],
-                        help='Additional directories to parse for rulessets')
+                        help='Additional directories to parse for rulessets').completer = argcomplete.DirectoriesCompleter
     parser.add_argument('--rulefile', default=None,
                         help='Rulefile')
     parser.add_argument('--jobs', type=int, default=mp.cpu_count(),
@@ -110,7 +122,7 @@ def create_argparser() -> argparse.ArgumentParser:
                              + - to add to DB,
                              - - to remove from DB,
                              None - to override DB
-                            ''')
+                            ''').completer = _constantmod_completer
     parser.add_argument('--print-rulefile', action='store_true', default=False,
                         help='Print loaded rules as a rulefile and exit')
     parser.add_argument('--exit-zero', action='store_true', default=False,
@@ -120,8 +132,8 @@ def create_argparser() -> argparse.ArgumentParser:
     # Override the defaults with the values from the config file
     parser.set_defaults(**parse_configfile())
 
-    parser.add_argument('files', nargs='*', help='File to parse')
-
+    parser.add_argument(
+        'files', nargs='*', help='File to parse').completer = argcomplete.FilesCompleter(allowednames=('bb', 'bbappend', 'bbclass', 'conf'))
     parser.add_argument('--version', action='version',
                         version=f'%(prog)s {__version__}')
 
@@ -129,7 +141,9 @@ def create_argparser() -> argparse.ArgumentParser:
 
 
 def parse_arguments() -> argparse.Namespace:
-    return create_argparser().parse_args()  # pragma: no cover
+    parser = create_argparser()
+    argcomplete.autocomplete(parser)
+    return parser.parse_args()  # pragma: no cover
 
 
 def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C901 - complexity is still okay
