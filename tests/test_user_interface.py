@@ -554,25 +554,6 @@ class TestClassIntegration(TestBaseClass):
                                      VAR = "1"
                                      INSANE_SKIP_${PN} = "foo"
                                      ''',
-                                 },
-                             ],
-                             )
-    def test_noid(self, input_):
-        # local imports only
-        from oelint_adv.__main__ import run
-
-        _args = self._create_args(input_, extraopts=['--noid'])
-        issues = [x[1] for x in run(_args)]
-        assert (not any([x for x in issues if ':oelint.vars.insaneskip:' in x]))
-
-    @pytest.mark.parametrize('input_',
-                             [
-                                 {
-                                     'oelint adv-test.bb':
-                                     '''
-                                     VAR = "1"
-                                     INSANE_SKIP_${PN} = "foo"
-                                     ''',
                                  }
                              ],
                              )

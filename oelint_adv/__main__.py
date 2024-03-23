@@ -111,8 +111,6 @@ def create_argparser() -> argparse.ArgumentParser:
                         help='Don\'t print warning level findings')
     parser.add_argument('--relpaths', action='store_true', default=False,
                         help='Show relative paths instead of absolute paths in results')
-    parser.add_argument('--noid', action='store_true', default=False,
-                        help='Don\'t show the error-ID in the output')
     parser.add_argument('--messageformat', default='{path}:{line}:{severity}:{id}:{msg}',
                         type=str, help='Format of message output')
     parser.add_argument('--constantmods', default=[], nargs='+',
@@ -219,11 +217,6 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
     args.state.rel_path = args.relpaths
     args.state.suppression = args.suppress
 
-    if args.noid:
-        # just strip id from message format if noid is requested
-        args.messageformat = args.messageformat.replace('{id}', '')
-        # strip any double : resulting from the previous operation
-        args.messageformat = args.messageformat.replace('::', ':')
     args.state.messageformat = args.messageformat
 
     return args
