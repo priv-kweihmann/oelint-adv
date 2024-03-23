@@ -4,6 +4,8 @@ import argparse
 class Tweaks:
     """Release specific tweaks"""
 
+    DEFAULT_RELEASE = 'nanbield'
+
     _map = {
         "inky": {},
         "clyde": {},

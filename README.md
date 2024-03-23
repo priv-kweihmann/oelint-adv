@@ -484,6 +484,27 @@ Integration for Vim / NeoVim is provided by [ale](https://github.com/dense-analy
 
 Jenkins integration is provided by [warnings-ng](https://plugins.jenkins.io/warnings-ng/).
 
+## Use as a library
+
+To use the linter as part of calling application do
+
+```python
+from oelint_adv.core import create_lib_arguments, run
+
+args = create_lib_arguments(['file to check', 'another file to check']])
+
+# check the docstring of create_lib_arguments for more options
+
+results = run(args)
+
+# the results will be a List[Tuple[Tuple[str, int], str]]
+# each item is
+#  [0] - 'path to the finding', 'line of the finding'
+#  [1] - 'message'
+```
+
+The caller is responsible for appropriate exception handling
+
 ## Missing anything?
 
 You think there's something missing, wrong, 'improvable'...
