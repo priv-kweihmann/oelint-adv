@@ -45,6 +45,8 @@ def deserialize_boolean_options(options: Dict) -> Dict[str, Union[str, bool]]:
 
 
 def parse_configfile() -> Dict:
+    if os.environ.get('OELINT_SKIP_CONFIG', ''):
+        return {}
     config = ConfigParser()
     for conffile in [os.environ.get('OELINT_CONFIG', '/does/not/exist'),
                      os.path.join(os.getcwd(), '.oelint.cfg'),

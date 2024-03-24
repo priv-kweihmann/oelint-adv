@@ -403,7 +403,9 @@ In the following order files are probed
 * file `.oelint.cfg` in current work directory
 * file `.oelint.cfg` in your `HOME` directory
 
-Explicitly passed options to CLI are always chosen over the defaults defined by the configuration file
+Explicitly passed options to CLI are always chosen over the defaults defined by the configuration file.
+
+To skip the loading of any configuration file, set `OELINT_SKIP_CONFIG` to a non empty value in your environment.
 
 ### File format
 
