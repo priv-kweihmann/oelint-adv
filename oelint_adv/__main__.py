@@ -18,10 +18,6 @@ sys.path.append(os.path.abspath(os.path.join(__file__, '..')))
 def _constantmod_completer(prefix, parsed_args, **kwargs):
     if prefix.startswith('+'):  # pragma: no cover
         return [f'+{x}' for x in argcomplete.FilesCompleter().__call__(prefix[1:], **kwargs)]  # pragma: no cover
-    elif prefix.startswith('-'):  # pragma: no cover
-        # doesn't seem to work with argcomplete, but maybe in this could be resolved
-        # by the upstream implementation
-        return [f'-{x}' for x in argcomplete.FilesCompleter().__call__(prefix[1:], **kwargs)]  # pragma: no cover
     return argcomplete.FilesCompleter().__call__(prefix, **kwargs) + ['+', '-']  # pragma: no cover
 
 
