@@ -39,12 +39,13 @@ To fine tuned the behavior on the rule, you can apply the following [constants](
 
 - `oelint-mandatoryvar/pkggroup-excludes` to skip mandatory variables in a packagegroup
 - `oelint-mandatoryvar/image-excludes` to skip mandatory variables in images
-- `oelint-mandatoryvar/srcuri-exclude-classes` to skip `SRC_URI`, because of a class inherited that defines `SRC_URI` already
+- `oelint-mandatoryvar/{varname}-exclude-classes` to skip `{varname}`, because of a class inherited that defines the variable already
 
 e.g. if your custom class ``foo.bbclass`` contains
 
 ```
 SRC_URI ?= "http://foo.com/{BPN}.zip"
+BUGTRACKER ?= "http://foo.com/{BPN}/issues"
 ```
 
 but resides in a different layer than the current, you can run the linter with
@@ -58,7 +59,10 @@ with `.my-custom-src-uri-classes.json` being
 ```json
 {
     "oelint-mandatoryvar": {
-        "srcuri-exclude-classes": [
+        "SRC_URI-exclude-classes": [
+            "foo"
+        ],
+        "BUGTRACKER-exclude-classes": [
             "foo"
         ]
     }

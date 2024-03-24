@@ -45,7 +45,7 @@ class VarMandatoryExists(Rule):
             {
                 'oelint-mandatoryvar':
                 {
-                    'srcuri-exclude-classes': [
+                    'SRC_URI-exclude-classes': [
                         'pypi',
                         'gnomebase',
                     ],
@@ -63,15 +63,18 @@ class VarMandatoryExists(Rule):
                                                   attributeValue=CONSTANTS.VariablesMandatory)
         inherits: List[Inherit] = stash.GetItemsFor(filename=_file,
                                                     classifier=Inherit.CLASSIFIER)
+
+        def get_class_specific(varname: str, inherits: List[Inherit]) -> bool:
+            return any(True for x in inherits if any(y in x.get_items()
+                                                     for y in (CONSTANTS.GetByPath(f'oelint-mandatoryvar/{varname}-exclude-classes') or [])))
+
         # some classes set SRC_URI on their own, do not warn here
-        src_setting_inherits = any(True for x in inherits if any(y in x.get_items()
-                                   for y in CONSTANTS.GetByPath('oelint-mandatoryvar/srcuri-exclude-classes')))
         for var_ in CONSTANTS.VariablesMandatory:
             if _is_pkg_group and var_ in CONSTANTS.GetByPath('oelint-mandatoryvar/pkggroup-excludes'):
                 continue
             if _is_image and var_ in CONSTANTS.GetByPath('oelint-mandatoryvar/image-excludes'):
                 continue
-            if src_setting_inherits and var_ in ['SRC_URI']:
+            if get_class_specific(var_, inherits):
                 continue
             filtered = stash.Reduce(items, attribute=Variable.ATTR_VAR, attributeValue=var_)
             if not any(filtered):

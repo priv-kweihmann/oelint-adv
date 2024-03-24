@@ -130,18 +130,20 @@ class TestClassOelintVarMandatoryVar(TestBaseClass):
                                      '''
                                      SUMMARY = "foo"
                                      DESCRIPTION = "foo"
-                                     HOMEPAGE = "foo"
                                      LICENSE = "foo"
                                      inherit foo
                                      ''',
                                  },
                              ],
                              )
-    def test_good_custom_src_uri_class(self, input_, id_, occurrence):
+    def test_good_custom_varname_class(self, input_, id_, occurrence):
         __cnt = '''
         {
             "oelint-mandatoryvar": {
-                "srcuri-exclude-classes": [
+                "SRC_URI-exclude-classes": [
+                    "foo"
+                ],
+                "HOMEPAGE-exclude-classes": [
                     "foo"
                 ]
             }
