@@ -26,7 +26,7 @@ jobs:
         cache: 'pip'
     - name: prepare
       run: |
-        python3 -m pip install --upgrade pip
+        python3 -m pip install --upgrade pip build
         pip install --upgrade setuptools 
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
@@ -37,9 +37,9 @@ jobs:
     - name: test (pytest)
       run: pytest
     - name: build
-      run: python3 setup.py build sdist bdist_wheel --universal
+      run: python3 -m build --sdist --wheel
     - name: install
-      run: python3 setup.py install --user
+      run: python3 -m pip install --user dist/*.whl
     - name: test (installed)
       run: |
         oelint-adv --help
