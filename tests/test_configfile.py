@@ -86,6 +86,35 @@ class TestConfigFile(TestBaseClass):
                                  },
                              ],
                              )
+    def test_config_file_skip(self, input_):
+        # Test the default
+        _args = self._create_args(input_)
+
+        assert not _args.nowarn
+
+        # test the override from config file
+        # here loaded from current workdir
+        _cstfile = self._create_tempfile(
+            '.oelint.cfg', '[oelint]\nnowarn=True')
+        
+        os.environ['OELINT_SKIP_CONFIG'] = '1'
+
+        _cwd = os.getcwd()
+        os.chdir(os.path.dirname(_cstfile))
+        _args = self._create_args(input_)
+        os.chdir(_cwd)
+
+        os.environ.pop('OELINT_SKIP_CONFIG')
+
+        assert not _args.nowarn
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb': 'VAR = "1"',
+                                 },
+                             ],
+                             )
     def test_config_file_boolean_options(self, input_):
         # Test if the following options are auto converted
         # to boolean arguments
