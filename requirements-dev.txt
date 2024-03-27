@@ -22,7 +22,7 @@ flake8-mutable == 1.2.0
 flake8-pep3101 == 2.1.0
 flake8-print == 5.0.0
 flake8-quotes == 3.4.0
-flake8-requirements == 2.1.0
+flake8-requirements == 2.1.1
 flake8-string-format == 0.3.0
 flake8-variables-names == 0.0.6
 pre-commit == 2.21.0
