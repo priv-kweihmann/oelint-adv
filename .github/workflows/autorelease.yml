@@ -87,7 +87,7 @@ jobs:
     - name: Install dependencies
       if: steps.release-needed.outputs.DO_RELEASE == 'true'
       run: |
-        python -m pip install --upgrade pip
+        python -m pip install --upgrade pip build
         pip install -r requirements.txt
 
     - name: Bump version
@@ -99,7 +99,7 @@ jobs:
     - name: Build
       if: steps.release-needed.outputs.DO_RELEASE == 'true'
       run: |
-        python3 setup.py build sdist bdist_wheel --universal
+        python -m build --sdist --wheel
 
     - name: Commit new version
       if: steps.release-needed.outputs.DO_RELEASE == 'true'
