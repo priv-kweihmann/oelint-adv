@@ -16,6 +16,14 @@ class TestClassOelintVarsDescriptionTooBrief(TestBaseClass):
                                      DESCRIPTION = "AB"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SUMMARY = "ABC"
+                                     DESCRIPTION = "A"
+                                     DESCRIPTION:append = "B"
+                                     ''',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -30,6 +38,14 @@ class TestClassOelintVarsDescriptionTooBrief(TestBaseClass):
                                      '''
                                      SUMMARY = "ABC"
                                      DESCRIPTION = "ABCD"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SUMMARY = "ABC"
+                                     DESCRIPTION = "ABC"
+                                     DESCRIPTION:append = "D"
                                      ''',
                                  },
                                  {
