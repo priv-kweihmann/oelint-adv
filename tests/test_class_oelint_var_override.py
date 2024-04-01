@@ -96,6 +96,14 @@ class TestClassOelintVarOverride(TestBaseClass):
                                      FILESEXTRAPATH_append := ":b"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     PACKAGECONFIG = "a b c"
+                                     PACKAGECONFIG:remove = "a"
+                                     PACKAGECONFIG:remove = "b"
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
