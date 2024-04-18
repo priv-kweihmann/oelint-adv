@@ -4,7 +4,7 @@ import argparse
 class Tweaks:
     """Release specific tweaks"""
 
-    DEFAULT_RELEASE = 'nanbield'
+    DEFAULT_RELEASE = 'scarthgap'
 
     _map = {
         "inky": {},
@@ -41,6 +41,7 @@ class Tweaks:
         "mickledore": {"constantmods": {"-": {"variables": {"known": ["PACKAGEBUILDPKGD"]}}}},
         "nanbield": {"constantmods": {"-": {"variables": {"suggested": ["AUTHOR"]}}}},
         "scarthgap": {},
+        "styhead": {},
         "latest": {},
     }
 
