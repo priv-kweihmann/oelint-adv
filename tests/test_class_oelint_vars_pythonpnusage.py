@@ -103,7 +103,7 @@ class TestClassOelintVarsPythonPnUsage(TestBaseClass):
                              ],
                              )
     def test_bad_old(self, input_, id_, occurrence):
-        self.check_for_id(self._create_args(input_), id_, occurrence)
+        self.check_for_id(self._create_args(input_, ['--release=nanbield']), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.pythonpnusage'])
     @pytest.mark.parametrize('input_',
