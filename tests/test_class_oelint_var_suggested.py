@@ -62,3 +62,82 @@ class TestClassOelintVarSuggestedVar(TestBaseClass):
                              )
     def test_good(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', [
+        'oelint.var.suggestedvar.BUGTRACKER',
+    ])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     CVE_PRODUCT = "my/my"
+                                     SECTION = "foo"
+                                     inherit foo
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_good_custom_varname_class(self, input_, id_, occurrence):
+        __cnt = '''
+        {
+            "oelint-suggestedvar": {
+                "BUGTRACKER-exclude-classes": [
+                    "foo"
+                ]
+            }
+        }
+        '''
+        _extra_opts = [
+            '--constantmod=+{mod}'.format(mod=self._create_tempfile('constmod', __cnt))]
+        self.check_for_id(self._create_args(input_, _extra_opts), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', [
+        'oelint.var.suggestedvar.BUGTRACKER',
+    ])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     CVE_PRODUCT = "my/my"
+                                     SECTION = "foo"
+                                     inherit image
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_good_custom_image(self, input_, id_, occurrence):
+        __cnt = '''
+        {
+            "oelint-suggestedvar": {
+                "image-excludes": [
+                    "BUGTRACKER"
+                ]
+            }
+        }
+        '''
+        _extra_opts = [
+            '--constantmod=+{mod}'.format(mod=self._create_tempfile('constmod', __cnt))]
+        self.check_for_id(self._create_args(input_, _extra_opts), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', [
+        'oelint.var.suggestedvar.LICENSE',
+    ])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     CVE_PRODUCT = "my/my"
+                                     SECTION = "foo"
+                                     inherit packagegroup
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_good_custom_packagegroup(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_), id_, occurrence)
