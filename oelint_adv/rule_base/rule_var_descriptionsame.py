@@ -17,7 +17,6 @@ class VarDescSame(Rule):
         summary = ''.join(stash.ExpandVar(_file, attribute=Variable.ATTR_VAR, attributeValue='SUMMARY').get('SUMMARY', ['']))
         desc = ''.join(stash.ExpandVar(_file, attribute=Variable.ATTR_VAR,
                        attributeValue='DESCRIPTION').get('DESCRIPTION', ['']))
-        print(f'{desc} -- {summary}')
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR, attributeValue='DESCRIPTION')
         if desc.strip() == summary.strip() and items:
