@@ -71,6 +71,24 @@ class TestClassOelintVarInherit(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
+                                     inherit_defer native
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     inherit_defer nativesdk
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     inherit_defer cross
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
                                      inherit_defer abc ${A}
                                      ''',
                                  },
