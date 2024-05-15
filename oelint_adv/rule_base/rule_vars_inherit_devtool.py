@@ -11,7 +11,7 @@ class VarInheritDevtool(Rule):
         super().__init__(id='oelint.var.inheritdevtool',
                          severity='warning',
                          message='It is better to use inherit_defer for {statement}, to enable proper devtool integration',
-                         appendix=['native', 'nativesdk'],
+                         appendix=['native', 'nativesdk', 'cross'],
                          valid_from_release='scarthgap')
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
@@ -27,5 +27,10 @@ class VarInheritDevtool(Rule):
                 res += self.finding(i.Origin, i.InFileLine,
                                     override_msg=self.Msg.format(statement='nativesdk'),
                                     appendix='nativesdk',
+                                    )
+            if 'cross' in i.get_items() and i.Statement != 'inherit_defer':
+                res += self.finding(i.Origin, i.InFileLine,
+                                    override_msg=self.Msg.format(statement='cross'),
+                                    appendix='cross',
                                     )
         return res

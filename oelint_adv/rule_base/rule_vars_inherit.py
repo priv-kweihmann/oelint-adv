@@ -19,6 +19,8 @@ class VarInherit(Rule):
         items: List[Inherit] = stash.GetItemsFor(filename=_file, classifier=Inherit.CLASSIFIER)
         for i in items:
             if '${' not in i.RealRaw and i.Statement == 'inherit_defer':
+                if any(x in i.get_items() for x in ['native', 'nativesdk', 'cross']):
+                    continue
                 res += self.finding(i.Origin, i.InFileLine,
                                     'inherit_defer should only be used if there is a variable involved',
                                     appendix='inherit')
