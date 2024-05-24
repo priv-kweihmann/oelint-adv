@@ -41,7 +41,7 @@ class Tweaks:
         "mickledore": {"constantmods": {"-": {"variables": {"known": ["PACKAGEBUILDPKGD"]}}}},
         "nanbield": {"constantmods": {"-": {"variables": {"suggested": ["AUTHOR"]}}}},
         "scarthgap": {},
-        "styhead": {},
+        "styhead": {"constantmods": {"+": {"variables": {"known": ["UNPACKDIR"]}}}},
         "latest": {},
     }
 
