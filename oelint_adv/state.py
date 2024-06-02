@@ -10,8 +10,7 @@ class State():
         self.color = False
         self.inline_suppressions = {}
         self.messageformat = ''
-        self.no_info = False
-        self.no_warn = False
+        self.hide = {'error': False, 'warning': False, 'info': False}
         self.rel_path = False
         self.rule_file = {}
         self.suppression = []
@@ -38,21 +37,13 @@ class State():
         """
         return self.__colors_by_severity.get(severity, '')
 
-    def get_noinfo(self) -> bool:
-        """--noinfo flag set
+    def get_hide(self, severity) -> bool:
+        """--hide severity is set
 
         Returns:
-            bool: noinfo flag is set
+            bool: hide messages of given severity
         """
-        return self.no_info
-
-    def get_nowarn(self) -> bool:
-        """--nowarn flag set
-
-        Returns:
-            bool: nowarn flag is set
-        """
-        return self.no_warn
+        return self.hide[severity]
 
     def get_relpaths(self) -> bool:
         """--relpath flag is set

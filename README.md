@@ -45,8 +45,8 @@ required python libraries on your own. See [requirements.txt](requirements.txt) 
 
 ```shell
 usage: oelint-adv [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix] [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
-                  [--customrules CUSTOMRULES [CUSTOMRULES ...]] [--rulefile RULEFILE] [--jobs JOBS] [--color] [--quiet] [--noinfo]
-                  [--nowarn] [--relpaths] [--noid] [--messageformat MESSAGEFORMAT] [--constantmods CONSTANTMODS [CONSTANTMODS ...]] [--print-rulefile] [--exit-zero]
+                  [--customrules CUSTOMRULES [CUSTOMRULES ...]] [--rulefile RULEFILE] [--jobs JOBS] [--color] [--quiet] [--hide SEVERITY]
+                  [--relpaths] [--noid] [--messageformat MESSAGEFORMAT] [--constantmods CONSTANTMODS [CONSTANTMODS ...]] [--print-rulefile] [--exit-zero]
                   [--version]
                   [files ...]
 
@@ -69,8 +69,7 @@ options:
   --jobs JOBS           Number of jobs to run (default all cores)
   --color               Add color to the output based on the severity
   --quiet               Print findings only
-  --noinfo              Don't print information level findings
-  --nowarn              Don't print warning level findings
+  --hide SEVERITY       Hide mesesages of specified severity
   --relpaths            Show relative paths instead of absolute paths in results
   --noid                Don't show the error-ID in the output
   --messageformat MESSAGEFORMAT
@@ -412,8 +411,8 @@ To skip the loading of any configuration file, set `OELINT_SKIP_CONFIG` to a non
 
 ```ini
 [oelint]
-# this will set the --nowarn parameter automatically
-nowarn = True
+# this will set the --hide warning parameter automatically
+hide = warning
 # this will set A + B as suppress item
 # use indent (tab) and line breaks for multiple items
 suppress = 
