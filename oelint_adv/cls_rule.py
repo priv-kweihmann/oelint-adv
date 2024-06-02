@@ -122,9 +122,11 @@ class Rule:
         if any(x in self._state.get_suppressions() for x in _id):
             return []
         _severity = severity_override or self.get_severity(appendix)
-        if _severity == 'info' and self._state.get_noinfo():
+        if _severity == 'info' and self._state.get_hide('info'):
             return []
-        if _severity == 'warning' and self._state.get_nowarn():
+        if _severity == 'warning' and self._state.get_hide('warning'):
+            return []
+        if _severity == 'error' and self._state.get_hide('error'):
             return []
         if _line <= 0:
             # Fix those issues, that don't come with a line

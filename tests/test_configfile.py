@@ -21,16 +21,16 @@ class TestConfigFile(TestBaseClass):
         # Test the default
         _args = self._create_args(input_)
 
-        assert not _args.nowarn
+        assert not _args.hide
 
         # test the override from config file
         # here loaded via environment variable
-        _cstfile = self._create_tempfile('oelint.cfg', '[oelint]\nnowarn=True')
+        _cstfile = self._create_tempfile('oelint.cfg', '[oelint]\nhide=warning')
         os.environ['OELINT_CONFIG'] = _cstfile
         _args = self._create_args(input_)
         del os.environ['OELINT_CONFIG']
 
-        assert _args.nowarn
+        assert _args.hide == ['warning']
 
     @pytest.mark.parametrize('input_',
                              [
@@ -43,16 +43,16 @@ class TestConfigFile(TestBaseClass):
         # Test the default
         _args = self._create_args(input_)
 
-        assert not _args.nowarn
+        assert not _args.hide
 
         # test the override from config file
         # here loaded via home folder
         _cstfile = self._create_tempfile(
-            '.oelint.cfg', '[oelint]\nnowarn=True')
+            '.oelint.cfg', '[oelint]\nhide=warning')
         os.environ['HOME'] = os.path.dirname(_cstfile)
         _args = self._create_args(input_)
 
-        assert _args.nowarn
+        assert _args.hide == ['warning']
 
     @pytest.mark.parametrize('input_',
                              [
@@ -65,19 +65,19 @@ class TestConfigFile(TestBaseClass):
         # Test the default
         _args = self._create_args(input_)
 
-        assert not _args.nowarn
+        assert not _args.hide
 
         # test the override from config file
         # here loaded from current workdir
         _cstfile = self._create_tempfile(
-            '.oelint.cfg', '[oelint]\nnowarn=True')
+            '.oelint.cfg', '[oelint]\nhide=warning')
 
         _cwd = os.getcwd()
         os.chdir(os.path.dirname(_cstfile))
         _args = self._create_args(input_)
         os.chdir(_cwd)
 
-        assert _args.nowarn
+        assert _args.hide == ['warning']
 
     @pytest.mark.parametrize('input_',
                              [
@@ -90,12 +90,12 @@ class TestConfigFile(TestBaseClass):
         # Test the default
         _args = self._create_args(input_)
 
-        assert not _args.nowarn
+        assert not _args.hide
 
         # test the override from config file
         # here loaded from current workdir
         _cstfile = self._create_tempfile(
-            '.oelint.cfg', '[oelint]\nnowarn=True')
+            '.oelint.cfg', '[oelint]\nhide=warning')
         
         os.environ['OELINT_SKIP_CONFIG'] = '1'
 
@@ -106,7 +106,7 @@ class TestConfigFile(TestBaseClass):
 
         os.environ.pop('OELINT_SKIP_CONFIG')
 
-        assert not _args.nowarn
+        assert not _args.hide
 
     @pytest.mark.parametrize('input_',
                              [
@@ -171,6 +171,7 @@ class TestConfigFile(TestBaseClass):
             'addrules',
             'customrules',
             'suppress',
+            'hide',
         ]:
             _cstfile = self._create_tempfile(
                 '.oelint.cfg', '[oelint]\n{item}=\t+True\n\t-False'.format(item=_option))
@@ -207,16 +208,16 @@ class TestConfigFile(TestBaseClass):
         # Test the default
         _args = self._create_args(input_)
 
-        assert not _args.nowarn
+        assert not _args.hide
 
         # test the override from config file
         # here loaded via environment variable but with a broken file
-        _cstfile = self._create_tempfile('oelint.cfg', '[oel]\nnowarn=')
+        _cstfile = self._create_tempfile('oelint.cfg', '[oel]\nhide=')
         os.environ['OELINT_CONFIG'] = _cstfile
         _args = self._create_args(input_)
         del os.environ['OELINT_CONFIG']
 
-        assert not _args.nowarn
+        assert not _args.hide
 
     @pytest.mark.parametrize('input_',
                              [

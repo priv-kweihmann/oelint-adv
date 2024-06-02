@@ -193,6 +193,7 @@ def create_lib_arguments(files: List[str],
                          quiet: bool = False,
                          noinfo: bool = False,
                          nowarn: bool = False,
+                         hide: List[str] = None,
                          relpaths: bool = False,
                          messageformat: str = None,
                          constantmods: List[str] = None,
@@ -209,8 +210,9 @@ def create_lib_arguments(files: List[str],
         jobs (int, optional): Number of jobs. Defaults to None.
         color (bool, optional): Color output. Defaults to False.
         quiet (bool, optional): Quiet mode. Defaults to False.
-        noinfo (bool, optional): No info messages. Defaults to False.
-        nowarn (bool, optional): No warning messages. Defaults to False.
+        hide (List[str], optional): hide messages of specified severity. Defaults to None.
+        noinfo (bool, optional): No info messages. Defaults to False. (legacy interface)
+        nowarn (bool, optional): No warning messages. Defaults to False. (legacy interface)
         relpaths (bool, optional): Use relative paths in output. Defaults to False.
         messageformat (str, optional): Override message format. Defaults to None.
         constantmods (List[str], optional): Constant mods. Defaults to None.
@@ -230,6 +232,8 @@ def create_lib_arguments(files: List[str],
     parser.add_argument('--quiet', action='store_true', default=False)
     parser.add_argument('--jobs', type=int, default=mp.cpu_count())
     parser.add_argument('--color', action='store_true', default=False)
+    parser.add_argument('--hide', action='append', default=None,
+                        choices=['info', 'warning', 'error'])
     parser.add_argument('--noinfo', action='store_true', default=False)
     parser.add_argument('--nowarn', action='store_true', default=False)
     parser.add_argument('--relpaths', action='store_true', default=False)
@@ -252,6 +256,7 @@ def create_lib_arguments(files: List[str],
         '--quiet' if quiet else '',
         '--noinfo' if noinfo else '',
         '--nowarn' if nowarn else '',
+        *['--hide={x}' for x in (hide or ())],
         '--relpaths' if relpaths else '',
         '--messageformat={messageformat}' if messageformat else '',
         *['--constantmods={x}' for x in (constantmods or ())],
@@ -291,6 +296,7 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
         'constantmods',
         'customrules',
         'suppress',
+        'hide',
     ]:
         try:
             if not isinstance(getattr(args, _option), list):
@@ -309,6 +315,16 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
         except (FileNotFoundError, json.JSONDecodeError):
             raise argparse.ArgumentTypeError(
                 '\'rulefile\' is not a valid file')
+
+    if args.hide:
+        for severity in args.hide:
+            args.state.hide[severity] = True
+
+    if args.noinfo:
+        args.state.hide['info'] = True
+
+    if args.nowarn:
+        args.state.hide['warning'] = True
 
     for mod in args.constantmods:
         if isinstance(mod, str):
@@ -329,8 +345,6 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
             CONSTANTS.RemoveConstants(mod.get('-', {}))
 
     args.state.color = args.color
-    args.state.no_warn = args.nowarn
-    args.state.no_info = args.noinfo
     args.state.nobackup = args.nobackup
     args.state.rel_path = args.relpaths
     args.state.suppression = args.suppress

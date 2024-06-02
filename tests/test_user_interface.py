@@ -187,7 +187,7 @@ class TestClassIntegration(TestBaseClass):
         }
         '''
         _extra_opts = [
-            '--rulefile={file}'.format(file=self._create_tempfile('rulefile', __cnt)), '--noinfo']
+            '--rulefile={file}'.format(file=self._create_tempfile('rulefile', __cnt)), '--hide', 'info']
         self.check_for_id(self._create_args(input_, _extra_opts),
                           'oelint.var.suggestedvar.CVE_PRODUCT', 0)
 
@@ -519,6 +519,44 @@ class TestClassIntegration(TestBaseClass):
                                  },
                              ],
                              )
+    def test_hide_info(self, input_):
+        # local imports only
+        from oelint_adv.__main__ import run
+
+        _args = self._create_args(input_, extraopts=['--hide', 'info'])
+        issues = [x[1] for x in run(_args)]
+        assert (not any([x for x in issues if ':info:' in x]))
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     VAR = "1"
+                                     INSANE_SKIP_${PN} = "foo"
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_hide_warning(self, input_):
+        # local imports only
+        from oelint_adv.__main__ import run
+
+        _args = self._create_args(input_, extraopts=['--hide', 'warning'])
+        issues = [x[1] for x in run(_args)]
+        assert (not any([x for x in issues if ':warning:' in x]))
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     VAR = "1"
+                                     INSANE_SKIP_${PN} = "foo"
+                                     ''',
+                                 },
+                             ],
+                             )
     def test_noinfo(self, input_):
         # local imports only
         from oelint_adv.__main__ import run
@@ -693,7 +731,7 @@ class TestClassIntegration(TestBaseClass):
             'constants.json', '{"oelint.var.mandatoryvar.DESCRIPTION": "warning", "oelint.var.mandatoryvar": "info" }')
 
         _args = self._create_args(
-            input_, extraopts=['--rulefile={file}'.format(file=_cstfile), '--noinfo'])
+            input_, extraopts=['--rulefile={file}'.format(file=_cstfile), '--hide', 'info'])
         issues = [x[1] for x in run(_args)]
         assert (not any(issues))
 
@@ -733,7 +771,7 @@ class TestClassIntegration(TestBaseClass):
             'constants.json', '{"oelint.var.mandatoryvar.DESCRIPTION": "warning", "oelint.var.mandatoryvar": "info" }')
 
         _args = self._create_args(
-            input_, extraopts=['--rulefile={file}'.format(file=_cstfile), '--noinfo'])
+            input_, extraopts=['--rulefile={file}'.format(file=_cstfile), '--hide', 'info'])
         issues = [x[1] for x in run(_args)]
         assert (any(issues))
 

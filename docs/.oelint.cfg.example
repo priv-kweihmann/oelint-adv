@@ -3,5 +3,5 @@ messageformat={severity}:{id}:{msg}
 suppress=
     oelint.tabs.notabs
     oelint.task.docstrings
-noinfo=True
+hide=info
 exit-zero=True

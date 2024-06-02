@@ -45,10 +45,13 @@ def create_argparser() -> argparse.ArgumentParser:
                         help='Add color to the output based on the severity')
     parser.add_argument('--quiet', action='store_true', default=False,
                         help='Print findings only')
+    parser.add_argument('--hide', default=None, action='append',
+                        choices=['info', 'warning', 'error'],
+                        help='Hide mesesages of specified severity')
     parser.add_argument('--noinfo', action='store_true', default=False,
-                        help='Don\'t print information level findings')
+                        help=argparse.SUPPRESS)
     parser.add_argument('--nowarn', action='store_true', default=False,
-                        help='Don\'t print warning level findings')
+                        help=argparse.SUPPRESS)
     parser.add_argument('--relpaths', action='store_true', default=False,
                         help='Show relative paths instead of absolute paths in results')
     parser.add_argument('--messageformat', default='{path}:{line}:{severity}:{id}:{msg}',
