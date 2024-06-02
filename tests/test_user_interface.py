@@ -552,6 +552,25 @@ class TestClassIntegration(TestBaseClass):
                                      'oelint adv-test.bb':
                                      '''
                                      VAR = "1"
+                                     FILES = "foo"
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_hide_error(self, input_):
+        # local imports only
+        from oelint_adv.__main__ import run
+
+        _args = self._create_args(input_, extraopts=['--hide', 'error'])
+        issues = [x[1] for x in run(_args)]
+        assert (not any([x for x in issues if ':error:' in x]))
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     VAR = "1"
                                      INSANE_SKIP_${PN} = "foo"
                                      ''',
                                  },
