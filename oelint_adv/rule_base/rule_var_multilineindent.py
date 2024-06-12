@@ -56,3 +56,21 @@ class VarMultiLineIndent(Rule):
                     res += self.finding(i.Origin, i.InFileLine + index,
                                         self.format_message(a=value, b=_likeliest_indent))
         return res
+
+    def fix(self, _file: str, stash: Stash) -> List[str]:
+        res = []
+        items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER)
+        for i in items:
+            if not i.IsMultiLine():
+                continue
+            _likeliest_indent, _indent_map = self.__line_stats(i.VarValueStripped, i.VarNameComplete, i.VarOp)
+            _likeliest_indent = max(4, _likeliest_indent)
+            _lines = i.RealRaw.splitlines()
+            # _lines = [x for x in RegexRpl.split(r'\t|\x1b', i.RealRaw) if x and x.strip()]
+            for index, value in enumerate(_indent_map):
+                if value != _likeliest_indent:
+                    i.Raw = i.Raw.replace(_lines[index + 1], " " * _likeliest_indent + _lines[index + 1].lstrip())
+                    i.RealRaw = i.RealRaw.replace(_lines[index + 1], " " * _likeliest_indent + _lines[index + 1].lstrip())
+                    res.append(_file)
+        return res
+
