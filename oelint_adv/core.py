@@ -7,6 +7,7 @@ from configparser import ConfigParser, NoOptionError, NoSectionError, ParsingErr
 from functools import partial
 from typing import Dict, Iterable, List, Tuple, Union
 
+from oelint_parser.cls_item import Item
 from oelint_parser.cls_item import Comment
 from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
@@ -151,15 +152,14 @@ def group_run(group: List[str],
             issues += r.check(f, stash)
     fixedfiles = list(set(fixedfiles))
     for f in fixedfiles:
-        _items = [f] + stash.GetLinksForFile(f)
-        for i in _items:
-            items = stash.GetItemsFor(filename=i, nolink=True)
+        items: List[Item] = stash.GetItemsFor(filename=f)
+        for file in {x.Origin for x in items}:
             if not state.nobackup:
-                os.rename(i, i + '.bak')  # pragma: no cover
-            with open(i, 'w') as o:
-                o.write(''.join([x.RealRaw for x in items]))
+                os.rename(file, file + '.bak')  # pragma: no cover
+            with open(file, 'w') as o:
+                o.write(''.join([x.RealRaw for x in sorted(items, key=lambda key: key.InFileLine) if x.Origin == file]))
                 if not quiet:
-                    print('{path}:{lvl}:{msg}'.format(path=os.path.abspath(i),  # noqa: T201 - it's fine here; # pragma: no cover
+                    print('{path}:{lvl}:{msg}'.format(path=os.path.abspath(file),  # noqa: T201 - it's fine here; # pragma: no cover
                           lvl='debug', msg='Applied automatic fixes'))
 
     if any(isinstance(x, FileNotApplicableInlineSuppression) for x in rules):
