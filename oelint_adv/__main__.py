@@ -109,7 +109,8 @@ def main() -> int:  # pragma: no cover
         import traceback
         print('OOPS - That shouldn\'t happen: {e} - {files}'.format(e=e, files=args.files))
         traceback.print_exc()
-        sys.exit(-1)
+        # Not using os.EX_SOFTWARE here because it is only available on Unix
+        sys.exit(70)
 
     if args.output != sys.stderr:
         args.output = open(args.output, 'w')
@@ -119,7 +120,8 @@ def main() -> int:  # pragma: no cover
     if args.output != sys.stderr:
         args.output.close()
 
-    exit_code = len(issues) if not args.exit_zero else 0
+    # Exit 1 in case of any issue, except when --exit-zero was used.
+    exit_code = 0 if args.exit_zero else len(issues) and 1
     sys.exit(exit_code)
 
 
