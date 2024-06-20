@@ -66,11 +66,13 @@ class VarMultiLineIndent(Rule):
             _likeliest_indent, _indent_map = self.__line_stats(i.VarValueStripped, i.VarNameComplete, i.VarOp)
             _likeliest_indent = max(4, _likeliest_indent)
             _lines = i.RealRaw.splitlines()
-            # _lines = [x for x in RegexRpl.split(r'\t|\x1b', i.RealRaw) if x and x.strip()]
+            found = False
             for index, value in enumerate(_indent_map):
-                if value != _likeliest_indent:
-                    i.Raw = i.Raw.replace(_lines[index + 1], " " * _likeliest_indent + _lines[index + 1].lstrip())
-                    i.RealRaw = i.RealRaw.replace(_lines[index + 1], " " * _likeliest_indent + _lines[index + 1].lstrip())
+                if value != _likeliest_indent and index != 0:
+                    found = True
+                    _lines[index] = " " * _likeliest_indent + _lines[index].lstrip()
                     res.append(_file)
+            if found:
+                i.Raw = "\n".join(_lines)
+                i.RealRaw = "\n".join(_lines)
         return res
-
