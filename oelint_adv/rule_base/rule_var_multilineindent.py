@@ -72,7 +72,7 @@ class VarMultiLineIndent(Rule):
                     found = True
                     _lines[index] = " " * _likeliest_indent + _lines[index].lstrip()
                     res.append(_file)
-            if found:
+            if found:  # pragma: no cover
                 i.Raw = "\n".join(_lines)
                 i.RealRaw = "\n".join(_lines)
         return res

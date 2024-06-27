@@ -189,7 +189,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * [oelint.vars.listappend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.listappend.md) - Proper append/prepend to lists **[F]**
 * [oelint.vars.mispell.unknown](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.mispell.unknown.md) - Variable is not known from CONSTANTS, typo is unlikely
 * [oelint.vars.mispell](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.mispell.md) - Possible typo detected
-* [oelint.vars.multilineident](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.multilineident.md) - On a multiline assignment, line indent is desirable
+* [oelint.vars.multilineident](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.multilineident.md) - On a multiline assignment, line indent is desirable **[F]**
 * [oelint.vars.notneededspace](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.notneededspace.md) - Space at the beginning of the var is not needed **[F]**
 * [oelint.vars.notrailingslash](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.notrailingslash.md) - Variable shall not end on a slash
 * [oelint.vars.overrideappend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.overrideappend.md) - Check correct order of append/prepend on variables with override syntax

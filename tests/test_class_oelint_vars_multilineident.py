@@ -76,6 +76,57 @@ class TestClassOelintVarsMultilineIdent(TestBaseClass):
         self.check_for_id(self._create_args(input_), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.multilineident'])
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     D = "a \\
+                                     e \\
+                                         "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     D = "    a \\
+                                         e \\
+                                         "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A = "a \\
+                                       b \\
+                                          c \\
+                                     "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A:append = "a \\
+                                              b \\
+                                                 c \\
+                                     "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A += "a \\
+                                        b \\
+                                           c \\
+                                     "
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_fix(self, input_, id_):
+        self.fix_and_check(self._create_args_fix(input_), id_)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.multilineident'])
     @pytest.mark.parametrize('occurrence', [2])
     @pytest.mark.parametrize('input_',
                              [
