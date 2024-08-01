@@ -10,7 +10,7 @@ class VarDependsAppend(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.dependsappend',
                          severity='error',
-                         message='DEPENDS should only be appended, not overwritten as an include or inherit')
+                         message='DEPENDS should only be appended, not overwritten after an include or inherit')
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
