@@ -71,7 +71,6 @@ class TestClassOelintVarsBBVars(TestBaseClass):
         'FILE',
         'FILESDIR',
         'FILESPATH',
-        'INHERIT',
         'LAYERDEPENDS',
         'LAYERDIR',
         'LAYERVERSION',
@@ -88,6 +87,19 @@ class TestClassOelintVarsBBVars(TestBaseClass):
     ])
     @pytest.mark.parametrize('operation', ['=', ':=', '.=', '=.', '+=', '=+', ' =+'])
     def test_bad(self, id_, occurrence, var, operation):
+        input_ = {
+            'oelint_adv_test.bb': self.__generate_sample_code(var, operation),
+        }
+        id_ += '.{var}'.format(var=var)
+        self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.bbvars'])
+    @pytest.mark.parametrize('occurrence', [1])
+    @pytest.mark.parametrize('var', [
+        'INHERIT'
+    ])
+    @pytest.mark.parametrize('operation', ['+='])
+    def test_bad_inherit(self, id_, occurrence, var, operation):
         input_ = {
             'oelint_adv_test.bb': self.__generate_sample_code(var, operation),
         }
@@ -156,7 +168,6 @@ class TestClassOelintVarsBBVars(TestBaseClass):
         'FILE',
         'FILESDIR',
         'FILESPATH',
-        'INHERIT',
         'LAYERDEPENDS',
         'LAYERDIR',
         'LAYERVERSION',

@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-from oelint_parser.cls_item import Variable
+from oelint_parser.cls_item import Variable, Inherit
 from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
 
@@ -20,8 +20,16 @@ class VarQuoted(Rule):
                                                   classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR,
                                                   attributeValue=CONSTANTS.VariablesProtected)
+        inherits: List[Inherit] = stash.GetItemsFor(filename=_file,
+                                                    classifier=Inherit.CLASSIFIER,
+                                                    attribute=Inherit.ATTR_STATEMENT,
+                                                    attributeValue="INHERIT")
+
         for i in items:
             if i.VarOp.strip() not in ['??=', '?=']:
                 res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.replace(
                     '{VAR}', i.VarName), appendix=i.VarName)
+        for i in inherits:
+            res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.replace(
+                '{VAR}', 'INHERIT'), appendix='INHERIT')
         return res
