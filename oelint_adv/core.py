@@ -1,4 +1,5 @@
 import argparse
+import fnmatch
 import json
 import multiprocessing as mp
 import os
@@ -7,8 +8,7 @@ from configparser import ConfigParser, NoOptionError, NoSectionError, ParsingErr
 from functools import partial
 from typing import Dict, Iterable, List, Tuple, Union
 
-from oelint_parser.cls_item import Item
-from oelint_parser.cls_item import Comment
+from oelint_parser.cls_item import Comment, Item
 from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
 from oelint_parser.rpl_regex import RegexRpl
@@ -102,11 +102,26 @@ def group_files(files: Iterable[str]) -> List[List[str]]:
                 res[_filename_key] = set()
             res[_filename_key].add(f)
 
+    # find conf files
+    _conf_files = []
+
+    # layer.conf
+    _conf_files += [x for x in files if os.path.basename(x) == 'layer.conf']
+
+    # machine.conf
+    _conf_files += [x for x in files if fnmatch.fnmatch(os.path.abspath(x), '*/machine/*.conf')]
+
+    # distro.conf
+    _conf_files += [x for x in files if fnmatch.fnmatch(os.path.abspath(x), '*/distro/*.conf')]
+
     # as sets are unordered, we convert them to sorted lists at this point
     # order is like the files have been passed via CLI
     for k, v in res.items():
-        res[k] = sorted(v, key=lambda index: files.index(index))
+        res[k] = _conf_files + sorted(v, key=lambda index: files.index(index))
 
+    if any(_conf_files):
+        # add just conf files as a separate group, in the user only passes them
+        res['_conf_files'] = _conf_files
     return res.values()
 
 
@@ -139,7 +154,7 @@ def group_run(group: List[str],
 
     state.inline_suppressions = inline_supp_map
 
-    _files = list(set(stash.GetRecipes() + stash.GetLoneAppends()))
+    _files = list(set(stash.GetRecipes() + stash.GetLoneAppends() + stash.GetConfFiles()))
     issues = []
     for _, f in enumerate(_files):
         for r in rules:

@@ -4,4 +4,4 @@
   entry: oelint-adv
   language: python
   language_version: python3
-  files: .*\.(bb)|(bbappend)|(bbclass)$
+  files: .*\.(bb)|(bbappend)|(bbclass)|(conf)$
