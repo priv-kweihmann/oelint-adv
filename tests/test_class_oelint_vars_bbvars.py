@@ -96,7 +96,7 @@ class TestClassOelintVarsBBVars(TestBaseClass):
     @pytest.mark.parametrize('id_', ['oelint.vars.bbvars'])
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('var', [
-        'INHERIT'
+        'INHERIT',
     ])
     @pytest.mark.parametrize('operation', ['+='])
     def test_bad_inherit(self, id_, occurrence, var, operation):

@@ -13,7 +13,7 @@ class VarBbclassextend(Rule):
                          message='BBCLASSEXTEND should be set if possible')
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
-        if stash.IsPackageGroup(_file) or stash.IsImage(_file):
+        if stash.IsPackageGroup(_file) or stash.IsImage(_file) or _file in stash.GetConfFiles():
             return []
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
