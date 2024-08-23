@@ -57,6 +57,8 @@ class VarMandatoryExists(Rule):
         res = []
         _is_pkg_group = stash.IsPackageGroup(_file)
         _is_image = stash.IsImage(_file)
+        if _file in stash.GetConfFiles():
+            return []
         items: List[Variable] = stash.GetItemsFor(filename=_file,
                                                   classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR,

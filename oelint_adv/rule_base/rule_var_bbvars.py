@@ -26,10 +26,14 @@ class VarQuoted(Rule):
                                                     attributeValue="INHERIT")
 
         for i in items:
+            if i.Origin in stash.GetConfFiles():
+                continue
             if i.VarOp.strip() not in ['??=', '?=']:
                 res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.replace(
                     '{VAR}', i.VarName), appendix=i.VarName)
         for i in inherits:
+            if i.Origin in stash.GetConfFiles():
+                continue
             res += self.finding(i.Origin, i.InFileLine, override_msg=self.Msg.replace(
                 '{VAR}', 'INHERIT'), appendix='INHERIT')
         return res
