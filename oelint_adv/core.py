@@ -1,5 +1,7 @@
 import argparse
+import copy
 import fnmatch
+import itertools
 import json
 import multiprocessing as mp
 import os
@@ -102,37 +104,67 @@ def group_files(files: Iterable[str]) -> List[List[str]]:
                 res[_filename_key] = set()
             res[_filename_key].add(f)
 
-    # find conf files
-    _conf_files = []
-
-    # layer.conf
-    _conf_files += [x for x in files if os.path.basename(x) == 'layer.conf']
-
-    # machine.conf
-    _conf_files += [x for x in files if fnmatch.fnmatch(os.path.abspath(x), '*/machine/*.conf')]
-
-    # distro.conf
-    _conf_files += [x for x in files if fnmatch.fnmatch(os.path.abspath(x), '*/distro/*.conf')]
+    # layer.confs
+    _conf_layer = [x for x in files if os.path.basename(x) == 'layer.conf']
 
     # as sets are unordered, we convert them to sorted lists at this point
     # order is like the files have been passed via CLI
     for k, v in res.items():
-        res[k] = _conf_files + sorted(v, key=lambda index: files.index(index))
+        res[k] = _conf_layer + sorted(v, key=lambda index: files.index(index))
 
-    if any(_conf_files):
-        # add just conf files as a separate group, in the user only passes them
-        res['_conf_files'] = _conf_files
-    return res.values()
+    _product_matrix = []
+
+    # machine.confs
+    _conf_machine = [x for x in files if fnmatch.fnmatch(os.path.abspath(x), '*/machine/*.conf')]
+    if any(_conf_machine):
+        _product_matrix.append(_conf_machine)
+
+    # distro.confs
+    _conf_distro = [x for x in files if fnmatch.fnmatch(os.path.abspath(x), '*/distro/*.conf')]
+    if any(_conf_distro):
+        _product_matrix.append(_conf_distro)
+
+    # pos and neg branch expansion
+    _product_matrix.append([True, False])
+
+    group_res = []
+
+    for files in res.values():
+        for element in itertools.product(*_product_matrix):
+            _branch_expansion = element[-1]
+            _matrix_keys = [f'branch:{"false" if _branch_expansion else "true"}']
+            if len(element) > 1:
+                _files = list(element[:-1]) + files
+
+                _machine_id = [x for x in _files if x in _conf_machine]
+                _distro_id = [x for x in _files if x in _conf_distro]
+
+                if any(_machine_id):
+                    _matrix_keys.append(os.path.basename(_machine_id[0]))
+
+                if any(_distro_id):
+                    _matrix_keys.append(os.path.basename(_distro_id[0]))
+            else:
+                _files = files
+            group_res.append((_files, frozenset(_matrix_keys), {'negative_inline': _branch_expansion}))
+
+    return group_res
 
 
-def group_run(group: List[str],
+def group_run(group: List[Tuple],
               quiet: bool,
               fix: bool,
               rules: List[Rule],
               state: State) -> List[Tuple[str, int, str]]:
     fixedfiles = []
-    stash = Stash(quiet=quiet, **state.get_additional_stash_args())
-    for f in group:
+    group_files, matrix, stash_params = group
+    stash = Stash(quiet=quiet, **state.get_additional_stash_args(), **stash_params)
+
+    rules = [copy.deepcopy(x) for x in rules]
+    for rule in rules:
+        rule.set_product_matrix(matrix)
+
+    for f in group_files:
         try:
             stash.AddFile(f)
         except FileNotFoundError as e:  # pragma: no cover
@@ -403,4 +435,17 @@ def run(args: argparse.Namespace) -> List[Tuple[Tuple[str, int], str]]:
             pool.close()
             pool.join()
 
-    return sorted(set(issues), key=lambda x: x[0])
+    # deduplicate matrix
+    def deduplicate(input_list):
+        seen = list()
+        result = set()
+        for item in input_list:
+            needle = (item[0], item[2])
+            if needle not in seen:
+                seen.append(needle)
+                result.add((item[0], f'{item[2]} [{",".join(sorted(item[1]))}]'))
+        return result
+
+    issues = deduplicate(sorted(set(issues), key=lambda x: x[0]))
+
+    return issues

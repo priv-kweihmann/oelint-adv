@@ -22,6 +22,9 @@ The tool does handle includes/requires automatically, so you don't have to pass 
 
 **NOTE**: .bbappend-files have to be passed via CLI - these are NOT gathered automatically.
 
+You can also pass ``distro``, ``machine`` and ``layer`` config files.
+Those will be automatically handled in the correct order.
+
 ## Install
 
 With pip (**recommended**)
@@ -91,15 +94,23 @@ To change the default message format, please see [Output message format](#output
 Example:
 
 ```shell
-/disk/meta-some/cppcheck-native/cppcheck.inc:26:error:oelint.task.nomkdir:'mkdir' shall not be used in do_install. Use 'install'
-/disk/meta-some/cppcheck-native/cppcheck-native_1.87.bb:0:error:oelint.var.mandatoryvar.SECTION:Variable 'SECTION' should be set
-/disk/meta-some/cppcheck-native/cppcheck.inc:1:warning:oelint.vars.summary80chars:'SUMMARY' should not be longer than 80 characters
-/disk/meta-some/cppcheck-native/cppcheck.inc:4:warning:oelint.vars.homepageprefix:'HOMEPAGE' should start with 'http://' or 'https://'
-/disk/meta-some/cppcheck-native/cppcheck.inc:28:warning:oelint.spaces.lineend:Line shall not end with a space
-/disk/meta-some/cppcheck-native/cppcheck-native_1.87.bb:0:error:oelint.var.mandatoryvar.AUTHOR:Variable 'AUTHOR' should be set
-/disk/meta-some/cppcheck-native/cppcheck.inc:26:error:oelint.task.nocopy:'cp' shall not be used in do_install. Use 'install'
-/disk/meta-some/cppcheck-native/cppcheck.inc:12:warning:oelint.var.order.DEPENDS:'DEPENDS' should be placed before 'inherit'
+/disk/meta-some/cppcheck-native/cppcheck.inc:26:error:oelint.task.nomkdir:'mkdir' shall not be used in do_install. Use 'install' [branch:true]
+/disk/meta-some/cppcheck-native/cppcheck-native_1.87.bb:0:error:oelint.var.mandatoryvar.SECTION:Variable 'SECTION' should be set [branch:true]
+/disk/meta-some/cppcheck-native/cppcheck.inc:1:warning:oelint.vars.summary80chars:'SUMMARY' should not be longer than 80 characters [branch:true]
+/disk/meta-some/cppcheck-native/cppcheck.inc:4:warning:oelint.vars.homepageprefix:'HOMEPAGE' should start with 'http://' or 'https://' [branch:true]
+/disk/meta-some/cppcheck-native/cppcheck.inc:28:warning:oelint.spaces.lineend:Line shall not end with a space [branch:true]
+/disk/meta-some/cppcheck-native/cppcheck-native_1.87.bb:0:error:oelint.var.mandatoryvar.AUTHOR:Variable 'AUTHOR' should be set [branch:true]
+/disk/meta-some/cppcheck-native/cppcheck.inc:26:error:oelint.task.nocopy:'cp' shall not be used in do_install. Use 'install' [branch:true]
+/disk/meta-some/cppcheck-native/cppcheck.inc:12:warning:oelint.var.order.DEPENDS:'DEPENDS' should be placed before 'inherit' [branch:true]
 ```
+
+**NOTE**: as the tool checks against permutations of the input files, the used permutation matrix is appended to the rules message.
+E.g.
+
+- ``[branch:true]``, means the finding was found on the ``true`` branch of an expanded inline function block.
+- ``[branch:false,mydistro.conf]``, means the finding occurs only when using ``mydistro.conf`` and on the ``false`` branch of an expanded inline function block.
+
+This should help to better spot the issue found by the linter.
 
 ## Apply automatic fixing
 

@@ -44,6 +44,15 @@ class Rule:
         self._valid_till_release = valid_till_release
         self._valid_from_release = valid_from_release
         self._state: State = None
+        self.__matrix: frozenset[str] = []
+
+    def set_product_matrix(self, in_: frozenset[str]) -> None:
+        """Set the product matrix
+
+        Args:
+            in_ (frozenset[str]): Product matrix of ids
+        """
+        self.__matrix = in_
 
     def check_release_range(self, release_range: List[str]) -> bool:
         """Check if rule is applicable with currently configured release(s)
@@ -90,7 +99,7 @@ class Rule:
                 override_msg: str = None,
                 appendix: str = None,
                 blockoffset: int = 0,
-                severity_override: str = '') -> Tuple[str, int, str]:
+                severity_override: str = '') -> Tuple[Tuple[str, int], List[str], str]:
         """Called by rule to indicate a finding
 
         Arguments:
@@ -104,7 +113,7 @@ class Rule:
             severity_override {str} -- override the base severity (empty == use base)
 
         Returns:
-            Tuple[str, int, str] -- Path, line, Human readable finding (possibly with color codes)
+            Tuple[Tuple[str, int], List[str], str] -- Path, line, matrix, Human readable finding (possibly with color codes)
         """
         if not self.OnAppend and _file.endswith('.bbappend'):
             return []  # pragma: no cover
@@ -152,8 +161,7 @@ class Rule:
         _msg = self._state.get_messageformat().format(path=_path, line=_line, severity=_severity,
                                                       id=_display_id, msg=override_msg,
                                                       wikiurl=wikiurl)
-
-        return [((_path, _line), f'{_color}{_msg}{_style}')]
+        return [((_path, _line), self.__matrix, f'{_color}{_msg}{_style}')]
 
     def __repr__(self) -> str:
         return '{id}'.format(id=self.ID)  # pragma: no cover
