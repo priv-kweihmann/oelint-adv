@@ -10,7 +10,7 @@ class State():
         self.color = False
         self.inline_suppressions = {}
         self.messageformat = ''
-        self.hide = {'error': False, 'warning': False, 'info': False}
+        self.hide = {'error': False, 'warning': False, 'info': False, 'inactive': True}
         self.rel_path = False
         self.rule_file = {}
         self.suppression = []
@@ -43,7 +43,7 @@ class State():
         Returns:
             bool: hide messages of given severity
         """
-        return self.hide[severity]
+        return self.hide.get(severity, True)
 
     def get_relpaths(self) -> bool:
         """--relpath flag is set
