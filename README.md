@@ -123,6 +123,7 @@ As long as you don't pass **--nobackup** a backup copy (filename + .bak) will be
 
 Rules marked with **[F]** are able to perform automatic fixing
 Rules marked with **[S]** can have multiple sub-IDs
+Rules marked with **[I]** need to be activated through [a rule file](#defining-a-ruleset) first
 
 * [oelint.append.protvars](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.append.protvars.md) - Variables that shouldn't be set in a bbappend **[S]**
 * [oelint.bbclass.underscores](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.bbclass.underscores.md) - bbclass filenames shall not contain dashes
@@ -138,6 +139,7 @@ Rules marked with **[S]** can have multiple sub-IDs
 * [oelint.file.requirenotfound](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.requirenotfound.md) - File to be required not found
 * [oelint.file.underscores](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.underscores.md) - Checks the correct usage of underscores in filename
 * [oelint.file.upstreamstatus](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.upstreamstatus.md) - Patches should contain a Upstream-Status entry
+* [oelint.file.upstreamstatus_occurance](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.upstreamstatus_occurance.md) - Certain Upstream-Status classifier found **[S]** **[I]**
 * [oelint.func.specific](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.func.specific.md) - Function is specific to an unknown identifier
 * [oelint.newline.consecutive](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.newline.consecutive.md) - Consecutive blank lines should be avoided **[F]**
 * [oelint.newline.eof](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.newline.eof.md) - File shall end on a newline **[F]**
