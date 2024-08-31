@@ -444,9 +444,10 @@ def run(args: argparse.Namespace) -> List[Tuple[Tuple[str, int], str]]:
             needle = (item[0], item[2])
             if needle not in seen:
                 seen.append(needle)
-                result.add((item[0], f'{item[2]} [{",".join(sorted(item[1]))}]'))
+                matrix_str = f' [{",".join(sorted(item[1]))}]' if item[1] else ''
+                result.add((item[0], f'{item[2]}{matrix_str}'))
         return result
 
-    issues = deduplicate(sorted(set(issues), key=lambda x: x[0]))
+    issues = sorted(deduplicate(issues), key=lambda x: x[0])
 
     return issues
