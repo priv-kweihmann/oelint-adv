@@ -133,12 +133,13 @@ def group_files(files: Iterable[str], mode: str) -> List[List[str]]:
 
     group_res = []
 
-    for files in res.values():
+    for fg in res.values():
+        _fl = sorted(fg, key=lambda index: files.index(index))
         for element in itertools.product(*_product_matrix):
             _branch_expansion = element[-1]
             _matrix_keys = [f'branch:{"false" if _branch_expansion else "true"}']
             if len(element) > 1:
-                _files = list(element[:-1]) + files
+                _files = list(element[:-1]) + _fl
 
                 _machine_id = [x for x in _files if x in _conf_machine]
                 _distro_id = [x for x in _files if x in _conf_distro]
@@ -149,9 +150,8 @@ def group_files(files: Iterable[str], mode: str) -> List[List[str]]:
                 if any(_distro_id):
                     _matrix_keys.append(os.path.basename(_distro_id[0]))
             else:
-                _files = files
+                _files = _fl
             group_res.append((_files, frozenset(_matrix_keys), {'negative_inline': _branch_expansion}))
-
     return group_res
 
 
