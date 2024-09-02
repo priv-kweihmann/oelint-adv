@@ -54,6 +54,14 @@ class Rule:
         """
         self.__matrix = in_
 
+    def set_state(self, state_: State) -> None:
+        """Set the state object
+
+        Args:
+            state_ (State): Current state object
+        """
+        self._state = state_
+
     def check_release_range(self, release_range: List[str]) -> bool:
         """Check if rule is applicable with currently configured release(s)
 
