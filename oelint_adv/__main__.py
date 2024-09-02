@@ -52,6 +52,7 @@ def create_argparser() -> argparse.ArgumentParser:
                         help=argparse.SUPPRESS)
     parser.add_argument('--nowarn', action='store_true', default=False,
                         help=argparse.SUPPRESS)
+    parser.add_argument('--mode', choices=['fast', 'all'], default='fast', help='Level of testing (default: fast)')
     parser.add_argument('--relpaths', action='store_true', default=False,
                         help='Show relative paths instead of absolute paths in results')
     parser.add_argument('--messageformat', default='{path}:{line}:{severity}:{id}:{msg}',

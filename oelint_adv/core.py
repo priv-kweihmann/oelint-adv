@@ -70,7 +70,7 @@ def parse_configfile() -> Dict:
     return {}
 
 
-def group_files(files: Iterable[str]) -> List[List[str]]:
+def group_files(files: Iterable[str], mode: str) -> List[List[str]]:
     # in case multiple bb files are passed at once we might need to group them to
     # avoid having multiple, potentially wrong hits of include files shared across
     # the bb files in the stash
@@ -107,25 +107,29 @@ def group_files(files: Iterable[str]) -> List[List[str]]:
     # layer.confs
     _conf_layer = [x for x in files if os.path.basename(x) == 'layer.conf']
 
-    # as sets are unordered, we convert them to sorted lists at this point
-    # order is like the files have been passed via CLI
-    for k, v in res.items():
-        res[k] = _conf_layer + sorted(v, key=lambda index: files.index(index))
-
     _product_matrix = []
 
-    # machine.confs
-    _conf_machine = [x for x in files if fnmatch.fnmatch(os.path.abspath(x), '*/machine/*.conf')]
-    if any(_conf_machine):
-        _product_matrix.append(_conf_machine)
+    if mode in ['all']:
 
-    # distro.confs
-    _conf_distro = [x for x in files if fnmatch.fnmatch(os.path.abspath(x), '*/distro/*.conf')]
-    if any(_conf_distro):
-        _product_matrix.append(_conf_distro)
+        # as sets are unordered, we convert them to sorted lists at this point
+        # order is like the files have been passed via CLI
+        for k, v in res.items():
+            res[k] = _conf_layer + sorted(v, key=lambda index: files.index(index))
 
-    # pos and neg branch expansion
-    _product_matrix.append([True, False])
+        # machine.confs
+        _conf_machine = [x for x in files if fnmatch.fnmatch(os.path.abspath(x), '*/machine/*.conf')]
+        if any(_conf_machine):
+            _product_matrix.append(_conf_machine)
+
+        # distro.confs
+        _conf_distro = [x for x in files if fnmatch.fnmatch(os.path.abspath(x), '*/distro/*.conf')]
+        if any(_conf_distro):
+            _product_matrix.append(_conf_distro)
+
+        # pos and neg branch expansion
+        _product_matrix.append([True, False])
+    else:
+        _product_matrix.append([False])
 
     group_res = []
 
@@ -245,7 +249,8 @@ def create_lib_arguments(files: List[str],
                          relpaths: bool = False,
                          messageformat: str = None,
                          constantmods: List[str] = None,
-                         release: str = None) -> argparse.Namespace:
+                         release: str = None,
+                         mode: str = 'fast') -> argparse.Namespace:
     """Create runtime arguments in library mode
 
     Args:
@@ -265,6 +270,7 @@ def create_lib_arguments(files: List[str],
         messageformat (str, optional): Override message format. Defaults to None.
         constantmods (List[str], optional): Constant mods. Defaults to None.
         release (str, optional): Release to check against. Defaults to None.
+        mode (str, optional): Level of testing. Defaults to fast.
 
     Returns:
         argparse.Namespace: runtime arguments
@@ -288,6 +294,7 @@ def create_lib_arguments(files: List[str],
     parser.add_argument('--messageformat', default='{path}:{line}:{severity}:{id}:{msg}', type=str)
     parser.add_argument('--constantmods', default=[], nargs='+')
     parser.add_argument('--release', default=Tweaks.DEFAULT_RELEASE, choices=Tweaks._map.keys())
+    parser.add_argument('--mode', default='fast', choices=['fast', 'all'])
     # Override the defaults with the values from the config file
     parser.set_defaults(**parse_configfile())
 
@@ -309,6 +316,7 @@ def create_lib_arguments(files: List[str],
         '--messageformat={messageformat}' if messageformat else '',
         *['--constantmods={x}' for x in (constantmods or ())],
         '--release={release}' if release else '',
+        f'--mode={mode}',
         *files,
     ] if y != '']
 
@@ -412,7 +420,6 @@ def run(args: argparse.Namespace) -> List[Tuple[Tuple[str, int], str]]:
         if isinstance(rule, Rule):
             res = not _rule_file or any(x in _rule_file for x in rule.get_ids())  # pragma: no cover
             res &= rule.ID not in args.state.get_suppressions()
-            res &= not args.state.get_hide(rule.get_severity())
         else:
             res = not _rule_file or rule in _rule_file
             res &= rule not in args.state.get_suppressions()
@@ -426,7 +433,7 @@ def run(args: argparse.Namespace) -> List[Tuple[Tuple[str, int], str]]:
         print('Loaded rules:\n\t{rules}'.format(  # noqa: T201 - it's here for a reason
             rules='\n\t'.join(sorted(_loaded_ids))))
     issues = []
-    groups = group_files(args.files)
+    groups = group_files(args.files, args.mode)
     if not any(groups):
         return []
     with mp.Pool(processes=min(args.jobs, len(groups))) as pool:
