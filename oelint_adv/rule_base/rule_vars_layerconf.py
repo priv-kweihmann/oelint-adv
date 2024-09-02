@@ -26,7 +26,7 @@ class VarsLayerConf(Rule):
         ]
 
         super().__init__(id='oelint.vars.layerconf',
-                         severity='warn',
+                         severity='warning',
                          message='{var} should not be set as part of a layer configuration')
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:

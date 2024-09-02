@@ -21,7 +21,7 @@ class VarsMachineConf(Rule):
         ]
 
         super().__init__(id='oelint.vars.machineconf',
-                         severity='warn',
+                         severity='warning',
                          message='{var} should not be set as part of a machine configuration',
                          appendix=self.needles)
 

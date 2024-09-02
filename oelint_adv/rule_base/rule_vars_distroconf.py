@@ -23,7 +23,7 @@ class VarsDistroConf(Rule):
         ]
 
         super().__init__(id='oelint.vars.distroconf',
-                         severity='warn',
+                         severity='warning',
                          message='{var} should not be set as part of a distro configuration',
                          appendix=self.needles)
 
