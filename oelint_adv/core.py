@@ -160,13 +160,13 @@ def group_files(files: Iterable[str], mode: str) -> List[List[str]]:
         group_res.append((_conf_layer, frozenset(['branch=false']), {'negative_inline': False}))
 
     for m in _conf_machine:
-        if mode in ['all']:
-            group_res.append(([m], frozenset(['branch=true']), {'negative_inline': True}))
+        # mode == all is implicit at this stage
+        group_res.append(([m], frozenset(['branch=true']), {'negative_inline': True}))
         group_res.append(([m], frozenset(['branch=false']), {'negative_inline': False}))
 
     for d in _conf_distro:
-        if mode in ['all']:
-            group_res.append(([d], frozenset(['branch=true']), {'negative_inline': True}))
+        # mode == all is implicit at this stage
+        group_res.append(([d], frozenset(['branch=true']), {'negative_inline': True}))
         group_res.append(([d], frozenset(['branch=false']), {'negative_inline': False}))
 
     return group_res
