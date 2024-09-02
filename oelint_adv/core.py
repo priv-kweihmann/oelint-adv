@@ -464,7 +464,7 @@ def run(args: argparse.Namespace) -> List[Tuple[Tuple[str, int], str]]:
 
     # deduplicate matrix
     def deduplicate(input_list):
-        seen = list()
+        seen = []
         result = set()
         for item in input_list:
             needle = (item[0], item[2])
