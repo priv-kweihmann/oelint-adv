@@ -160,10 +160,6 @@ def group_run(group: List[Tuple],
     group_files, matrix, stash_params = group
     stash = Stash(quiet=quiet, **state.get_additional_stash_args(), **stash_params)
 
-    rules = [copy.deepcopy(x) for x in rules]
-    for rule in rules:
-        rule.set_product_matrix(matrix)
-
     for f in group_files:
         try:
             stash.AddFile(f)
@@ -184,7 +180,12 @@ def group_run(group: List[Tuple],
                 inline_supp_map[item.Origin][item.InFileLine] = [
                     x.strip() for x in m.group('ids').split(',') if x]
 
-    state.inline_suppressions = inline_supp_map
+    state.inline_suppressions = {**state.inline_suppressions, **inline_supp_map}
+
+    rules = [copy.deepcopy(x) for x in rules]
+    for rule in rules:
+        rule.set_state(state)
+        rule.set_product_matrix(matrix)
 
     _files = list(set(stash.GetRecipes() + stash.GetLoneAppends() + stash.GetConfFiles()))
     issues = []
@@ -411,7 +412,7 @@ def run(args: argparse.Namespace) -> List[Tuple[Tuple[str, int], str]]:
         if isinstance(rule, Rule):
             res = not _rule_file or any(x in _rule_file for x in rule.get_ids())  # pragma: no cover
             res &= rule.ID not in args.state.get_suppressions()
-            res &= not args.state.get_hide(rule.get_severity()) 
+            res &= not args.state.get_hide(rule.get_severity())
         else:
             res = not _rule_file or rule in _rule_file
             res &= rule not in args.state.get_suppressions()
