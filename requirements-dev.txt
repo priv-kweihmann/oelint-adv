@@ -34,5 +34,6 @@ pytest-random-order == 1.1.1
 pytest-socket == 0.7.0
 pytest-sugar == 1.0.0
 pytest-tldr == 0.2.5
+pytest-xdist == 3.6.1
 twine == 5.1.1
 wheel ~= 0.44
