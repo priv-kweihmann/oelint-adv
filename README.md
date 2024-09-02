@@ -48,8 +48,11 @@ required python libraries on your own. See [requirements.txt](requirements.txt) 
 
 ```shell
 usage: oelint-adv [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix] [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
-                  [--customrules CUSTOMRULES [CUSTOMRULES ...]] [--rulefile RULEFILE] [--jobs JOBS] [--color] [--quiet] [--hide SEVERITY]
-                  [--relpaths] [--noid] [--messageformat MESSAGEFORMAT] [--constantmods CONSTANTMODS [CONSTANTMODS ...]] [--print-rulefile] [--exit-zero]
+                  [--customrules CUSTOMRULES [CUSTOMRULES ...]] [--rulefile RULEFILE] [--jobs JOBS] [--color] [--quiet]
+                  [--hide {info,warning,error}]
+                  [--mode {fast,all}] [--relpaths] [--messageformat MESSAGEFORMAT] [--constantmods CONSTANTMODS [CONSTANTMODS ...]] [--print-rulefile]
+                  [--exit-zero]
+                  [--release {...}]
                   [--version]
                   [files ...]
 
@@ -72,17 +75,18 @@ options:
   --jobs JOBS           Number of jobs to run (default all cores)
   --color               Add color to the output based on the severity
   --quiet               Print findings only
-  --hide SEVERITY       Hide mesesages of specified severity
+  --hide {info,warning,error}
+                        Hide mesesages of specified severity
+  --mode {fast,all}     Level of testing (default: fast)
   --relpaths            Show relative paths instead of absolute paths in results
-  --noid                Don't show the error-ID in the output
   --messageformat MESSAGEFORMAT
                         Format of message output
   --constantmods CONSTANTMODS [CONSTANTMODS ...]
-                        Modifications to the constant db.
-                        prefix with: + - to add to DB, - - to remove from DB, None - to override DB
+                        Modifications to the constant db. prefix with: + - to add to DB, - - to remove from DB, None - to override DB
   --print-rulefile      Print loaded rules as a rulefile and exit
-  --release             Run against a specific Yocto release (default: latest)
   --exit-zero           Always return a 0 (non-error) status code, even if lint errors are found
+  --release {...}
+                        Run against a specific Yocto release
   --version             show program's version number and exit
 ```
 

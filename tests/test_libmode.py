@@ -7,8 +7,6 @@ from .base import TestBaseClass
 class TestLibMode(TestBaseClass):
 
     def test_libmode(self):
-        from oelint_adv import state
-
         test_recipe = '''
         INSANE_SKIP:${PN} = "foo"
         '''
