@@ -108,9 +108,10 @@ def group_files(files: Iterable[str], mode: str) -> List[List[str]]:
     _conf_layer = [x for x in files if os.path.basename(x) == 'layer.conf']
 
     _product_matrix = []
+    _conf_machine = []
+    _conf_distro = []
 
     if mode in ['all']:
-
         # as sets are unordered, we convert them to sorted lists at this point
         # order is like the files have been passed via CLI
         for k, v in res.items():
@@ -152,6 +153,22 @@ def group_files(files: Iterable[str], mode: str) -> List[List[str]]:
             else:
                 _files = _fl
             group_res.append((_files, frozenset(_matrix_keys), {'negative_inline': _branch_expansion}))
+
+    if _conf_layer:
+        if mode in ['all']:
+            group_res.append((_conf_layer, frozenset(['branch=true']), {'negative_inline': True}))
+        group_res.append((_conf_layer, frozenset(['branch=false']), {'negative_inline': False}))
+
+    for m in _conf_machine:
+        if mode in ['all']:
+            group_res.append(([m], frozenset(['branch=true']), {'negative_inline': True}))
+        group_res.append(([m], frozenset(['branch=false']), {'negative_inline': False}))
+
+    for d in _conf_distro:
+        if mode in ['all']:
+            group_res.append(([d], frozenset(['branch=true']), {'negative_inline': True}))
+        group_res.append(([d], frozenset(['branch=false']), {'negative_inline': False}))
+
     return group_res
 
 
