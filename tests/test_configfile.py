@@ -96,7 +96,7 @@ class TestConfigFile(TestBaseClass):
         # here loaded from current workdir
         _cstfile = self._create_tempfile(
             '.oelint.cfg', '[oelint]\nhide=warning')
-        
+
         os.environ['OELINT_SKIP_CONFIG'] = '1'
 
         _cwd = os.getcwd()
@@ -157,6 +157,27 @@ class TestConfigFile(TestBaseClass):
             del os.environ['OELINT_CONFIG']
 
             assert getattr(_args, _option) == True
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb': 'VAR = "1"',
+                                 },
+                             ],
+                             )
+    def test_config_file_mode(self, input_):
+        # Test if the following options remain untouched
+        for _option, res in {
+            'mode=all': 'all',
+            'mode=fast': 'fast'
+        }.items():
+            _cstfile = self._create_tempfile(
+                '.oelint.cfg', '[oelint]\n{item}'.format(item=_option))
+            os.environ['OELINT_CONFIG'] = _cstfile
+            _args = self._create_args(input_)
+            del os.environ['OELINT_CONFIG']
+
+            assert getattr(_args, 'mode') == res
 
     @pytest.mark.parametrize('input_',
                              [
@@ -243,7 +264,6 @@ class TestConfigFile(TestBaseClass):
             del os.environ['OELINT_CONFIG']
 
             assert getattr(_args, _option.replace('-', '_'))
-
 
     def test_option_deserialization(self):
         options = {'a': 'True', 'b': True, 'c': 'False', 'd': False, 'e': 'other value'}

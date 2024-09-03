@@ -94,6 +94,29 @@ class TestClassOelintVarsBBVars(TestBaseClass):
         self.check_for_id(self._create_args(input_), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.bbvars'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('filename', [
+        'conf/layer.conf',
+        'conf/machine/mymachine.conf',
+        'conf/distro/mydistro.conf',
+    ])
+    def test_good_conf_files(self, id_, occurrence, filename):
+        input_ = {
+            filename: self.__generate_sample_code('TOPDIR', '='),
+        }
+        id_ += '.{var}'.format(var='TOPDIR')
+        self.check_for_id(self._create_args(input_, ['--mode=all']), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.bbvars'])
+    def test_good_global_inherit(self, id_):
+        input_ = {
+            'conf/layer.conf': 'INHERIT += "foo"',
+            'conf/classes/foo.bbclass': self.__generate_sample_code('TOPDIR', '='),
+        }
+        id_ += '.{var}'.format(var='INHERIT')
+        self.check_for_id(self._create_args(input_, ['--mode=all']), id_, 0)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.bbvars'])
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('var', [
         'INHERIT',
