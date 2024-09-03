@@ -3,7 +3,7 @@ import inspect
 import os
 import pkgutil
 import sys
-from typing import Iterable, List, Tuple
+from typing import FrozenSet, Iterable, List, Tuple
 
 from colorama import Style
 from oelint_parser.cls_stash import Stash
@@ -44,9 +44,9 @@ class Rule:
         self._valid_till_release = valid_till_release
         self._valid_from_release = valid_from_release
         self._state: State = None
-        self.__matrix: frozenset[str] = []
+        self.__matrix: FrozenSet[str] = []
 
-    def set_product_matrix(self, in_: frozenset[str]) -> None:
+    def set_product_matrix(self, in_: FrozenSet[str]) -> None:
         """Set the product matrix
 
         Args:
