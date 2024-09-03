@@ -70,7 +70,7 @@ def parse_configfile() -> Dict:
     return {}
 
 
-def group_files(files: Iterable[str], mode: str) -> List[List[str]]:
+def group_files(files: Iterable[str], mode: str) -> List[Tuple[List[str], List[str], Dict]]:
     # in case multiple bb files are passed at once we might need to group them to
     # avoid having multiple, potentially wrong hits of include files shared across
     # the bb files in the stash
@@ -105,18 +105,18 @@ def group_files(files: Iterable[str], mode: str) -> List[List[str]]:
             res[_filename_key].add(f)
 
     # layer.confs
-    _conf_layer = [x for x in files if os.path.basename(x) == 'layer.conf']
+    _conf_layer = sorted([x for x in files if os.path.basename(x) == 'layer.conf'], key=lambda index: files.index(index))
 
     _product_matrix = []
     _conf_machine = []
     _conf_distro = []
 
-    if mode in ['all']:
-        # as sets are unordered, we convert them to sorted lists at this point
-        # order is like the files have been passed via CLI
-        for k, v in res.items():
-            res[k] = _conf_layer + sorted(v, key=lambda index: files.index(index))
+    # as sets are unordered, we convert them to sorted lists at this point
+    # order is like the files have been passed via CLI
+    for k, v in res.items():
+        res[k] = sorted(v, key=lambda index: files.index(index))
 
+    if mode in ['all']:
         # machine.confs
         _conf_machine = [x for x in files if fnmatch.fnmatch(os.path.abspath(x), '*/machine/*.conf')]
         if any(_conf_machine):
@@ -140,7 +140,7 @@ def group_files(files: Iterable[str], mode: str) -> List[List[str]]:
             _branch_expansion = element[-1]
             _matrix_keys = [f'branch:{"false" if _branch_expansion else "true"}']
             if len(element) > 1:
-                _files = list(element[:-1]) + _fl
+                _files = _conf_layer + list(element[:-1]) + _fl
 
                 _machine_id = [x for x in _files if x in _conf_machine]
                 _distro_id = [x for x in _files if x in _conf_distro]
@@ -151,7 +151,7 @@ def group_files(files: Iterable[str], mode: str) -> List[List[str]]:
                 if any(_distro_id):
                     _matrix_keys.append(os.path.basename(_distro_id[0]))
             else:
-                _files = _fl
+                _files = _conf_layer + _fl
             group_res.append((_files, frozenset(_matrix_keys), {'negative_inline': _branch_expansion}))
 
     if _conf_layer:
