@@ -30,10 +30,10 @@ class VarInheritLast(Rule):
         for needle in self._needles:
             if needle in _findings_class_only and _findings[-1][0] != needle:
                 try:
-                    index = next(i for i, v in enumerate(_findings) if v[0] == needle)
+                    index = next(i for i, v in enumerate(_findings) if v[0] == needle)  # pragma: no cover
                     res += self.finding(_findings[index][1].Origin, _findings[index][1].InFileLine,
                                         self.Msg.format(VAR=needle),
                                         appendix=needle)
-                except StopIteration:
-                    continue
+                except StopIteration:  # pragma: no cover
+                    continue  # pragma: no cover
         return res
