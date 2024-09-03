@@ -437,7 +437,8 @@ def run(args: argparse.Namespace) -> List[Tuple[Tuple[str, int], str]]:
         if isinstance(rule, Rule):
             res = not _rule_file or any(x in _rule_file for x in rule.get_ids())  # pragma: no cover
             res &= rule.ID not in args.state.get_suppressions()
-            res &= rule.get_severity() in ['info', 'warning', 'error']
+            res &= (rule.get_severity() in ['info', 'warning', 'error']) or any(
+                rule.get_severity(x) in ['info', 'warning', 'error'] for x in rule.Appendix)
         else:
             res = not _rule_file or rule in _rule_file
             res &= rule not in args.state.get_suppressions()
