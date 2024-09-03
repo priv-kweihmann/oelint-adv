@@ -26,6 +26,7 @@ class TestBaseClass:
             _cnt = textwrap.dedent(_input).lstrip('\n')
             self.__created_files[_file] = _cnt
             o.write(_cnt)
+            setattr(self, '__created_files', self.__created_files)
         return _path
 
     def _create_args(self, input_, extraopts=None):
