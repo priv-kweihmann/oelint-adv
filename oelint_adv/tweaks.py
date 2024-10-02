@@ -42,6 +42,7 @@ class Tweaks:
         "nanbield": {"constantmods": {"-": {"variables": {"suggested": ["AUTHOR"]}}}},
         "scarthgap": {},
         "styhead": {"constantmods": {"+": {"variables": {"known": ["UNPACKDIR"]}}}},
+        "walnascar": {},
         "latest": {},
     }
 
