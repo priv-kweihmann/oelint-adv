@@ -87,6 +87,9 @@ options:
   --exit-zero           Always return a 0 (non-error) status code, even if lint errors are found
   --release {...}
                         Run against a specific Yocto release
+  --cached              Use caches (default: off)
+  --cachedir CACHEDIR   Cache directory (default $HOME/.oelint/caches)
+  --clear-caches        Clear cache directory and exit
   --version             show program's version number and exit
 ```
 
@@ -494,6 +497,15 @@ bitbake-getvar --quiet --value DISTROOVERRIDES | tr ':' '\n' | jq -Rn  '{replace
 (**) you'll need to have `jq` installed on your local machine.
 
 (***) `bitbake-getvar` command is available since `kirkstone` release. For older release you can use `bitbake core-image-minimal -e | grep ^MACHINEOVERRIDES` resp. `bitbake core-image-minimal -e | grep ^DISTROOVERRIDES` and pass them into the rest of the pipe.
+
+## cached mode
+
+When run with ``--cached`` the tool will store resuls into a local caching directory and reuse the results, if
+nothing has changed in the input tree and configuration.
+
+By default caches are stored to ``OELINT_CACHE_DIR`` environment variable (or `~/.oelint/caches` if not set).
+
+To clear the local caches run ``--clear-caches``
 
 ## vscode extension
 

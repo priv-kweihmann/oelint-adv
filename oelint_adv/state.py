@@ -2,6 +2,8 @@ from typing import List
 from colorama import Fore
 from colorama.ansi import AnsiCodes
 
+from oelint_adv.caches import Caches
+
 
 class State():
     """State/Configuration shared between processes."""
@@ -24,6 +26,7 @@ class State():
         }
 
         self._seen_inline_suppressions = []
+        self._caches: Caches = None
 
     def get_colorize(self) -> bool:
         """Returns weather or not the terminal output is to be colorized"""
