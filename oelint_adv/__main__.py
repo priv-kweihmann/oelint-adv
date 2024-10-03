@@ -11,6 +11,7 @@ from oelint_adv.cls_rule import load_rules
 from oelint_adv.core import TypeSafeAppendAction, arguments_post, parse_configfile, run
 from oelint_adv.tweaks import Tweaks
 from oelint_adv.version import __version__
+from oelint_adv.caches import __default_cache_dir
 
 sys.path.append(os.path.abspath(os.path.join(__file__, '..')))
 
@@ -71,6 +72,10 @@ def create_argparser() -> argparse.ArgumentParser:
                         help='Always return a 0 (non-error) status code, even if lint errors are found')
     parser.add_argument('--release', default=Tweaks.DEFAULT_RELEASE, choices=Tweaks._map.keys(),
                         help='Run against a specific Yocto release')
+    parser.add_argument('--cached', action='store_true', help='Use caches (default: off)')
+    parser.add_argument('--cachedir', default=os.environ.get('OELINT_CACHE_DIR', __default_cache_dir),
+                        help=f'Cache directory (default {__default_cache_dir})')
+    parser.add_argument('--clear-caches', action='store_true', help='Clear cache directory and exit')
     # Override the defaults with the values from the config file
     parser.set_defaults(**parse_configfile())
 
@@ -102,6 +107,10 @@ def main() -> int:  # pragma: no cover
 
     if args.print_rulefile:
         print_rulefile(args)
+        sys.exit(0)
+
+    if args.clear_caches:
+        args.state._caches.ClearCaches()
         sys.exit(0)
 
     try:

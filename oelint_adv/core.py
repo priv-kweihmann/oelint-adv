@@ -15,6 +15,7 @@ from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
 from oelint_parser.rpl_regex import RegexRpl
 
+from oelint_adv.caches import Caches, __default_cache_dir
 from oelint_adv.cls_rule import Rule, load_rules
 from oelint_adv.rule_base.rule_file_inlinesuppress_na import (
     FileNotApplicableInlineSuppression,
@@ -190,6 +191,10 @@ def group_run(group: List[Tuple],
 
     stash.Finalize()
 
+    cached_res = state._caches.GetFromCache([x.ID for x in rules], stash.FingerPrint)
+    if cached_res is not None:
+        return cached_res
+
     inline_supp_map = {}
     for item in stash.GetItemsFor(classifier=Comment.CLASSIFIER):
         for line in item.get_items():
@@ -239,6 +244,8 @@ def group_run(group: List[Tuple],
                         obj = FileNotApplicableInlineSuppression(state)
                         issues += obj.finding(_file, _line, override_msg=obj.Msg.format(id=_id))
 
+    state._caches.SaveToCache([x.ID for x in rules], stash.FingerPrint, issues)
+
     return issues
 
 
@@ -267,7 +274,9 @@ def create_lib_arguments(files: List[str],
                          messageformat: str = None,
                          constantmods: List[str] = None,
                          release: str = None,
-                         mode: str = 'fast') -> argparse.Namespace:
+                         mode: str = 'fast',
+                         cached: bool = False,
+                         cachedir: str = __default_cache_dir) -> argparse.Namespace:
     """Create runtime arguments in library mode
 
     Args:
@@ -288,6 +297,8 @@ def create_lib_arguments(files: List[str],
         constantmods (List[str], optional): Constant mods. Defaults to None.
         release (str, optional): Release to check against. Defaults to None.
         mode (str, optional): Level of testing. Defaults to fast.
+        cached (bool, optional): Use caching
+        cachedir (str, optional): Path to cache directory
 
     Returns:
         argparse.Namespace: runtime arguments
@@ -312,6 +323,10 @@ def create_lib_arguments(files: List[str],
     parser.add_argument('--constantmods', default=[], nargs='+')
     parser.add_argument('--release', default=Tweaks.DEFAULT_RELEASE, choices=Tweaks._map.keys())
     parser.add_argument('--mode', default='fast', choices=['fast', 'all'])
+    parser.add_argument('--cached', action='store_true', help='Use caches')
+    parser.add_argument('--cachedir', default=os.environ.get('OELINT_CACHE_DIR', __default_cache_dir),
+                        help=f'Cache directory (default {__default_cache_dir})')
+    parser.add_argument('--clear-caches', action='store_true', help='Clear cache directory and exit')
     # Override the defaults with the values from the config file
     parser.set_defaults(**parse_configfile())
 
@@ -334,7 +349,9 @@ def create_lib_arguments(files: List[str],
         *['--constantmods={x}' for x in (constantmods or ())],
         '--release={release}' if release else '',
         f'--mode={mode}',
-        *files,
+        '--cached' if cached else '',
+        f'--cachedir={cachedir}',
+        * files,
     ] if y != '']
 
     return arguments_post(parser.parse_args(dummy_args))
@@ -378,7 +395,7 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
         except AttributeError:  # pragma: no cover
             pass  # pragma: no cover
 
-    if args.files == [] and not args.print_rulefile:
+    if args.files == [] and not args.print_rulefile and not args.clear_caches:
         raise argparse.ArgumentTypeError('no input files')
 
     if args.rulefile:
@@ -399,6 +416,8 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
     if args.nowarn:
         args.state.hide['warning'] = True
 
+    args.state._caches = Caches(args)
+
     for mod in args.constantmods:
         if isinstance(mod, str):
             try:
@@ -406,16 +425,21 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
                     _cnt = json.load(_in)
                 if mod.startswith('+'):
                     CONSTANTS.AddConstants(_cnt)
+                    args.state._caches.AddToFingerPrint(f'+{_cnt}')
                 elif mod.startswith('-'):
                     CONSTANTS.RemoveConstants(_cnt)
+                    args.state._caches.AddToFingerPrint(f'-{_cnt}')
                 else:
                     CONSTANTS.OverrideConstants(_cnt)
+                    args.state._caches.AddToFingerPrint(str(_cnt))
             except (FileNotFoundError, json.JSONDecodeError):
                 raise argparse.ArgumentTypeError(
                     'mod file \'{file}\' is not a valid file'.format(file=mod))
         else:
             CONSTANTS.AddConstants(mod.get('+', {}))
             CONSTANTS.RemoveConstants(mod.get('-', {}))
+            args.state._caches.AddToFingerPrint(f'mod{mod.get("+", {})}')
+            args.state._caches.AddToFingerPrint(f'mod{mod.get("-", {})}')
 
     args.state.color = args.color
     args.state.nobackup = args.nobackup
