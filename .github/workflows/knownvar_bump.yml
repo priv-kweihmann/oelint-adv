@@ -1,0 +1,35 @@
+name: Bump known vars
+
+on:
+  schedule:
+    # Saturday 4:30am
+    - cron: "30 4 * * 6"
+  workflow_dispatch:
+
+jobs:
+  bumpvar:
+    name: "Bump known vars"
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    if: github.repository == 'priv-kweihmann/oelint-adv'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Bump known vars for master
+        run: ${GITHUB_WORKSPACE}/scripts/generate-knownvars master ${GITHUB_WORKSPACE}/oelint_adv/data/master.json
+        shell: bash
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          reviewers: priv-kweihmann
+          branch: "chore/dataupdate"
+          commit-message: "data: bump latest known variables"
+          title: "data: bump latest known variables"
+          body: "auto generated data update"
+          add-paths: |
+            oelint_adv/data/*.json
