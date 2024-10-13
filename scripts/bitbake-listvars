@@ -1,0 +1,55 @@
+#! /usr/bin/env python3
+# Copyright (C) 2021 Richard Purdie
+# Copyright (c) 2024, Konrad Weihmann
+# SPDX-License-Identifier: GPL-2.0-only
+
+# Based on bitbake-getvar
+# Lists all defined bitbake variables
+
+import bb.tinfoil
+import argparse
+import os
+import sys
+import warnings
+
+
+def main(args=None):
+    parser = argparse.ArgumentParser(description="Bitbake List Vars")
+    parser.add_argument(
+        '-q', '--quiet', help='Silence bitbake server logging', action="store_true")
+    parser.add_argument(
+        '-p', '--path', help='List the path(s) that define the variable', action="store_true")
+    args = parser.parse_args()
+
+    quiet = args.quiet
+    with bb.tinfoil.Tinfoil(tracking=True, setup_logging=not quiet) as tinfoil:
+        tinfoil.prepare(quiet=2, config_only=True)
+        d = tinfoil.config_data
+
+        for k in sorted(d.keys()):
+            if ':' in k:
+                continue
+            if k.upper() != k:
+                continue
+            if k.startswith('_'):
+                continue
+            if args.path:
+                _paths = {x['file'] for x in d.varhistory.variable(k)}
+                yield (k, sorted(_paths))
+            else:
+                yield k
+
+
+if __name__ == "__main__":
+    warnings.simplefilter("default")
+
+    bindir = os.path.dirname(__file__)
+    topdir = os.path.dirname(bindir)
+    sys.path[0:0] = [os.path.join(topdir, 'lib')]
+
+    result = main()
+    for item in result:
+        if isinstance(item, tuple):
+            print(f'{item[0]}:{",".join(item[1])}')
+        else:
+            print(item)
