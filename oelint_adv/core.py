@@ -321,7 +321,7 @@ def create_lib_arguments(files: List[str],
     parser.add_argument('--relpaths', action='store_true', default=False)
     parser.add_argument('--messageformat', default='{path}:{line}:{severity}:{id}:{msg}', type=str)
     parser.add_argument('--constantmods', default=[], nargs='+')
-    parser.add_argument('--release', default=Tweaks.DEFAULT_RELEASE, choices=Tweaks._map.keys())
+    parser.add_argument('--release', default=Tweaks.DEFAULT_RELEASE, choices=Tweaks.releases())
     parser.add_argument('--mode', default='fast', choices=['fast', 'all'])
     parser.add_argument('--cached', action='store_true', help='Use caches')
     parser.add_argument('--cachedir', default=os.environ.get('OELINT_CACHE_DIR', __default_cache_dir),

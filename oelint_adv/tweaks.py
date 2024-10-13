@@ -1,10 +1,14 @@
 import argparse
+from typing import List
+
+from oelint_adv.data import known_variable_mod
 
 
 class Tweaks:
     """Release specific tweaks"""
 
-    DEFAULT_RELEASE = 'scarthgap'
+    DEFAULT_RELEASE = 'styhead'
+    DEVELOPMENT_RELEASE = 'walnascar'
 
     _map = {
         "inky": {},
@@ -38,13 +42,16 @@ class Tweaks:
         "honister": {},
         "kirkstone": {"_stash_args": {"new_style_override_syntax": True}},
         "langdale": {},
-        "mickledore": {"constantmods": {"-": {"variables": {"known": ["PACKAGEBUILDPKGD"]}}}},
+        "mickledore": {},
         "nanbield": {"constantmods": {"-": {"variables": {"suggested": ["AUTHOR"]}}}},
         "scarthgap": {},
-        "styhead": {"constantmods": {"+": {"variables": {"known": ["UNPACKDIR"]}}}},
+        "styhead": {},
         "walnascar": {},
-        "latest": {},
     }
+
+    @staticmethod
+    def releases() -> List[str]:
+        return sorted(list(Tweaks._map.keys()) + ['latest'])
 
     @staticmethod
     def tweak_args(args: argparse.Namespace) -> argparse.Namespace:
@@ -70,6 +77,11 @@ class Tweaks:
 
         _tweaked_options = {}
         _release_range = []
+
+        # override the latest alias
+        if args.release == 'latest':
+            args.release = Tweaks.DEVELOPMENT_RELEASE
+
         for k, v in Tweaks._map.items():   # pragma: no cover
             _tweaked_options = recursive_merge(_tweaked_options, v)
             _release_range.append(k)
@@ -83,6 +95,11 @@ class Tweaks:
                     item.append(v)
             else:
                 setattr(args, k, v)
+
+        # release known var constantmod
+        extramod = known_variable_mod(args.release)
+        if extramod:
+            args.constantmods.append(extramod)
 
         setattr(args, '_release_range', _release_range)  # noqa: B010
         args.state.additional_stash_args = getattr(args, '_stash_args', {})
