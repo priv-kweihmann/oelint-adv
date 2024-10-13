@@ -70,7 +70,7 @@ def create_argparser() -> argparse.ArgumentParser:
                         help='Print loaded rules as a rulefile and exit')
     parser.add_argument('--exit-zero', action='store_true', default=False,
                         help='Always return a 0 (non-error) status code, even if lint errors are found')
-    parser.add_argument('--release', default=Tweaks.DEFAULT_RELEASE, choices=Tweaks._map.keys(),
+    parser.add_argument('--release', default=Tweaks.DEFAULT_RELEASE, choices=Tweaks.releases(),
                         help='Run against a specific Yocto release')
     parser.add_argument('--cached', action='store_true', help='Use caches (default: off)')
     parser.add_argument('--cachedir', default=os.environ.get('OELINT_CACHE_DIR', __default_cache_dir),
