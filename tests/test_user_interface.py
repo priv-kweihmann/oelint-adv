@@ -976,3 +976,33 @@ class TestClassIntegration(TestBaseClass):
     def test_release_invalid(self, input_):
         with pytest.raises(SystemExit):
             self._create_args(input_, extraopts=['--release=doesnotexist'])
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     VAR = "1"
+                                     ''',
+                                 }
+                             ],
+                             )
+    def test_no_known_variable_file(self, input_):
+        from oelint_adv.__main__ import run
+
+        run(self._create_args(input_, extraopts=['--release=dunfell']))
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     VAR = "1"
+                                     ''',
+                                 }
+                             ],
+                             )
+    def test_latest_alias(self, input_):
+        from oelint_adv.__main__ import run
+
+        run(self._create_args(input_, extraopts=['--release=latest']))
