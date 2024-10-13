@@ -151,8 +151,13 @@ class VarSRCUriOptions(Rule):
         }
 
         self._required_unless_options = {
-            'git': {'branch': ['nobranch']},
-            'gitsm': {'branch': ['nobranch']},
+            'git': {'branch': ['nobranch', 'usehead']},
+            'gitsm': {'branch': ['nobranch', 'usehead']},
+        }
+
+        self._required_if_options = {
+            'git': {'usehead': ['branch', 'nobranch']},
+            'gitsm': {'usehead': ['branch', 'nobranch']},
         }
 
     def __analyse(self, stash: Stash, item: Variable, _input: str, _index: int) -> List[Tuple[str, int, str]]:
@@ -186,6 +191,12 @@ class VarSRCUriOptions(Rule):
                 if key not in _url['options'] and not any(x in _url['options'] for x in val_):
                     res += self.finding(item.Origin, item.InFileLine + _index,
                                         'Fetcher \'{fetcher}\' requires option \'{option}\' or any of \'{other}\' to be set'.format(
+                                            fetcher=_url['scheme'], option=key, other=','.join(val_)),
+                                        blockoffset=item.InFileLine)
+            for key, val_ in self._required_if_options.get(_url['scheme'], {}).items():
+                if key in _url['options'] and not any(x in _url['options'] for x in val_):
+                    res += self.finding(item.Origin, item.InFileLine + _index,
+                                        'Fetcher \'{fetcher}\' option \'{option}\' requires any of \'{other}\' to be set'.format(
                                             fetcher=_url['scheme'], option=key, other=','.join(val_)),
                                         blockoffset=item.InFileLine)
         return res
