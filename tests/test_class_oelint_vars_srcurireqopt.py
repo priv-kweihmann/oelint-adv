@@ -25,13 +25,21 @@ class TestClassOelintVarsSRCURIReqOpt(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'SRC_URI += "gitsm://foo.org/gaz.git;name=foo;protocol=ssh"',
                                  },
-                                                                  {
+                                 {
                                      'oelint_adv_test.bb':
                                      'SRC_URI += "git://foo.org/gaz.git;protocol=ssh;usehead=1"',
                                  },
                                  {
                                      'oelint_adv_test.bb':
                                      'SRC_URI += "gitsm://foo.org/gaz.git;protocol=ssh;usehead=1"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI += "gomod://golang.org/x/net"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI += "gomodgit://golang.org/x/net"',
                                  },
                              ],
                              )
@@ -90,6 +98,14 @@ class TestClassOelintVarsSRCURIReqOpt(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      'SRC_URI += "gitsm://foo.org/gaz.git;name=foo;protocol=ssh;branch=main;usehead=1"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI += "gomod://golang.org/x/net;version=1.0"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI += "gomodgit://golang.org/x/net;version=1.0"',
                                  },
                                  {
                                      'oelint-adv_test.bb':

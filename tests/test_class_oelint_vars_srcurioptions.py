@@ -65,6 +65,7 @@ OPTION_MAPPING = {
     'crate': [
         'apply',
         'destsuffix',
+        'downloadfilename',
         'name',
         'patchdir',
         'striplevel',
@@ -77,7 +78,7 @@ OPTION_MAPPING = {
         'module',
         'name',
         'patchdir',
-        'proto',
+        'protocol',
         'striplevel',
         'subdir',
         'unpack',
@@ -175,6 +176,22 @@ OPTION_MAPPING = {
         'destdir',
         'name',
         'proto',
+    ],
+    'gomod': [
+        'downloadfilename',
+        'mod',
+        'module',
+        'version',
+    ],
+    'gomodgit': [
+        'bareclone',
+        'branch',
+        'module',
+        'nobranch',
+        'protocol',
+        'repo',
+        'srcrev',
+        'version',
     ],
     'hg': [
         'apply',
@@ -372,7 +389,7 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
     @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('protocol', ['crate'])
-    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['az']])
+    @pytest.mark.parametrize('option', [x for x in OPTIONS_AVAILABLE if x not in OPTION_MAPPING['crate']])
     def test_bad_crate(self, id_, occurrence, protocol, option):
         input_ = {
             'oelint_adv_test.bb': self.__generate_sample_code(protocol, option),
@@ -382,7 +399,7 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
     @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('protocol', ['crate'])
-    @pytest.mark.parametrize('option', OPTION_MAPPING['az'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['crate'])
     def test_good_crate(self, id_, occurrence, protocol, option):
         input_ = {
             'oelint_adv_test.bb': self.__generate_sample_code(protocol, option),
@@ -542,6 +559,46 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
     def test_good_gitannex(self, id_, occurrence, protocol, option):
         input_ = {
             'oelint_adv_test.bb': self.__generate_sample_code(protocol, option),
+        }
+        self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurrence', [1])
+    @pytest.mark.parametrize('protocol', ['gomod'])
+    @pytest.mark.parametrize('option', ['xyz', 'abc'])
+    def test_bad_gomod(self, id_, occurrence, protocol, option):
+        input_ = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, 'version=1;' + option),
+        }
+        self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('protocol', ['gomod'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['gomod'])
+    def test_good_gomod(self, id_, occurrence, protocol, option):
+        input_ = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, 'version=1;' + option),
+        }
+        self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurrence', [1])
+    @pytest.mark.parametrize('protocol', ['gomodgit'])
+    @pytest.mark.parametrize('option', ['xyz', 'abc'])
+    def test_bad_gomodgit(self, id_, occurrence, protocol, option):
+        input_ = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, 'version=1;' + option),
+        }
+        self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('protocol', ['gomodgit'])
+    @pytest.mark.parametrize('option', OPTION_MAPPING['gomodgit'])
+    def test_good_gomodgit(self, id_, occurrence, protocol, option):
+        input_ = {
+            'oelint_adv_test.bb': self.__generate_sample_code(protocol, 'version=1;' + option),
         }
         self.check_for_id(self._create_args(input_), id_, occurrence)
 

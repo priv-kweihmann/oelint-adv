@@ -28,10 +28,12 @@ class VarSRCUriOptions(Rule):
                 'protocol',
                 'scmdata',
             ],
-            'crate': [],
+            'crate': [
+                'downloadfilename',
+            ],
             'crcc': [
                 'module',
-                'proto',
+                'protocol',
                 'vob',
             ],
             'cvs': [
@@ -87,6 +89,22 @@ class VarSRCUriOptions(Rule):
             'gn': [
                 'destdir',
                 'proto',
+            ],
+            'gomod': [
+                'downloadfilename',
+                'mod',
+                'module',
+                'version',
+            ],
+            'gomodgit': [
+                'bareclone',
+                'branch',
+                'module',
+                'nobranch',
+                'protocol',
+                'repo',
+                'srcrev',
+                'version',
             ],
             'hg': [
                 'module',
@@ -148,6 +166,8 @@ class VarSRCUriOptions(Rule):
         self._required_might_options = {
             'git': ['protocol'],
             'gitsm': ['protocol'],
+            'gomod': ['version'],
+            'gomodgit': ['version'],
         }
 
         self._required_unless_options = {
