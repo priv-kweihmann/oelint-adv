@@ -41,7 +41,7 @@ class TestClassOelintVarsUnpackdir(TestBaseClass):
                              ],
                              )
     def test_bad_old(self, input_, id_, occurrence):
-        self.check_for_id(self._create_args(input_), id_, occurrence)
+        self.check_for_id(self._create_args(input_, ['--release=kirkstone']), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.unpackdir'])
     @pytest.mark.parametrize('occurrence', [0])
@@ -68,4 +68,4 @@ class TestClassOelintVarsUnpackdir(TestBaseClass):
                              ],
                              )
     def test_good_inherit(self, input_, id_, occurrence):
-        self.check_for_id(self._create_args(input_, ['--release=styhead']), id_, occurrence)
+        self.check_for_id(self._create_args(input_), id_, occurrence)
