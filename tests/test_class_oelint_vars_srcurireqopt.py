@@ -25,6 +25,14 @@ class TestClassOelintVarsSRCURIReqOpt(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'SRC_URI += "gitsm://foo.org/gaz.git;name=foo;protocol=ssh"',
                                  },
+                                                                  {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI += "git://foo.org/gaz.git;protocol=ssh;usehead=1"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI += "gitsm://foo.org/gaz.git;protocol=ssh;usehead=1"',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -66,6 +74,22 @@ class TestClassOelintVarsSRCURIReqOpt(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      'SRC_URI += "gitsm://foo.org/gaz.git;name=foo;protocol=ssh;nobranch=1"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI += "git://foo.org/gaz.git;name=foo;protocol=ssh;nobranch=1;usehead=1"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI += "gitsm://foo.org/gaz.git;name=foo;protocol=ssh;nobranch=1;usehead=1"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI += "git://foo.org/gaz.git;name=foo;protocol=ssh;branch=main;usehead=1"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SRC_URI += "gitsm://foo.org/gaz.git;name=foo;protocol=ssh;branch=main;usehead=1"',
                                  },
                                  {
                                      'oelint-adv_test.bb':
