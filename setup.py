@@ -24,6 +24,9 @@ setuptools.setup(
             'oelint-adv = oelint_adv.__main__:main',
         ],
     },
+    package_data={
+        'oelint_adv': ['data/*'],
+    },
     install_requires=requirements,
     classifiers=[
         'Development Status :: 4 - Beta',
