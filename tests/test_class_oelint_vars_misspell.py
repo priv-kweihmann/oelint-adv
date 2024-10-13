@@ -53,10 +53,6 @@ class TestClassOelintVarsMispell(TestBaseClass):
                                  },
                                  {
                                      'oelint_adv_test.bb':
-                                     'GOPATH = "abc"',
-                                 },
-                                 {
-                                     'oelint_adv_test.bb':
                                      '''
                                      PACKAGECONFIG_A = "a"
                                      PACKAGECONFIG_B = "c"
