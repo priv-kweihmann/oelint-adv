@@ -6,7 +6,6 @@
 # Based on bitbake-getvar
 # Lists all defined bitbake variables
 
-import bb.tinfoil
 import argparse
 import os
 import sys
@@ -19,7 +18,14 @@ def main(args=None):
         '-q', '--quiet', help='Silence bitbake server logging', action="store_true")
     parser.add_argument(
         '-p', '--path', help='List the path(s) that define the variable', action="store_true")
+    parser.add_argument('bitbake', help='Path to bitbake binary')
     args = parser.parse_args()
+
+    bindir = os.path.dirname(args.bitbake)
+    topdir = os.path.dirname(bindir)
+    sys.path[0:0] = [os.path.join(topdir, 'lib')]
+
+    import bb.tinfoil
 
     quiet = args.quiet
     with bb.tinfoil.Tinfoil(tracking=True, setup_logging=not quiet) as tinfoil:
@@ -42,11 +48,6 @@ def main(args=None):
 
 if __name__ == "__main__":
     warnings.simplefilter("default")
-
-    bindir = os.path.dirname(__file__)
-    topdir = os.path.dirname(bindir)
-    sys.path[0:0] = [os.path.join(topdir, 'lib')]
-
     result = main()
     for item in result:
         if isinstance(item, tuple):
