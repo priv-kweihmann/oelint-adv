@@ -383,7 +383,6 @@
       "LOCALE_UTF8_IS_DEFAULT",
       "LOCALE_UTF8_ONLY",
       "LOGFIFO",
-      "LOGNAME",
       "LOG_DIR",
       "MACHINE",
       "MACHINEOVERRIDES",
