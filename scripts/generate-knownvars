@@ -24,13 +24,18 @@ args = create_argparser()
 
 with tempfile.TemporaryDirectory() as t:
     subprocess.run(['git', 'clone', 'https://git.yoctoproject.org/poky', '--single-branch', '-b', args.branch], cwd=t)
-    output = subprocess.check_output(
-        f'source poky/oe-init-build-env > /dev/null 2>&1 && {basepath}/bitbake-listvars -q',
-        shell=True,
-        universal_newlines=True,
-        executable='/bin/bash',
-        cwd=t
-    )
+    try:
+        output = subprocess.check_output(
+            f'source poky/oe-init-build-env > /dev/null 2>&1 && {basepath}/bitbake-listvars -q $(which bitbake)',
+            shell=True,
+            universal_newlines=True,
+            executable='/bin/bash',
+            cwd=t
+        )
+    except subprocess.CalledProcessError as e:
+        print(e.stdout)
+        print(e.stderr)
+        sys.exit(1)
 
     if args.branch == 'master':
         # for master override the name
