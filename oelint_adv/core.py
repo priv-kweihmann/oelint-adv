@@ -360,9 +360,6 @@ def create_lib_arguments(files: List[str],
 def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C901 - complexity is still okay
     setattr(args, 'state', State())  # noqa: B010
 
-    # Apply release specific tweaks
-    args = Tweaks.tweak_args(args)
-
     # Convert boolean symbols
     for _option in [
         'color',
@@ -394,6 +391,9 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
                     getattr(args, _option) or '').split('\n') if x])
         except AttributeError:  # pragma: no cover
             pass  # pragma: no cover
+
+    # Apply release specific tweaks
+    args = Tweaks.tweak_args(args)
 
     if args.files == [] and not args.print_rulefile and not args.clear_caches:
         raise argparse.ArgumentTypeError('no input files')
