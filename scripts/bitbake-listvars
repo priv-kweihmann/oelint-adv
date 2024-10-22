@@ -7,15 +7,19 @@
 # Lists all defined bitbake variables
 
 import argparse
+import logging
 import os
 import sys
 import warnings
 
+logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 
 def main(args=None):
     parser = argparse.ArgumentParser(description="Bitbake List Vars")
     parser.add_argument(
         '-q', '--quiet', help='Silence bitbake server logging', action="store_true")
+    parser.add_argument(
+        '-a', '--all', help='Parse all available recipes as well', action="store_true")
     parser.add_argument(
         '-p', '--path', help='List the path(s) that define the variable', action="store_true")
     parser.add_argument('bitbake', help='Path to bitbake binary')
@@ -27,11 +31,7 @@ def main(args=None):
 
     import bb.tinfoil
 
-    quiet = args.quiet
-    with bb.tinfoil.Tinfoil(tracking=True, setup_logging=not quiet) as tinfoil:
-        tinfoil.prepare(quiet=2, config_only=True)
-        d = tinfoil.config_data
-
+    def yield_from_data(d):
         for k in sorted(d.keys()):
             if ':' in k:
                 continue
@@ -41,15 +41,32 @@ def main(args=None):
                 continue
             if args.path:
                 _paths = {x['file'] for x in d.varhistory.variable(k)}
-                yield (k, sorted(_paths))
+                yield (k, tuple(sorted(_paths)))
             else:
                 yield k
+
+    quiet = args.quiet
+    with bb.tinfoil.Tinfoil(tracking=True, setup_logging=not quiet) as tinfoil:
+        tinfoil.prepare(quiet=2, config_only=True)
+        logging.info('Extracting data from global config')
+        yield from yield_from_data(tinfoil.config_data)
+
+    if args.all:
+        with bb.tinfoil.Tinfoil(tracking=True, setup_logging=True) as tinfoil:
+            tinfoil.prepare(quiet=2)
+            for item in tinfoil.all_recipes():
+                logging.info(f'Extracting data from {item}')
+                try:
+                    yield from yield_from_data(tinfoil.parse_recipe(str(item)))
+                except ModuleNotFoundError:
+                    logging.error(f'Parsing issues at {item}')
+                    continue
 
 
 if __name__ == "__main__":
     warnings.simplefilter("default")
     result = main()
-    for item in result:
+    for item in sorted(set(result)):
         if isinstance(item, tuple):
             print(f'{item[0]}:{",".join(item[1])}')
         else:
