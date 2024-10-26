@@ -40,7 +40,7 @@ with tempfile.TemporaryDirectory() as t:
     output = output.split('\n')
     # filter out those pesky server reconnect message
     # and other warnings
-    output = [x for x in output if ':' not in x]
+    output = [x for x in output if ':' not in x and x]
 
     with open(args.destination, 'w') as o:
         obj = {'variables': {'known': output}}
