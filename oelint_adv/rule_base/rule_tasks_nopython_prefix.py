@@ -11,7 +11,7 @@ class TaskNoPythonPrefix(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.task.nopythonprefix',
                          severity='warning',
-                         message='Tasks containing shell code, should not be prefixed with python in function header')
+                         message='Tasks that don\'t contain valid python code (e.g. shell code), should not be prefixed with python in function header')
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
