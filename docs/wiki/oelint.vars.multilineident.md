@@ -26,3 +26,13 @@ A = "\
     b \
 "
 ```
+
+a valid alternative is
+
+```
+A = "a \
+     b \
+"
+```
+
+The `--fix` will determine the style used automatically based on the content of the first line
