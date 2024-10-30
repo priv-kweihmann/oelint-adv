@@ -2,7 +2,6 @@ from typing import List, Tuple
 
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
-from oelint_parser.rpl_regex import RegexRpl
 
 from oelint_adv.cls_rule import Rule
 
@@ -13,35 +12,27 @@ class VarMultiLineIndent(Rule):
                          severity='info',
                          message='On a multiline assignment, line indent is desirable. {a} set, {b} desirable')
 
-    def __line_stats(self, raw: str, name: str, op: str) -> Tuple[int, List[str]]:
-        _map = {}
+    def __line_stats(self, i: Variable) -> List[Tuple[int, str]]:
+        _map = []
 
-        raw = raw.replace('\x1b"', '"')
+        _lines = i.VarValueStripped.replace('\x1b"', '"').split('\x1b')
+        non_empty_line_indent = 4
+        first_line_has_content = False
+        if _lines[0].strip():
+            first_line_has_content = True
+            non_empty_line_indent = i.Raw.index(_lines[0])
 
-        first_line_determines_indent = False
-        # If the first line already has non-whitespace content, determine the alignment relative to the
-        # first quotation mark.
-        # Otherwise, try to guess the most common indentation from the other lines.
-        if RegexRpl.match(r'^\s*\S\s*\x1b', raw):
-            first_line_determines_indent = True
-
-        _lines = [x for x in RegexRpl.split(r'\t|\x1b', raw) if x and x.strip()]
         for index, value in enumerate(_lines):
-            if index == 0 and first_line_determines_indent:
-                # the actual variable content starts after the name, the operator and the initial quotation mark
-                _map[index] = len(name) + len(op) + 1
+            if value.strip(' \x1b'):
+                if first_line_has_content and index == 0:
+                    _map.append((0, len(value) - len(value.lstrip()), value.lstrip()))
+                else:
+                    _map.append((non_empty_line_indent, len(value) - len(value.lstrip()),
+                                " " * non_empty_line_indent + value.lstrip()))
             else:
-                _map[index] = len(value) - len(value.lstrip())
-        _distribution = {x: list(_map.values()).count(x)
-                         for x in set(_map.values())}
+                _map.append((0, 0, value.lstrip()))
 
-        if not any(_distribution):
-            return (0, list(_map.values()))
-
-        if first_line_determines_indent:
-            return (_map[0], list(_map.values()))
-
-        return (max(_distribution, key=lambda x: _distribution[x]), list(_map.values()))
+        return _map
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
@@ -49,12 +40,12 @@ class VarMultiLineIndent(Rule):
         for i in items:
             if not i.IsMultiLine():
                 continue
-            _likeliest_indent, _indent_map = self.__line_stats(i.VarValueStripped, i.VarNameComplete, i.VarOp)
-            _likeliest_indent = max(4, _likeliest_indent)
-            for index, value in enumerate(_indent_map):
-                if value != _likeliest_indent:
+            _indent_map = self.__line_stats(i)
+            for index, _line in enumerate(_indent_map):
+                expected, actual, _ = _line
+                if expected != actual:
                     res += self.finding(i.Origin, i.InFileLine + index,
-                                        self.format_message(a=value, b=_likeliest_indent))
+                                        self.format_message(a=actual, b=expected))
         return res
 
     def fix(self, _file: str, stash: Stash) -> List[str]:
@@ -63,16 +54,22 @@ class VarMultiLineIndent(Rule):
         for i in items:
             if not i.IsMultiLine():
                 continue
-            _likeliest_indent, _indent_map = self.__line_stats(i.VarValueStripped, i.VarNameComplete, i.VarOp)
-            _likeliest_indent = max(4, _likeliest_indent)
-            _lines = i.RealRaw.splitlines()
-            found = False
-            for index, value in enumerate(_indent_map):
-                if value != _likeliest_indent and index != 0:
-                    found = True
-                    _lines[index] = " " * _likeliest_indent + _lines[index].lstrip()
-                    res.append(_file)
-            if found:  # pragma: no cover
-                i.Raw = "\n".join(_lines)
-                i.RealRaw = "\n".join(_lines)
+            _lines = i.VarValueStripped.split('\x1b')
+            _indent_map = self.__line_stats(i)
+
+            def _rreplace(in_: str, needle: str, repl: str) -> str:
+                return in_[::-1].replace(needle[::-1], repl[::-1], 1)[::-1]
+
+            fix_applied = False
+            for index, value in enumerate(_lines):
+                if value != _indent_map[index][2]:
+                    fix_applied = True
+                    # Note: we need to start replacing from the back of the string
+                    # as otherwise a last line containing only whitespace
+                    # will affect prior lines
+                    i.VarValue = _rreplace(i.VarValue, value, _indent_map[index][2])
+                    i.Raw = _rreplace(i.Raw, value, _indent_map[index][2])
+                    i.RealRaw = _rreplace(i.RealRaw, value, _indent_map[index][2])
+            if fix_applied:
+                res.append(_file)
         return res
