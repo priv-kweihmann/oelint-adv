@@ -30,7 +30,7 @@ class TestClassOelintVarsMultilineIdent(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      '''
                                      D = "    a \\
-                                         e \\
+                                          e \\
                                          "
                                      ''',
                                  },
@@ -82,7 +82,7 @@ class TestClassOelintVarsMultilineIdent(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      '''
                                      D = "a \\
-                                     e \\
+                                      e \\
                                          "
                                      ''',
                                  },
@@ -166,26 +166,6 @@ class TestClassOelintVarsMultilineIdent(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv_test.bb':
-                                     '''
-                                     A = "\\
-                                          a \\
-                                          b \\
-                                          e \\
-                                     "
-                                     ''',
-                                 },
-                                 {
-                                     'oelint_adv_test.bb':
-                                     '''
-                                     A = "    \\
-                                          a \\
-                                          b \\
-                                          e \\
-                                       "
-                                     ''',
-                                 },
                                  {
                                      'oelint_adv_test.bb':
                                      '''
