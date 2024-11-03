@@ -25,6 +25,18 @@ class TestClassOelintVarMultiInclude(TestBaseClass):
                                      include abc.inc
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     require abc.inc
+                                     B = "2"
+                                     include abc.inc
+                                     ''',
+                                     'abc.inc':
+                                     '''
+                                     A = "1"
+                                     ''',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -40,6 +52,24 @@ class TestClassOelintVarMultiInclude(TestBaseClass):
                                      include abc.inc
                                      B = "2"
                                      include abc2.inc
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     include abc.inc
+                                     ''',
+                                     'abc.inc':
+                                     '''
+                                     A = "1"
+                                     ''',
+                                     'dynamic-layers/test/oelint_adv_test.bb':
+                                     '''
+                                     include abc.inc
+                                     ''',
+                                     'dynamic-layers/test/abc.inc':
+                                     '''
+                                     A = "1"
                                      ''',
                                  },
                              ],

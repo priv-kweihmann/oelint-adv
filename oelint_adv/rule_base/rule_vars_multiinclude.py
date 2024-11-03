@@ -16,11 +16,18 @@ class VarMultiInclude(Rule):
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         items: List[Include] = stash.GetItemsFor(filename=_file, classifier=Include.CLASSIFIER)
-        keys = []
+        _map = {}
         for i in items:
-            keys += [x.strip() for x in RegexRpl.split(r'\s|,', i.IncName) if x]
-        for key in list(set(keys)):
-            _i = [x for x in items if x.IncName.find(key) != -1]
-            if len(_i) > 1:
-                res += self.finding(_i[-1].Origin, _i[-1].InFileLine, self.Msg.replace('{INC}', key))
+            for incname in RegexRpl.split(r'\s|,', i.IncName):
+                if not incname or not incname.strip():
+                    continue  # pragma: no cover
+                key = i.FileIncluded if i.FileIncluded else incname.strip()
+                if key not in _map:
+                    _map[key] = {'key': incname.strip(), 'value': 0, 'origin': i}
+                _map[key]['value'] += 1
+        for _, value in _map.items():
+            if value.get('value', 0) > 1:
+                res += self.finding(value.get('origin').Origin,
+                                    value.get('origin').InFileLine,
+                                    self.Msg.replace('{INC}', value.get('key')))
         return res
