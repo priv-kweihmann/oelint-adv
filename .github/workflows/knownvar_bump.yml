@@ -28,7 +28,7 @@ jobs:
                file locales libacl1
           sudo locale-gen en_US.UTF-8
       - name: Bump known vars for master
-        run: ${GITHUB_WORKSPACE}/scripts/generate-knownvars master ${GITHUB_WORKSPACE}/oelint_adv/data/master.json
+        run: ${GITHUB_WORKSPACE}/scripts/generate-variables master ${GITHUB_WORKSPACE}/oelint_adv/data/master.json
         shell: bash
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7

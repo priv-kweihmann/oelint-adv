@@ -1,0 +1,54 @@
+#! /usr/bin/env python3
+# Copyright (C) 2021 Richard Purdie
+# Copyright (c) 2024, Konrad Weihmann
+# SPDX-License-Identifier: GPL-2.0-only
+
+# Based on bitbake-getvar
+# Lists all defined flags of a variable
+
+import argparse
+import os
+import sys
+import warnings
+
+
+def main(args=None):
+    parser = argparse.ArgumentParser(description="Bitbake List Flags")
+    parser.add_argument(
+        '-q', '--quiet', help='Silence bitbake server logging', action="store_true")
+    parser.add_argument('-v', '--value', action='store_true',
+                        help='Print with value')
+    parser.add_argument('bitbake', help='Path to bitbake binary')
+    parser.add_argument('var', help='Variable to poll for')
+    args = parser.parse_args()
+
+    bindir = os.path.dirname(args.bitbake)
+    topdir = os.path.dirname(bindir)
+    sys.path[0:0] = [os.path.join(topdir, 'lib')]
+
+    import bb.tinfoil
+
+    quiet = args.quiet
+    with bb.tinfoil.Tinfoil(tracking=True, setup_logging=not quiet) as tinfoil:
+        tinfoil.prepare(quiet=2, config_only=True)
+        d = tinfoil.config_data
+
+        for k, v in d.getVarFlags(args.var).items():
+            if ':' in k:
+                continue
+            if k.startswith('_'):
+                continue
+            if args.value:
+                yield (k, v)
+            else:
+                yield k
+
+
+if __name__ == "__main__":
+    warnings.simplefilter("default")
+    result = main()
+    for item in result:
+        if isinstance(item, tuple):
+            print(f'{item[0]}@{item[1]}')
+        else:
+            print(item)

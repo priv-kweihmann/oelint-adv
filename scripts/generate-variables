@@ -24,8 +24,16 @@ args = create_argparser()
 
 with tempfile.TemporaryDirectory() as t:
     subprocess.run(['git', 'clone', 'https://git.yoctoproject.org/poky', '--single-branch', '-b', args.branch], cwd=t)
-    output = subprocess.check_output(
+    output_known = subprocess.check_output(
         f'source poky/oe-init-build-env > /dev/null 2>&1 && {basepath}/bitbake-listvars -q -a $(which bitbake)',
+        shell=True,
+        universal_newlines=True,
+        executable='/bin/bash',
+        cwd=t
+    )
+
+    output_renamed = subprocess.check_output(
+        f'source poky/oe-init-build-env > /dev/null 2>&1 && {basepath}/bitbake-listflags -v $(which bitbake) BB_RENAMED_VARIABLES',
         shell=True,
         universal_newlines=True,
         executable='/bin/bash',
@@ -37,11 +45,25 @@ with tempfile.TemporaryDirectory() as t:
         from oelint_adv.tweaks import Tweaks
         args.destination = os.path.join(os.path.dirname(args.destination), Tweaks.DEVELOPMENT_RELEASE + '.json')
 
-    output = output.split('\n')
+    output_known = output_known.split('\n')
     # filter out those pesky server reconnect message
     # and other warnings
-    output = [x for x in output if ':' not in x and x]
+    output_known = [x for x in output_known if ':' not in x and x]
+
+    output_renamed = output_renamed.split('\n')
+    # filter out those pesky server reconnect message
+    # and other warnings
+    output_renamed = [x for x in output_renamed if ':' not in x and x]
+
+    obj = {
+        'variables': {
+            'known': output_known,
+            'renamed': {}}
+    }
+
+    for line in output_renamed:
+        k, v = line.split('@', 1)
+        obj['variables']['renamed'][k] = v
 
     with open(args.destination, 'w') as o:
-        obj = {'variables': {'known': output}}
         json.dump(obj, o, indent=2)
