@@ -161,6 +161,7 @@ Rules marked with **[I]** need to be activated through [a rule file](#defining-a
 * [oelint.task.docstrings](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.docstrings.md) - Custom tasks should have docstrings
 * [oelint.task.heredocs](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.heredocs.md) - Usage of heredocs should be avoided. Use files instead
 * [oelint.task.multifragments](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.multifragments.md) - Multiple fragments of the same function in the same file should be merged
+* [oelint.task.network](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.network.md) - Warn about potential network access of tasks
 * [oelint.task.noanonpython](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.noanonpython.md) - Avoid anonymous python functions
 * [oelint.task.nocopy](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.nocopy.md) - No cp usage in do_install
 * [oelint.task.nomkdir](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.nomkdir.md) - No mkdir usage in do_install
@@ -168,6 +169,7 @@ Rules marked with **[I]** need to be activated through [a rule file](#defining-a
 * [oelint.task.order](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.order.md) - Order of tasks **[S]**
 * [oelint.task.pythonprefix](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.task.pythonprefix.md) - Tasks containing python code should be prefixed with 'python' in function header
 * [oelint.var.addpylib](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.addpylib.md) - addpylib is only valid in .conf files
+* [oelint.var.badimagefeature](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.badimagefeature.md) - Warn about "bad" IMAGE_FEATURES
 * [oelint.var.bbclassextend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.bbclassextend.md) - Use BBCLASSEXTEND when possible
 * [oelint.var.filesoverride](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.filesoverride.md) - FILES:*(FILES_*) variables should not be overridden
 * [oelint.var.improperinherit](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.improperinherit.md) - Warn about improperly named inherits
@@ -223,6 +225,7 @@ Rules marked with **[I]** need to be activated through [a rule file](#defining-a
 * [oelint.vars.pnbpnusage](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pnbpnusage.md) - \$\{BPN\} should be used instead of \$\{PN\} **[F]**
 * [oelint.vars.pnusagediscouraged](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pnusagediscouraged.md) - Variable shouldn't contain \$\{PN\} or \$\{BPN\}
 * [oelint.vars.pythonpnusage](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pythonpnusage.md) - python3 should be used instead of \$\{PYTHON_PN\} **[F]** (scarthgap+)
+* [oelint.vars.renamed](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.renamed.md) - Warn about renamed or deprecated variables **[F]**
 * [oelint.vars.sectionlowercase](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.sectionlowercase.md) - SECTION should be lowercase only **[F]**
 * [oelint.vars.spacesassignment](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.spacesassignment.md) - ' = ' should be correct variable assignment
 * [oelint.vars.specific](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.specific.md) - Variable is specific to an unknown identifier
