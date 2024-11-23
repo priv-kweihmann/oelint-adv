@@ -34,8 +34,7 @@ class TestClassOelintVarsRenamed(TestBaseClass):
                                      'WHITELIST_GPL-3.0-only',
                                      'WHITELIST_GPL-3.0-or-later',
                                      'WHITELIST_LGPL-3.0-only',
-                                     'WHITELIST_LGPL-3.0-or-later',]
-                             )
+                                     'WHITELIST_LGPL-3.0-or-later'])
     def test_bad(self, var, id_, occurrence):
         self.check_for_id(self._create_args(self._generate_code(var)), id_, occurrence)
 
@@ -65,8 +64,7 @@ class TestClassOelintVarsRenamed(TestBaseClass):
                                      'WHITELIST_GPL-3.0-only',
                                      'WHITELIST_GPL-3.0-or-later',
                                      'WHITELIST_LGPL-3.0-only',
-                                     'WHITELIST_LGPL-3.0-or-later',]
-                             )
+                                     'WHITELIST_LGPL-3.0-or-later'])
     def test_bad_older_release(self, var, id_, occurrence):
         self.check_for_id(self._create_args(self._generate_code(var), ['--release=dunfell']), id_, occurrence)
 
@@ -90,8 +88,7 @@ class TestClassOelintVarsRenamed(TestBaseClass):
                                      'WHITELIST_GPL-3.0-only',
                                      'WHITELIST_GPL-3.0-or-later',
                                      'WHITELIST_LGPL-3.0-only',
-                                     'WHITELIST_LGPL-3.0-or-later',]
-                             )
+                                     'WHITELIST_LGPL-3.0-or-later'])
     def test_fix(self, var, id_):
         self.fix_and_check(self._create_args_fix(self._generate_code(var)), id_)
 
@@ -101,7 +98,6 @@ class TestClassOelintVarsRenamed(TestBaseClass):
                                      'TUNEABI_WHITELIST',
                                      'TCLIBCAPPEND',
                                      'VOLATILE_LOG_DIR',
-                                     'VOLATILE_TMP_DIR',]
-                             )
+                                     'VOLATILE_TMP_DIR'])
     def test_bad_unfixable(self, var, id_, occurrence):
         self.check_for_id(self._create_args_fix(self._generate_code(var)), id_, occurrence)

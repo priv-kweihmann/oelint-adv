@@ -22,8 +22,7 @@ class TestClassOelintVarLicenseRemoteFile(TestBaseClass):
                                          'ptest-pkgs',
                                          'serial-autologin-root',
                                          'staticdev-pkgs',
-                                         'tools-debug']
-                             )
+                                         'tools-debug'])
     def test_bad(self, var, feature, id_, occurrence):
         self.check_for_id(self._create_args(self._generate_code(var, feature)), f'{id_}.{feature}', occurrence)
 
@@ -48,8 +47,7 @@ class TestClassOelintVarLicenseRemoteFile(TestBaseClass):
                                          'bash-completion-pkgs',
                                          'read-only-rootfs',
                                          'stateless-rootfs',
-                                         'splash',]
-                             )
+                                         'splash'])
     def test_good(self, var, feature, id_, occurrence):
         self.check_for_id(self._create_args(self._generate_code(var, feature)), f'{id_}.{feature}', occurrence)
 
@@ -67,8 +65,7 @@ class TestClassOelintVarLicenseRemoteFile(TestBaseClass):
                                          'ptest-pkgs',
                                          'serial-autologin-root',
                                          'staticdev-pkgs',
-                                         'tools-debug']
-                             )
+                                         'tools-debug'])
     def test_good_remove(self, var, feature, id_, occurrence):
         self.check_for_id(self._create_args(self._generate_code(
             var, feature, suffix=':remove')), f'{id_}.{feature}', occurrence)
