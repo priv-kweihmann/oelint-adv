@@ -121,6 +121,41 @@ class TestClassOelintVarsMultilineIdent(TestBaseClass):
                                      "
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A:append = " \\
+                                        b \\
+                                           c \\
+                                          "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A:append = " \\
+                                        b \\
+                                           c \\
+                                     "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A = "d \\
+                                        b \\
+                                           c \\
+                                       "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A = "d \\
+                                        b \\
+                                           c"
+                                     ''',
+                                 },
                              ],
                              )
     def test_fix(self, input_, id_):
@@ -216,6 +251,42 @@ class TestClassOelintVarsMultilineIdent(TestBaseClass):
                                      A = "\\
                                          some \\"quoted\\" value \\
                                      "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A = "a \\
+                                          some \\"quoted\\" value \\
+                                         "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A = "a \\
+                                          b"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A = "a \\
+                                          b"
+                                     B = "a \\
+                                          b"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A = "
+                                         a \\
+                                         b
+                                     "
+                                     B = "
+                                         a \\
+                                         b"
                                      ''',
                                  },
                              ],
