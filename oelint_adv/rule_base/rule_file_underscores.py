@@ -19,12 +19,11 @@ class FileNoSpaces(Rule):
         if _ext in ['.bb']:  # pragma: no cover
             if stash.IsPackageGroup(_file) or stash.IsImage(_file):
                 return []
-            _sep = [x for x in _basename if x in ['_', '-']]
-            _us = [x for x in _sep if x == '_']
+            _us = [x for x in _basename if x == '_']
             if len(_us) > 1:
                 res += self.finding(_file, 1,
                                     override_msg='Filename should not contain more than one \'_\'')
-            elif not _us or _sep[-1] != '_':
+            elif not _us:
                 res += self.finding(
                     _file, 1, override_msg='Filename should contain at least one \'_\' in the end')
         return res

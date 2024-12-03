@@ -10,7 +10,7 @@ class TestClassOelintFileUnderscores(TestBaseClass):
     @pytest.mark.parametrize('input_',
                              [
                                  {
-                                     'oelint_adv-test.bb':
+                                     'oelint_adv_test-1.2.3.bb':
                                      'VAR = "1"',
                                  },
                                  {
@@ -30,6 +30,14 @@ class TestClassOelintFileUnderscores(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
+                                 {
+                                     'oelint_adv-test.bb':
+                                     'VAR = "1"',
+                                 },
+                                 {
+                                     'oelint-adv_test-1.2.3.bb':
+                                     'VAR = "1"',
+                                 },
                                  {
                                      'oelint_adv_test.bb':
                                      'inherit core-image',
