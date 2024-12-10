@@ -36,7 +36,10 @@ class VarSRCUriChecksum(Rule):
                         name = ""
                         if "name" in _url["options"]:
                             name = _url["options"]["name"]
-                        res_candidate.append((name, i.Origin, i.InFileLine + index))
+                        # If the checksum is already provided in the url, we can skip the
+                        # flag check.
+                        if "sha256sum" not in _url["options"]:
+                            res_candidate.append((name, i.Origin, i.InFileLine + index))
 
         res_candidate.sort(key=lambda tup: tup[0])
 

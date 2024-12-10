@@ -85,6 +85,31 @@ class TestClassOelintVarsSRCURICHECKSUM(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
+                                     SRC_URI += "file://foo"
+                                     SRC_URI += "bzr://foo"
+                                     SRC_URI += "crcc://foo"
+                                     SRC_URI += "cvs://foo"
+                                     SRC_URI += "ftp://foo;sha256sum=a"
+                                     SRC_URI += "git://foo;name"
+                                     SRC_URI += "gitsm://foo"
+                                     SRC_URI += "gitannex://foo"
+                                     SRC_URI += "hg://foo"
+                                     SRC_URI += "http://foo;sha256sum=a"
+                                     SRC_URI += "https://foo;sha256sum=a"
+                                     SRC_URI += "osc://foo"
+                                     SRC_URI += "p4://foo"
+                                     SRC_URI += "repo://foo"
+                                     SRC_URI += "ssh://foo"
+                                     SRC_URI += "s3://foo;sha256sum=a"
+                                     SRC_URI += "sftp://foo;sha256sum=a"
+                                     SRC_URI += "npm://foo"
+                                     SRC_URI += "svn://foo"
+                                     SRC_URI += "az://foo;sha256sum=a"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
                                      SRC_URI += "ftp://foo \\
                                                  ftp://foo;name=f1"
                                      SRC_URI[md5sum] = "a"
