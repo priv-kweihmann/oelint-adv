@@ -23,7 +23,10 @@ class VarSRCUriOptions(Rule):
             'unpack',
         ]
         self._valid_options = {
-            'az': [],
+            'az': [
+                'md5sum',
+                'sha256sum',
+            ],
             'bzr': [
                 'protocol',
                 'scmdata',
@@ -53,6 +56,8 @@ class VarSRCUriOptions(Rule):
             ],
             'ftp': [
                 'downloadfilename',
+                'md5sum',
+                'sha256sum',
             ],
             'gs': [
                 'downloadfilename',
@@ -114,9 +119,13 @@ class VarSRCUriOptions(Rule):
             ],
             'http': [
                 'downloadfilename',
+                'md5sum',
+                'sha256sum',
             ],
             'https': [
                 'downloadfilename',
+                'md5sum',
+                'sha256sum',
             ],
             'osc': [
                 'module',
@@ -134,10 +143,14 @@ class VarSRCUriOptions(Rule):
             'ssh': [],
             's3': [
                 'downloadfilename',
+                'md5sum',
+                'sha256sum',
             ],
             'sftp': [
                 'downloadfilename',
+                'md5sum',
                 'protocol',
+                'sha256sum',
             ],
             'npm': [
                 'downloadfilename',
