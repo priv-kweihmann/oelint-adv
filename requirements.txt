@@ -1,5 +1,5 @@
 anytree ~= 2.12
 argcomplete ~= 3.5
 colorama ~= 0.4
-oelint-parser ~= 6.4
+oelint-parser ~= 6.5
 urllib3 ~= 2.2
