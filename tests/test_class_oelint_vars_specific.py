@@ -146,6 +146,10 @@ class TestClassOelintVarsSpecific(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'B:nodistro += "abc"',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'B:task-do-install = "abc"',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):

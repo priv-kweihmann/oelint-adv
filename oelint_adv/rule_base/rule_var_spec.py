@@ -22,29 +22,28 @@ class VarPnBpnUsage(Rule):
                                                                  attributeValue='COMPATIBLE_MACHINE'))
         _packages = stash.GetValidPackageNames(_file)
         _named_res = stash.GetValidNamedResources(_file)
+        _machines = CONSTANTS.MachinesKnown
+        _distros = CONSTANTS.DistrosKnown
+        _builtin_classes = ['class-native', 'class-target', 'class-nativesdk', 'class-cross']
+        _operations = ['append', 'prepend', 'remove']
         for i in items:
-            _distro = []
-            if i.GetDistroEntry():
-                _distro = [i.GetDistroEntry(), stash.ExpandTerm(_file, i.GetDistroEntry())]
-            if any(x in _packages for x in _distro) or any(x in _named_res for x in _distro):  # pragma: no cover
-                continue  # pragma: no cover
-            if any(x in CONSTANTS.DistrosKnown for x in _distro):
-                continue
-
-            _machine = []
-            if i.GetMachineEntry():
-                _machine = [i.GetMachineEntry(), stash.ExpandTerm(_file, i.GetMachineEntry())]
-            if not _machine:
-                continue
-            if any(x in _packages for x in _machine):
-                continue
-            if any(x in _named_res for x in _machine):
-                continue
-            if any(x in CONSTANTS.MachinesKnown for x in _machine):
-                continue
-            if _comp:
-                if any(RegexRpl.match(_comp, x) for x in _machine):
+            for sub in i.SubItems:
+                if sub in _builtin_classes:
                     continue
-            res += self.finding(i.Origin, i.InFileLine,
-                                override_msg=self.Msg.format(a=i.VarName, b=_machine[0]))
+                if sub in _packages:
+                    continue
+                if sub in _operations:
+                    continue
+                if sub in _distros:
+                    continue
+                if sub in _named_res:
+                    continue
+                if sub in _machines:
+                    continue
+                if _comp and RegexRpl.match(_comp, sub):
+                    continue
+                if sub.startswith('task-'):
+                    continue
+                res += self.finding(i.Origin, i.InFileLine,
+                                    override_msg=self.Msg.format(a=i.VarName, b=sub))
         return res
