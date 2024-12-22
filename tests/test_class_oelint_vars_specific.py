@@ -150,6 +150,14 @@ class TestClassOelintVarsSpecific(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'B:task-do-install = "abc"',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     INITSCRIPT_PACKAGES = "${PN}-foo"
+                                     PACKAGES += "${INITSCRIPT_PACKAGES}"
+                                     INITSCRIPT_NAME:${PN}-foo = "bar.sh"
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):

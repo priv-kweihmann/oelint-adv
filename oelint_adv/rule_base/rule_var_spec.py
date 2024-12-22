@@ -27,22 +27,24 @@ class VarPnBpnUsage(Rule):
         _builtin_classes = ['class-native', 'class-target', 'class-nativesdk', 'class-cross']
         _operations = ['append', 'prepend', 'remove']
         for i in items:
-            for sub in i.SubItems:
-                if sub in _builtin_classes:
-                    continue
-                if sub in _packages:
-                    continue
-                if sub in _operations:
-                    continue
-                if sub in _distros:
-                    continue
-                if sub in _named_res:
-                    continue
-                if sub in _machines:
-                    continue
-                if _comp and RegexRpl.match(_comp, sub):
-                    continue
-                if sub.startswith('task-'):
+            subs = [(x, stash.ExpandTerm(_file, x)) for x in i.SubItems]
+            for subitem in subs:
+                sub, expanded = subitem
+                if (expanded in _builtin_classes) or (sub in _builtin_classes):
+                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
+                if (expanded in _packages) or (sub in _packages):
+                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
+                if (expanded in _operations) or (sub in _operations):
+                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
+                if (expanded in _distros) or (sub in _distros):
+                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
+                if (expanded in _named_res) or (sub in _named_res):
+                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
+                if (expanded in _machines) or (sub in _machines):
+                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
+                if _comp and (RegexRpl.match(_comp, expanded) or RegexRpl.match(_comp, sub)):
+                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
+                if expanded.startswith('task-'):
                     continue
                 res += self.finding(i.Origin, i.InFileLine,
                                     override_msg=self.Msg.format(a=i.VarName, b=sub))

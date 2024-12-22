@@ -151,6 +151,15 @@ class TestClassOelintFuncSpecific(TestBaseClass):
                                      }
                                      ''',
                                  },
+                                 {
+                                     'oelint-adv_test.bb':
+                                     '''
+                                     A = "poky"
+                                     do_configure:${A} () {
+                                         abc
+                                     }
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
