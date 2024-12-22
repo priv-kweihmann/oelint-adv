@@ -27,19 +27,21 @@ class VarPnBpnUsage(Rule):
         _builtin_funcs = ['pkg_preinst', 'pkg_postinst', 'pkg_prerm', 'pkg_postrm', 'ptest']
         _operations = ['append', 'prepend', 'remove']
         for i in items:
-            for sub in i.SubItems:
-                if sub in _operations:
-                    continue
-                if sub in _distros:
-                    continue
-                if sub in _packages:
-                    continue
-                if sub in _machines:
-                    continue
-                if sub in _builtin_funcs:
-                    continue
-                if _comp and RegexRpl.match(_comp, sub):
-                    continue
+            subs = [(x, stash.ExpandTerm(_file, x)) for x in i.SubItems]
+            for subitem in subs:
+                sub, expanded = subitem
+                if (expanded in _operations) or (sub in _operations):
+                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
+                if (expanded in _distros) or (sub in _distros):
+                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
+                if (expanded in _packages) or (sub in _packages):
+                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
+                if (expanded in _machines) or (sub in _machines):
+                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
+                if (expanded in _builtin_funcs) or (sub in _builtin_funcs):
+                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
+                if _comp and (RegexRpl.match(_comp, expanded) or RegexRpl.match(_comp, sub)):
+                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
                 res += self.finding(i.Origin, i.InFileLine,
                                     override_msg=self.Msg.format(func=i.FuncName, b=sub))
         return res
