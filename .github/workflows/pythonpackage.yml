@@ -36,6 +36,8 @@ jobs:
       run: flake8
     - name: test (pytest)
       run: pytest
+      env:
+        PY_VERSION: ${{ matrix.python-version }}
     - name: build
       run: python3 -m build --sdist --wheel
     - name: install

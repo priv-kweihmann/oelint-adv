@@ -1,6 +1,7 @@
 [report]
 exclude_lines =
     pragma: no cover
+    pragma: nocover_${PY_VERSION}
     @abstract
     raise NotImplementedError
 [run]
