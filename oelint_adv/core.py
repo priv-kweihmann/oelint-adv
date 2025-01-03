@@ -199,7 +199,7 @@ def group_run(group: List[Tuple],
     for item in stash.GetItemsFor(classifier=Comment.CLASSIFIER):
         for line in item.get_items():
             m = re.match(
-                r'^#\s+nooelint:\s+(?P<ids>[A-Za-z0-9\.,_ ]*)', line)
+                r'^#\s+nooelint:\s+(?P<ids>[A-Za-z0-9\.,_\s-]*)', line)
             if m:
                 if item.Origin not in inline_supp_map:  # pragma: no cover
                     inline_supp_map[item.Origin] = {}
