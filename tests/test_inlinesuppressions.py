@@ -162,3 +162,20 @@ class TestClassInlineSuppressions(TestBaseClass):
     def test_inlinesuppressions_remove_empty(self, input_):
         self.check_for_id(self._create_args(input_),
                           'oelint.var.badimagefeature', 0)
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     # nooelint: oelint.var.badimagefeature.allow-empty-password - this is a comment
+                                     IMAGE_FEATURES:append = " \
+                                        allow-empty-password \
+                                     "
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_inlinesuppressions_with_comment(self, input_):
+        self.check_for_id(self._create_args(input_),
+                          'oelint.var.badimagefeature', 0)

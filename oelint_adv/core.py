@@ -204,7 +204,7 @@ def group_run(group: List[Tuple],
                 if item.Origin not in inline_supp_map:  # pragma: no cover
                     inline_supp_map[item.Origin] = {}
                 inline_supp_map[item.Origin][item.InFileLine] = [
-                    x.strip() for x in m.group('ids').split(',') if x]
+                    x.strip() for x in re.split(r',|\s+', m.group('ids')) if x]
 
     state.inline_suppressions = {**state.inline_suppressions, **inline_supp_map}
 
@@ -237,10 +237,13 @@ def group_run(group: List[Tuple],
                           lvl='debug', msg='Applied automatic fixes'))
 
     if any(isinstance(x, FileNotApplicableInlineSuppression) for x in rules):
+        known_ids = list(itertools.chain(*[x.get_ids() for x in rules]))
         for _file, _lineobj in inline_supp_map.items():
             for _line, _ids in _lineobj.items():
                 for _id in _ids:
                     if not state.get_inline_suppression_seen(_file, _line, _id):
+                        if _id not in known_ids:
+                            continue
                         obj = FileNotApplicableInlineSuppression(state)
                         issues += obj.finding(_file, _line, override_msg=obj.Msg.format(id=_id))
 

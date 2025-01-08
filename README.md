@@ -458,16 +458,17 @@ You can find an example file [here](docs/.oelint.cfg.example)
 You can suppress one or more checks on a line by line basis
 
 ```bitbake
-# nooelint: <id>[,<id>,...]
+# nooelint: <id>[,<id>,...][ comment]
 ```
 
 suppresses all the specified IDs for the next line.
 Multiple IDs can be separated by commas.
+You can add a comment after the ids and separated by at least a single space.
 
 ### Example
 
 ```bitbake
-# nooelint: oelint.vars.insaneskip
+# nooelint: oelint.vars.insaneskip - this is an acceptable risk here
 INSANE_SKIP:${PN} = "foo"
 ```
 
