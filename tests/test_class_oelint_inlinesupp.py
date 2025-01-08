@@ -12,14 +12,14 @@ class TestClassOelintNAInlineSuppression(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                     # nooelint: foo.bar.baz
+                                     # nooelint: oelint.var.badimagefeature
                                      A = "2"
                                      ''',
                                  },
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                     # nooelint: oelint.vars.mispell, foo.bar.baz
+                                     # nooelint: oelint.vars.mispell, oelint.var.badimagefeature
                                      SRR_URI = "2"
                                      ''',
                                  },
