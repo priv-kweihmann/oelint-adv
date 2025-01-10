@@ -30,6 +30,8 @@ class TypeSafeAppendAction(argparse.Action):
         if not isinstance(values, str):
             return  # pragma: no cover
         items = getattr(namespace, self.dest) or []
+        if not isinstance(items, list):
+            items = [x.strip() for x in items.split() if x.strip()]
         items.extend(RegexRpl.split(r'\s+|\t+|\n+', values.strip('"').strip("'")))
         setattr(namespace, self.dest, items)
 
