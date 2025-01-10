@@ -269,3 +269,82 @@ class TestConfigFile(TestBaseClass):
         options = {'a': 'True', 'b': True, 'c': 'False', 'd': False, 'e': 'other value'}
         deserialized = deserialize_boolean_options(options)
         assert deserialized == {'a': True, 'b': True, 'c': False, 'd': False, 'e': 'other value'}
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     VAR:append:prepend = "1"
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_config_file_suppress(self, input_):
+        _cstfile = self._create_tempfile(
+            '.oelint.cfg',
+            '''
+            [oelint]
+            suppress=
+                oelint.vars.doublemodify
+                oelint.var.suggestedvar.BUGTRACKER
+            ''')
+        os.environ['OELINT_CONFIG'] = _cstfile
+        _args = self._create_args(input_)
+        self.check_for_id(_args, 'oelint.vars.doublemodify', 0)
+        self.check_for_id(_args, 'oelint.var.suggestedvar.BUGTRACKER', 0)
+        self.check_for_id(_args, 'oelint.var.mandatoryvar.LICENSE', 1)
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     VAR:append:prepend = "1"
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_config_file_suppress_merge_with_cli(self, input_):
+        _cstfile = self._create_tempfile(
+            '.oelint.cfg',
+            '''
+            [oelint]
+            suppress=
+                oelint.vars.doublemodify
+                oelint.var.suggestedvar.BUGTRACKER
+            ''')
+        os.environ['OELINT_CONFIG'] = _cstfile
+        _args = self._create_args(input_, ['--suppress', 'oelint.var.mandatoryvar.LICENSE'])
+        self.check_for_id(_args, 'oelint.vars.doublemodify', 0)
+        self.check_for_id(_args, 'oelint.var.suggestedvar.BUGTRACKER', 0)
+        self.check_for_id(_args, 'oelint.var.mandatoryvar.LICENSE', 0)
+        self.check_for_id(_args, 'oelint.var.mandatoryvar.HOMEPAGE', 1)
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     VAR:append:prepend = "1"
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_config_file_suppress_merge_with_cli_multiple(self, input_):
+        _cstfile = self._create_tempfile(
+            '.oelint.cfg',
+            '''
+            [oelint]
+            suppress=
+                oelint.vars.doublemodify
+                oelint.var.suggestedvar.BUGTRACKER
+            ''')
+        os.environ['OELINT_CONFIG'] = _cstfile
+        _args = self._create_args(input_,
+                                  ['--suppress', 'oelint.var.mandatoryvar.LICENSE',
+                                   '--suppress', 'oelint.var.mandatoryvar.HOMEPAGE'])
+        self.check_for_id(_args, 'oelint.vars.doublemodify', 0)
+        self.check_for_id(_args, 'oelint.var.suggestedvar.BUGTRACKER', 0)
+        self.check_for_id(_args, 'oelint.var.mandatoryvar.LICENSE', 0)
+        self.check_for_id(_args, 'oelint.var.mandatoryvar.HOMEPAGE', 0)
