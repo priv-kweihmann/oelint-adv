@@ -9,7 +9,7 @@ on:
 jobs:
   bumpvar:
     name: "Bump known vars"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     permissions:
       contents: write
