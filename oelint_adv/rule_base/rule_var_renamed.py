@@ -40,13 +40,16 @@ class VarsRenamed(Rule):
                 stash.Remove(i)
                 i.RealRaw = i.RealRaw.replace(i.VarName, rename)
                 i.Raw = i.Raw.replace(i.VarName, rename)
-                i = Variable(i.Origin,
-                             i.Line,
-                             i.InFileLine,
-                             i.Raw, rename,
-                             i.VarValue,
-                             i.VarOp,
-                             i.RealRaw, i.IsNewStyleOverrideSyntax)
+                i = Variable(origin=i.Origin,
+                             line=i.Line,
+                             infileline=i.InFileLine,
+                             rawtext=i.Raw,
+                             realraw=rename,
+                             inline_blocks=i.InlineBlocks,
+                             new_style_override_syntax=i.IsNewStyleOverrideSyntax,
+                             name=i.VarName,
+                             value=i.VarValue,
+                             operator=i.VarOp)
                 stash.Append(i)
                 res.append(_file)
         return res
