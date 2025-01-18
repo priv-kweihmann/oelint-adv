@@ -962,6 +962,7 @@
       "MODULE_TARBALL_LINK_NAME",
       "MODULE_TARBALL_NAME",
       "MOUNT_BASE",
+      "MOUNT_GROUP",
       "MTRACE",
       "MULTIARCH",
       "MULTILIBRE_ALLOW_REP",
