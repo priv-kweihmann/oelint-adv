@@ -12,58 +12,57 @@ import sys
 basepath = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.abspath(basepath + '/../'))
 
-
 def create_argparser() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('branch', help='poky branch')
-    parser.add_argument('destination')
+    parser.add_argument('destination', help='Path of output filename')
     return parser.parse_args()
 
-
-args = create_argparser()
-
-with tempfile.TemporaryDirectory() as t:
-    subprocess.run(['git', 'clone', 'https://git.yoctoproject.org/poky', '--single-branch', '-b', args.branch], cwd=t)
-    output_known = subprocess.check_output(
-        f'source poky/oe-init-build-env > /dev/null 2>&1 && {basepath}/bitbake-listvars -q -a $(which bitbake)',
+def get_command_output(directory_path: str, command: str) -> str:
+    return subprocess.check_output(
+        command,
         shell=True,
         universal_newlines=True,
         executable='/bin/bash',
-        cwd=t
+        cwd=directory_path,
     )
 
-    output_renamed = subprocess.check_output(
-        f'source poky/oe-init-build-env > /dev/null 2>&1 && {basepath}/bitbake-listflags -v $(which bitbake) BB_RENAMED_VARIABLES',
-        shell=True,
-        universal_newlines=True,
-        executable='/bin/bash',
-        cwd=t
-    )
+def main():
+    args = create_argparser()
 
-    if args.branch == 'master':
-        # for master override the name
-        from oelint_adv.tweaks import Tweaks
-        args.destination = os.path.join(os.path.dirname(args.destination), Tweaks.DEVELOPMENT_RELEASE + '.json')
+    with tempfile.TemporaryDirectory() as t:
+        subprocess.run(['git', 'clone', 'https://git.yoctoproject.org/poky', '--single-branch', '-b', args.branch], cwd=t)
 
-    output_known = output_known.split('\n')
-    # filter out those pesky server reconnect message
-    # and other warnings
-    output_known = [x for x in output_known if ':' not in x and x]
+        output_known = get_command_output(t, f'source poky/oe-init-build-env > /dev/null 2>&1 && {basepath}/bitbake-listvars -q -a $(which bitbake)')
+        output_renamed = get_command_output(t, f'source poky/oe-init-build-env > /dev/null 2>&1 && {basepath}/bitbake-listflags -v $(which bitbake) BB_RENAMED_VARIABLES')
 
-    output_renamed = output_renamed.split('\n')
-    # filter out those pesky server reconnect message
-    # and other warnings
-    output_renamed = [x for x in output_renamed if ':' not in x and x]
+        if args.branch == 'master':
+            # for master override the name
+            from oelint_adv.tweaks import Tweaks
+            args.destination = os.path.join(os.path.dirname(args.destination), Tweaks.DEVELOPMENT_RELEASE + '.json')
 
-    obj = {
-        'variables': {
-            'known': output_known,
-            'renamed': {}}
-    }
+        output_known = output_known.split('\n')
+        # filter out those pesky server reconnect message
+        # and other warnings
+        output_known = [x for x in output_known if ':' not in x and x]
 
-    for line in output_renamed:
-        k, v = line.split('@', 1)
-        obj['variables']['renamed'][k] = v
+        output_renamed = output_renamed.split('\n')
+        # filter out those pesky server reconnect message
+        # and other warnings
+        output_renamed = [x for x in output_renamed if ':' not in x and x]
 
-    with open(args.destination, 'w') as o:
-        json.dump(obj, o, indent=2)
+        obj = {
+            'variables': {
+                'known': output_known,
+                'renamed': {}}
+        }
+
+        for line in output_renamed:
+            k, v = line.split('@', 1)
+            obj['variables']['renamed'][k] = v
+
+        with open(args.destination, 'w') as o:
+            json.dump(obj, o, indent=2)
+
+if __name__ == "__main__":
+    main()
