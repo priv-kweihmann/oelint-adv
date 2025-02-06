@@ -9,36 +9,57 @@ import subprocess
 import os
 import sys
 
+from pathlib import Path
+
 basepath = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.abspath(basepath + '/../'))
-
 
 def create_argparser() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('branch', help='poky branch')
-    parser.add_argument('destination')
+    parser.add_argument('destination', help='Path of output filename')
+    parser.add_argument('-p', '--poky',
+        help='Path to an already existing poky repository',
+        type=Path,
+    )
     return parser.parse_args()
 
-
-args = create_argparser()
-
-with tempfile.TemporaryDirectory() as t:
-    subprocess.run(['git', 'clone', 'https://git.yoctoproject.org/poky', '--single-branch', '-b', args.branch], cwd=t)
-    output_known = subprocess.check_output(
-        f'source poky/oe-init-build-env > /dev/null 2>&1 && {basepath}/bitbake-listvars -q -a $(which bitbake)',
+def get_command_output(directory_path: str, command: str) -> str:
+    return subprocess.check_output(
+        command,
         shell=True,
         universal_newlines=True,
         executable='/bin/bash',
-        cwd=t
+        cwd=directory_path,
     )
 
-    output_renamed = subprocess.check_output(
-        f'source poky/oe-init-build-env > /dev/null 2>&1 && {basepath}/bitbake-listflags -v $(which bitbake) BB_RENAMED_VARIABLES',
-        shell=True,
-        universal_newlines=True,
-        executable='/bin/bash',
-        cwd=t
-    )
+def main():
+    args = create_argparser()
+
+    if args.poky:
+        # Create absolute path out of relative path
+        dir, poky = os.getcwd(), str(args.poky.resolve())
+        # and checkout the branch
+        subprocess.run(['git', 'fetch', 'origin', args.branch], cwd=poky)
+        subprocess.run(['git', 'checkout', 'FETCH_HEAD'], cwd=poky)
+    else:
+        temp_dir = tempfile.TemporaryDirectory()
+        dir, poky = temp_dir.name, temp_dir.name + "/poky"
+        subprocess.run(['git', 'clone', 'https://git.yoctoproject.org/poky', '--single-branch', '-b', args.branch], cwd=dir)
+
+    try:
+        output_known = get_command_output(dir, f'source {poky}/oe-init-build-env > /dev/null 2>&1 && {basepath}/bitbake-listvars -q -a $(which bitbake)')
+        output_renamed = get_command_output(dir, f'source {poky}/oe-init-build-env > /dev/null 2>&1 && {basepath}/bitbake-listflags -v $(which bitbake) BB_RENAMED_VARIABLES')
+    except subprocess.CalledProcessError as e:
+        print(f"ERROR: {e}")
+        sys.exit(1)
+    except KeyboardInterrupt as e:
+        print(f"ERROR: KeyboardInterrupt")
+        sys.exit(1)
+    finally:
+        # Delete temporary poky directory
+        if not args.poky:
+            temp_dir.cleanup()
 
     if args.branch == 'master':
         # for master override the name
@@ -67,3 +88,6 @@ with tempfile.TemporaryDirectory() as t:
 
     with open(args.destination, 'w') as o:
         json.dump(obj, o, indent=2)
+
+if __name__ == "__main__":
+    main()
