@@ -15,6 +15,11 @@ jobs:
       contents: write
       pull-requests: write
 
+    strategy:
+      matrix:
+        # currently in support branches of oe-core
+        branch: ['kirkstone', 'scarthgap', 'styhead', 'master']
+
     if: github.repository == 'priv-kweihmann/oelint-adv'
 
     steps:
@@ -27,16 +32,16 @@ jobs:
                iputils-ping python3-git python3-jinja2 python3-subunit zstd liblz4-tool \
                file locales libacl1
           sudo locale-gen en_US.UTF-8
-      - name: Bump known vars for master
-        run: ${GITHUB_WORKSPACE}/scripts/generate-variables master ${GITHUB_WORKSPACE}/oelint_adv/data/master.json
+      - name: Bump known vars for ${{ matrix.branch }}
+        run: ${GITHUB_WORKSPACE}/scripts/generate-variables ${{ matrix.branch }} ${GITHUB_WORKSPACE}/oelint_adv/data/${{ matrix.branch }}.json
         shell: bash
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
           reviewers: priv-kweihmann
-          branch: "chore/dataupdate"
-          commit-message: "data: bump latest known variables"
-          title: "data: bump latest known variables"
+          branch: "chore/dataupdate-${{ matrix.branch }}"
+          commit-message: "data/${{ matrix.branch }}: bump latest known variables"
+          title: "data/${{ matrix.branch }}: bump latest known variables"
           body: "auto generated data update"
           add-paths: |
             oelint_adv/data/*.json
