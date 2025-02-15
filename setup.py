@@ -25,7 +25,7 @@ setuptools.setup(
         ],
     },
     package_data={
-        'oelint_adv': ['data/*'],
+        'oelint_adv': ['data/*', 'data/*/*.json'],
     },
     install_requires=requirements,
     classifiers=[
