@@ -1,0 +1,16 @@
+{
+  "variables": {
+    "known": [
+      "CROSS_METHOD",
+      "PERLPROG",
+      "PTESTS_FAST_META_NETWORKING",
+      "PTESTS_PROBLEMS_META_NETWORKING",
+      "PTESTS_SLOW_META_NETWORKING"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": []
+  }
+}

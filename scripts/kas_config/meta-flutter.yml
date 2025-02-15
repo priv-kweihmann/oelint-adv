@@ -1,0 +1,5 @@
+header:
+  version: 18
+repos:
+  meta-flutter:
+    url: "https://github.com/meta-flutter/meta-flutter.git"

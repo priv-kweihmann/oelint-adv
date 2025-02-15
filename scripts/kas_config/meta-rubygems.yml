@@ -1,0 +1,5 @@
+header:
+  version: 18
+repos:
+  meta-rubygems:
+    url: "https://github.com/priv-kweihmann/meta-rubygems.git"

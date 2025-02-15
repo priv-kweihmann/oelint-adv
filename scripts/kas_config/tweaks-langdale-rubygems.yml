@@ -1,0 +1,6 @@
+header:
+  version: 18
+repos:
+  meta-rubygems:
+    branch: master
+    commit: ef8ad0e8632125f73410bed3da125a108860dd38

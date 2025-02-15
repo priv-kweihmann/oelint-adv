@@ -1,0 +1,7 @@
+header:
+  version: 18
+repos:
+  openembedded:
+    layers:
+      meta-oe:
+      meta-perl:

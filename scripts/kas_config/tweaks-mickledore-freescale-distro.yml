@@ -1,0 +1,5 @@
+header:
+  version: 18
+repos:
+    meta-freescale-distro:
+      branch: scarthgap

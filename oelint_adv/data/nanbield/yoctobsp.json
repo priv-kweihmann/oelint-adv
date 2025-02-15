@@ -1,0 +1,14 @@
+{
+  "variables": {
+    "known": [],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": [
+      "beaglebone-yocto",
+      "genericx86",
+      "genericx86-64"
+    ]
+  }
+}

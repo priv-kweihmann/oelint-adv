@@ -1,0 +1,7 @@
+header:
+  version: 18
+repos:
+  openembedded:
+    url: "https://github.com/openembedded/meta-openembedded.git"
+    layers:
+      meta-oe:

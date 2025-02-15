@@ -1,0 +1,18 @@
+{
+  "variables": {
+    "known": [
+      "GEM_HOME",
+      "RUBY_BUILD_GEMS",
+      "RUBY_COMPILE_FLAGS",
+      "RUBY_GEM_DIRECTORY",
+      "RUBY_GEM_VERSION",
+      "RUBY_INSTALL_GEMS",
+      "RUBY_VERSION"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": []
+  }
+}

@@ -40,6 +40,20 @@ class TestBaseClass:
             self.__pytest_empty_object_fixture(extraopts, []) +
             [self._create_tempfile(k, v) for k, v in input_.items()],
         ))
+    
+    def _create_args_existing_file(self, file_, extraopts=None):
+        if extraopts is None:
+            extraopts = []
+        from oelint_adv.__main__ import arguments_post
+        self.__created_files = getattr(self, '__created_files', {})
+        self.__created_files[file_] = '<existing file>'
+        return arguments_post(self._create_args_parser().parse_args(
+            # noqa: W504 - we need to concat lists here
+            ['--quiet', '--jobs=1'] +
+            # noqa: W504 - we need to concat lists here
+            self.__pytest_empty_object_fixture(extraopts, []) +
+            [file_],
+        ))
 
     def _create_args_fix(self, input_, extraopts=None):
         if extraopts is None:

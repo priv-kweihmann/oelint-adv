@@ -1,0 +1,128 @@
+#! /usr/bin/env python3
+# Copyright (c) 2025, Konrad Weihmann
+# SPDX-License-Identifier: BSD-2-Clause
+
+import argparse
+import json
+import logging
+import os
+import re
+import subprocess
+import sys
+import tempfile
+from typing import List, Tuple
+
+logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+
+basepath = os.path.abspath(os.path.dirname(__file__))
+datadir = os.path.abspath(os.path.join(basepath, '..', 'oelint_adv', 'data'))
+
+sys.path.append(os.path.abspath(basepath + '/../'))
+
+from oelint_adv.tweaks import Tweaks  # noqa: E402
+
+
+def create_argparser() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('release')
+    return parser.parse_args()
+
+
+def check_hash(name: str, build_dir: str, poky_dir: str, hash: str, alias: str) -> Tuple[bool, str]:
+    layers = subprocess.check_output(
+        f'source {poky_dir}/oe-init-build-env {build_dir} > /dev/null 2>&1 && '
+        f'bitbake-layers show-layers',
+        shell=True,
+        universal_newlines=True,
+        executable='/bin/bash',
+        cwd=build_dir
+    )
+
+    for m in re.finditer(r'^(?P<name>.*)\s+(?P<path>/.*)\s+(\d+)', layers, re.MULTILINE):
+        if m.group('name').strip() in [name, alias]:
+            sha = subprocess.check_output('git rev-parse HEAD',
+                                          universal_newlines=True,
+                                          shell=True,
+                                          executable='/bin/bash',
+                                          cwd=os.path.abspath(m.group('path').strip()))
+            if hash != sha:
+                return (True, sha)
+            logging.info(f'{name} has not changed since last run - skipping')
+    return (False, hash)
+
+
+def add_extra_layer(build_dir: str, poky_dir: str, extra_layer: List[str]) -> List[str]:
+    res = []
+    for layer in extra_layer:
+        subprocess.check_call(
+            f'source {poky_dir}/oe-init-build-env {build_dir} > /dev/null 2>&1 && '
+            f'bitbake-layers add-layer {os.path.join(basepath, layer)}',
+            shell=True,
+            universal_newlines=True,
+            executable='/bin/bash',
+            cwd=build_dir
+        )
+        res.append(os.path.basename(layer))
+    return res
+
+
+def run_in_kas(tmpdir: str,
+               name: str,
+               configs: List[str],
+               excludes: List[str],
+               destination: str,
+               hash: str,
+               extra_layer: List[str],
+               alias: str) -> str:
+    try:
+        subprocess.check_call(['kas', 'checkout', ':'.join(configs)], cwd=tmpdir)
+        extra_filter = add_extra_layer(os.path.join(tmpdir, 'build'), os.path.join(tmpdir, 'poky'), extra_layer)
+        changed, sha = check_hash(name, os.path.join(tmpdir, 'build'), os.path.join(tmpdir, 'poky'), hash, alias)
+        if not changed:
+            return hash
+        _filter_str = [f'--layer_filter={x}' for x in extra_filter + [name, alias]]
+        subprocess.check_call([f'{basepath}/generate-layer-variables',
+                               *_filter_str,
+                               os.path.join(tmpdir, 'poky'),
+                               os.path.join(tmpdir, 'build'),
+                               args.release,
+                               destination,
+                               *excludes])
+        return sha
+    except subprocess.CalledProcessError as e:
+        logging.exception(e)
+    return hash
+
+
+args = create_argparser()
+
+destination_release = args.release
+if args.release == 'master':
+    destination_release = Tweaks.DEVELOPMENT_RELEASE
+
+with open(os.path.join(basepath, 'bump-vars.config.json'), 'r+') as i:
+    config = json.load(i)
+
+    with tempfile.TemporaryDirectory() as t:
+        for index, line in enumerate(config):
+            name = line['name']
+            includes = [os.path.join(basepath, x) for x in line['includes']]
+            includes.append(os.path.join(basepath, f'kas_config/release-{args.release}.yml'))
+            tweaks_file = os.path.join(basepath, f'kas_config/tweaks-{args.release}-{name}.yml')
+            if os.path.exists(tweaks_file):
+                includes.append(tweaks_file)
+            excludes = line['excludes']
+            hash = line['latest'].get(args.release, '')
+            if hash == 'skip':
+                logging.info(f'{name}@{args.release} will be skipped')
+                continue
+            extra_layer = line.get('extra-layer', [])
+            destination = os.path.join(datadir, destination_release, f'{name}.json')
+            alias = line.get('alias', 'no-alias')
+            logging.info(f'Creating data file for {name}')
+            hash = run_in_kas(t, name, includes, excludes, destination, hash, extra_layer, alias)
+            config[index]['latest'][args.release] = hash
+
+    i.seek(0)
+    i.truncate()
+    json.dump(config, i, sort_keys=True, indent=2)

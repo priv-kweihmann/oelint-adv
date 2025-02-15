@@ -53,6 +53,7 @@ usage: oelint-adv [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix] [--noback
                   [--mode {fast,all}] [--relpaths] [--messageformat MESSAGEFORMAT] [--constantmods CONSTANTMODS [CONSTANTMODS ...]] [--print-rulefile]
                   [--exit-zero]
                   [--release {...}]
+                  [--cached] [--cachedir CACHEDIR] [--clear-caches] [--extra-layer [EXTRA_LAYER ...]]
                   [--version]
                   [files ...]
 
@@ -90,6 +91,8 @@ options:
   --cached              Use caches (default: off)
   --cachedir CACHEDIR   Cache directory (default $HOME/.oelint/caches)
   --clear-caches        Clear cache directory and exit
+  --extra-layer [EXTRA_LAYER ...]
+                        Layer names of 3rd party layers to use
   --version             show program's version number and exit
 ```
 
@@ -474,33 +477,9 @@ INSANE_SKIP:${PN} = "foo"
 
 will not warn about the usage of `INSANE_SKIP`.
 
-## Configure your custom machine or distro settings
+## picking the right constants for your checks
 
-You can let `oelint-adv` know about your custom `MACHINE` and `DISTRO` overrides, so they won't produce any findings, when
-used in your setup.
-
-### Create a layer specific oelint configuration file
-
-Copy over the template this [file](docs/.oelint.cfg.custom-layer) to the root of your layer
-
-```shell
-LAYER_PATH=<path to your layer>
-cp docs/.oelint.cfg.custom-layer $LAYER_PATH/.oelint.cfg
-```
-
-### Create the known MACHINE and DISTRO settings
-
-Source your bitbake build directory and run the following commands (\*\*) (\*\*\*)
-
-```shell
-LAYER_PATH=<path to your layer>
-bitbake-getvar --quiet --value MACHINEOVERRIDES | tr ':' '\n' | jq -Rn  '{replacements:{ machines: [inputs]}}' > $LAYER_PATH/.oelint-custom-machines.json
-bitbake-getvar --quiet --value DISTROOVERRIDES | tr ':' '\n' | jq -Rn  '{replacements:{ distros: [inputs]}}' > $LAYER_PATH/.oelint-custom-distros.json
-```
-
-(**) you'll need to have `jq` installed on your local machine.
-
-(***) `bitbake-getvar` command is available since `kirkstone` release. For older release you can use `bitbake core-image-minimal -e | grep ^MACHINEOVERRIDES` resp. `bitbake core-image-minimal -e | grep ^DISTROOVERRIDES` and pass them into the rest of the pipe.
+See our [guide](https://github.com/priv-kweihmann/oelint-adv/tree/master/docs/constants.md) for everything you need to know about constants
 
 ## cached mode
 

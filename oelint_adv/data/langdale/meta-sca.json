@@ -1,0 +1,19 @@
+{
+  "variables": {
+    "known": [
+      "GO111MODULE",
+      "SCA_DEFAULT_PREFERENCE",
+      "SCA_LAYERDIR",
+      "SCA_TOOL_DESCRIPTION",
+      "UPSTREAM_CHECK_GITHUB_TAGS",
+      "UPSTREAM_CHECK_IMPORT_SUFFIX"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [
+      "scatest"
+    ],
+    "machines": []
+  }
+}

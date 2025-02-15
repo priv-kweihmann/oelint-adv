@@ -1,0 +1,18 @@
+{
+  "variables": {
+    "known": [
+      "BBFILES_DYNAMIC",
+      "CUSTOM_LICENSES_PATH"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": [
+      "intel-core2-32",
+      "intel-corei7-64",
+      "intel-skylake-64",
+      "intel-x86-common"
+    ]
+  }
+}

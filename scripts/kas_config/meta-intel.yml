@@ -1,0 +1,5 @@
+header:
+  version: 18
+repos:
+  meta-intel:
+    url: "https://git.yoctoproject.org/meta-intel"

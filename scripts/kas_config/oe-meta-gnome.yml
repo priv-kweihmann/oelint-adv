@@ -1,0 +1,9 @@
+header:
+  version: 18
+repos:
+  openembedded:
+    layers:
+      meta-oe:
+      meta-networking:
+      meta-python:
+      meta-gnome:

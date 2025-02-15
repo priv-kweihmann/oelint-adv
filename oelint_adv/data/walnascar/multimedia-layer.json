@@ -1,0 +1,14 @@
+{
+  "variables": {
+    "known": [
+      "PTESTS_FAST_META_MULTIMEDIA",
+      "PTESTS_PROBLEMS_META_MULTIMEDIA",
+      "PTESTS_SLOW_META_MULTIMEDIA"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": []
+  }
+}

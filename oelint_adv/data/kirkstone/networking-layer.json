@@ -1,0 +1,14 @@
+{
+  "variables": {
+    "known": [
+      "CROSS_METHOD",
+      "PERLPROG",
+      "TARGET_BITS"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": []
+  }
+}

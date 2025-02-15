@@ -1,0 +1,24 @@
+{
+  "variables": {
+    "known": [
+      "CURL_CA_BUNDLE",
+      "DEPOT_TOOLS",
+      "DEPOT_TOOLS_XDG_CONFIG_HOME",
+      "EXTRA_GN_SYNC",
+      "FLUTTER_SDK_TAG",
+      "GN_CUSTOM_DEPS",
+      "GN_CUSTOM_VARS",
+      "GN_DEPS_FILE",
+      "PYTHON3_PATH",
+      "VPYTHON_VIRTUALENV_ROOT"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": [
+      "containerarm64",
+      "containerx86-64"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variables": {
+    "known": [
+      "KIVY_CROSS_SYSROOT",
+      "KIVY_GRAPHICS",
+      "PTESTS_FAST_META_PYTHON",
+      "PTESTS_PROBLEMS_META_PYTHON",
+      "PTESTS_SLOW_META_PYTHON",
+      "SWIG_FEATURES",
+      "USE_WAYLAND",
+      "USE_X11"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": []
+  }
+}

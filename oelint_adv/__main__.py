@@ -76,6 +76,8 @@ def create_argparser() -> argparse.ArgumentParser:
     parser.add_argument('--cachedir', default=os.environ.get('OELINT_CACHE_DIR', __default_cache_dir),
                         help=f'Cache directory (default {__default_cache_dir})')
     parser.add_argument('--clear-caches', action='store_true', help='Clear cache directory and exit')
+    parser.add_argument('--extra-layer', nargs='*', action='extend',
+                        default=['core'], help='Layer names of 3rd party layers to use')
     # Override the defaults with the values from the config file
     parser.set_defaults(**parse_configfile())
 

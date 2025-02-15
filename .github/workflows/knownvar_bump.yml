@@ -33,7 +33,7 @@ jobs:
                file locales libacl1
           sudo locale-gen en_US.UTF-8
       - name: Bump known vars for ${{ matrix.branch }}
-        run: ${GITHUB_WORKSPACE}/scripts/generate-variables ${{ matrix.branch }} ${GITHUB_WORKSPACE}/oelint_adv/data/${{ matrix.branch }}.json
+        run: ${GITHUB_WORKSPACE}/scripts/bump-vars ${{ matrix.branch }}
         shell: bash
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7

@@ -1,0 +1,53 @@
+{
+  "variables": {
+    "known": [
+      "BASICTESTSUITE",
+      "DEFAULT_TEST_SUITES",
+      "EXTRA_DEPENDS",
+      "EXTRA_RDEPENDS",
+      "GEMLIB_VERSION",
+      "GEMPREFIX",
+      "GEM_BUILT_FILE",
+      "GEM_DIR",
+      "GEM_DISABLE_STRICT_VER",
+      "GEM_FILE",
+      "GEM_FILENAME",
+      "GEM_HOME",
+      "GEM_INSTALL_FLAGS",
+      "GEM_NAME",
+      "GEM_SPEC_CACHE",
+      "GEM_SPEC_FILE",
+      "GEM_SPEC_FILENAME",
+      "GEM_SRC",
+      "GEM_VERSION",
+      "MIPSREMOVE",
+      "QEMU_USE_KVM",
+      "RUBYGEMS_AUTOGEN_TESTS",
+      "RUBYGEMS_LAYERDIR",
+      "RUBYLIB_EXTRA_PATHS",
+      "RUBYPLATFORM",
+      "RUBY_INSTALL_EXTRA_FLAGS",
+      "RUBY_SITEDIR",
+      "TESTIMAGEDEPENDS",
+      "TESTIMAGELOCK",
+      "TESTIMAGE_BOOT_PATTERNS",
+      "TESTIMAGE_DUMP_DIR",
+      "TESTIMAGE_FAILED_QA_ARTIFACTS",
+      "TESTIMAGE_UPDATE_VARS",
+      "TEST_EXPORT_DIR",
+      "TEST_EXTRACTED_DIR",
+      "TEST_INSTALL_TMP_DIR",
+      "TEST_LOG_DIR",
+      "TEST_NEEDED_PACKAGES_DIR",
+      "TEST_OVERALL_TIMEOUT",
+      "TEST_PACKAGED_DIR",
+      "TEST_QEMUPARAMS",
+      "TEST_RUNQEMUPARAMS"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": []
+  }
+}

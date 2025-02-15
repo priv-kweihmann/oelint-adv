@@ -1,0 +1,31 @@
+{
+  "variables": {
+    "known": [
+      "BBFILES_DYNAMIC",
+      "CUSTOM_LICENSES_PATH",
+      "EXTRAOPKGCONFIG",
+      "INITRD_IMAGE",
+      "INITRD_LIVE",
+      "OPKG_POSTPROCESS_COMMANDS",
+      "OPKG_PREPROCESS_COMMANDS",
+      "SECURE_BOOT_SIGNING_CERT_HASH",
+      "SECURE_BOOT_SIGNING_KEY_HASH",
+      "SIGNING_BINARIES",
+      "SIGNING_DIR",
+      "SIGN_AFTER",
+      "SIGN_BEFORE"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": [
+      "intel-core2-32",
+      "intel-corei7-64",
+      "intel-skylake-64",
+      "intel-x86-common",
+      "skylake-64",
+      "skylake-64-intel-common"
+    ]
+  }
+}

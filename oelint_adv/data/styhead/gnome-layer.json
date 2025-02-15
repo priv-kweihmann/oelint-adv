@@ -1,0 +1,15 @@
+{
+  "variables": {
+    "known": [
+      "CLUTTERBASEBUILDCLASS",
+      "IMAGE_LINGUAS_COMPLEMENTARY",
+      "REALNAME",
+      "VERMINOR"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": []
+  }
+}

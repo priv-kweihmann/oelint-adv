@@ -1,0 +1,19 @@
+{
+  "variables": {
+    "known": [
+      "BBFILES_DYNAMIC",
+      "FINAL_LIBS",
+      "GITPKGV",
+      "GITPKGVTAG",
+      "GITPKGV_TAG_REGEXP",
+      "GPE_TARBALL_SUFFIX",
+      "LDEMULATION",
+      "NON_MULTILIB_RECIPES"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": []
+  }
+}
