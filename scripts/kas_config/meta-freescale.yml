@@ -1,0 +1,5 @@
+header:
+  version: 18
+repos:
+  meta-freescale:
+    url: "https://github.com/Freescale/meta-freescale.git"

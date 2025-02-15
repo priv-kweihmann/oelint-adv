@@ -1,0 +1,25 @@
+{
+  "variables": {
+    "known": [
+      "BBEXTENDCURR",
+      "BBEXTENDVARIANT",
+      "BBFILES_DYNAMIC",
+      "FINAL_LIBS",
+      "GITPKGV",
+      "GITPKGVTAG",
+      "GITPKGV_TAG_REGEXP",
+      "GPE_TARBALL_SUFFIX",
+      "LDEMULATION",
+      "MCNAME",
+      "NON_MULTILIB_RECIPES",
+      "PTESTS_FAST_META_OE",
+      "PTESTS_PROBLEMS_META_OE",
+      "PTESTS_SLOW_META_OE"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": []
+  }
+}

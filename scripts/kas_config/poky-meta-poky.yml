@@ -1,0 +1,7 @@
+header:
+  version: 18
+repos:
+  poky:
+    layers:
+      meta:
+      meta-poky:

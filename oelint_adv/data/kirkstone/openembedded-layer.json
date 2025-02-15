@@ -1,0 +1,22 @@
+{
+  "variables": {
+    "known": [
+      "BBFILES_DYNAMIC",
+      "EXTRAOPKGCONFIG",
+      "FINAL_LIBS",
+      "GITPKGV",
+      "GITPKGVTAG",
+      "GITPKGV_TAG_REGEXP",
+      "GPE_TARBALL_SUFFIX",
+      "LDEMULATION",
+      "NON_MULTILIB_RECIPES",
+      "OPKG_POSTPROCESS_COMMANDS",
+      "OPKG_PREPROCESS_COMMANDS"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": []
+  }
+}

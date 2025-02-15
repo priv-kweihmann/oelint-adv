@@ -1,0 +1,5 @@
+header:
+  version: 18
+repos:
+  meta-webkit:
+    url: "https://github.com/Igalia/meta-webkit.git"

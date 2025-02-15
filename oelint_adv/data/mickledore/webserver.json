@@ -1,0 +1,12 @@
+{
+  "variables": {
+    "known": [
+      "LIBS"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": []
+  }
+}

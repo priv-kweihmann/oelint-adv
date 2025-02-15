@@ -281,7 +281,8 @@ def create_lib_arguments(files: List[str],
                          release: str = None,
                          mode: str = 'fast',
                          cached: bool = False,
-                         cachedir: str = __default_cache_dir) -> argparse.Namespace:
+                         cachedir: str = __default_cache_dir,
+                         extra_layer: List[str] = None) -> argparse.Namespace:
     """Create runtime arguments in library mode
 
     Args:
@@ -303,7 +304,8 @@ def create_lib_arguments(files: List[str],
         release (str, optional): Release to check against. Defaults to None.
         mode (str, optional): Level of testing. Defaults to fast.
         cached (bool, optional): Use caching
-        cachedir (str, optional): Path to cache directory
+        cachedir (str, optional): Path to cache directory,
+        extra_layer (List[str], optional): Extra 3rd party layer to load data for
 
     Returns:
         argparse.Namespace: runtime arguments
@@ -332,6 +334,8 @@ def create_lib_arguments(files: List[str],
     parser.add_argument('--cachedir', default=os.environ.get('OELINT_CACHE_DIR', __default_cache_dir),
                         help=f'Cache directory (default {__default_cache_dir})')
     parser.add_argument('--clear-caches', action='store_true', help='Clear cache directory and exit')
+    parser.add_argument('--extra-layer', nargs='*', action='extend',
+                        default=['core'], help='Layer names of 3rd party layers to use')
     # Override the defaults with the values from the config file
     parser.set_defaults(**parse_configfile())
 
@@ -356,6 +360,7 @@ def create_lib_arguments(files: List[str],
         f'--mode={mode}',
         '--cached' if cached else '',
         f'--cachedir={cachedir}',
+        *[f'--extra-layer={x}' for x in (extra_layer or ())],
         * files,
     ] if y != '']
 

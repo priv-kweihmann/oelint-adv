@@ -1,0 +1,572 @@
+[
+  {
+    "alias": "meta",
+    "excludes": [],
+    "extra-layer": [
+      "kas_config/meta-poky-core-mixin"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/tweaks-poky-core.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "6840d3b71ed6adfcd2c2e46daf8a93d3755c5d99\n",
+      "langdale": "3e95f268ce04b49ba6731fd4bbc53b1693c21963\n",
+      "master": "c49684b48b04e89e40550960558ca18dba3708a5\n",
+      "mickledore": "7235399a86b134e57d5eb783d7f1f57ca0439ae5\n",
+      "nanbield": "7b8aa378d069ee31373f22caba3bd7fc7863f447\n",
+      "scarthgap": "b9a67c0ce5bf29c57a9b462ea1f9475b41982bc8\n",
+      "styhead": "27ef7bc694155332a7ba5532bf11cf52f246905c\n"
+    },
+    "name": "core"
+  },
+  {
+    "alias": "meta-poky",
+    "excludes": [
+      "core"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "6840d3b71ed6adfcd2c2e46daf8a93d3755c5d99\n",
+      "langdale": "3e95f268ce04b49ba6731fd4bbc53b1693c21963\n",
+      "master": "c49684b48b04e89e40550960558ca18dba3708a5\n",
+      "mickledore": "7235399a86b134e57d5eb783d7f1f57ca0439ae5\n",
+      "nanbield": "7b8aa378d069ee31373f22caba3bd7fc7863f447\n",
+      "scarthgap": "b9a67c0ce5bf29c57a9b462ea1f9475b41982bc8\n",
+      "styhead": "27ef7bc694155332a7ba5532bf11cf52f246905c\n"
+    },
+    "name": "yocto"
+  },
+  {
+    "alias": "meta-yocto-bsp",
+    "excludes": [
+      "core",
+      "yocto"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "6840d3b71ed6adfcd2c2e46daf8a93d3755c5d99\n",
+      "langdale": "3e95f268ce04b49ba6731fd4bbc53b1693c21963\n",
+      "master": "c49684b48b04e89e40550960558ca18dba3708a5\n",
+      "mickledore": "7235399a86b134e57d5eb783d7f1f57ca0439ae5\n",
+      "nanbield": "7b8aa378d069ee31373f22caba3bd7fc7863f447\n",
+      "scarthgap": "b9a67c0ce5bf29c57a9b462ea1f9475b41982bc8\n",
+      "styhead": "27ef7bc694155332a7ba5532bf11cf52f246905c\n"
+    },
+    "name": "yoctobsp"
+  },
+  {
+    "alias": "meta-oe",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/oe-core.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "de8681b4a2a101b99dd2c48d89a7de2ccd9a961f\n",
+      "langdale": "cbbaa82238cd60f08c9b9cb58dde59d5f9318c7b\n",
+      "master": "2810f1456238107d43a6bff3b2de5aea126c38ab\n",
+      "mickledore": "8e1f0fa6bfac0e96fedc666fe9066f92c85afb27\n",
+      "nanbield": "da9063bdfbe130f424ba487f167da68e0ce90e7d\n",
+      "scarthgap": "4f11a12b2352bbdfafb6b7d956bf424af4992977\n",
+      "styhead": "6851cbf026088a13b2b45f684838d3dc4d7ccfdd\n"
+    },
+    "name": "openembedded-layer"
+  },
+  {
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp",
+      "openembedded-layer"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/oe-core.yml",
+      "kas_config/oe-meta-initramfs.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "de8681b4a2a101b99dd2c48d89a7de2ccd9a961f\n",
+      "langdale": "cbbaa82238cd60f08c9b9cb58dde59d5f9318c7b\n",
+      "master": "2810f1456238107d43a6bff3b2de5aea126c38ab\n",
+      "mickledore": "8e1f0fa6bfac0e96fedc666fe9066f92c85afb27\n",
+      "nanbield": "da9063bdfbe130f424ba487f167da68e0ce90e7d\n",
+      "scarthgap": "4f11a12b2352bbdfafb6b7d956bf424af4992977\n",
+      "styhead": "6851cbf026088a13b2b45f684838d3dc4d7ccfdd\n"
+    },
+    "name": "meta-initramfs"
+  },
+  {
+    "alias": "meta-perl",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp",
+      "openembedded-layer"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/oe-core.yml",
+      "kas_config/oe-meta-perl.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "de8681b4a2a101b99dd2c48d89a7de2ccd9a961f\n",
+      "langdale": "cbbaa82238cd60f08c9b9cb58dde59d5f9318c7b\n",
+      "master": "2810f1456238107d43a6bff3b2de5aea126c38ab\n",
+      "mickledore": "8e1f0fa6bfac0e96fedc666fe9066f92c85afb27\n",
+      "nanbield": "da9063bdfbe130f424ba487f167da68e0ce90e7d\n",
+      "scarthgap": "4f11a12b2352bbdfafb6b7d956bf424af4992977\n",
+      "styhead": "6851cbf026088a13b2b45f684838d3dc4d7ccfdd\n"
+    },
+    "name": "perl-layer"
+  },
+  {
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp",
+      "openembedded-layer"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/oe-core.yml",
+      "kas_config/oe-meta-python.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "de8681b4a2a101b99dd2c48d89a7de2ccd9a961f\n",
+      "langdale": "cbbaa82238cd60f08c9b9cb58dde59d5f9318c7b\n",
+      "master": "2810f1456238107d43a6bff3b2de5aea126c38ab\n",
+      "mickledore": "8e1f0fa6bfac0e96fedc666fe9066f92c85afb27\n",
+      "nanbield": "da9063bdfbe130f424ba487f167da68e0ce90e7d\n",
+      "scarthgap": "4f11a12b2352bbdfafb6b7d956bf424af4992977\n",
+      "styhead": "6851cbf026088a13b2b45f684838d3dc4d7ccfdd\n"
+    },
+    "name": "meta-python"
+  },
+  {
+    "alias": "meta-networking",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp",
+      "openembedded-layer",
+      "meta-python"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/oe-core.yml",
+      "kas_config/oe-meta-networking.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "de8681b4a2a101b99dd2c48d89a7de2ccd9a961f\n",
+      "langdale": "cbbaa82238cd60f08c9b9cb58dde59d5f9318c7b\n",
+      "master": "2810f1456238107d43a6bff3b2de5aea126c38ab\n",
+      "mickledore": "8e1f0fa6bfac0e96fedc666fe9066f92c85afb27\n",
+      "nanbield": "da9063bdfbe130f424ba487f167da68e0ce90e7d\n",
+      "scarthgap": "4f11a12b2352bbdfafb6b7d956bf424af4992977\n",
+      "styhead": "6851cbf026088a13b2b45f684838d3dc4d7ccfdd\n"
+    },
+    "name": "networking-layer"
+  },
+  {
+    "alias": "meta-multimedia",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp",
+      "openembedded-layer",
+      "meta-python"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/oe-core.yml",
+      "kas_config/oe-meta-multimedia.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "de8681b4a2a101b99dd2c48d89a7de2ccd9a961f\n",
+      "langdale": "cbbaa82238cd60f08c9b9cb58dde59d5f9318c7b\n",
+      "master": "2810f1456238107d43a6bff3b2de5aea126c38ab\n",
+      "mickledore": "8e1f0fa6bfac0e96fedc666fe9066f92c85afb27\n",
+      "nanbield": "da9063bdfbe130f424ba487f167da68e0ce90e7d\n",
+      "scarthgap": "4f11a12b2352bbdfafb6b7d956bf424af4992977\n",
+      "styhead": "6851cbf026088a13b2b45f684838d3dc4d7ccfdd\n"
+    },
+    "name": "multimedia-layer"
+  },
+  {
+    "alias": "meta-filesystems",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp",
+      "openembedded-layer",
+      "meta-python",
+      "networking-layer"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/oe-core.yml",
+      "kas_config/oe-meta-filesystems.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "de8681b4a2a101b99dd2c48d89a7de2ccd9a961f\n",
+      "langdale": "cbbaa82238cd60f08c9b9cb58dde59d5f9318c7b\n",
+      "master": "2810f1456238107d43a6bff3b2de5aea126c38ab\n",
+      "mickledore": "8e1f0fa6bfac0e96fedc666fe9066f92c85afb27\n",
+      "nanbield": "da9063bdfbe130f424ba487f167da68e0ce90e7d\n",
+      "scarthgap": "4f11a12b2352bbdfafb6b7d956bf424af4992977\n",
+      "styhead": "6851cbf026088a13b2b45f684838d3dc4d7ccfdd\n"
+    },
+    "name": "filesystems-layer"
+  },
+  {
+    "alias": "meta-gnome",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp",
+      "openembedded-layer",
+      "meta-python",
+      "networking-layer"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/oe-core.yml",
+      "kas_config/oe-meta-gnome.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "de8681b4a2a101b99dd2c48d89a7de2ccd9a961f\n",
+      "langdale": "cbbaa82238cd60f08c9b9cb58dde59d5f9318c7b\n",
+      "master": "2810f1456238107d43a6bff3b2de5aea126c38ab\n",
+      "mickledore": "8e1f0fa6bfac0e96fedc666fe9066f92c85afb27\n",
+      "nanbield": "da9063bdfbe130f424ba487f167da68e0ce90e7d\n",
+      "scarthgap": "4f11a12b2352bbdfafb6b7d956bf424af4992977\n",
+      "styhead": "6851cbf026088a13b2b45f684838d3dc4d7ccfdd\n"
+    },
+    "name": "gnome-layer"
+  },
+  {
+    "alias": "meta-webserver",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp",
+      "openembedded-layer"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/oe-core.yml",
+      "kas_config/oe-meta-webserver.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "de8681b4a2a101b99dd2c48d89a7de2ccd9a961f\n",
+      "langdale": "cbbaa82238cd60f08c9b9cb58dde59d5f9318c7b\n",
+      "master": "2810f1456238107d43a6bff3b2de5aea126c38ab\n",
+      "mickledore": "8e1f0fa6bfac0e96fedc666fe9066f92c85afb27\n",
+      "nanbield": "da9063bdfbe130f424ba487f167da68e0ce90e7d\n",
+      "scarthgap": "4f11a12b2352bbdfafb6b7d956bf424af4992977\n",
+      "styhead": "6851cbf026088a13b2b45f684838d3dc4d7ccfdd\n"
+    },
+    "name": "webserver"
+  },
+  {
+    "alias": "meta-xfce",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp",
+      "openembedded-layer",
+      "multimedia-layer",
+      "meta-python",
+      "networking-layer",
+      "gnome-layer"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/oe-core.yml",
+      "kas_config/oe-meta-xfce.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "de8681b4a2a101b99dd2c48d89a7de2ccd9a961f\n",
+      "langdale": "cbbaa82238cd60f08c9b9cb58dde59d5f9318c7b\n",
+      "master": "2810f1456238107d43a6bff3b2de5aea126c38ab\n",
+      "mickledore": "8e1f0fa6bfac0e96fedc666fe9066f92c85afb27\n",
+      "nanbield": "da9063bdfbe130f424ba487f167da68e0ce90e7d\n",
+      "scarthgap": "4f11a12b2352bbdfafb6b7d956bf424af4992977\n",
+      "styhead": "6851cbf026088a13b2b45f684838d3dc4d7ccfdd\n"
+    },
+    "name": "xfce-layer"
+  },
+  {
+    "alias": "meta-webkit",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp",
+      "openembedded-layer"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/oe-core.yml",
+      "kas_config/meta-webkit.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "4a49b63860100ad0b7d9050448dc4023364bfbfd\n",
+      "langdale": "d14b0311f852651a0b0a48c4bc5be7cdde7ab2af\n",
+      "master": "03dc0d89b41a57e2263554cb47c9614c35250448\n",
+      "mickledore": "d14b0311f852651a0b0a48c4bc5be7cdde7ab2af\n",
+      "nanbield": "830404acbb3279a2f67bfc10a526428523518dbb\n",
+      "scarthgap": "ff17c29cd948c5f8d432af5fdaf30b27211df61b\n",
+      "styhead": "42bc8c6cb521ff19bffb3b8e3e09d1f701d878f2\n"
+    },
+    "name": "webkit"
+  },
+  {
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/meta-sca.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "4f52bdb71825b0c1865d0c4aafe5e8827fc9b904\n",
+      "langdale": "3dfde46f5df951ea41f9bc773a3b485fc1a83153\n",
+      "master": "65ba58ef5afc81322d126ee00f755a65078414a2\n",
+      "mickledore": "123e5e7871a8c6fe5bbad89a1cb24e948a9f0599\n",
+      "nanbield": "3b308370148e93159aaecca93acd57919a59dc4a\n",
+      "scarthgap": "3b308370148e93159aaecca93acd57919a59dc4a\n",
+      "styhead": "8caad72c16189018699d9f72eaddb242fb51cf77\n"
+    },
+    "name": "meta-sca"
+  },
+  {
+    "alias": "meta-rubygems",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp",
+      "openembedded-layer"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/oe-core.yml",
+      "kas_config/meta-rubygems.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "ef8ad0e8632125f73410bed3da125a108860dd38\n",
+      "langdale": "ef8ad0e8632125f73410bed3da125a108860dd38\n",
+      "master": "73569c7c59a2e46e15e9fe55f73bb6256b4e5997\n",
+      "mickledore": "b0baf72297f3f521ec76195ec1b8acca499aee44\n",
+      "nanbield": "b0baf72297f3f521ec76195ec1b8acca499aee44\n",
+      "scarthgap": "f023803dfeae8d5e5414b5feb4b7dce2b5ff55d3\n",
+      "styhead": "906b2f637fbf5acee11fe23b313254b0739b4fba"
+    },
+    "name": "rubygems"
+  },
+  {
+    "alias": "meta-intel",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/meta-intel.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "dc0948200594dacece4da91f4c501e9a9fb0394f\n",
+      "langdale": "3e37d6c4f1ed77ac34b9871814f03a64ac403293\n",
+      "master": "c7c7dface32f187bb0ba724b8eb79152f7453f0c\n",
+      "mickledore": "e63d672fedd1328ebd6d0a2632f8bef35598eb21\n",
+      "nanbield": "e0c541c10f561b9c0087fd07ad5b79b0a534dab1\n",
+      "scarthgap": "0be954e82f09d235d2b5e5ea01bb62ffa8d0b5f7\n",
+      "styhead": "d2e28940027808ea56f9d38deadb200a99a89805\n"
+    },
+    "name": "intel"
+  },
+  {
+    "alias": "meta-freescale",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/meta-freescale.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "c525e0c19bdc46d45f71873b5f286f49abb69418\n",
+      "langdale": "5d71d4f20f8b676fc5308141f8f5002745b7d20e\n",
+      "master": "3bbf270c07c93d4e9b12d61e2cc762901c9cf0db\n",
+      "mickledore": "5d71d4f20f8b676fc5308141f8f5002745b7d20e\n",
+      "nanbield": "e6e7c07b08c436310cc9acfe9ff6892155425703\n",
+      "scarthgap": "36accb283e2047cf52f3bc1857edad8507e049ec\n",
+      "styhead": "46ef14feaf7c41de678611d6674a84986296d4cf\n"
+    },
+    "name": "freescale-layer"
+  },
+  {
+    "alias": "meta-freescale-distro",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp",
+      "openembedded-layer"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/oe-core.yml",
+      "kas_config/meta-freescale-distro.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "d5bbb487b2816dfc74984a78b67f7361ce404253\n",
+      "langdale": "b9d6a5d9931922558046d230c1f5f4ef6ee72345\n",
+      "master": "b9c3536b68271c420fe5de36fc284781ceaa32ab\n",
+      "mickledore": "b9d6a5d9931922558046d230c1f5f4ef6ee72345\n",
+      "nanbield": "b9d6a5d9931922558046d230c1f5f4ef6ee72345\n",
+      "scarthgap": "b9d6a5d9931922558046d230c1f5f4ef6ee72345\n",
+      "styhead": "b9c3536b68271c420fe5de36fc284781ceaa32ab\n"
+    },
+    "name": "freescale-distro"
+  },
+  {
+    "alias": "meta-flutter",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp",
+      "openembedded-layer"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/oe-core.yml",
+      "kas_config/meta-flutter.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "2626dfec92ffd3dbf810d571b9f7ede13bf56591\n",
+      "langdale": "skip",
+      "master": "2601a216805ca940f1ed4fe79cca9d5648a6f1ec\n",
+      "mickledore": "skip",
+      "nanbield": "cb1e32b11326d87575cdf5be51d27fab5d867aa8\n",
+      "scarthgap": "cb1e32b11326d87575cdf5be51d27fab5d867aa8\n",
+      "styhead": "1fa386a230179b45bad291201bf48f46c7d66912\n"
+    },
+    "name": "flutter-layer"
+  },
+  {
+    "alias": "meta-clang",
+    "excludes": [
+      "core",
+      "yocto",
+      "yoctobsp"
+    ],
+    "includes": [
+      "kas_config/poky-core.yml",
+      "kas_config/poky-meta-poky.yml",
+      "kas_config/poky-meta-yocto-bsp.yml",
+      "kas_config/meta-clang.yml"
+    ],
+    "latest": {
+      "hardknott": "",
+      "honister": "",
+      "kirkstone": "fabeeadc6a1cbf1a81fbdb7dc9fa4022c7e5e851\n",
+      "langdale": "5a7a3335c92fb1b9375ee1b470264bd24a428c83\n",
+      "master": "93dec321980091b8abfa1f7d72c50b844c63167c\n",
+      "mickledore": "8bceec8a7174a310859424a1a581ce73f1b0cad9\n",
+      "nanbield": "b71a45630d19f210079f42f6394cdde65195fb84\n",
+      "scarthgap": "8c77b427408db01b8de4c04bd3d247c13c154f92\n",
+      "styhead": "c709a5196f1e8654425b43b478064395386c36d4\n"
+    },
+    "name": "clang-layer"
+  }
+]

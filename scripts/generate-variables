@@ -4,9 +4,9 @@
 
 import argparse
 import json
-import tempfile
-import subprocess
 import os
+import re
+import subprocess
 import sys
 
 basepath = os.path.abspath(os.path.dirname(__file__))
@@ -15,55 +15,91 @@ sys.path.append(os.path.abspath(basepath + '/../'))
 
 def create_argparser() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument('branch', help='poky branch')
+    parser.add_argument('--layer_filter', nargs='*', action='extend', help='Limit layer scanning')
+    parser.add_argument('poky_location', help='Location of poky repository')
+    parser.add_argument('build_dir', help='Location of build directory')
     parser.add_argument('destination')
     return parser.parse_args()
 
 
 args = create_argparser()
 
-with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as t:
-    subprocess.run(['git', 'clone', 'https://git.yoctoproject.org/poky', '--single-branch', '-b', args.branch], cwd=t)
-    output_known = subprocess.check_output(
-        f'source poky/oe-init-build-env > /dev/null 2>&1 && {basepath}/bitbake-listvars -q -a $(which bitbake)',
-        shell=True,
-        universal_newlines=True,
-        executable='/bin/bash',
-        cwd=t
-    )
+_poky_source = f'source {args.poky_location}/oe-init-build-env {args.build_dir} > /dev/null 2>&1'
 
-    output_renamed = subprocess.check_output(
-        f'source poky/oe-init-build-env > /dev/null 2>&1 && {basepath}/bitbake-listflags -v $(which bitbake) BB_RENAMED_VARIABLES',
-        shell=True,
-        universal_newlines=True,
-        executable='/bin/bash',
-        cwd=t
-    )
+output_layers = subprocess.check_output(
+    f'{_poky_source} && bitbake-layers show-layers',
+    shell=True,
+    universal_newlines=True,
+    executable='/bin/bash',
+    cwd=args.build_dir
+)
 
-    if args.branch == 'master':
-        # for master override the name
-        from oelint_adv.tweaks import Tweaks
-        args.destination = os.path.join(os.path.dirname(args.destination), Tweaks.DEVELOPMENT_RELEASE + '.json')
+layer_dirs = []
+for m in re.finditer(r'^(?P<name>.*)\s+(?P<path>/.*)\s+(\d+)', output_layers, re.MULTILINE):
+    if not args.layer_filter or m.group('name').strip() in args.layer_filter:
+        layer_dirs.append(os.path.abspath(m.group('path')))
 
-    output_known = output_known.split('\n')
-    # filter out those pesky server reconnect message
-    # and other warnings
-    output_known = [x for x in output_known if ':' not in x and x]
+if not layer_dirs:
+    print(f'WARNING: no matching layer found: {args.layer_filter }: {output_layers}')
 
-    output_renamed = output_renamed.split('\n')
-    # filter out those pesky server reconnect message
-    # and other warnings
-    output_renamed = [x for x in output_renamed if ':' not in x and x]
+layer_path_filter = ' '.join([f'--layer_path_filter={x}' for x in layer_dirs])
 
-    obj = {
-        'variables': {
-            'known': output_known,
-            'renamed': {}}
-    }
+output_known = subprocess.check_output(
+    f'{_poky_source} && {basepath}/bitbake-listvars {layer_path_filter} --filter=classes --filter=conf --filter=lib -q -a $(which bitbake)',
+    shell=True,
+    universal_newlines=True,
+    executable='/bin/bash',
+    cwd=args.build_dir
+)
 
-    for line in output_renamed:
-        k, v = line.split('@', 1)
-        obj['variables']['renamed'][k] = v
+output_renamed = subprocess.check_output(
+    f'{_poky_source} && {basepath}/bitbake-listflags -v $(which bitbake) BB_RENAMED_VARIABLES',
+    shell=True,
+    universal_newlines=True,
+    executable='/bin/bash',
+    cwd=args.build_dir
+)
 
-    with open(args.destination, 'w') as o:
-        json.dump(obj, o, indent=2)
+output_machines = subprocess.check_output(
+    f'{_poky_source} && {basepath}/oelint-bitbake-get-configs machine {" ".join(layer_dirs)}',
+    shell=True,
+    universal_newlines=True,
+    executable='/bin/bash',
+    cwd=args.build_dir
+)
+
+output_distro = subprocess.check_output(
+    f'{_poky_source} && {basepath}/oelint-bitbake-get-configs distro {" ".join(layer_dirs)}',
+    shell=True,
+    universal_newlines=True,
+    executable='/bin/bash',
+    cwd=args.build_dir
+)
+
+output_known = output_known.split('\n')
+# filter out those pesky server reconnect message
+# and other warnings
+output_known = [x for x in output_known if ':' not in x and x]
+
+output_renamed = output_renamed.split('\n')
+# filter out those pesky server reconnect message
+# and other warnings
+output_renamed = [x for x in output_renamed if ':' not in x and x]
+
+obj = {
+    'variables': {
+        'known': output_known,
+        'renamed': {},
+    },
+    'replacements': {
+        'distros': [x for x in output_distro.split('\n') if ':' not in x and x],
+        'machines': [x for x in output_machines.split('\n') if ':' not in x and x],
+    },
+}
+
+for line in output_renamed:
+    k, v = line.split('@', 1)
+    obj['variables']['renamed'][k] = v
+
+with open(args.destination, 'w') as o:
+    json.dump(obj, o, indent=2)

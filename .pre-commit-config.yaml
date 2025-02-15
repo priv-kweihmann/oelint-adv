@@ -6,6 +6,6 @@ repos:
   hooks:
   - id: codespell
     args:
-      - --skip=*.lock,tests/test_class_oelint_vars_misspell.py
+      - --skip=*.lock,tests/test_class_oelint_vars_misspell.py,oelint_adv/data/*
       # Provide a comma separated list of ignored words here:
       - -L=mispell

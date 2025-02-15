@@ -1,7 +1,7 @@
 import argparse
 from typing import List
 
-from oelint_adv.data import known_variable_mod
+from oelint_adv.data import known_variable_mod, layer_var_mods
 
 
 class Tweaks:
@@ -97,9 +97,17 @@ class Tweaks:
                 setattr(args, k, v)
 
         # release known var constantmod
-        extramod = known_variable_mod(args.release)
-        if extramod:
-            args.constantmods.insert(0, extramod)
+        release_mod = known_variable_mod(args.release, 'core')
+        if release_mod:
+            args.constantmods.insert(0, release_mod)
+
+        mods, third_party = layer_var_mods(args.files, args.release, args.extra_layer)
+        for layer in third_party:
+            mod = known_variable_mod(args.release, layer)
+            if mod:
+                args.constantmods.insert(1, f'+{mod}')
+        for mod in mods:
+            args.constantmods.insert(1, mod)
 
         setattr(args, '_release_range', _release_range)  # noqa: B010
         args.state.additional_stash_args = getattr(args, '_stash_args', {})

@@ -1,0 +1,7 @@
+header:
+  version: 18
+repos:
+  poky:
+    url: "https://git.yoctoproject.org/git/poky"
+    layers:
+      meta:

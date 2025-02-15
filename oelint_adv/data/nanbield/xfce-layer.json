@@ -1,0 +1,12 @@
+{
+  "variables": {
+    "known": [
+      "AUTOTOOLS_COPYACLOCAL"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": []
+  }
+}

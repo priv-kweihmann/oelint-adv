@@ -1,0 +1,30 @@
+{
+  "variables": {
+    "known": [
+      "BBFILES_DYNAMIC",
+      "CLANGSDK",
+      "COMPILER_RT",
+      "LIBCPLUSPLUS",
+      "OECMAKE_NATIVE_AR",
+      "OECMAKE_NATIVE_CXX_COMPILER",
+      "OECMAKE_NATIVE_CXX_FLAGS",
+      "OECMAKE_NATIVE_CXX_FLAGS_RELEASE",
+      "OECMAKE_NATIVE_CXX_LINK_FLAGS",
+      "OECMAKE_NATIVE_C_COMPILER",
+      "OECMAKE_NATIVE_C_FLAGS",
+      "OECMAKE_NATIVE_C_FLAGS_RELEASE",
+      "OECMAKE_NATIVE_C_LINK_FLAGS",
+      "OECMAKE_NATIVE_NM",
+      "OECMAKE_NATIVE_RANLIB",
+      "RECIPESYSROOTFUNCS",
+      "UNWINDLIB",
+      "YOCTO_ALTERNATE_EXE_PATH",
+      "YOCTO_ALTERNATE_LIBDIR"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": []
+  }
+}

@@ -146,7 +146,7 @@ class TestClassOelintFuncSpecific(TestBaseClass):
                                  {
                                      'oelint-adv_test.bb':
                                      '''
-                                     do_configure:poky() {
+                                     do_configure:nodistro() {
                                          abc
                                      }
                                      ''',
@@ -154,7 +154,7 @@ class TestClassOelintFuncSpecific(TestBaseClass):
                                  {
                                      'oelint-adv_test.bb':
                                      '''
-                                     A = "poky"
+                                     A = "nodistro"
                                      do_configure:${A} () {
                                          abc
                                      }

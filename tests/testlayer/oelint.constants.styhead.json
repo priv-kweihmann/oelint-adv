@@ -1,0 +1,16 @@
+{
+  "variables": {
+    "known": [
+      "FOO_BAR"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [
+      "testdistro"
+    ],
+    "machines": [
+      "testmachine"
+    ]
+  }
+}

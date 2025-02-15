@@ -99,14 +99,10 @@ class TestClassOelintVarsSpecific(TestBaseClass):
                                      SRC_URI += "git://foo.org/${BPN}.git;name=${PN}"
                                      SRCREV_super = "2a76ac0ff0e702a7f553b6d7135a1089e9c3b469"
                                      SRCREV_ultra = "7533c21ba6c06a513eaa9500a06ae780249b9834"
-                                     PACKAGECONFIG_class-nativesdk ??= "${PACKAGECONFIG_class-native}"
+                                     PACKAGECONFIG:class-nativesdk ??= "${PACKAGECONFIG_class-native}"
                                      PACKAGES =+ "libpulsecore libpulsecommon libpulse libpulse-simple libpulse-mainloop-glib \\
                                                  pulseaudio-server pulseaudio-misc ${@bb.utils.contains('PACKAGECONFIG', 'dbus', 'pulseaudio-module-console-kit', '', d)}"
                                      DEPENDS:pulseaudio-server = "foo-bar"
-                                     DEPENDS:clang = "Unknown"
-                                     DEPENDS:linux = "Linux"
-                                     DEPENDS:darwin = "Darwin"
-                                     DEPENDS:mingw32 = "Windows"
                                      A:oelint = "foo"
                                      ''',
                                  },
@@ -140,7 +136,7 @@ class TestClassOelintVarsSpecific(TestBaseClass):
                                  },
                                  {
                                      'oelint_adv_test.bb':
-                                     'B:poky += "abc"',
+                                     'B:nodistro += "abc"',
                                  },
                                  {
                                      'oelint_adv_test.bb':

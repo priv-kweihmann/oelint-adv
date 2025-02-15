@@ -1,0 +1,34 @@
+{
+  "variables": {
+    "known": [
+      "EXTRA_DEPENDS",
+      "EXTRA_RDEPENDS",
+      "GEMLIB_VERSION",
+      "GEMPREFIX",
+      "GEM_BUILT_FILE",
+      "GEM_DIR",
+      "GEM_DISABLE_STRICT_VER",
+      "GEM_FILE",
+      "GEM_FILENAME",
+      "GEM_HOME",
+      "GEM_INSTALL_FLAGS",
+      "GEM_NAME",
+      "GEM_SPEC_CACHE",
+      "GEM_SPEC_FILE",
+      "GEM_SPEC_FILENAME",
+      "GEM_SRC",
+      "GEM_VERSION",
+      "RUBYGEMS_AUTOGEN_TESTS",
+      "RUBYGEMS_LAYERDIR",
+      "RUBYLIB_EXTRA_PATHS",
+      "RUBYPLATFORM",
+      "RUBY_INSTALL_EXTRA_FLAGS",
+      "RUBY_SITEDIR"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [],
+    "machines": []
+  }
+}

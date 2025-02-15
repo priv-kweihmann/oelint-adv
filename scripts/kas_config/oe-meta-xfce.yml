@@ -1,0 +1,11 @@
+header:
+  version: 18
+repos:
+  openembedded:
+    layers:
+      meta-oe:
+      meta-gnome:
+      meta-multimedia:
+      meta-python:
+      meta-networking:
+      meta-xfce:

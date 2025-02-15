@@ -1,0 +1,20 @@
+{
+  "variables": {
+    "known": [],
+    "renamed": {}
+  },
+  "replacements": {
+    "distros": [
+      "fsl",
+      "fsl-framebuffer",
+      "fsl-wayland",
+      "fsl-xwayland",
+      "fslc",
+      "fslc-framebuffer",
+      "fslc-wayland",
+      "fslc-x11",
+      "fslc-xwayland"
+    ],
+    "machines": []
+  }
+}
