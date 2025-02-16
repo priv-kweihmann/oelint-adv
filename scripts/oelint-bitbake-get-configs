@@ -55,7 +55,11 @@ def main(args=None):
                 'class-native',
                 'class-nativesdk',
                 'class-target',
+                'elf',
+                'linux',
+                'linux-gnueabi',
                 'nodistro',
+                'none',
             ]
         },
         'machine': {
