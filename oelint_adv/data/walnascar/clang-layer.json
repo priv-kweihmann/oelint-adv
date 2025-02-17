@@ -1,12 +1,17 @@
 {
+  "functions": {
+    "known": [
+      "do_generate_native_toolchain_file",
+      "do_scanbuild",
+      "do_scanview"
+    ]
+  },
   "variables": {
     "known": [
-      "BBFILES_DYNAMIC",
       "CLANGSDK",
       "COMPILER_RT",
       "LIBCPLUSPLUS",
       "LLVMVERSION",
-      "NON_MULTILIB_RECIPES",
       "OECMAKE_NATIVE_AR",
       "OECMAKE_NATIVE_CXX_COMPILER",
       "OECMAKE_NATIVE_CXX_FLAGS",

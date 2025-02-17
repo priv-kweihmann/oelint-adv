@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "known": [
+      "juce_do_configure"
+    ]
+  },
   "variables": {
     "known": [
       "PTESTS_FAST_META_MULTIMEDIA",

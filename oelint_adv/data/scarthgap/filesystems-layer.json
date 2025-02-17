@@ -1,4 +1,7 @@
 {
+  "functions": {
+    "known": []
+  },
   "variables": {
     "known": [
       "PTESTS_FAST_META_FILESYSTEMS",

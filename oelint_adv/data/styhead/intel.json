@@ -1,7 +1,9 @@
 {
+  "functions": {
+    "known": []
+  },
   "variables": {
     "known": [
-      "BBFILES_DYNAMIC",
       "CUSTOM_LICENSES_PATH"
     ],
     "renamed": {}

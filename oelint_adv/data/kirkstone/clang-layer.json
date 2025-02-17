@@ -1,7 +1,14 @@
 {
+  "functions": {
+    "known": [
+      "do_generate_native_toolchain_file",
+      "do_scanbuild",
+      "do_scanview",
+      "recipe_sysroot_check_ld_is_lld"
+    ]
+  },
   "variables": {
     "known": [
-      "BBFILES_DYNAMIC",
       "CLANGSDK",
       "COMPILER_RT",
       "LIBCPLUSPLUS",

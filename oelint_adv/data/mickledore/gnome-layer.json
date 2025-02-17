@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "known": [
+      "gnome_do_split_help"
+    ]
+  },
   "variables": {
     "known": [
       "CLUTTERBASEBUILDCLASS",

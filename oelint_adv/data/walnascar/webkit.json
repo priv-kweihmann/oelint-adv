@@ -1,4 +1,11 @@
 {
+  "functions": {
+    "known": [
+      "ruby_do_compile",
+      "ruby_do_install",
+      "ruby_gen_extconf_fix"
+    ]
+  },
   "variables": {
     "known": [
       "GEM_HOME",

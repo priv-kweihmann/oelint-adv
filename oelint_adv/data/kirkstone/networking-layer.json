@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "known": [
+      "do_kernel_add_regdb"
+    ]
+  },
   "variables": {
     "known": [
       "CROSS_METHOD",

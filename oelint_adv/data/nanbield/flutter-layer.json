@@ -1,4 +1,10 @@
 {
+  "functions": {
+    "known": [
+      "do_archive_pub_cache",
+      "do_restore_pub_cache"
+    ]
+  },
   "variables": {
     "known": [
       "CURL_CA_BUNDLE",
