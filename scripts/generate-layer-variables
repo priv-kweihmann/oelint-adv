@@ -59,7 +59,10 @@ with tempfile.NamedTemporaryFile('r+') as t:
             updated = {}
             for k, v in a.items():
                 if isinstance(v, (list, dict)):
-                    updated[k] = filter_response(v, b.get(k))
+                    if b is None:
+                        updated[k] = v
+                    else:
+                        updated[k] = filter_response(v, b.get(k))
                 else:
                     if k not in b:
                         updated[k] = v
