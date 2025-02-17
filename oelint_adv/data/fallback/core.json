@@ -1,0 +1,22 @@
+{
+  "replacements": {
+    "distros": [
+      "class-cross",
+      "class-cross-canadian",
+      "class-devupstream",
+      "class-native",
+      "class-nativesdk",
+      "class-target",
+      "defaultsetup",
+      "elf",
+      "libc-baremetal",
+      "libc-glibc",
+      "libc-musl",
+      "libc-newlib",
+      "linux",
+      "linux-gnueabi",
+      "nodistro",
+      "none"
+    ]
+  }
+}

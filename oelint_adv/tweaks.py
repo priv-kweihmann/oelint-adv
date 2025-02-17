@@ -99,8 +99,11 @@ class Tweaks:
         # release known var constantmod
         modlist = [known_variable_mod('', 'oelint')]
         release_mod = known_variable_mod(args.release, 'core')
+        fallback_release_mod = known_variable_mod('fallback', 'core')
         if release_mod:
             modlist += [release_mod]
+        else:
+            modlist += [fallback_release_mod]
 
         mods, third_party = layer_var_mods(args.files, args.release, args.extra_layer)
         modlist += mods
