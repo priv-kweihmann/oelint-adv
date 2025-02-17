@@ -97,17 +97,18 @@ class Tweaks:
                 setattr(args, k, v)
 
         # release known var constantmod
+        modlist = [known_variable_mod('', 'oelint')]
         release_mod = known_variable_mod(args.release, 'core')
         if release_mod:
-            args.constantmods.insert(0, release_mod)
+            modlist += [release_mod]
 
         mods, third_party = layer_var_mods(args.files, args.release, args.extra_layer)
+        modlist += mods
         for layer in third_party:
             mod = known_variable_mod(args.release, layer)
             if mod:
-                args.constantmods.insert(1, f'+{mod}')
-        for mod in mods:
-            args.constantmods.insert(1, mod)
+                modlist += [f'+{mod}']
+        args.constantmods[0:0] = modlist
 
         setattr(args, '_release_range', _release_range)  # noqa: B010
         args.state.additional_stash_args = getattr(args, '_stash_args', {})

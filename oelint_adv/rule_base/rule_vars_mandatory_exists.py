@@ -13,45 +13,7 @@ class VarMandatoryExists(Rule):
                          severity='error',
                          message='<FOO>',
                          onappend=False,
-                         appendix=CONSTANTS.VariablesMandatory)
-        CONSTANTS.AddConstants(
-            {
-                'oelint-mandatoryvar':
-                {
-                    'image-excludes': [
-                        'CVE_PRODUCT',
-                        'HOMEPAGE',
-                        'SRC_URI',
-                    ],
-                },
-            },
-        )
-
-        CONSTANTS.AddConstants(
-            {
-                'oelint-mandatoryvar':
-                {
-                    'pkggroup-excludes': [
-                        'CVE_PRODUCT',
-                        'HOMEPAGE',
-                        'LICENSE',
-                        'SRC_URI',
-                    ],
-                },
-            },
-        )
-
-        CONSTANTS.AddConstants(
-            {
-                'oelint-mandatoryvar':
-                {
-                    'SRC_URI-exclude-classes': [
-                        'pypi',
-                        'gnomebase',
-                    ],
-                },
-            },
-        )
+                         appendix=CONSTANTS.GetByPath('variables/mandatory'))
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
@@ -62,7 +24,7 @@ class VarMandatoryExists(Rule):
         items: List[Variable] = stash.GetItemsFor(filename=_file,
                                                   classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR,
-                                                  attributeValue=CONSTANTS.VariablesMandatory)
+                                                  attributeValue=CONSTANTS.GetByPath('variables/mandatory'))
         inherits: List[Inherit] = stash.GetItemsFor(filename=_file,
                                                     classifier=Inherit.CLASSIFIER)
 
@@ -71,7 +33,7 @@ class VarMandatoryExists(Rule):
                                                      for y in (CONSTANTS.GetByPath(f'oelint-mandatoryvar/{varname}-exclude-classes') or [])))
 
         # some classes set SRC_URI on their own, do not warn here
-        for var_ in CONSTANTS.VariablesMandatory:
+        for var_ in CONSTANTS.GetByPath('variables/mandatory'):
             if _is_pkg_group and var_ in CONSTANTS.GetByPath('oelint-mandatoryvar/pkggroup-excludes'):
                 continue
             if _is_image and var_ in CONSTANTS.GetByPath('oelint-mandatoryvar/image-excludes'):
