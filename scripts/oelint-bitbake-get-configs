@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Iterable, List
 import re
 
-from oelint_parser.cls_item import Variable
+from oelint_parser.cls_item import Variable, Function
 from oelint_parser.cls_stash import Stash
 
 
@@ -35,9 +35,21 @@ def parse_conf(file: str, needles: List[str], defaults: List[str]) -> List[str]:
     return list(res)
 
 
+def parse_functions(file: str, needles: List[str], defaults: List[str]) -> List[str]:
+    if not Path(file).is_file():
+        return []
+    res = set(defaults)
+    _stash = Stash(quiet=True)
+    _stash.AddFile(file)
+    _stash.Finalize()
+    _res = _stash.GetItemsFor(file, classifier=Function.CLASSIFIER)
+    res.update(x.FuncName for x in _res if not x.FuncName.startswith('_') and x.FuncName.strip())
+    return list(res)
+
+
 def main(args=None):
     parser = argparse.ArgumentParser(description="List bitbake configs")
-    parser.add_argument('mode', choices=['distro', 'machine'], help='Mode')
+    parser.add_argument('mode', choices=['distro', 'machine', 'functions'], help='Mode')
     parser.add_argument('layers', nargs='+', help='layer path(s)')
     args = parser.parse_args()
 
@@ -60,14 +72,36 @@ def main(args=None):
                 'linux-gnueabi',
                 'nodistro',
                 'none',
-            ]
+            ],
+            'parser': parse_conf,
         },
         'machine': {
             'needles': [
                 'AVAILTUNES',
                 'MACHINEOVERRIDES',
             ],
-            'defaults': []
+            'defaults': [],
+            'parser': parse_conf,
+        },
+        'functions': {
+            'needles': [
+            ],
+            'defaults': [
+                'do_build',
+                'do_compile',
+                'do_configure',
+                'do_fetch',
+                'do_install',
+                'do_package',
+                'do_patch',
+                'do_populate_sysroot',
+                'do_unpack',
+                'pkg_postinst',
+                'pkg_postrm',
+                'pkg_preinst',
+                'pkg_prerm',
+            ],
+            'parser': parse_functions,
         }
     }
 
@@ -79,12 +113,17 @@ def main(args=None):
         groups.update(glob.glob((Path(layer) / f'conf/{args.mode}/include/*/*').as_posix()))
         groups.update(glob.glob((Path(layer) / f'conf/{args.mode}/include/*/*/*').as_posix()))
 
+        if args.mode in ['functions']:
+            groups.update(glob.glob((Path(layer) / 'classes/*.bbclass').as_posix()))
+            groups.update(glob.glob((Path(layer) / 'classes-global/*.bbclass').as_posix()))
+            groups.update(glob.glob((Path(layer) / 'classes-recipe/*.bbclass').as_posix()))
+
     if not groups:
         return []
 
     with mp.Pool(processes=min(mp.cpu_count(), len(groups))) as pool:
         try:
-            result = set(flatten(pool.map(partial(parse_conf,
+            result = set(flatten(pool.map(partial(data_.get(args.mode, {}).get('parser'),
                                                   needles=data_.get(args.mode, {}).get('needles'),
                                                   defaults=data_.get(args.mode, {}).get('defaults'),
                                                   ), groups)))

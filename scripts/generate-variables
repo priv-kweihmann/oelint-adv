@@ -76,6 +76,15 @@ output_distro = subprocess.check_output(
     cwd=args.build_dir
 )
 
+output_function = subprocess.check_output(
+    f'{_poky_source} && {basepath}/oelint-bitbake-get-configs functions {" ".join(layer_dirs)}',
+    shell=True,
+    universal_newlines=True,
+    executable='/bin/bash',
+    cwd=args.build_dir,
+    stderr=subprocess.STDOUT
+)
+
 output_known = output_known.split('\n')
 # filter out those pesky server reconnect message
 # and other warnings
@@ -87,6 +96,9 @@ output_renamed = output_renamed.split('\n')
 output_renamed = [x for x in output_renamed if ':' not in x and x]
 
 obj = {
+    'functions': {
+        'known': [x for x in output_function.split('\n') if x],
+    },
     'variables': {
         'known': output_known,
         'renamed': {},
