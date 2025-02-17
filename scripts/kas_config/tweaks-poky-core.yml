@@ -16,6 +16,7 @@ local_conf_header:
     INHERIT += "sign_ipk"
     INHERIT += "sign_package_feed"
     INHERIT += "sign_rpm"
+    INHERIT += "uninative"
 
     IPK_GPG_NAME = "test"
     IPK_GPG_PASSPHRASE_FILE = "test"
