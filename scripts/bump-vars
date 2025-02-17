@@ -24,6 +24,7 @@ from oelint_adv.tweaks import Tweaks  # noqa: E402
 
 def create_argparser() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
+    parser.add_argument('--force', action='store_true', help='Disable hash check')
     parser.add_argument('release')
     return parser.parse_args()
 
@@ -73,12 +74,14 @@ def run_in_kas(tmpdir: str,
                destination: str,
                hash: str,
                extra_layer: List[str],
-               alias: str) -> str:
+               alias: str,
+               force: bool) -> str:
     try:
         subprocess.check_call(['kas', 'checkout', ':'.join(configs)], cwd=tmpdir)
         extra_filter = add_extra_layer(os.path.join(tmpdir, 'build'), os.path.join(tmpdir, 'poky'), extra_layer)
+        sha = hash
         changed, sha = check_hash(name, os.path.join(tmpdir, 'build'), os.path.join(tmpdir, 'poky'), hash, alias)
-        if not changed:
+        if not changed and not force:
             return hash
         _filter_str = [f'--layer_filter={x}' for x in extra_filter + [name, alias]]
         subprocess.check_call([f'{basepath}/generate-layer-variables',
@@ -120,7 +123,7 @@ with open(os.path.join(basepath, 'bump-vars.config.json'), 'r+') as i:
             destination = os.path.join(datadir, destination_release, f'{name}.json')
             alias = line.get('alias', 'no-alias')
             logging.info(f'Creating data file for {name}')
-            hash = run_in_kas(t, name, includes, excludes, destination, hash, extra_layer, alias)
+            hash = run_in_kas(t, name, includes, excludes, destination, hash, extra_layer, alias, args.force)
             config[index]['latest'][args.release] = hash
 
     i.seek(0)
