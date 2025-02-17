@@ -64,25 +64,8 @@ class TestClassOelintFuncSpecific(TestBaseClass):
                                  {
                                      'oelint-adv_test.bb':
                                      '''
-                                     do_configure_bararch() {
-                                         abc
-                                     }
-                                     ''',
-                                 },
-                                 {
-                                     'oelint-adv_test.bb':
-                                     '''
                                      COMPATIBLE_MACHINE = "xyz"
-                                     do_install_fooarch() {
-                                         abc
-                                     }
-                                     ''',
-                                 },
-                                 {
-                                     'oelint-adv_test.bb':
-                                     '''
-                                     COMPATIBLE_MACHINE = "xyz"
-                                     do_configure_append_bararch() {
+                                     do_install_append_bararch() {
                                          abc
                                      }
                                      ''',
