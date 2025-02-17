@@ -13,19 +13,7 @@ class VarSuggestedExists(Rule):
                          severity='info',
                          message='<FOO>',
                          onappend=False,
-                         appendix=CONSTANTS.VariablesSuggested)
-        # image-excludes
-        # pkggroup-excludes
-        # *-exclude-classes
-        CONSTANTS.AddConstants(
-            {
-                'oelint-suggestedvar':
-                {
-                    'image-excludes': [],
-                    'pkggroup-excludes': ['LICENSE', 'CVE_PRODUCT'],
-                },
-            },
-        )
+                         appendix=CONSTANTS.GetByPath('variables/suggested'))
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
@@ -36,14 +24,14 @@ class VarSuggestedExists(Rule):
         all_items: List[Variable] = stash.GetItemsFor(filename=_file,
                                                       classifier=Variable.CLASSIFIER,
                                                       attribute=Variable.ATTR_VAR,
-                                                      attributeValue=CONSTANTS.VariablesSuggested)
+                                                      attributeValue=CONSTANTS.GetByPath('variables/suggested'))
         inherits: List[Inherit] = stash.GetItemsFor(filename=_file,
                                                     classifier=Inherit.CLASSIFIER)
 
         def get_class_specific(varname: str, inherits: List[Inherit]) -> bool:
             return any(True for x in inherits if any(y in x.get_items()
                                                      for y in (CONSTANTS.GetByPath(f'oelint-suggestedvar/{varname}-exclude-classes') or [])))
-        for var_ in CONSTANTS.VariablesSuggested:
+        for var_ in CONSTANTS.GetByPath('variables/suggested'):
             if var_ == 'BBCLASSEXTEND':
                 # this is better covered by oelint_adv/rule_base/rule_vars_bbclassextends.py
                 continue

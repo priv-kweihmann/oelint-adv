@@ -1,0 +1,209 @@
+{
+    "functions": {
+        "known": [],
+        "order": [
+            "do_fetch",
+            "do_unpack",
+            "do_patch",
+            "do_configure",
+            "do_compile",
+            "do_install",
+            "do_populate_sysroot",
+            "do_build",
+            "do_package"
+        ]
+    },
+    "images": {
+        "known-classes": [
+            "baremetal-image",
+            "core-image",
+            "image",
+            "image-container",
+            "image-live",
+            "kernel-fitimage",
+            "kernel-uimage",
+            "license_image",
+            "testimage"
+        ],
+        "known-variables": [
+            "IMAGE_FEATURES",
+            "IMAGE_INSTALL",
+            "IMAGE_LINGUAS",
+            "IMAGE_ROOTFS_SIZE",
+            "IMAGE_ROOTFS_EXTRA_SPACE"
+        ]
+    },
+    "oelint-mandatoryvar": {
+        "SRC_URI-exclude-classes": [
+            "pypi",
+            "gnomebase"
+        ],
+        "image-excludes": [
+            "CVE_PRODUCT",
+            "HOMEPAGE",
+            "SRC_URI"
+        ],
+        "pkggroup-excludes": [
+            "CVE_PRODUCT",
+            "HOMEPAGE",
+            "LICENSE",
+            "SRC_URI"
+        ]
+    },
+    "oelint-suggestedvar": {
+        "image-excludes": [],
+        "pkggroup-excludes": [
+            "LICENSE",
+            "CVE_PRODUCT"
+        ]
+    },
+    "replacements": {
+        "mirrors": {
+            "${APACHE_MIRROR}": "http://www.us.apache.org/dist",
+            "${CPAN_MIRROR}": "http://cpan.metacpan.org/",
+            "${DEBIAN_MIRROR}": "http://snapshot.debian.org/archive/debian/20180310T215105Z/pool",
+            "${E_CVS}": "cvs://anonymous@anoncvs.enlightenment.org/var/cvs/e",
+            "${E_URI}": "http://enlightenment.freedesktop.org/files",
+            "${FREEBSD_MIRROR}": "ftp://ftp.freebsd.org/pub/FreeBSD/",
+            "${FREEDESKTOP_CVS}": "cvs://anoncvs:anoncvs@anoncvs.freedesktop.org/cvs",
+            "${GENTOO_MIRROR}": "http://distro.ibiblio.org/pub/linux/distributions/gentoo/distfiles",
+            "${GNOME_MIRROR}": "http://ftp.gnome.org/pub/GNOME/sources",
+            "${GNUPG_MIRROR}": "ftp://ftp.gnupg.org/gcrypt",
+            "${GNU_MIRROR}": "https://mirrors.kernel.org/gnu",
+            "${GPE_MIRROR}": "http://gpe.linuxtogo.org/download/source",
+            "${GPE_SVN}": "svn://projects.linuxtogo.org/svn/gpe/trunk/base;module=${PN}",
+            "${HANDHELDS_CVS}": "cvs://anoncvs:anoncvs@anoncvs.handhelds.org/cvs",
+            "${KERNELORG_MIRROR}": "http://www.kernel.org/pub",
+            "${SAVANNAH_GNU_MIRROR}": "http://download-mirror.savannah.gnu.org/releases",
+            "${SAVANNAH_NONGNU_MIRROR}": "http://download-mirror.savannah.nongnu.org/releases",
+            "${SOURCEFORGE_MIRROR}": "http://heanet.dl.sourceforge.net/sourceforge",
+            "${XLIBS_MIRROR}": "http://xlibs.freedesktop.org/release",
+            "${XORG_MIRROR}": "http://xorg.freedesktop.org/releases"
+        }
+    },
+    "variables": {
+        "mandatory": [
+            "SUMMARY",
+            "DESCRIPTION",
+            "HOMEPAGE",
+            "LICENSE",
+            "SRC_URI"
+        ],
+        "order": [
+            "SUMMARY",
+            "DESCRIPTION",
+            "AUTHOR",
+            "HOMEPAGE",
+            "BUGTRACKER",
+            "SECTION",
+            "LICENSE",
+            "LIC_FILES_CHKSUM",
+            "DEPENDS",
+            "PROVIDES",
+            "PV",
+            "SRC_URI",
+            "SRCREV",
+            "S",
+            "inherit",
+            "PACKAGECONFIG",
+            "EXTRA_QMAKEVARS_POST",
+            "EXTRA_OECONF",
+            "PACKAGE_ARCH",
+            "PACKAGES",
+            "FILES",
+            "RDEPENDS",
+            "RRECOMMENDS",
+            "RSUGGESTS",
+            "RPROVIDES",
+            "RCONFLICTS",
+            "BBCLASSEXTEND"
+        ],
+        "protected": [
+            "BB_CONSOLELOG",
+            "BB_CURRENTTASK",
+            "BB_DANGLINGAPPENDS_WARNONLY",
+            "BB_DEFAULT_TASK",
+            "BB_DISKMON_DIRS",
+            "BB_DISKMON_WARNINTERVAL",
+            "BB_ENV_EXTRAWHITE",
+            "BB_ENV_WHITELIST",
+            "BB_FETCH_PREMIRRORONLY",
+            "BB_FILENAME",
+            "BB_GENERATE_MIRROR_TARBALLS",
+            "BB_HASHBASE_WHITELIST",
+            "BB_HASHCHECK_FUNCTION",
+            "BB_HASHCONFIG_WHITELIST",
+            "BB_INVALIDCONF",
+            "BB_LOGFMT",
+            "BB_NICE_LEVEL",
+            "BB_NO_NETWORK",
+            "BB_NUMBER_PARSE_THREADS",
+            "BB_NUMBER_THREADS",
+            "BB_ORIGENV",
+            "BB_PRESERVE_ENV",
+            "BB_RUNFMT",
+            "BB_RUNTASK",
+            "BB_SCHEDULER",
+            "BB_SCHEDULERS",
+            "BB_SETSCENE_DEPVALID",
+            "BB_SETSCENE_VERIFY_FUNCTION",
+            "BB_SIGNATURE_EXCLUDE_FLAGS",
+            "BB_SIGNATURE_HANDLER",
+            "BB_SRCREV_POLICY",
+            "BB_STAMP_POLICY",
+            "BB_STAMP_WHITELIST",
+            "BB_STRICT_CHECKSUM",
+            "BB_TASK_NICE_LEVEL",
+            "BB_TASKHASH",
+            "BB_VERBOSE_LOGS",
+            "BB_WORKERCONTEXT",
+            "BBDEBUG",
+            "BBFILE_COLLECTIONS",
+            "BBFILE_PATTERN",
+            "BBFILE_PRIORITY",
+            "BBFILES",
+            "BBINCLUDED",
+            "BBINCLUDELOGS",
+            "BBINCLUDELOGS_LINES",
+            "BBLAYERS",
+            "BBMASK",
+            "BBPATH",
+            "BBSERVER",
+            "BBVERSIONS",
+            "BITBAKE_UI",
+            "BUILDNAME",
+            "CACHE",
+            "DL_DIR",
+            "FILE",
+            "FILESDIR",
+            "FILESPATH",
+            "LAYERDEPENDS",
+            "LAYERDIR",
+            "LAYERVERSION",
+            "MIRRORS",
+            "MULTI_PROVIDER_WHITELIST",
+            "PERSISTENT_DIR",
+            "PREFERRED_PROVIDER",
+            "PREFERRED_PROVIDERS",
+            "PREFERRED_VERSION",
+            "PREMIRRORS",
+            "PRSERV_HOST",
+            "STAMP",
+            "TOPDIR"
+        ],
+        "protected-append": [
+            "PV",
+            "PR",
+            "SRCREV",
+            "LICENSE",
+            "LIC_FILES_CHKSUM"
+        ],
+        "suggested": [
+            "AUTHOR",
+            "BUGTRACKER",
+            "BBCLASSEXTEND",
+            "CVE_PRODUCT",
+            "SECTION"
+        ]
+    }
+}

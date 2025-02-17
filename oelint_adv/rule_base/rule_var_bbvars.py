@@ -12,14 +12,14 @@ class VarQuoted(Rule):
         super().__init__(id='oelint.vars.bbvars',
                          severity='warning',
                          message='Variable \'{VAR}\' should be set on a disto/layer or local.conf level, not in a recipe',
-                         appendix=CONSTANTS.VariablesProtected)
+                         appendix=CONSTANTS.GetByPath('variables/protected'))
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file,
                                                   classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR,
-                                                  attributeValue=CONSTANTS.VariablesProtected)
+                                                  attributeValue=CONSTANTS.GetByPath('variables/protected'))
         inherits: List[Inherit] = stash.GetItemsFor(filename=_file,
                                                     classifier=Inherit.CLASSIFIER,
                                                     attribute=Inherit.ATTR_STATEMENT,

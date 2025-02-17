@@ -63,7 +63,21 @@ file in your layer root.
 
 ## Constants to add
 
-For a full list of constants that can be added to the file, see [the oelint-parser documentation](https://github.com/priv-kweihmann/oelint-parser#working-with-constants)
+| key                        | type | description                                           | getter for information                                     |
+| -------------------------- | ---- | ----------------------------------------------------- | ---------------------------------------------------------- |
+| functions/known            | list | known functions                                       | `oelint_parse.constants.CONSTANT.FunctionsKnown`           |
+| functions/order            | list | preferred order of core functions                     | `oelint_parse.constants.CONSTANT.FunctionsOrder`           |
+| images/known-classes       | list | bbclasses to be known to be used in images            | `oelint_parse.constants.CONSTANT.ImagesClasses`            |
+| images/known-variables     | list | variables known to be used in images                  | `oelint_parse.constants.CONSTANT.ImagesVariables`          |
+| replacements/distros       | list | known distro overrides                                | `oelint_parse.constants.CONSTANT.DistrosKnown`             |
+| replacements/machines      | list | known machine overrides                               | `oelint_parse.constants.CONSTANT.MachinesKnown`            |
+| replacements/mirrors       | dict | known mirrors                                         | `oelint_parse.constants.CONSTANT.MirrorsKnown`             |
+| variables/known            | list | known variables                                       | `oelint_parse.constants.CONSTANT.VariablesKnown`           |
+| variables/mandatory        | list | variables mandatory to a recipe                       | `oelint_parse.constants.CONSTANT.VariablesMandatory`       |
+| variables/order            | list | preferred order of variables                          | `oelint_parse.constants.CONSTANT.VariablesOrder`           |
+| variables/protected        | list | variables not to be used in recipes                   | `oelint_parse.constants.CONSTANT.VariablesProtected`       |
+| variables/protected-append | list | variables not to be used in bbappends                 | `oelint_parse.constants.CONSTANT.VariablesProtectedAppend` |
+| variables/suggested        | list | suggested variable in a recipe                        | `oelint_parse.constants.CONSTANT.VariablesSuggested`       |
 
 ## Q&A
 
