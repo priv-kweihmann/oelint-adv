@@ -1,8 +1,18 @@
 {
+  "functions": {
+    "known": [
+      "do_arch_patch_config",
+      "do_gem_unpack",
+      "do_generate_spec",
+      "do_rubygems_fix_libs",
+      "do_rubygems_gen_test",
+      "rubygems_debug_handler",
+      "rubygems_do_compile",
+      "rubygems_do_install"
+    ]
+  },
   "variables": {
     "known": [
-      "BASICTESTSUITE",
-      "DEFAULT_TEST_SUITES",
       "EXTRA_DEPENDS",
       "EXTRA_RDEPENDS",
       "GEMLIB_VERSION",
@@ -20,29 +30,12 @@
       "GEM_SPEC_FILENAME",
       "GEM_SRC",
       "GEM_VERSION",
-      "MIPSREMOVE",
-      "QEMU_USE_KVM",
       "RUBYGEMS_AUTOGEN_TESTS",
       "RUBYGEMS_LAYERDIR",
       "RUBYLIB_EXTRA_PATHS",
       "RUBYPLATFORM",
       "RUBY_INSTALL_EXTRA_FLAGS",
-      "RUBY_SITEDIR",
-      "TESTIMAGEDEPENDS",
-      "TESTIMAGELOCK",
-      "TESTIMAGE_BOOT_PATTERNS",
-      "TESTIMAGE_DUMP_DIR",
-      "TESTIMAGE_FAILED_QA_ARTIFACTS",
-      "TESTIMAGE_UPDATE_VARS",
-      "TEST_EXPORT_DIR",
-      "TEST_EXTRACTED_DIR",
-      "TEST_INSTALL_TMP_DIR",
-      "TEST_LOG_DIR",
-      "TEST_NEEDED_PACKAGES_DIR",
-      "TEST_OVERALL_TIMEOUT",
-      "TEST_PACKAGED_DIR",
-      "TEST_QEMUPARAMS",
-      "TEST_RUNQEMUPARAMS"
+      "RUBY_SITEDIR"
     ],
     "renamed": {}
   },

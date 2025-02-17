@@ -1,11 +1,18 @@
 {
+  "functions": {
+    "known": [
+      "create_uefiapps",
+      "do_uefi_sign",
+      "do_uefiapp",
+      "do_uefiapp_deploy",
+      "uefiapp_deploy_at"
+    ]
+  },
   "variables": {
     "known": [
-      "BBFILES_DYNAMIC",
       "CUSTOM_LICENSES_PATH",
       "ICCSDK",
       "INITRD_IMAGE",
-      "INITRD_LIVE",
       "SECURE_BOOT_SIGNING_CERT_HASH",
       "SECURE_BOOT_SIGNING_KEY_HASH",
       "SIGNING_BINARIES",

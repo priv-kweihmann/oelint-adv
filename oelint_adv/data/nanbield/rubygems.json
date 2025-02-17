@@ -1,4 +1,16 @@
 {
+  "functions": {
+    "known": [
+      "do_arch_patch_config",
+      "do_gem_unpack",
+      "do_generate_spec",
+      "do_rubygems_fix_libs",
+      "do_rubygems_gen_test",
+      "rubygems_debug_handler",
+      "rubygems_do_compile",
+      "rubygems_do_install"
+    ]
+  },
   "variables": {
     "known": [
       "EXTRA_DEPENDS",

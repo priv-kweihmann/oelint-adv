@@ -1,22 +1,16 @@
 {
+  "functions": {
+    "known": [
+      "poky_update_bblayersconf"
+    ]
+  },
   "variables": {
     "known": [
-      "BB_HASHSERVE",
       "DISTRO_CODENAME",
-      "EXCONFIG_ARGS",
-      "KERNEL_EXTRA_FEATURES",
       "POKY_DEFAULT_DISTRO_FEATURES",
       "POKY_DEFAULT_EXTRA_RDEPENDS",
       "POKY_DEFAULT_EXTRA_RRECOMMENDS",
-      "REQUIRED_POKY_BBLAYERS_CONF_VERSION",
-      "UNINATIVE_CHECKSUM",
-      "UNINATIVE_DLDIR",
-      "UNINATIVE_LOADER",
-      "UNINATIVE_MAXGLIBCVERSION",
-      "UNINATIVE_STAGING_DIR",
-      "UNINATIVE_TARBALL",
-      "UNINATIVE_URL",
-      "UNINATIVE_VERSION"
+      "REQUIRED_POKY_BBLAYERS_CONF_VERSION"
     ],
     "renamed": {}
   },

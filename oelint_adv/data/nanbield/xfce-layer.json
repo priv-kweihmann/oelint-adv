@@ -1,4 +1,7 @@
 {
+  "functions": {
+    "known": []
+  },
   "variables": {
     "known": [
       "AUTOTOOLS_COPYACLOCAL"

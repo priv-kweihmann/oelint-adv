@@ -1,4 +1,12 @@
 {
+  "functions": {
+    "known": [
+      "distutils3_do_compile",
+      "distutils3_do_configure",
+      "distutils3_do_install",
+      "do_bandit"
+    ]
+  },
   "variables": {
     "known": [
       "KIVY_CROSS_SYSROOT",
