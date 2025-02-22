@@ -17,7 +17,7 @@
       "master": "c49684b48b04e89e40550960558ca18dba3708a5\n",
       "mickledore": "7235399a86b134e57d5eb783d7f1f57ca0439ae5\n",
       "nanbield": "7b8aa378d069ee31373f22caba3bd7fc7863f447\n",
-      "scarthgap": "ce9f4eaaae324ef4182a39293f3a6b2aa7207680\n",
+      "scarthgap": "2afaed1013190d7f54a5346bfca69e92bdb2ed83\n",
       "styhead": "1cbcbab0555c8005b66dc31d2567bb9b3469d237\n"
     },
     "name": "core"
@@ -39,7 +39,7 @@
       "master": "c49684b48b04e89e40550960558ca18dba3708a5\n",
       "mickledore": "7235399a86b134e57d5eb783d7f1f57ca0439ae5\n",
       "nanbield": "7b8aa378d069ee31373f22caba3bd7fc7863f447\n",
-      "scarthgap": "ce9f4eaaae324ef4182a39293f3a6b2aa7207680\n",
+      "scarthgap": "2afaed1013190d7f54a5346bfca69e92bdb2ed83\n",
       "styhead": "1cbcbab0555c8005b66dc31d2567bb9b3469d237\n"
     },
     "name": "yocto"
@@ -63,7 +63,7 @@
       "master": "c49684b48b04e89e40550960558ca18dba3708a5\n",
       "mickledore": "7235399a86b134e57d5eb783d7f1f57ca0439ae5\n",
       "nanbield": "7b8aa378d069ee31373f22caba3bd7fc7863f447\n",
-      "scarthgap": "ce9f4eaaae324ef4182a39293f3a6b2aa7207680\n",
+      "scarthgap": "2afaed1013190d7f54a5346bfca69e92bdb2ed83\n",
       "styhead": "1cbcbab0555c8005b66dc31d2567bb9b3469d237\n"
     },
     "name": "yoctobsp"
@@ -377,7 +377,7 @@
       "master": "03dc0d89b41a57e2263554cb47c9614c35250448\n",
       "mickledore": "d14b0311f852651a0b0a48c4bc5be7cdde7ab2af\n",
       "nanbield": "830404acbb3279a2f67bfc10a526428523518dbb\n",
-      "scarthgap": "7c6d6529d0d06956bdfe4f7096faf146d949b086\n",
+      "scarthgap": "7bfadb66b70459b44571773e113223dba7ee87e7\n",
       "styhead": "42bc8c6cb521ff19bffb3b8e3e09d1f701d878f2\n"
     },
     "name": "webkit"
@@ -456,7 +456,7 @@
       "master": "c7c7dface32f187bb0ba724b8eb79152f7453f0c\n",
       "mickledore": "e63d672fedd1328ebd6d0a2632f8bef35598eb21\n",
       "nanbield": "e0c541c10f561b9c0087fd07ad5b79b0a534dab1\n",
-      "scarthgap": "0be954e82f09d235d2b5e5ea01bb62ffa8d0b5f7\n",
+      "scarthgap": "1a7ccdcaedc965f019a9263364437356b8a2ba29\n",
       "styhead": "d2e28940027808ea56f9d38deadb200a99a89805\n"
     },
     "name": "intel"
@@ -482,7 +482,7 @@
       "master": "3bbf270c07c93d4e9b12d61e2cc762901c9cf0db\n",
       "mickledore": "5d71d4f20f8b676fc5308141f8f5002745b7d20e\n",
       "nanbield": "e6e7c07b08c436310cc9acfe9ff6892155425703\n",
-      "scarthgap": "36accb283e2047cf52f3bc1857edad8507e049ec\n",
+      "scarthgap": "c614b50aa1b326fed30302d33bfa269400d6e60e\n",
       "styhead": "46ef14feaf7c41de678611d6674a84986296d4cf\n"
     },
     "name": "freescale-layer"
