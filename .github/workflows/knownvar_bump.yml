@@ -52,3 +52,4 @@ jobs:
           body: "auto generated data update"
           add-paths: |
             oelint_adv/data/*.json
+            scripts/bump-vars.config.json
