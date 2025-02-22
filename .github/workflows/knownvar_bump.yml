@@ -25,6 +25,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
       - name: Install requirements
         run: |
           sudo apt install gawk wget git diffstat unzip texinfo gcc build-essential \
@@ -32,6 +37,8 @@ jobs:
                iputils-ping python3-git python3-jinja2 python3-subunit zstd liblz4-tool \
                file locales libacl1
           sudo locale-gen en_US.UTF-8
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
       - name: Bump known vars for ${{ matrix.branch }}
         run: ${GITHUB_WORKSPACE}/scripts/bump-vars ${{ matrix.branch }}
         shell: bash
