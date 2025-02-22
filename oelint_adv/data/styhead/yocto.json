@@ -7,6 +7,8 @@
   },
   "variables": {
     "known": [
+      "BBFILES_PRIORITIZED",
+      "BB_LOGCONFIG",
       "DISTRO_CODENAME",
       "POKY_DEFAULT_DISTRO_FEATURES",
       "POKY_DEFAULT_EXTRA_RDEPENDS",

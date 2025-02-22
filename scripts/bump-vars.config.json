@@ -18,7 +18,7 @@
       "mickledore": "7235399a86b134e57d5eb783d7f1f57ca0439ae5\n",
       "nanbield": "7b8aa378d069ee31373f22caba3bd7fc7863f447\n",
       "scarthgap": "ce9f4eaaae324ef4182a39293f3a6b2aa7207680\n",
-      "styhead": "1cbcbab0555c8005b66dc31d2567bb9b3469d237\n"
+      "styhead": "11a8dec6e29ac0b2fd942c0fc00dd7fc30658841\n"
     },
     "name": "core"
   },
@@ -40,7 +40,7 @@
       "mickledore": "7235399a86b134e57d5eb783d7f1f57ca0439ae5\n",
       "nanbield": "7b8aa378d069ee31373f22caba3bd7fc7863f447\n",
       "scarthgap": "ce9f4eaaae324ef4182a39293f3a6b2aa7207680\n",
-      "styhead": "1cbcbab0555c8005b66dc31d2567bb9b3469d237\n"
+      "styhead": "11a8dec6e29ac0b2fd942c0fc00dd7fc30658841\n"
     },
     "name": "yocto"
   },
@@ -64,7 +64,7 @@
       "mickledore": "7235399a86b134e57d5eb783d7f1f57ca0439ae5\n",
       "nanbield": "7b8aa378d069ee31373f22caba3bd7fc7863f447\n",
       "scarthgap": "ce9f4eaaae324ef4182a39293f3a6b2aa7207680\n",
-      "styhead": "1cbcbab0555c8005b66dc31d2567bb9b3469d237\n"
+      "styhead": "11a8dec6e29ac0b2fd942c0fc00dd7fc30658841\n"
     },
     "name": "yoctobsp"
   },
@@ -457,7 +457,7 @@
       "mickledore": "e63d672fedd1328ebd6d0a2632f8bef35598eb21\n",
       "nanbield": "e0c541c10f561b9c0087fd07ad5b79b0a534dab1\n",
       "scarthgap": "0be954e82f09d235d2b5e5ea01bb62ffa8d0b5f7\n",
-      "styhead": "d2e28940027808ea56f9d38deadb200a99a89805\n"
+      "styhead": "0ee9e8454cd41dcb0f49df7dcf2182b4d5e7cc96\n"
     },
     "name": "intel"
   },
@@ -483,7 +483,7 @@
       "mickledore": "5d71d4f20f8b676fc5308141f8f5002745b7d20e\n",
       "nanbield": "e6e7c07b08c436310cc9acfe9ff6892155425703\n",
       "scarthgap": "36accb283e2047cf52f3bc1857edad8507e049ec\n",
-      "styhead": "46ef14feaf7c41de678611d6674a84986296d4cf\n"
+      "styhead": "75413b5dfc6c233b49a4401f15f0b7a2c35d0672\n"
     },
     "name": "freescale-layer"
   },
