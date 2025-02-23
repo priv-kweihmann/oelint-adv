@@ -48,7 +48,7 @@ Use the ``scripts/generate-layer-variables`` tool for that.
 
 ### step by step guide
 
-- checkout the master of the ``oelint-adv`` repository.
+- checkout the master of the ``oelint-data`` repository.
 - create a virtual python environment (e.g. ``python3 -m venv env``)
 - active the virtual python environment (e.g. ``. env/bin/activate``)
 - install the needed dependencies (e.g. ``pip3 install -r requirements.txt -r requirements-dev.txt``) from the ``oelint-adv`` checkout

@@ -1,11 +1,14 @@
 import argparse
+import os
 from typing import List
 
-from oelint_adv.data import known_variable_mod, layer_var_mods
+from oelint_data import known_variable_mod, layer_var_mods
 
 
 class Tweaks:
     """Release specific tweaks"""
+
+    standard_data_path = os.path.join(os.path.dirname(__file__), 'data', 'oelint.json')
 
     DEFAULT_RELEASE = 'styhead'
     DEVELOPMENT_RELEASE = 'walnascar'
@@ -97,7 +100,7 @@ class Tweaks:
                 setattr(args, k, v)
 
         # release known var constantmod
-        modlist = [known_variable_mod('', 'oelint')]
+        modlist = [Tweaks.standard_data_path]
         release_mod = known_variable_mod(args.release, 'core')
         fallback_release_mod = known_variable_mod('fallback', 'core')
         if release_mod:
