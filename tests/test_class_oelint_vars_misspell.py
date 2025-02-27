@@ -53,6 +53,10 @@ class TestClassOelintVarsMispell(TestBaseClass):
                                  },
                                  {
                                      'oelint_adv_test.bb':
+                                     '_SECRETVAR = "1"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
                                      '''
                                      PACKAGECONFIG_A = "a"
                                      PACKAGECONFIG_B = "c"
@@ -110,6 +114,10 @@ class TestClassOelintVarsMispell(TestBaseClass):
                                  },
                                  {
                                      'oelint_adv_test.bb':
+                                     '_do_secret[prefuncs] += "foo"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
                                      '''
                                      dskfdsfkjfhsjkfsdjfkj = "1"
                                      ''',
@@ -133,6 +141,10 @@ class TestClassOelintVarsMispell(TestBaseClass):
                                      PACKAGES += "${PN}-foo"
                                      INITSCRIPT_PARAMS_${PN}-foo = "bar"
                                      ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '_SECRETVAR = "1"',
                                  },
                              ],
                              )

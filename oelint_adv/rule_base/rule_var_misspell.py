@@ -38,6 +38,8 @@ class VarMisspell(Rule):
         for i in items:
             if isinstance(i, Variable):
                 _cleanvarname = i.VarName
+                if _cleanvarname.startswith('_'):
+                    continue
                 if _cleanvarname in CONSTANTS.VariablesKnown:
                     continue
                 if _cleanvarname in _extras:
@@ -47,6 +49,8 @@ class VarMisspell(Rule):
                         _cleanvarname = ''.join(_cleanvarname.rsplit(pkg, 1))  # pragma: no cover
             else:
                 _cleanvarname = i.VarName
+                if _cleanvarname.startswith('_'):
+                    continue
                 if _cleanvarname in _taskname:
                     continue
                 if _cleanvarname in CONSTANTS.VariablesKnown:
