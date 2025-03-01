@@ -24,7 +24,6 @@ flake8-quotes == 3.4.0
 flake8-requirements == 2.2.1
 flake8-string-format == 0.3.0
 flake8-variables-names == 0.0.6
-kas ~= 4.7
 pre-commit == 2.21.0
 pytest == 8.3.4
 pytest-cov == 3.0.0
