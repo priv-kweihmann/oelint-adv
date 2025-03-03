@@ -489,6 +489,13 @@ def run(args: argparse.Namespace) -> List[Tuple[Tuple[str, int], str]]:
     groups = group_files(args.files, args.mode)
     if not any(groups):
         return []
+    # Starting with python 3.14 the default way of starting the mp Pool
+    # will be 'forkserver' - see https://docs.python.org/3.14/library/multiprocessing.html#contexts-and-start-methods
+    # But in our setup we will need to share e.g. the CONSTANTS object into
+    # the checks running in the Pool
+    # Hence, we enforce fork
+    if mp.get_start_method() != 'fork':
+        mp.set_start_method('fork')  # pragma: no cover
     with mp.Pool(processes=min(args.jobs, len(groups))) as pool:
         try:
             issues = flatten(pool.map(partial(group_run, quiet=args.quiet, fix=args.fix,
