@@ -21,7 +21,6 @@ class VarSRCUriFirstFile(Rule):
         _second_level_ops = []
 
         def extract_fetcher(item, prepend=False):
-            nonlocal _fetcher
             lines = [y.strip('"') for y in item.get_items() if y]
 
             for x in lines:
