@@ -4,7 +4,7 @@ from oelint_parser.cls_item import Inherit, Variable
 from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
 
-from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_rule import Rule, Classification
 
 
 class VarSuggestedExists(Rule):
@@ -12,15 +12,13 @@ class VarSuggestedExists(Rule):
         super().__init__(id='oelint.var.suggestedvar',
                          severity='info',
                          message='<FOO>',
-                         onappend=False,
+                         run_on=[Classification.RECIPE],
                          appendix=CONSTANTS.GetByPath('variables/suggested'))
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         _is_pkg_group = stash.IsPackageGroup(_file)
         _is_image = stash.IsImage(_file)
-        if _file in stash.GetConfFiles():
-            return []
         all_items: List[Variable] = stash.GetItemsFor(filename=_file,
                                                       classifier=Variable.CLASSIFIER,
                                                       attribute=Variable.ATTR_VAR,

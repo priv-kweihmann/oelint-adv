@@ -4,13 +4,14 @@ from typing import List, Tuple
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
 
-from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_rule import Rule, Classification
 
 
 class FilePatchIsSignedOff(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.file.patchsignedoff',
                          severity='warning',
+                         run_on=[Classification.BBAPPEND, Classification.RECIPE],
                          message='Patch \'{FILE}\' should contain a Signed-off-by entry')
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:

@@ -4,7 +4,7 @@ from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
 
-from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_rule import Rule, Classification
 
 
 class VarQuoted(Rule):
@@ -12,7 +12,7 @@ class VarQuoted(Rule):
         super().__init__(id='oelint.append.protvars',
                          severity='error',
                          message='Variable \'{VAR}\' shouldn\'t be set as part of a bbappend',
-                         onlyappend=True,
+                         run_on=[Classification.BBAPPEND],
                          appendix=CONSTANTS.GetByPath('variables/protected-append'))
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:

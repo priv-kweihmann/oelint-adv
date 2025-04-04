@@ -1,8 +1,10 @@
+import fnmatch
 import importlib
 import inspect
 import os
 import pkgutil
 import sys
+from enum import Enum
 from typing import FrozenSet, Iterable, List, Tuple
 
 from colorama import Style
@@ -10,6 +12,15 @@ from oelint_parser.cls_stash import Stash
 
 from oelint_adv.state import State
 from oelint_adv.version import __version__
+
+
+class Classification(Enum):
+    RECIPE = 0
+    BBAPPEND = 1
+    BBCLASS = 2
+    MACHINECONF = 3
+    DISTROCONF = 4
+    LAYERCONF = 5
 
 
 class Rule:
@@ -22,6 +33,7 @@ class Rule:
                  appendix: List[str] = (),
                  valid_till_release: str = '',
                  valid_from_release: str = '',
+                 run_on: List[Classification] = None,
                  ) -> None:  # noqa: A002, VNE003
         """constructor
 
@@ -29,22 +41,51 @@ class Rule:
             id {str} -- ID of the rule (default: {''})
             severity {str} -- severity of the rule (default: {''})
             message {str} -- Rule message (default: {''})
-            onappend {bool} -- true if rule should be run on bbappends (default: {True})
-            onlyappend {bool} -- true if rule applies to bbappends only (default: {False})
+            onappend {bool} -- (deprecated: use run_on) true if rule should be run on bbappends (default: {True})
+            onlyappend {bool} -- (deprecated: use run_on) true if rule applies to bbappends only (default: {False})
             appendix {List[str]} -- possible appendix to id
             valid_till_release {str} -- rule only valid till (excluding) this release (default: '' = all)
             valid_from_release {str} -- rule only valid from (including) this release (default: '' = all)
+            run_on {List[Classification]} -- run rule only on certain file groups (default: None = all)
         """
         self.ID = id
         self.Severity = severity
         self.Msg = message
-        self.OnAppend = onappend
-        self.OnlyAppend = onlyappend
         self.Appendix = appendix
+        self._run_on: List[Classification] = run_on or [
+            Classification.BBAPPEND,
+            Classification.BBCLASS,
+            Classification.DISTROCONF,
+            Classification.LAYERCONF,
+            Classification.MACHINECONF,
+            Classification.RECIPE,
+        ]
+        self.OnlyAppend = onlyappend
+        self.OnAppend = onappend
+        if self.OnlyAppend:
+            self._run_on = [Classification.BBAPPEND]  # pragma: no cover
+        if not self.OnAppend and Classification.BBAPPEND in self._run_on:
+            self._run_on.remove(Classification.BBAPPEND)  # pragma: no cover
         self._valid_till_release = valid_till_release
         self._valid_from_release = valid_from_release
         self._state: State = None
         self.__matrix: FrozenSet[str] = []
+
+    @staticmethod
+    def classify_file(fn) -> List[Classification]:
+        if fnmatch.fnmatch(fn, '*.bbclass'):
+            return [Classification.BBCLASS]
+        if fnmatch.fnmatch(fn, '*.bbappend'):
+            return [Classification.BBAPPEND]
+        if fnmatch.fnmatch(fn, '*.bb'):
+            return [Classification.RECIPE]
+        if fnmatch.fnmatch(fn, '*/machine/*.conf'):
+            return [Classification.MACHINECONF]
+        if fnmatch.fnmatch(fn, '*/distro/*.conf'):
+            return [Classification.DISTROCONF]
+        if fnmatch.fnmatch(fn, '*/layer.conf'):
+            return [Classification.LAYERCONF]
+        return []  # pragma: no cover
 
     def set_product_matrix(self, in_: FrozenSet[str]) -> None:
         """Set the product matrix
@@ -76,6 +117,17 @@ class Rule:
         if self._valid_till_release and self._valid_till_release in release_range:
             return False
         return True
+
+    def should_run(self, groupclass: List[Classification]) -> bool:
+        """Wrapper for check, checking if the rule classification matches the group
+
+        Args:
+            groupclass (List[Classification]): Classifications of the group
+
+        Returns:
+            bool: rule should be run
+        """
+        return any(set(groupclass).intersection(self._run_on))
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         """Stub for running check - is overridden by each rule
@@ -123,10 +175,6 @@ class Rule:
         Returns:
             Tuple[Tuple[str, int], List[str], str] -- Path, line, matrix, Human readable finding (possibly with color codes)
         """
-        if not self.OnAppend and _file.endswith('.bbappend'):
-            return []  # pragma: no cover
-        if self.OnlyAppend and not _file.endswith('.bbappend'):
-            return []  # pragma: no cover
         if override_msg is None:
             override_msg = self.Msg
         _suppression_offset = blockoffset or _line

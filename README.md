@@ -371,6 +371,35 @@ Enables the special `Appendix` `kirkstone`, if `kirkstone` is part of the calcul
 It also sets the variable `self._we_are_running_on_kirkstone`, which can be used as part of `check()` to
 code special code paths.
 
+## File type constrained rules
+
+Rule can be limited in on what kind of files they are run on
+
+e.g.
+
+```python
+from oelint_adv.cls_rule import Rule, Classification
+
+
+class FooMagicRule(Rule):
+    def __init__(self):
+        super().__init__(id="foocorp.foo.magic",
+                         severity="error",
+                         run_on=[Classification.RECIPE]
+                         message="Too much foo happening here")
+```
+
+would only apply to recipe files (.bb).
+
+Valid ``Classification`` are
+
+- ``Classification.BBAPPEND`` : for bbappends
+- ``Classification.BBCLASS`` : for bbclasses
+- ``Classification.DISTROCONF`` : for distro configurations
+- ``Classification.LAYERCONF`` : for layer configurations
+- ``Classification.MACHINECONF`` : for machine configurations
+- ``Classification.RECIPE`` : for recipes
+
 ## Defining a ruleset
 
 If you pass the option `--rulefile` you could define the rules to be checked and their severity via a simple json file.
