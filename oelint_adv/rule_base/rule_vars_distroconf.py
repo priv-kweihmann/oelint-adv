@@ -4,7 +4,7 @@ from typing import List, Tuple
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
 
-from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_rule import Rule, Classification
 
 
 class VarsDistroConf(Rule):
@@ -24,6 +24,7 @@ class VarsDistroConf(Rule):
 
         super().__init__(id='oelint.vars.distroconf',
                          severity='warning',
+                         run_on=[Classification.DISTROCONF],
                          message='{var} should not be set as part of a distro configuration',
                          appendix=self.needles)
 
@@ -34,7 +35,7 @@ class VarsDistroConf(Rule):
 
         for i in items:
             if not fnmatch.fnmatch(i.Origin, '*/distro/*.conf'):
-                continue
+                continue   # pragma: no cover
             if i.VarName in self.needles:
                 res += self.finding(_file, i.Line,
                                     self.Msg.format(var=i.VarName), appendix=i.VarName)

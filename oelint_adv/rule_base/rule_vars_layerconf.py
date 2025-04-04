@@ -5,7 +5,7 @@ from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
 from oelint_parser.rpl_regex import RegexRpl
 
-from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_rule import Rule, Classification
 
 
 class VarsLayerConf(Rule):
@@ -27,6 +27,7 @@ class VarsLayerConf(Rule):
 
         super().__init__(id='oelint.vars.layerconf',
                          severity='warning',
+                         run_on=[Classification.LAYERCONF],
                          message='{var} should not be set as part of a layer configuration')
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:

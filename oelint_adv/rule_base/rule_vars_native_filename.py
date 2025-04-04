@@ -3,13 +3,14 @@ from typing import List, Tuple
 from oelint_parser.cls_item import Inherit
 from oelint_parser.cls_stash import Stash
 
-from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_rule import Rule, Classification
 
 
 class VarNativeFilename(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.var.nativefilename',
                          severity='warning',
+                         run_on=[Classification.BBAPPEND, Classification.RECIPE],
                          message='native-recipe-files should include \'-native\' in file name')
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:

@@ -107,6 +107,19 @@ def group_files(files: Iterable[str], mode: str) -> List[Tuple[List[str], List[s
                 res[_filename_key] = set()
             res[_filename_key].add(f)
 
+    # third round for lone bbclasses
+    for f in files:
+        _filename, _ext = os.path.splitext(f)
+        if _ext not in ['.bbclass']:
+            continue
+        if '_' in os.path.basename(_filename):
+            _filename_key = _filename
+        else:
+            _filename_key = os.path.basename(_filename)
+        if _filename_key not in res:  # pragma: no cover
+            res[_filename_key] = set()
+        res[_filename_key].add(f)
+
     # layer.confs
     _conf_layer = sorted([x for x in files if os.path.basename(x) == 'layer.conf'], key=lambda index: files.index(index))
 
@@ -215,13 +228,12 @@ def group_run(group: List[Tuple],
         rule.set_state(state)
         rule.set_product_matrix(matrix)
 
-    _files = list(set(stash.GetRecipes() + stash.GetLoneAppends() + stash.GetConfFiles()))
+    _files = list(set(stash.GetRecipes() + stash.GetLoneAppends() + stash.GetConfFiles() + stash.GetBBClasses()))
     issues = []
     for _, f in enumerate(_files):
+        _classification = Rule.classify_file(f)
         for r in rules:
-            if not r.OnAppend and f.endswith('.bbappend'):
-                continue
-            if r.OnlyAppend and not f.endswith('.bbappend'):
+            if not r.should_run(_classification):
                 continue
             if fix:
                 fixedfiles += r.fix(f, stash)

@@ -6,13 +6,14 @@ from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
 from oelint_parser.rpl_regex import RegexRpl
 
-from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_rule import Rule, Classification
 
 
 class FilePatchIsUpstreamStatusInactiveUpstreamDetails(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.file.inactiveupstreamdetails',
                          severity='info',
+                         run_on=[Classification.BBAPPEND, Classification.RECIPE],
                          message='Patch \'{FILE}\' with Upstream-Status: Inactive-Upstream has to have a lastcommit and/or lastrelease appended in []')
 
     def _get_recipe(self, items, path):
