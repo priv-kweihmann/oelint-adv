@@ -5,7 +5,7 @@ from oelint_parser.cls_stash import Stash
 from oelint_parser.constants import CONSTANTS
 from oelint_parser.rpl_regex import RegexRpl
 
-from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_rule import Rule, Classification
 
 
 class VarPnBpnUsage(Rule):
@@ -13,7 +13,7 @@ class VarPnBpnUsage(Rule):
         super().__init__(id='oelint.vars.specific',
                          severity='error',
                          message='\'{a}\' is set specific to [\'{b}\'], but isn\'t known from PACKAGES, MACHINE, DISTRO or resources',
-                         onappend=False)
+                         run_on=[Classification.RECIPE, Classification.BBCLASS])
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

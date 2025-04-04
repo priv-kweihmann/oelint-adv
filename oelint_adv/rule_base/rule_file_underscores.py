@@ -3,7 +3,7 @@ from typing import List, Tuple
 
 from oelint_parser.cls_stash import Stash
 
-from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_rule import Rule, Classification
 
 
 class FileNoSpaces(Rule):
@@ -11,7 +11,7 @@ class FileNoSpaces(Rule):
         super().__init__(id='oelint.file.underscores',
                          severity='error',
                          message='FOO',
-                         onappend=False)
+                         run_on=[Classification.RECIPE])
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
