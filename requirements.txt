@@ -1,4 +1,4 @@
-anytree ~= 2.12
+anytree ~= 2.13
 argcomplete ~= 3.6
 colorama ~= 0.4
 oelint-parser ~= 8.0
