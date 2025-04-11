@@ -3,13 +3,14 @@ from typing import List, Tuple
 from oelint_parser.cls_item import Function, Item, PythonBlock, Variable
 from oelint_parser.cls_stash import Stash
 
-from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_rule import Rule, Classification
 
 
 class VarPythonPnUsage(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.pythonpnusage',
                          severity='info',
+                         run_on=[Classification.BBAPPEND, Classification.RECIPE],
                          message='python3 should be used instead of ${PYTHON_PN}',
                          valid_from_release='scarthgap')
 

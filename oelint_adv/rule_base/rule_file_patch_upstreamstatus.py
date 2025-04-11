@@ -6,13 +6,14 @@ from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
 from oelint_parser.rpl_regex import RegexRpl
 
-from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_rule import Rule, Classification
 
 
 class FilePatchIsUpstreamStatus(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.file.upstreamstatus',
                          severity='info',
+                         run_on=[Classification.BBAPPEND, Classification.RECIPE],
                          message='Patch \'{FILE}\' should contain an Upstream-Status entry')
 
     def _get_recipe(self, items, path):

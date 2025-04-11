@@ -4,13 +4,14 @@ from oelint_parser.cls_item import Inherit, Variable
 from oelint_parser.cls_stash import Stash
 from oelint_parser.rpl_regex import RegexRpl
 
-from oelint_adv.cls_rule import Rule
+from oelint_adv.cls_rule import Rule, Classification
 
 
 class VarDependsClass(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.dependsclass',
                          severity='error',
+                         run_on=[Classification.RECIPE, Classification.BBAPPEND],
                          message='{org} should be {patched} as it\'s a {class_} only recipe')
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:

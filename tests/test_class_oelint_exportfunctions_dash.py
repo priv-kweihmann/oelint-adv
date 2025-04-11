@@ -10,19 +10,19 @@ class TestClassExportFunctionsBash(TestBaseClass):
     @pytest.mark.parametrize('input_',
                              [
                                  {
-                                     'oelint_adv_test.bb':
+                                     'oelint_adv_test.bbclass':
                                      '''
                                      EXPORT_FUNCTIONS do-install
                                      ''',
                                  },
                                  {
-                                     'oelint_adv_test.bb':
+                                     'oelint_adv_test.bbclass':
                                      '''
                                      EXPORT_FUNCTIONS do-install do_something
                                      ''',
                                  },
                                  {
-                                     'oelint_adv_test.bb':
+                                     'oelint_adv_test.bbclass':
                                      '''
                                      EXPORT_FUNCTIONS do_something do-install
                                      ''',
@@ -37,13 +37,13 @@ class TestClassExportFunctionsBash(TestBaseClass):
     @pytest.mark.parametrize('input_',
                              [
                                  {
-                                     'oelint_adv_test.bb':
+                                     'oelint_adv_test.bbclass':
                                      '''
                                      EXPORT_FUNCTIONS do_something do_install
                                      ''',
                                  },
                                  {
-                                     'oelint_adv_test.bb':
+                                     'oelint_adv_test.bbclass':
                                      '''
                                      EXPORT_FUNCTIONS do_something
                                      ''',
