@@ -15,8 +15,11 @@ there is a high chance that the variable value will never be used.
 
 ## Ways to fix it
 
-Use a known override - See the corresponding [README section](https://github.com/priv-kweihmann/oelint-adv#configure-your-custom-machine-or-distro-settings) or
-if it's a ``PACKAGE`` set
+Use a known override.
+
+For ``MACHINE``, ``MACHINEOVERRIDES``, or ``DISTRO`` entries see the corresponding [Constants Guide](https://github.com/priv-kweihmann/oelint-adv/tree/master/docs/constants.md)
+
+If it's a ``PACKAGE`` set
 
 ```
 PACKAGE_BEFORE_PN += "${PN}-mypackage"
