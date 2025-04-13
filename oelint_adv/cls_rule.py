@@ -22,6 +22,20 @@ class Classification(Enum):
     DISTROCONF = 4
     LAYERCONF = 5
 
+    @staticmethod
+    def tostr(val) -> str:
+        if val == Classification.RECIPE:
+            return 'recipe'
+        if val == Classification.BBAPPEND:
+            return 'bbappend'
+        if val == Classification.BBCLASS:
+            return 'bbclass'
+        if val == Classification.MACHINECONF:
+            return 'machine configuration'
+        if val == Classification.DISTROCONF:
+            return 'distro configuration'
+        return 'layer configuration'
+
 
 class Rule:
     def __init__(self,
