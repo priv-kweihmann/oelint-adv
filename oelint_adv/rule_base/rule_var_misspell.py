@@ -20,6 +20,15 @@ class VarMisspell(Rule):
         except ValueError:
             self._minconfidence = 0.8
 
+        self._layername_extensions_on = [
+            'BBFILE_PATTERN',
+            'BBFILE_PRIORITY',
+            'LAYERDEPENDS',
+            'LAYERRECOMMENDS',
+            'LAYERSERIES_COMPAT',
+            'LAYERVERSION',
+        ]
+
     def get_best_match(self, item: str, _list: List[str]) -> str:
         _dict = sorted([(SequenceMatcher(None, item, k).ratio(), k)
                         for k in _list], key=lambda x: x[0], reverse=True)
@@ -35,12 +44,19 @@ class VarMisspell(Rule):
         _extras = [f'SRCREV_{x}' for x in stash.GetValidNamedResources(_file)]
         _pkgs = [x for x in stash.GetValidPackageNames(_file, strippn=True) if x]
         _taskname = CONSTANTS.FunctionsKnown + [x.FuncName for x in _all if isinstance(x, Function)]
+        _vars = CONSTANTS.VariablesKnown
+        _bbfile_collections = stash.ExpandVar(_file, attribute=Variable.ATTR_VAR,
+                                              attributeValue='BBFILE_COLLECTIONS').get('BBFILE_COLLECTIONS', [])
+        for collection in _bbfile_collections:
+            for var in self._layername_extensions_on:
+                _vars.append(f'{var}_{collection}')
+
         for i in items:
             if isinstance(i, Variable):
                 _cleanvarname = i.VarName
                 if _cleanvarname.startswith('_'):
                     continue
-                if _cleanvarname in CONSTANTS.VariablesKnown:
+                if _cleanvarname in _vars:
                     continue
                 if _cleanvarname in _extras:
                     continue
@@ -53,7 +69,7 @@ class VarMisspell(Rule):
                     continue
                 if _cleanvarname in _taskname:
                     continue
-                if _cleanvarname in CONSTANTS.VariablesKnown:
+                if _cleanvarname in _vars:
                     continue
                 if _cleanvarname in _extras:
                     continue
@@ -66,7 +82,7 @@ class VarMisspell(Rule):
                     break
             if _used:
                 continue
-            _bestmatch = self.get_best_match(_cleanvarname, CONSTANTS.VariablesKnown)
+            _bestmatch = self.get_best_match(_cleanvarname, _vars)
             if _bestmatch:
                 res += self.finding(i.Origin, i.InFileLine,
                                     '\'{a}\' is unknown, maybe you meant \'{b}\''.format(

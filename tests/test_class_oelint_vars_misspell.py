@@ -21,6 +21,48 @@ class TestClassOelintVarsMispell(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'SRR_URI[sha256sum] = "1234"',
                                  },
+                                 {
+                                     'conf/layer.conf':
+                                     '''
+                                     BBFILE_COLLECTIONS += "foo"
+                                     BBFILE_PATTERN_fooo += ""
+                                     ''',
+                                 },
+                                 {
+                                     'conf/layer.conf':
+                                     '''
+                                     BBFILE_COLLECTIONS += "foo"
+                                     BBFILE_PRIORITY_fooo += ""
+                                     ''',
+                                 },
+                                 {
+                                     'conf/layer.conf':
+                                     '''
+                                     BBFILE_COLLECTIONS += "foo"
+                                     LAYERVERSION_fooo += ""
+                                     ''',
+                                 },
+                                 {
+                                     'conf/layer.conf':
+                                     '''
+                                     BBFILE_COLLECTIONS += "foo"
+                                     LAYERDEPENDS_fooo += ""
+                                     ''',
+                                 },
+                                 {
+                                     'conf/layer.conf':
+                                     '''
+                                     BBFILE_COLLECTIONS += "foo"
+                                     LAYERSERIES_COMPAT_fooo += ""
+                                     ''',
+                                 },
+                                 {
+                                     'conf/layer.conf':
+                                     '''
+                                     BBFILE_COLLECTIONS += "foo"
+                                     LAYERRECOMMENDS_fooo += ""
+                                     ''',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -120,6 +162,48 @@ class TestClassOelintVarsMispell(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      '''
                                      dskfdsfkjfhsjkfsdjfkj = "1"
+                                     ''',
+                                 },
+                                 {
+                                     'conf/layer.conf':
+                                     '''
+                                     BBFILE_COLLECTIONS += "foo"
+                                     BBFILE_PATTERN_foo += ""
+                                     ''',
+                                 },
+                                 {
+                                     'conf/layer.conf':
+                                     '''
+                                     BBFILE_COLLECTIONS += "foo"
+                                     BBFILE_PRIORITY_foo += ""
+                                     ''',
+                                 },
+                                 {
+                                     'conf/layer.conf':
+                                     '''
+                                     BBFILE_COLLECTIONS += "foo"
+                                     LAYERVERSION_foo += ""
+                                     ''',
+                                 },
+                                 {
+                                     'conf/layer.conf':
+                                     '''
+                                     BBFILE_COLLECTIONS += "foo"
+                                     LAYERDEPENDS_foo += ""
+                                     ''',
+                                 },
+                                 {
+                                     'conf/layer.conf':
+                                     '''
+                                     BBFILE_COLLECTIONS += "foo"
+                                     LAYERSERIES_COMPAT_foo += ""
+                                     ''',
+                                 },
+                                 {
+                                     'conf/layer.conf':
+                                     '''
+                                     BBFILE_COLLECTIONS += "foo"
+                                     LAYERRECOMMENDS_foo += ""
                                      ''',
                                  },
                              ],
