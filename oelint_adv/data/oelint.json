@@ -57,6 +57,38 @@
             "CVE_PRODUCT"
         ]
     },
+    "oelint-contextvars": {
+        "conf-only": [
+            "DISTROOVERRIDES",
+            "DISTRO_EXTRA_RDEPENDS",
+            "DISTRO_EXTRA_RRECOMMENDS",
+            "DISTRO_FEATURES",
+            "DISTRO_FEATURES_BACKFILL",
+            "DISTRO_FEATURES_BACKFILL_CONSIDERED",
+            "DISTRO_FEATURES_DEFAULT",
+            "MACHINE",
+            "MACHINEOVERRIDES",
+            "MACHINE_ESSENTIAL_EXTRA_RDEPENDS",
+            "MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS",
+            "MACHINE_EXTRA_RRECOMMENDS",
+            "MACHINE_FEATURES",
+            "MACHINE_FEATURES_BACKFILL"
+        ],
+        "bbappend-only": [
+            "FILESEXTRAPATHS"
+        ],
+        "bbclass-only": [],
+        "recipe-only": [
+            "BBCLASSEXTEND",
+            "DEPENDS",
+            "INSANE_SKIP",
+            "LIC_FILES_CHKSUM"
+        ],
+        "image-only": [
+            "EXTRA_IMAGE_FEATURES",
+            "IMAGE_FEATURES"
+        ]
+    },
     "replacements": {
         "mirrors": {
             "${APACHE_MIRROR}": "http://www.us.apache.org/dist",
