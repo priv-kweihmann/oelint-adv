@@ -470,6 +470,10 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
 
     args.state.messageformat = args.messageformat
 
+    if args.fix and args.jobs > 1:
+        args.jobs = 1
+        print('WARNING: --fix should only be run in single job mode (--jobs=1) - downgrading to 1 job')  # noqa: T201
+
     return args
 
 
