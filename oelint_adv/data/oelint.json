@@ -57,6 +57,10 @@
             "CVE_PRODUCT"
         ]
     },
+    "oelint-semicolon-vars": [
+        "LIC_FILES_CHKSUM",
+        "SRC_URI"
+    ],
     "oelint-contextvars": {
         "conf-only": [
             "DISTROOVERRIDES",
