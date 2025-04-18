@@ -151,7 +151,7 @@ Rules marked with **[I]** need to be activated through [a rule file](#defining-a
 * [oelint.file.upstreamstatus](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.upstreamstatus.md) - Patches should contain a Upstream-Status entry
 * [oelint.file.upstreamstatus_occurance](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.file.upstreamstatus_occurance.md) - Certain Upstream-Status classifier found **[S]** **[I]**
 * [oelint.func.specific](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.func.specific.md) - Function is specific to an unknown identifier
-* [oelint.newline.consecutive](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.newline.consecutive.md) - Consecutive blank lines should be avoided **[F]**
+* [oelint.newline.consecutive](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.newline.consecutive.md) - Consecutive blank lines should be avoided
 * [oelint.newline.eof](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.newline.eof.md) - File shall end on a newline **[F]**
 * [oelint.spaces.emptyline](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.spaces.emptyline.md) - Empty line should not contain spaces or tabs **[F]**
 * [oelint.spaces.linebeginning](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.spaces.linebeginning.md) - No space at a line beginning **[F]**

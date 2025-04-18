@@ -28,14 +28,3 @@ class NewLineConsecutive(Rule):
                 if value.Raw == '\n' and v[index - 1].Raw == '\n':
                     res += self.finding(value.Origin, value.InFileLine)
         return res
-
-    def fix(self, _file: str, stash: Stash) -> List[str]:
-        res = set()
-        for f, v in self.__getMatches(_file, stash).items():
-            for index, value in enumerate(v):
-                if index == 0:
-                    continue
-                if value.RealRaw == '\n' and v[index - 1].RealRaw == '\n':
-                    stash.Remove(value)
-                    res.add(f)
-        return list(res)
