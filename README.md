@@ -210,6 +210,7 @@ Rules marked with **[I]** need to be activated through [a rule file](#defining-a
 * [oelint.vars.filessetting](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.filessetting.md) - unnecessary FILES settings
 * [oelint.vars.homepageping](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.homepageping.md) - 'HOMEPAGE' isn't reachable
 * [oelint.vars.homepageprefix](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.homepageprefix.md) - HOMEPAGE should begin with https:// or http://
+* [oelint.vars.inappclassoverride](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.inappclassoverride.md) - warn about inapplicable class specific overrides
 * [oelint.vars.inconspaces](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.inconspaces.md) - Inconsistent use of spaces on append operation
 * [oelint.vars.insaneskip](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.insaneskip.md) - INSANE_SKIP should be avoided at any cost
 * [oelint.vars.layerconf](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.layerconf.md) - Only selected variables should be set as part of a layer.conf
