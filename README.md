@@ -201,6 +201,7 @@ Rules marked with **[I]** need to be activated through [a rule file](#defining-a
 * [oelint.vars.descriptiontoobrief](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.descriptiontoobrief.md) - 'DESCRIPTION' is the shorter than 'SUMMARY'
 * [oelint.vars.distroconf](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.distroconf.md) - Machine and image variables should not be set as part of a distro config **[S]**
 * [oelint.vars.doublemodify](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.doublemodify.md) - Multiple modifiers of append/prepend/remove/+= found in one operation
+* [oelint.vars.doublesemicolon](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.doublesemicolon.md) - pointless double semicolons detected in variable value **[F]**
 * [oelint.vars.downloadfilename](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.downloadfilename.md) - Fetcher does create a download artifact without 'PV' in the filename
 * [oelint.vars.duplicate](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.duplicate.md) - No duplicates in DEPENDS and RDEPENDS
 * [oelint.vars.dusageinpkgfuncs](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.dusageinpkgfuncs.md) - use \$D instead of \$\{D\} in pkg functions **[F]**
