@@ -1006,3 +1006,27 @@ class TestClassIntegration(TestBaseClass):
         from oelint_adv.__main__ import run
 
         run(self._create_args(input_, extraopts=['--release=latest']))
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     VAR = "1"
+                                     ''',
+                                 }
+                             ],
+                             )
+    def test_fix_and_jobs(self, input_, capsys):
+
+        args = self._create_args(input_, extraopts=['--fix', '--nobackup', '--jobs=2'])
+
+        captured = capsys.readouterr()
+        assert 'WARNING: --fix should only be run in single job mode (--jobs=1)' in captured.out
+        assert args.jobs == 1
+
+        args = self._create_args(input_, extraopts=['--fix', '--nobackup', '--jobs=1'])
+
+        captured = capsys.readouterr()
+        assert 'WARNING: --fix should only be run in single job mode (--jobs=1)' not in captured.out
+        assert args.jobs == 1
