@@ -34,6 +34,6 @@ class VarsMachineConf(Rule):
             if not fnmatch.fnmatch(i.Origin, '*/machine/*.conf'):
                 continue
             if i.VarName in self.needles:
-                res += self.finding(_file, i.Line,
+                res += self.finding(_file, i.InFileLine,
                                     self.Msg.format(var=i.VarName), appendix=i.VarName)
         return res
