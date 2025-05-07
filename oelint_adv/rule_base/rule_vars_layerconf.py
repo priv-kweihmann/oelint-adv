@@ -38,6 +38,6 @@ class VarsLayerConf(Rule):
             if not fnmatch.fnmatch(i.Origin, '*/layer.conf'):
                 continue
             if not any(RegexRpl.match(x, i.VarName) for x in self.good):
-                res += self.finding(_file, i.Line,
+                res += self.finding(_file, i.InFileLine,
                                     self.Msg.format(var=i.VarName))
         return res

@@ -17,6 +17,6 @@ class FileIncludeVsRequire(Rule):
         for item in stash.GetItemsFor(filename=_file,
                                       classifier=Include.CLASSIFIER):
             if item.Statement == 'include':
-                res += self.finding(item.Origin, item.Line,
+                res += self.finding(item.Origin, item.InFileLine,
                                     self.Msg.replace('{FILE}', item.IncName))
         return res
