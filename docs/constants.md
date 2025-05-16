@@ -12,29 +12,31 @@ e.g. to load in addition to ``core`` layer the information of ``meta-openembedde
 For all releases starting from ``kirkstone`` the following 3rd party layer configurations are
 available
 
-| name                   | layer                                   |
-| ---------------------- | --------------------------------------- |
-| ``clang-layer``        | meta-clang                              |
-| ``core``               | meta from poky                          |
-| ``filesystems-layer``  | meta-filesystems from meta-openembedded |
-| ``flutter-layer``      | meta-flutter                            |
-| ``freescale-distro``   | meta-freescale-distro                   |
-| ``freescale-layer``    | meta-freescale                          |
-| ``gnome-layer``        | meta-gnome from meta-openembedded       |
-| ``intel``              | meta-intel                              |
-| ``meta-initramfs``     | meta-initramfs from meta-openembedded   |
-| ``meta-python``        | meta-python from meta-openembedded      |
-| ``meta-sca``           | meta-sca                                |
-| ``multimedia-layer``   | meta-multimedia from meta-openembedded  |
-| ``networking-layer``   | meta-networking from meta-openembedded  |
-| ``openembedded-layer`` | meta-oe from meta-openembedded          |
-| ``perl-layer``         | meta-perl from meta-openembedded        |
-| ``rubygems``           | meta-rubygems                           |
-| ``webkit``             | meta-webkit                             |
-| ``webserver``          | meta-webserver from meta-openembedded   |
-| ``xfce-layer``         | meta-xfce from meta-openembedded        |
-| ``yocto``              | meta-poky from poky                     |
-| ``yoctobsp``           | meta-yocto-bsp from poky                |
+| name                     | layer                                   |
+| ------------------------ | --------------------------------------- |
+| ``clang-layer``          | meta-clang                              |
+| ``core``                 | meta from poky                          |
+| ``filesystems-layer``    | meta-filesystems from meta-openembedded |
+| ``flutter-layer``        | meta-flutter                            |
+| ``freescale-distro``     | meta-freescale-distro                   |
+| ``freescale-layer``      | meta-freescale                          |
+| ``gnome-layer``          | meta-gnome from meta-openembedded       |
+| ``intel``                | meta-intel                              |
+| ``meta-initramfs``       | meta-initramfs from meta-openembedded   |
+| ``meta-python``          | meta-python from meta-openembedded      |
+| ``meta-sca``             | meta-sca                                |
+| ``multimedia-layer``     | meta-multimedia from meta-openembedded  |
+| ``networking-layer``     | meta-networking from meta-openembedded  |
+| ``openembedded-layer``   | meta-oe from meta-openembedded          |
+| ``perl-layer``           | meta-perl from meta-openembedded        |
+| ``qt6-layer``            | meta-qt6                                |
+| ``rubygems``             | meta-rubygems                           |
+| ``virtualization-layer`` | meta-virtualization                     |
+| ``webkit``               | meta-webkit                             |
+| ``webserver``            | meta-webserver from meta-openembedded   |
+| ``xfce-layer``           | meta-xfce from meta-openembedded        |
+| ``yocto``                | meta-poky from poky                     |
+| ``yoctobsp``             | meta-yocto-bsp from poky                |
 
 ## layer specific constants
 
@@ -63,21 +65,21 @@ file in your layer root.
 
 ## Constants to add
 
-| key                        | type | description                                           | getter for information                                     |
-| -------------------------- | ---- | ----------------------------------------------------- | ---------------------------------------------------------- |
-| functions/known            | list | known functions                                       | `oelint_parse.constants.CONSTANT.FunctionsKnown`           |
-| functions/order            | list | preferred order of core functions                     | `oelint_parse.constants.CONSTANT.FunctionsOrder`           |
-| images/known-classes       | list | bbclasses to be known to be used in images            | `oelint_parse.constants.CONSTANT.ImagesClasses`            |
-| images/known-variables     | list | variables known to be used in images                  | `oelint_parse.constants.CONSTANT.ImagesVariables`          |
-| replacements/distros       | list | known distro overrides                                | `oelint_parse.constants.CONSTANT.DistrosKnown`             |
-| replacements/machines      | list | known machine overrides                               | `oelint_parse.constants.CONSTANT.MachinesKnown`            |
-| replacements/mirrors       | dict | known mirrors                                         | `oelint_parse.constants.CONSTANT.MirrorsKnown`             |
-| variables/known            | list | known variables                                       | `oelint_parse.constants.CONSTANT.VariablesKnown`           |
-| variables/mandatory        | list | variables mandatory to a recipe                       | `oelint_parse.constants.CONSTANT.VariablesMandatory`       |
-| variables/order            | list | preferred order of variables                          | `oelint_parse.constants.CONSTANT.VariablesOrder`           |
-| variables/protected        | list | variables not to be used in recipes                   | `oelint_parse.constants.CONSTANT.VariablesProtected`       |
-| variables/protected-append | list | variables not to be used in bbappends                 | `oelint_parse.constants.CONSTANT.VariablesProtectedAppend` |
-| variables/suggested        | list | suggested variable in a recipe                        | `oelint_parse.constants.CONSTANT.VariablesSuggested`       |
+| key                        | type | description                                | getter for information                                     |
+| -------------------------- | ---- | ------------------------------------------ | ---------------------------------------------------------- |
+| functions/known            | list | known functions                            | `oelint_parse.constants.CONSTANT.FunctionsKnown`           |
+| functions/order            | list | preferred order of core functions          | `oelint_parse.constants.CONSTANT.FunctionsOrder`           |
+| images/known-classes       | list | bbclasses to be known to be used in images | `oelint_parse.constants.CONSTANT.ImagesClasses`            |
+| images/known-variables     | list | variables known to be used in images       | `oelint_parse.constants.CONSTANT.ImagesVariables`          |
+| replacements/distros       | list | known distro overrides                     | `oelint_parse.constants.CONSTANT.DistrosKnown`             |
+| replacements/machines      | list | known machine overrides                    | `oelint_parse.constants.CONSTANT.MachinesKnown`            |
+| replacements/mirrors       | dict | known mirrors                              | `oelint_parse.constants.CONSTANT.MirrorsKnown`             |
+| variables/known            | list | known variables                            | `oelint_parse.constants.CONSTANT.VariablesKnown`           |
+| variables/mandatory        | list | variables mandatory to a recipe            | `oelint_parse.constants.CONSTANT.VariablesMandatory`       |
+| variables/order            | list | preferred order of variables               | `oelint_parse.constants.CONSTANT.VariablesOrder`           |
+| variables/protected        | list | variables not to be used in recipes        | `oelint_parse.constants.CONSTANT.VariablesProtected`       |
+| variables/protected-append | list | variables not to be used in bbappends      | `oelint_parse.constants.CONSTANT.VariablesProtectedAppend` |
+| variables/suggested        | list | suggested variable in a recipe             | `oelint_parse.constants.CONSTANT.VariablesSuggested`       |
 
 ## Q&A
 
