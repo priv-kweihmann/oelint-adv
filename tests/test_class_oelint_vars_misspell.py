@@ -63,6 +63,13 @@ class TestClassOelintVarsMispell(TestBaseClass):
                                      LAYERRECOMMENDS_fooo += ""
                                      ''',
                                  },
+                                 {
+                                     'conf/layer.conf':
+                                     '''
+                                     BBFILE_COLLECTIONS += "foo"
+                                     BBFILE_PATTERN_IGNORE_EMPTY_fooo += ""
+                                     ''',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -204,6 +211,13 @@ class TestClassOelintVarsMispell(TestBaseClass):
                                      '''
                                      BBFILE_COLLECTIONS += "foo"
                                      LAYERRECOMMENDS_foo += ""
+                                     ''',
+                                 },
+                                 {
+                                     'conf/layer.conf':
+                                     '''
+                                     BBFILE_COLLECTIONS += "foo"
+                                     BBFILE_PATTERN_IGNORE_EMPTY_foo += ""
                                      ''',
                                  },
                              ],
