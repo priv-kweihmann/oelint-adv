@@ -23,6 +23,7 @@ class VarMisspell(Rule):
         self._layername_extensions_on = [
             'BBFILE_PATTERN',
             'BBFILE_PRIORITY',
+            'BBFILE_PATTERN_IGNORE_EMPTY',
             'LAYERDEPENDS',
             'LAYERRECOMMENDS',
             'LAYERSERIES_COMPAT',
