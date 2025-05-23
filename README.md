@@ -446,14 +446,15 @@ Please see [oelint-parser](https://github.com/priv-kweihmann/oelint-parser) for 
 You can freely define a custom output format.
 The following placeholder symbols will be automatically replaced
 
-| name       | replaced by                |
-| ---------- | -------------------------- |
-| {path}     | path of the file           |
-| {line}     | line of the finding        |
-| {severity} | severity of the finding    |
-| {id}       | error-ID of the finding    |
-| {msg}      | description of the finding |
-| {wikiurl}  | a link to the online wiki  |
+| name       | replaced by                  |
+| ---------- | ---------------------------- |
+| {path}     | path of the file             |
+| {line}     | line of the finding          |
+| {severity} | severity of the finding      |
+| {id}       | error-ID of the finding      |
+| {msg}      | description of the finding   |
+| {wikiurl}  | a link to the online wiki    |
+| {rungroup} | files being checked together |
 
 ## Configuration file
 

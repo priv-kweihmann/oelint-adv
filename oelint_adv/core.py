@@ -227,6 +227,7 @@ def group_run(group: List[Tuple],
     for rule in rules:
         rule.set_state(state)
         rule.set_product_matrix(matrix)
+        rule.set_rungroup(group_files)
 
     _files = list(set(stash.GetRecipes() + stash.GetLoneAppends() + stash.GetConfFiles() + stash.GetBBClasses()))
     issues = []
