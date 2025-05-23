@@ -84,6 +84,7 @@ class Rule:
         self._valid_from_release = valid_from_release
         self._state: State = None
         self.__matrix: FrozenSet[str] = []
+        self.__rungroup: List[str] = []
 
     @staticmethod
     def classify_file(fn) -> List[Classification]:
@@ -116,6 +117,14 @@ class Rule:
             state_ (State): Current state object
         """
         self._state = state_
+
+    def set_rungroup(self, files: List[str]) -> None:
+        """Set the rungroup aka files that being checked together
+
+        Args:
+            files (List[str]): Files being checked as part of the group
+        """
+        self.__rungroup = files
 
     def check_release_range(self, release_range: List[str]) -> bool:
         """Check if rule is applicable with currently configured release(s)
@@ -228,7 +237,8 @@ class Rule:
 
         _msg = self._state.get_messageformat().format(path=_path, line=_line, severity=_severity,
                                                       id=_display_id, msg=override_msg,
-                                                      wikiurl=wikiurl)
+                                                      wikiurl=wikiurl,
+                                                      rungroup=','.join(self.__rungroup))
         return [((_path, _line), self.__matrix, f'{_color}{_msg}{_style}')]
 
     def __repr__(self) -> str:
