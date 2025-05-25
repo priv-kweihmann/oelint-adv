@@ -51,6 +51,14 @@ class TestClassOelintTaskNoCopy(TestBaseClass):
                                      }
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                         '''
+                                         do_install_append() {
+                                             install file-name-which-contains-tcp B
+                                         }
+                                         ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
