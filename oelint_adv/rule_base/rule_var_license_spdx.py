@@ -6,9 +6,9 @@ from oelint_parser.cls_stash import Stash
 from oelint_adv.cls_rule import Rule
 
 
-class LicenseSDPX(Rule):
+class LicenseSPDX(Rule):
     def __init__(self) -> None:
-        super().__init__(id='oelint.vars.licensesdpx',
+        super().__init__(id='oelint.vars.licensespdx',
                          severity='warning',
                          message='LICENSE is not a valid OpenEmbedded SPDX expression')
 
