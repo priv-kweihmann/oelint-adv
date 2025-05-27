@@ -214,7 +214,7 @@ Rules marked with **[I]** need to be activated through [a rule file](#defining-a
 * [oelint.vars.inconspaces](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.inconspaces.md) - Inconsistent use of spaces on append operation
 * [oelint.vars.insaneskip](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.insaneskip.md) - INSANE_SKIP should be avoided at any cost
 * [oelint.vars.layerconf](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.layerconf.md) - Only selected variables should be set as part of a layer.conf
-* [oelint.vars.licensesdpx](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.licensesdpx.md) - Check for correct SPDX syntax in licenses
+* [oelint.vars.licensespdx](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.licensespdx.md) - Check for correct SPDX syntax in licenses
 * [oelint.vars.licfileprefix](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.licfileprefix.md) - Unnecessary prefix to LIC_FILES_CHKSUM detected **[F]**
 * [oelint.vars.listappend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.listappend.md) - Proper append/prepend to lists **[F]**
 * [oelint.vars.machineconf](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.machineconf.md) - Distro and image variables should not be set as part of a machine config **[S]**
