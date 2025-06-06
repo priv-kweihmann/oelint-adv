@@ -20,14 +20,14 @@ class NoSpaceTrailingRule(Rule):
             _linecnt = 0
             for line in i.Raw.split('\n'):
                 if line.endswith(' '):
-                    res.append((i, i.InFileLine + _linecnt))
+                    res.append((i, i.InFileLine + _linecnt, i.InFileLine))
                 _linecnt += 1
         return res
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
-        for i in self.__getMatches(_file, stash):
-            res += self.finding(i[0].Origin, i[1])
+        for (i, line, blockoffset) in self.__getMatches(_file, stash):
+            res += self.finding(i.Origin, line, blockoffset=blockoffset)
         return res
 
     def fix(self, _file: str, stash: Stash) -> List[str]:

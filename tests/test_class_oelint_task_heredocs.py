@@ -46,6 +46,18 @@ class TestClassOelintTaskHeredocs(TestBaseClass):
                                      }
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     # nooelint: oelint.task.heredocs
+                                     do_install:append() {
+                                        some operation
+                                        cat    <<   EOF    >${T}/some.files
+                                        abc
+                                        EOF
+                                     }
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):

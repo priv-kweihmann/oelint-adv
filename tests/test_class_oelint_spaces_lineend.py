@@ -3,6 +3,8 @@ import pytest  # noqa: I900
 from .base import TestBaseClass
 
 # flake8: noqa W291 - we want to explicitly test trailing whitespace here
+
+
 class TestClassOelintSpacesLineEnd(TestBaseClass):
 
     @pytest.mark.parametrize('id_', ['oelint.spaces.lineend'])
@@ -67,6 +69,16 @@ class TestClassOelintSpacesLineEnd(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      '''
                                      DEF = "${@foo_magic_grill(d)}"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     # nooelint: oelint.spaces.lineend
+                                     do_foo() {
+                                        one two three
+                                        four five space 
+                                     }
                                      ''',
                                  },
                              ],
