@@ -28,6 +28,9 @@ class VarSRCUriChecksum(Rule):
                         sha256sum.append("")
                     else:
                         sha256sum.append(i.Flag.rsplit(".", 1)[0])
+                if i.Flag.endswith("md5sum") and i.VarName in ['SRC_URI']:
+                    res += self.finding(i.Origin, i.InFileLine, "md5sum is deprecated. It can be removed.",
+                                        severity_override="warning")
             else:
                 lines = [y.strip('"') for y in i.get_items() if y and y != INLINE_BLOCK]
                 for index, value in enumerate(lines):
