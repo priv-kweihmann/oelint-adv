@@ -19,13 +19,6 @@ class TestClassOelintVarsSRCURICHECKSUM(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      '''
                                      SRC_URI += "ftp://foo;name=f3"
-                                     SRC_URI[f1.md5sum] = "a"
-                                     ''',
-                                 },
-                                 {
-                                     'oelint_adv_test.bb':
-                                     '''
-                                     SRC_URI += "ftp://foo;name=f3"
                                      SRC_URI += "ftp://foo;name=f2"
                                      SRC_URI[f3.sha256sum] = "a"
                                      ''',
@@ -34,6 +27,22 @@ class TestClassOelintVarsSRCURICHECKSUM(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      '''
                                      SRC_URI += "ftp://foo"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SRC_URI += "ftp://foo"
+                                     SRC_URI[sha256sum] = "a"
+                                     SRC_URI[md5sum] = "a"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SRC_URI += "ftp://foo;name=f3"
+                                     SRC_URI[f3.sha256sum] = "a"
+                                     SRC_URI[f3.md5sum] = "a"
                                      ''',
                                  },
                              ],
@@ -68,17 +77,11 @@ class TestClassOelintVarsSRCURICHECKSUM(TestBaseClass):
                                      SRC_URI += "npm://foo"
                                      SRC_URI += "svn://foo"
                                      SRC_URI += "az://foo;name=f6"
-                                     SRC_URI[f1.md5sum] = "a"
                                      SRC_URI[f1.sha256sum] = "a"
-                                     SRC_URI[f2.md5sum] = "a"
                                      SRC_URI[f2.sha256sum] = "a"
-                                     SRC_URI[f3.md5sum] = "a"
                                      SRC_URI[f3.sha256sum] = "a"
-                                     SRC_URI[f4.md5sum] = "a"
                                      SRC_URI[f4.sha256sum] = "a"
-                                     SRC_URI[f5.md5sum] = "a"
                                      SRC_URI[f5.sha256sum] = "a"
-                                     SRC_URI[f6.md5sum] = "a"
                                      SRC_URI[f6.sha256sum] = "a"
                                      ''',
                                  },
@@ -112,9 +115,7 @@ class TestClassOelintVarsSRCURICHECKSUM(TestBaseClass):
                                      '''
                                      SRC_URI += "ftp://foo \\
                                                  ftp://foo;name=f1"
-                                     SRC_URI[md5sum] = "a"
                                      SRC_URI[sha256sum] = "a"
-                                     SRC_URI[f1.md5sum] = "a"
                                      SRC_URI[f1.sha256sum] = "a"
                                      ''',
                                  },
@@ -129,14 +130,12 @@ class TestClassOelintVarsSRCURICHECKSUM(TestBaseClass):
                                      '''
                                      SRC_URI += "http://foo;name=f1"
                                      SRC_URI[f1.sha256sum] = "a"
-                                     SRC_URI[f1.md5sum] = "a"
                                      ''',
                                  },
                                  {
                                      'oelint_adv_test.bb':
                                      '''
                                      SRC_URI += "ftp://foo"
-                                     SRC_URI[md5sum] = "a"
                                      SRC_URI[sha256sum] = "a"
                                      ''',
                                  },
@@ -152,6 +151,12 @@ class TestClassOelintVarsSRCURICHECKSUM(TestBaseClass):
                                      '''
                                      SRC_URI += "ftp://foo"
                                      SRC_URI[sha256sum] = "a"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     CUSTOM_VAR[md5sum] = "a"
                                      ''',
                                  },
                              ],
