@@ -17,6 +17,7 @@ class TaskInstallNoMkdir(Rule):
         items: List[Function] = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER)
         for item in items:
             if item.FuncName.startswith('do_install'):
-                if item.FuncBody.find(' mkdir ') != -1:
-                    res += self.finding(item.Origin, item.InFileLine)
+                for lineindex, line in enumerate(item.get_items()):
+                    if line.startswith('mkdir ') or line.find(' mkdir ') != -1:
+                        res += self.finding(item.Origin, item.InFileLine + lineindex, blockoffset=item.InFileLine)
         return res

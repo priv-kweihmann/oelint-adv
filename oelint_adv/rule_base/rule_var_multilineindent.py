@@ -47,7 +47,7 @@ class VarMultiLineIndent(Rule):
                 expected, actual, _ = _line
                 if expected != actual:
                     res += self.finding(i.Origin, i.InFileLine + index,
-                                        self.format_message(a=actual, b=expected))
+                                        self.format_message(a=actual, b=expected), blockoffset=i.InFileLine)
         return res
 
     def fix(self, _file: str, stash: Stash) -> List[str]:

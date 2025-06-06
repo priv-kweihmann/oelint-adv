@@ -39,11 +39,11 @@ class VarSRCUriChecksum(Rule):
                         # If the checksum is already provided in the url, we can skip the
                         # flag check.
                         if "sha256sum" not in _url["options"]:
-                            res_candidate.append((name, i.Origin, i.InFileLine + index))
+                            res_candidate.append((name, i.Origin, i.InFileLine + index, i.InFileLine))
 
         res_candidate.sort(key=lambda tup: tup[0])
 
-        for (name, filename, filelines) in res_candidate:
+        for (name, filename, filelines, blockoffset) in res_candidate:
             message = ""
             if name == "":
                 if "" not in sha256sum:
@@ -51,6 +51,6 @@ class VarSRCUriChecksum(Rule):
             elif name not in sha256sum:
                 message += "SRC_URI[{n}.sha256sum] is needed".format(n=name)
             if len(message) > 0:
-                res += self.finding(filename, filelines, message)
+                res += self.finding(filename, filelines, message, blockoffset=blockoffset)
 
         return res

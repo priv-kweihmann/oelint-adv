@@ -21,5 +21,5 @@ class TaskInstallNoCp(Rule):
             for index, line in enumerate(i.get_items()):
                 line = line.strip()
                 if RegexRpl.match(r'^cat\s*>\s*.*<<\s*[A-Za-z0-9]+$', line) or RegexRpl.match(r'^cat\s*<<\s*[A-Za-z0-9]+\s*>.*$', line):
-                    res += self.finding(i.Origin, i.InFileLine + index)
+                    res += self.finding(i.Origin, i.InFileLine + index, blockoffset=i.InFileLine)
         return res

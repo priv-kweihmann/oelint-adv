@@ -21,7 +21,15 @@ class TestClassOelintTaskNoMkdir(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      '''
                                      do_install_append() {
-                                         mkdir -p ${TMP}sjdsdasjdha
+                                        mkdir -p ${TMP}sjdsdasjdha
+                                     }
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     do_install_append() {
+                                        test 123 & mkdir -p ${TMP}sjdsdasjdha
                                      }
                                      ''',
                                  },
@@ -47,6 +55,16 @@ class TestClassOelintTaskNoMkdir(TestBaseClass):
                                      '''
                                      do_compile() {
                                          mkdir -p ${TMP}sjdsdasjdha
+                                     }
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     # nooelint: oelint.task.nomkdir
+                                     do_install() {
+                                        some operation
+                                        mkdir -p ${TMP}sjdsdasjdha
                                      }
                                      ''',
                                  },
