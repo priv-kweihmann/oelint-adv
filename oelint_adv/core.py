@@ -97,8 +97,8 @@ def group_files(files: Iterable[str], mode: str) -> List[Tuple[List[str], List[s
             continue
         _match = False
         for _, v in res.items():
-            _needle = '.*/' + os.path.basename(_filename).replace('%', '.*')
-            if any(RegexRpl.match(_needle, x) for x in v):
+            _needle = '^.*/' + re.escape(os.path.basename(_filename)).replace('%', '.*') + '.bb$'
+            if any(RegexRpl.match(_needle, x, re.MULTILINE) for x in v):
                 v.add(f)
                 _match = True
         if not _match:
