@@ -3,4 +3,4 @@ argcomplete ~= 3.6
 colorama ~= 0.4
 oelint-parser ~= 8.1
 oelint-data
-urllib3 ~= 2.4
+urllib3 ~= 2.5
