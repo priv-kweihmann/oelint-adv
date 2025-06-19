@@ -76,6 +76,22 @@ class TestGrouping(TestBaseClass):
         assert ['test1_1.0.bb'] in res
         assert ['test1_2.%.bbappend'] in res
 
+    def test_fast_bb_bbappend_full_filename(self):
+        from oelint_adv.core import group_files
+
+        input_ = {
+            'test1.bb': '',
+            'test1-debug.bb': '',
+            'test1.bbappend': '',
+            'test1-debug.bbappend': '',
+        }
+
+        args = self._create_args(input_)
+        res = [self.__flatten_file_names(x[0]) for x in group_files(args.files, args.mode)]
+
+        assert ['test1.bb', 'test1.bbappend'] in res
+        assert ['test1-debug.bb', 'test1-debug.bbappend'] in res
+
     def test_fast_layer_conf(self):
         from oelint_adv.core import group_files
 
