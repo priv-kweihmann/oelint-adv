@@ -1,4 +1,4 @@
-# oelint.vars.licensesdpx
+# oelint.vars.licensespdx
 
 severity: warning
 
