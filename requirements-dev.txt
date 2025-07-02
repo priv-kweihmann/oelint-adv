@@ -33,6 +33,6 @@ pytest-random-order == 1.2.0
 pytest-socket == 0.7.0
 pytest-sugar == 1.0.0
 pytest-tldr == 0.2.5
-pytest-xdist == 3.7.0
+pytest-xdist == 3.8.0
 twine == 6.1.0
 wheel ~= 0.45
