@@ -26,7 +26,6 @@ class TaskPythonPrefix(Rule):
                 ast.parse(textwrap.dedent(item.FuncBodyRaw.rstrip('}\n')), 'tempfile')
                 if not item.IsPython:
                     res += self.finding(item.Origin, item.InFileLine)
-            except Exception as e:  # noqa: S110
-                print(e)
+            except Exception:  # noqa: S110
                 pass  # noqa: S110 - intentionally ignore all errors
         return res
