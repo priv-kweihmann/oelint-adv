@@ -1,4 +1,5 @@
 import ast
+import textwrap
 from typing import List, Tuple
 
 from oelint_parser.cls_item import Function
@@ -22,9 +23,10 @@ class TaskPythonPrefix(Rule):
             if len([x for x in item.FuncBodyRaw.split('\n') if x.strip()]) < 2:
                 continue
             try:
-                ast.parse(item.FuncBodyRaw, 'tempfile')
+                ast.parse(textwrap.dedent(item.FuncBodyRaw.rstrip('}\n')), 'tempfile')
                 if not item.IsPython:
                     res += self.finding(item.Origin, item.InFileLine)
-            except Exception:  # noqa: S110
+            except Exception as e:  # noqa: S110
+                print(e)
                 pass  # noqa: S110 - intentionally ignore all errors
         return res
