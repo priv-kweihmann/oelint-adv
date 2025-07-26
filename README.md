@@ -470,6 +470,9 @@ Explicitly passed options to CLI are always chosen over the defaults defined by 
 
 To skip the loading of any configuration file, set `OELINT_SKIP_CONFIG` to a non empty value in your environment.
 
+**NOTE**: all paths, that aren't absolute paths, are calculated relative to the config
+file and not relative to the directory ``oelint-adv`` runs in
+
 ### File format
 
 ```ini

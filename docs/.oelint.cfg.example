@@ -5,3 +5,6 @@ suppress=
     oelint.task.docstrings
 hide=info
 exit-zero=True
+extra_layer=
+    core
+    perl-layer

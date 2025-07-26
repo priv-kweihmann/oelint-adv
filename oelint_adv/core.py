@@ -23,6 +23,8 @@ from oelint_adv.rule_base.rule_file_inlinesuppress_na import (
 from oelint_adv.state import State
 from oelint_adv.tweaks import Tweaks
 
+config_basepath = os.getcwd()
+
 
 class TypeSafeAppendAction(argparse.Action):
 
@@ -51,12 +53,16 @@ def deserialize_boolean_options(options: Dict) -> Dict[str, Union[str, bool]]:
 
 
 def parse_configfile() -> Dict:
+    global config_basepath
+
     if os.environ.get('OELINT_SKIP_CONFIG', ''):
         return {}
     config = ConfigParser()
-    for conffile in [os.environ.get('OELINT_CONFIG', '/does/not/exist'),
-                     os.path.join(os.getcwd(), '.oelint.cfg'),
-                     os.path.join(os.environ.get('HOME', '/does/not/exist'), '.oelint.cfg')]:
+    for conffile, basepath in [
+        (os.environ.get('OELINT_CONFIG', '/does/not/exist'), os.path.dirname(os.environ.get('OELINT_CONFIG', '/does/not/exist'))),
+        (os.path.join(os.getcwd(), '.oelint.cfg'), os.getcwd()),
+        (os.path.join(os.environ.get('HOME', '/does/not/exist'), '.oelint.cfg'), os.environ.get('HOME', '/does/not/exist')),
+    ]:
         try:
             if not os.path.exists(conffile):
                 continue
@@ -64,6 +70,7 @@ def parse_configfile() -> Dict:
             items = {k.replace('-', '_'): v for k, v in config.items('oelint')}
             items = deserialize_boolean_options(items)
 
+            config_basepath = basepath
             return items
         except (PermissionError, SystemError) as e:  # pragma: no cover
             print(f'Failed to load config file {conffile}. {e!r}')  # noqa: T201 - it's fine here; # pragma: no cover
@@ -406,6 +413,7 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
         'constantmods',
         'customrules',
         'suppress',
+        'extra_layer',
         'hide',
     ]:
         try:
@@ -418,10 +426,14 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
     # Apply release specific tweaks
     args = Tweaks.tweak_args(args)
 
+    # adjust potentially relative paths
+    args.customrules = [os.path.join(config_basepath, x) for x in args.customrules]
+
     if args.files == [] and not args.print_rulefile and not args.clear_caches:
         raise argparse.ArgumentTypeError('no input files')
 
     if args.rulefile:
+        args.rulefile = os.path.join(config_basepath, args.rulefile)
         try:
             with open(args.rulefile) as i:
                 args.state.rule_file = json.load(i)
@@ -444,7 +456,7 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
     for mod in args.constantmods:
         if isinstance(mod, str):
             try:
-                with open(mod.lstrip('+-')) as _in:
+                with open(os.path.join(config_basepath, mod.lstrip('+-'))) as _in:
                     _cnt = json.load(_in)
                 if mod.startswith('+'):
                     CONSTANTS.AddConstants(_cnt)
