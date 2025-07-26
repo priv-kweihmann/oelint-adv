@@ -190,7 +190,6 @@ class TestConfigFile(TestBaseClass):
         # Test if the following options are converted to lists
         for _option in [
             'addrules',
-            'customrules',
             'suppress',
             'hide',
         ]:
@@ -201,6 +200,54 @@ class TestConfigFile(TestBaseClass):
 
             assert isinstance(getattr(_args, _option), list)
             assert getattr(_args, _option) == ['+True', '-False']
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb': 'VAR = "1"',
+                                 },
+                             ],
+                             )
+    def test_config_file_path_added(self, input_):
+        # Test if the following options are converted to lists
+        for _option in [
+            'rulefile',
+        ]:
+            _cstfile = self._create_tempfile(
+                '.oelint.cfg', '[oelint]\n{item}=somefile'.format(item=_option))
+            basepath = os.path.dirname(_cstfile)
+            with open(os.path.join(basepath, 'somefile'), 'w') as o:
+                o.write('{}')
+            os.environ['OELINT_CONFIG'] = _cstfile
+            _args = self._create_args(input_)
+
+            assert getattr(_args, _option) == os.path.join(basepath, 'somefile')
+
+        for _option in [
+            'customrules',
+        ]:
+            _cstfile = self._create_tempfile(
+                '.oelint.cfg', '[oelint]\n{item}=somefile'.format(item=_option))
+            basepath = os.path.dirname(_cstfile)
+            with open(os.path.join(basepath, 'somefile'), 'w') as o:
+                o.write('{}')
+            os.environ['OELINT_CONFIG'] = _cstfile
+            _args = self._create_args(input_)
+
+            assert getattr(_args, _option) == [os.path.join(basepath, 'somefile')]
+
+        for _option in [
+            'constantmods',
+        ]:
+            _cstfile = self._create_tempfile(
+                '.oelint.cfg', '[oelint]\n{item}=somefile'.format(item=_option))
+            basepath = os.path.dirname(_cstfile)
+            with open(os.path.join(basepath, 'somefile'), 'w') as o:
+                o.write('{}')
+            os.environ['OELINT_CONFIG'] = _cstfile
+            _args = self._create_args(input_)
+
+            assert 'somefile' in getattr(_args, _option)
 
     @pytest.mark.parametrize('input_',
                              [
