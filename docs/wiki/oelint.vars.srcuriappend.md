@@ -21,6 +21,9 @@ hard assignment ``SRC_URI = "file://abc"`` to override the default choices of th
 
 Or if it should be an ``append`` it needs to be ``SRC_URI:append = " file://abc"``
 
+This check only will raise issues, if all of the requested `inherit` classes,
+can be found in the same layer.
+
 ## Ways to fix it
 
 To override any default value use
@@ -33,6 +36,14 @@ inherit def
 or to append use
 
 ```
-SRC_URI += "file://abc"
+SRC_URI:append = " file://abc"
 inherit def
+```
+
+if you can fix the original class that creates the weak define,
+by using a small hack like
+
+```
+WEAK_DEF ?= "file://abc"
+SRC_URI:prepend = "${WEAK_DEF} "
 ```
