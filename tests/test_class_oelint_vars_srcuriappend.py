@@ -12,15 +12,17 @@ class TestClassOelintVarsSRCURIappend(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                     SRC_URI += "file://abc"
+                                     SRC_URI ?= "file://something"
                                      inherit abc
+                                     SRC_URI += "file://abc"
                                      ''',
                                  },
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                     SRC_URI  += "file://abc"
+                                     SRC_URI ??= "file://something"
                                      inherit abc
+                                     SRC_URI  += "file://abc"
                                      ''',
                                  },
                              ],
@@ -87,6 +89,20 @@ class TestClassOelintVarsSRCURIappend(TestBaseClass):
                                      '''
                                      inherit abc
                                      SRC_URI[sha256sum] = "1234"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SRC_URI += " file://abc"
+                                     inherit abc
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     inherit abc
+                                     SRC_URI += " file://abc"
                                      ''',
                                  },
                              ],

@@ -20,8 +20,10 @@ class VarSRCURIAppend(Rule):
 
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
+        seen_ops = []
         for item in items:
-            if item.VarOp.strip() in ['+=']:
+            seen_ops.append(item.VarOp.strip())
+            if item.VarOp.strip() in ['+='] and ('?=' in seen_ops or '??=' in seen_ops):
                 override_delimiter = item.OverrideDelimiter
                 res += self.finding(item.Origin, item.InFileLine,
                                     'Use SRC_URI{od}append otherwise this will override weak defaults by inherit'.format(
