@@ -219,13 +219,14 @@ def group_run(group: List[Tuple],
 
     inline_supp_map = {}
     for item in stash.GetItemsFor(classifier=Comment.CLASSIFIER):
-        for line in item.get_items():
+        for index, line in enumerate(item.get_items()):
             m = re.match(
-                r'^#\s+nooelint:\s+(?P<ids>[A-Za-z0-9\.,_\s-]*)', line)
+                r'^#\s+nooelint:\s+(?P<ids>[A-Za-z0-9\.,_\s-]*)', line, re.MULTILINE)
             if m:
                 if item.Origin not in inline_supp_map:  # pragma: no cover
                     inline_supp_map[item.Origin] = {}
-                inline_supp_map[item.Origin][item.InFileLine] = [
+                pos = item.InFileLine + index
+                inline_supp_map[item.Origin][pos] = [
                     x.strip() for x in re.split(r',|\s+', m.group('ids')) if x]
 
     state.inline_suppressions = {**state.inline_suppressions, **inline_supp_map}
