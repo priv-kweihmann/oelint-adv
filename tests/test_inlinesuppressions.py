@@ -35,6 +35,15 @@ class TestClassInlineSuppressions(TestBaseClass):
                                      # nooelint: oelint.vars.insaneskip - some explanation
                                      INSANE_SKIP_${PN} = "foo"
                                      ''',
+                                 },
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     # comment preamble
+                                     # with a lot more information
+                                     # nooelint: oelint.vars.insaneskip
+                                     INSANE_SKIP_${PN} = "foo"
+                                     ''',
                                  }
                              ],
                              )
