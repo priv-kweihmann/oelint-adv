@@ -18,9 +18,11 @@ class VarSRCUriOptions(Rule):
             'extract',
             'name',
             'patchdir',
+            'pswd',
             'striplevel',
             'subdir',
             'unpack',
+            'user',
         ]
         self._valid_options = {
             'az': [
@@ -75,7 +77,6 @@ class VarSRCUriOptions(Rule):
                 'subpath',
                 'tag',
                 'usehead',
-                'user',
             ],
             'gitsm': [
                 'branch',
