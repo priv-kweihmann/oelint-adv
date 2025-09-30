@@ -26,7 +26,7 @@ class VarPythonPnUsage(Rule):
             if i.Origin.endswith('.bbclass'):
                 continue
             if isinstance(i, PythonBlock):
-                needles = ['${PYTHON_PN}', 'd.getVar("PYTHON_PN")', 'd.getVar(\'PYTHON_PN\')']
+                needles = ['${PYTHON_PN}', 'd.getVar("PYTHON_PN")', "d.getVar('PYTHON_PN')"]
             elif isinstance(i, (Function, Variable)):
                 needles = ['${PYTHON_PN}']
             else:

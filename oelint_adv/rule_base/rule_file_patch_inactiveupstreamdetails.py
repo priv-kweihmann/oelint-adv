@@ -14,7 +14,7 @@ class FilePatchIsUpstreamStatusInactiveUpstreamDetails(Rule):
         super().__init__(id='oelint.file.inactiveupstreamdetails',
                          severity='info',
                          run_on=[Classification.BBAPPEND, Classification.RECIPE],
-                         message='Patch \'{FILE}\' with Upstream-Status: Inactive-Upstream has to have a lastcommit and/or lastrelease appended in []')
+                         message="Patch '{FILE}' with Upstream-Status: Inactive-Upstream has to have a lastcommit and/or lastrelease appended in []")
 
     def _get_recipe(self, items, path):
         # Find matching SRC_URI assignment

@@ -11,7 +11,7 @@ class NoTabs(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.tabs.notabs',
                          severity='warning',
-                         message='Don\'t use tabs use spaces')
+                         message="Don't use tabs use spaces")
 
     def __getMatches(self, _file: str, stash: Stash) -> List[Item]:
         res = []

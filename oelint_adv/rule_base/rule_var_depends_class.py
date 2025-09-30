@@ -12,7 +12,7 @@ class VarDependsClass(Rule):
         super().__init__(id='oelint.vars.dependsclass',
                          severity='error',
                          run_on=[Classification.RECIPE, Classification.BBAPPEND],
-                         message='{org} should be {patched} as it\'s a {class_} only recipe')
+                         message="{org} should be {patched} as it's a {class_} only recipe")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

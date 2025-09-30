@@ -10,7 +10,7 @@ class FileNotApplicableInlineSuppression(Rule):
     def __init__(self, state: State = None):
         super().__init__(id='oelint.file.inlinesuppress_na',
                          severity='info',
-                         message='Inline suppression for \'{id}\' is not needed')
+                         message="Inline suppression for '{id}' is not needed")
         self._state = state
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:

@@ -12,7 +12,7 @@ class VarPnBpnUsage(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.func.specific',
                          severity='error',
-                         message='\'{func}\' is set specific to [\'{b}\'], but isn\'t known from PACKAGES, MACHINE, DISTRO')
+                         message="'{func}' is set specific to ['{b}'], but isn't known from PACKAGES, MACHINE, DISTRO")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

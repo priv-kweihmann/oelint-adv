@@ -23,7 +23,7 @@ class Classification(Enum):
     LAYERCONF = 5
 
     @staticmethod
-    def tostr(val) -> str:
+    def tostr(val) -> str:  # noqa: VNE002
         if val == Classification.RECIPE:
             return 'recipe'
         if val == Classification.BBAPPEND:
@@ -220,7 +220,8 @@ class Rule:
 
         # filter out inline suppressions
         if any(x for x in _id if x in self._state.get_inlinesuppressions().get(_file, {}).get(max(1, _suppression_offset - 1), [])):
-            self._state.set_inline_suppression_seen(_file, _suppression_offset - 1, _id)
+            self._state.set_inline_suppression_seen(
+                _file, _suppression_offset - 1, _id)
             return []
 
         _path = os.path.abspath(_file)
@@ -295,7 +296,7 @@ class Rule:
         return self.Msg.format(*args, **kwargs)
 
     @staticmethod
-    def is_lone_append(stash: Stash, file: str) -> bool:
+    def is_lone_append(stash: Stash, file: str) -> bool:  # noqa: VNE002
         """Check if the file is a bbappend file without any matching
            bb file
 
@@ -343,7 +344,8 @@ def load_rules(args, add_rules: Iterable[str] = (), add_dirs: Iterable[str] = ()
             if v['builtin']:
                 name = __name__.split('.')[0] + '.' + v['path'] + '.' + name
             else:
-                name = os.path.basename(v['path']) + '.' + name  # pragma: no cover
+                name = os.path.basename(v['path']) + \
+                    '.' + name  # pragma: no cover
             try:
                 mod = importlib.import_module(name)
                 for m in inspect.getmembers(mod, inspect.isclass):
@@ -364,5 +366,5 @@ def load_rules(args, add_rules: Iterable[str] = (), add_dirs: Iterable[str] = ()
             except Exception as e:  # pragma: no cover
                 if not args.quiet:  # pragma: no cover
                     print(  # noqa: T201 this print is fine here
-                        'Can\'t load rule {rule} -> {exp}'.format(rule=name, exp=e))  # pragma: no cover
+                        "Can't load rule {rule} -> {exp}".format(rule=name, exp=e))  # pragma: no cover
     return res

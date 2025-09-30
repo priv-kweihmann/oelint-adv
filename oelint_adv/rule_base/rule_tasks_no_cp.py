@@ -11,7 +11,7 @@ class TaskInstallNoCp(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.task.nocopy',
                          severity='error',
-                         message='\'cp\' shall not be used in do_install. Use \'install\'')
+                         message="'cp' shall not be used in do_install. Use 'install'")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

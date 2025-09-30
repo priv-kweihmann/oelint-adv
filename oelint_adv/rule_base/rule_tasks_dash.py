@@ -10,7 +10,7 @@ class TaskDash(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.task.dash',
                          severity='error',
-                         message='Task \'{FUNC}\' shall not have \'-\' in its name')
+                         message="Task '{FUNC}' shall not have '-' in its name")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

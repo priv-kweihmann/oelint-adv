@@ -10,7 +10,7 @@ class FileIncludeVsRequire(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.file.requireinclude',
                          severity='warning',
-                         message='Use \'require {FILE}\' instead of \'include {FILE}\'')
+                         message="Use 'require {FILE}' instead of 'include {FILE}'")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

@@ -10,7 +10,7 @@ class VarDescSameTooBrief(Rule):
     def __init__(self):
         super().__init__(id='oelint.vars.descriptiontoobrief',
                          severity='warning',
-                         message='\'DESCRIPTION\' is the shorter than \'SUMMARY\'')
+                         message="'DESCRIPTION' is the shorter than 'SUMMARY'")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

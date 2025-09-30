@@ -12,7 +12,7 @@ class VarPnBpnUsage(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.specific',
                          severity='error',
-                         message='\'{a}\' is set specific to [\'{b}\'], but isn\'t known from PACKAGES, MACHINE, DISTRO or resources',
+                         message="'{a}' is set specific to ['{b}'], but isn't known from PACKAGES, MACHINE, DISTRO or resources",
                          run_on=[Classification.RECIPE, Classification.BBCLASS])
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:

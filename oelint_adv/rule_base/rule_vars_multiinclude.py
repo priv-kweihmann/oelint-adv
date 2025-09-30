@@ -11,7 +11,7 @@ class VarMultiInclude(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.var.multiinclude',
                          severity='warning',
-                         message='\'{INC}\' is included multiple times')
+                         message="'{INC}' is included multiple times")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

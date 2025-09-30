@@ -11,7 +11,7 @@ class FileIncludeNotFound(Rule):
     def __init__(self):
         super().__init__(id='oelint.file.includenotfound',
                          severity='warning',
-                         message='\'{FILE}\' was not found')
+                         message="'{FILE}' was not found")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

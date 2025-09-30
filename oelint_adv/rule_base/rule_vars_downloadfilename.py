@@ -10,7 +10,7 @@ class VarsDownloadfilename(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.downloadfilename',
                          severity='warning',
-                         message='Fetcher does create a download artifact without \'PV\' in the filename')
+                         message="Fetcher does create a download artifact without 'PV' in the filename")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

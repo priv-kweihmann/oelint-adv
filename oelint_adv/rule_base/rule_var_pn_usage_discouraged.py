@@ -10,7 +10,7 @@ class VarPnUsageDiscouraged(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.pnusagediscouraged',
                          severity='warning',
-                         message='Variable shouldn\'t contain ${PN} or ${BPN}')
+                         message="Variable shouldn't contain ${PN} or ${BPN}")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

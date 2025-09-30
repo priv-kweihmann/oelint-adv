@@ -10,7 +10,7 @@ class VarMultiInherit(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.var.multiinherit',
                          severity='warning',
-                         message='\'{inherit}\' is included multiple times')
+                         message="'{inherit}' is included multiple times")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

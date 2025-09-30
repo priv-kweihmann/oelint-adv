@@ -34,7 +34,8 @@ class TypeSafeAppendAction(argparse.Action):
         items = getattr(namespace, self.dest) or []
         if not isinstance(items, list):
             items = [x.strip() for x in items.split() if x.strip()]
-        items.extend(RegexRpl.split(r'\s+|\t+|\n+', values.strip('"').strip("'")))
+        items.extend(RegexRpl.split(r'\s+|\t+|\n+',
+                     values.strip('"').strip("'")))
         setattr(namespace, self.dest, items)
 
 
@@ -59,9 +60,11 @@ def parse_configfile() -> Dict:
         return {}
     config = ConfigParser()
     for conffile, basepath in [
-        (os.environ.get('OELINT_CONFIG', '/does/not/exist'), os.path.dirname(os.environ.get('OELINT_CONFIG', '/does/not/exist'))),
+        (os.environ.get('OELINT_CONFIG', '/does/not/exist'),
+         os.path.dirname(os.environ.get('OELINT_CONFIG', '/does/not/exist'))),
         (os.path.join(os.getcwd(), '.oelint.cfg'), os.getcwd()),
-        (os.path.join(os.environ.get('HOME', '/does/not/exist'), '.oelint.cfg'), os.environ.get('HOME', '/does/not/exist')),
+        (os.path.join(os.environ.get('HOME', '/does/not/exist'),
+         '.oelint.cfg'), os.environ.get('HOME', '/does/not/exist')),
     ]:
         try:
             if not os.path.exists(conffile):
@@ -128,7 +131,8 @@ def group_files(files: Iterable[str], mode: str) -> List[Tuple[List[str], List[s
         res[_filename_key].add(f)
 
     # layer.confs
-    _conf_layer = sorted([x for x in files if os.path.basename(x) == 'layer.conf'], key=lambda index: files.index(index))
+    _conf_layer = sorted([x for x in files if os.path.basename(
+        x) == 'layer.conf'], key=lambda index: files.index(index))
 
     _product_matrix = []
     _conf_machine = []
@@ -141,12 +145,14 @@ def group_files(files: Iterable[str], mode: str) -> List[Tuple[List[str], List[s
 
     if mode in ['all']:
         # machine.confs
-        _conf_machine = [x for x in files if fnmatch.fnmatch(os.path.abspath(x), '*/machine/*.conf')]
+        _conf_machine = [x for x in files if fnmatch.fnmatch(
+            os.path.abspath(x), '*/machine/*.conf')]
         if any(_conf_machine):
             _product_matrix.append(_conf_machine)
 
         # distro.confs
-        _conf_distro = [x for x in files if fnmatch.fnmatch(os.path.abspath(x), '*/distro/*.conf')]
+        _conf_distro = [x for x in files if fnmatch.fnmatch(
+            os.path.abspath(x), '*/distro/*.conf')]
         if any(_conf_distro):
             _product_matrix.append(_conf_distro)
 
@@ -161,7 +167,8 @@ def group_files(files: Iterable[str], mode: str) -> List[Tuple[List[str], List[s
         _fl = sorted(fg, key=lambda index: files.index(index))
         for element in itertools.product(*_product_matrix):
             _branch_expansion = element[-1]
-            _matrix_keys = [f'branch:{"false" if _branch_expansion else "true"}']
+            _matrix_keys = [
+                f'branch:{"false" if _branch_expansion else "true"}']
             if len(element) > 1:
                 _files = _conf_layer + list(element[:-1]) + _fl
 
@@ -175,22 +182,29 @@ def group_files(files: Iterable[str], mode: str) -> List[Tuple[List[str], List[s
                     _matrix_keys.append(os.path.basename(_distro_id[0]))
             else:
                 _files = _conf_layer + _fl
-            group_res.append((_files, frozenset(_matrix_keys), {'negative_inline': _branch_expansion}))
+            group_res.append((_files, frozenset(_matrix_keys), {
+                             'negative_inline': _branch_expansion}))
 
     if _conf_layer:
         if mode in ['all']:
-            group_res.append((_conf_layer, frozenset(['branch=true']), {'negative_inline': True}))
-        group_res.append((_conf_layer, frozenset(['branch=false']), {'negative_inline': False}))
+            group_res.append((_conf_layer, frozenset(
+                ['branch=true']), {'negative_inline': True}))
+        group_res.append((_conf_layer, frozenset(
+            ['branch=false']), {'negative_inline': False}))
 
     for m in _conf_machine:
         # mode == all is implicit at this stage
-        group_res.append(([m], frozenset(['branch=true']), {'negative_inline': True}))
-        group_res.append(([m], frozenset(['branch=false']), {'negative_inline': False}))
+        group_res.append(([m], frozenset(['branch=true']),
+                         {'negative_inline': True}))
+        group_res.append(([m], frozenset(['branch=false']),
+                         {'negative_inline': False}))
 
     for d in _conf_distro:
         # mode == all is implicit at this stage
-        group_res.append(([d], frozenset(['branch=true']), {'negative_inline': True}))
-        group_res.append(([d], frozenset(['branch=false']), {'negative_inline': False}))
+        group_res.append(([d], frozenset(['branch=true']),
+                         {'negative_inline': True}))
+        group_res.append(([d], frozenset(['branch=false']),
+                         {'negative_inline': False}))
 
     return group_res
 
@@ -202,18 +216,20 @@ def group_run(group: List[Tuple],
               state: State) -> List[Tuple[str, int, str]]:
     fixedfiles = []
     group_files, matrix, stash_params = group
-    stash = Stash(quiet=quiet, **state.get_additional_stash_args(), **stash_params)
+    stash = Stash(
+        quiet=quiet, **state.get_additional_stash_args(), **stash_params)
 
     for f in group_files:
         try:
             stash.AddFile(f)
         except FileNotFoundError as e:  # pragma: no cover
             if not quiet:  # pragma: no cover
-                print('Can\'t open/read: {e}'.format(e=e))  # noqa: T201 - it's fine here; # pragma: no cover
+                print("Can't open/read: {e}".format(e=e))  # noqa: T201 - it's fine here; # pragma: no cover
 
     stash.Finalize()
 
-    cached_res = state._caches.GetFromCache([x.ID for x in rules], stash.FingerPrint)
+    cached_res = state._caches.GetFromCache(
+        [x.ID for x in rules], stash.FingerPrint)
     if cached_res is not None:
         return cached_res
 
@@ -229,7 +245,8 @@ def group_run(group: List[Tuple],
                 inline_supp_map[item.Origin][pos] = [
                     x.strip() for x in re.split(r',|\s+', m.group('ids')) if x]
 
-    state.inline_suppressions = {**state.inline_suppressions, **inline_supp_map}
+    state.inline_suppressions = {
+        **state.inline_suppressions, **inline_supp_map}
 
     rules = [copy.deepcopy(x) for x in rules]
     for rule in rules:
@@ -237,7 +254,8 @@ def group_run(group: List[Tuple],
         rule.set_product_matrix(matrix)
         rule.set_rungroup(group_files)
 
-    _files = list(set(stash.GetRecipes() + stash.GetLoneAppends() + stash.GetConfFiles() + stash.GetBBClasses()))
+    _files = list(set(stash.GetRecipes() + stash.GetLoneAppends() +
+                  stash.GetConfFiles() + stash.GetBBClasses()))
     issues = []
     for _, f in enumerate(_files):
         _classification = Rule.classify_file(f)
@@ -250,11 +268,12 @@ def group_run(group: List[Tuple],
     fixedfiles = list(set(fixedfiles))
     for f in fixedfiles:
         items: List[Item] = stash.GetItemsFor(filename=f)
-        for file in {x.Origin for x in items}:
+        for file in {x.Origin for x in items}:  # noqa: VNE002
             if not state.nobackup:
                 os.rename(file, file + '.bak')  # pragma: no cover
             with open(file, 'w') as o:
-                o.write(''.join([x.RealRaw for x in sorted(items, key=lambda key: key.InFileLine) if x.Origin == file]))
+                o.write(''.join([x.RealRaw for x in sorted(
+                    items, key=lambda key: key.InFileLine) if x.Origin == file]))
                 if not quiet:
                     print('{path}:{lvl}:{msg}'.format(path=os.path.abspath(file),  # noqa: T201 - it's fine here; # pragma: no cover
                           lvl='debug', msg='Applied automatic fixes'))
@@ -268,7 +287,8 @@ def group_run(group: List[Tuple],
                         if _id not in known_ids:
                             continue
                         obj = FileNotApplicableInlineSuppression(state)
-                        issues += obj.finding(_file, _line, override_msg=obj.Msg.format(id=_id))
+                        issues += obj.finding(_file, _line,
+                                              override_msg=obj.Msg.format(id=_id))
 
     state._caches.SaveToCache([x.ID for x in rules], stash.FingerPrint, issues)
 
@@ -347,14 +367,17 @@ def create_lib_arguments(files: List[str],
     parser.add_argument('--noinfo', action='store_true', default=False)
     parser.add_argument('--nowarn', action='store_true', default=False)
     parser.add_argument('--relpaths', action='store_true', default=False)
-    parser.add_argument('--messageformat', default='{path}:{line}:{severity}:{id}:{msg}', type=str)
+    parser.add_argument(
+        '--messageformat', default='{path}:{line}:{severity}:{id}:{msg}', type=str)
     parser.add_argument('--constantmods', default=[], nargs='+')
-    parser.add_argument('--release', default=Tweaks.DEFAULT_RELEASE, choices=Tweaks.releases())
+    parser.add_argument(
+        '--release', default=Tweaks.DEFAULT_RELEASE, choices=Tweaks.releases())
     parser.add_argument('--mode', default='fast', choices=['fast', 'all'])
     parser.add_argument('--cached', action='store_true', help='Use caches')
     parser.add_argument('--cachedir', default=os.environ.get('OELINT_CACHE_DIR', __default_cache_dir),
                         help=f'Cache directory (default {__default_cache_dir})')
-    parser.add_argument('--clear-caches', action='store_true', help='Clear cache directory and exit')
+    parser.add_argument('--clear-caches', action='store_true',
+                        help='Clear cache directory and exit')
     parser.add_argument('--extra-layer', nargs='*', action='extend',
                         default=['core'], help='Layer names of 3rd party layers to use')
     # Override the defaults with the values from the config file
@@ -428,7 +451,8 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
     args = Tweaks.tweak_args(args)
 
     # adjust potentially relative paths
-    args.customrules = [os.path.join(config_basepath, x) for x in args.customrules]
+    args.customrules = [os.path.join(config_basepath, x)
+                        for x in args.customrules]
 
     if args.files == [] and not args.print_rulefile and not args.clear_caches:
         raise argparse.ArgumentTypeError('no input files')
@@ -440,7 +464,7 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
                 args.state.rule_file = json.load(i)
         except (FileNotFoundError, json.JSONDecodeError):
             raise argparse.ArgumentTypeError(
-                '\'rulefile\' is not a valid file')
+                "'rulefile' is not a valid file")
 
     if args.hide:
         for severity in args.hide:
@@ -470,7 +494,7 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
                     args.state._caches.AddToFingerPrint(str(_cnt))
             except (FileNotFoundError, json.JSONDecodeError):
                 raise argparse.ArgumentTypeError(
-                    'mod file \'{file}\' is not a valid file'.format(file=mod))
+                    "mod file '{file}' is not a valid file".format(file=mod))
         else:
             CONSTANTS.AddConstants(mod.get('+', {}))
             CONSTANTS.RemoveConstants(mod.get('-', {}))
@@ -499,7 +523,8 @@ def run(args: argparse.Namespace) -> List[Tuple[Tuple[str, int], str]]:
 
     def rule_applicable(rule):
         if isinstance(rule, Rule):
-            res = not _rule_file or any(x in _rule_file for x in rule.get_ids())  # pragma: no cover
+            res = not _rule_file or any(
+                x in _rule_file for x in rule.get_ids())  # pragma: no cover
             res &= rule.ID not in args.state.get_suppressions()
             res &= (rule.get_severity() in ['info', 'warning', 'error']) or any(
                 rule.get_severity(x) in ['info', 'warning', 'error'] for x in rule.Appendix)

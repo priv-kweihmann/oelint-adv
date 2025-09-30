@@ -11,12 +11,12 @@ class BBClassUnderscore(Rule):
         super().__init__(id='oelint.bbclass.underscores',
                          severity='error',
                          run_on=[Classification.BBCLASS],
-                         message='bbclass filenames should not contain \'-\'. Replace it by \'_\'')
+                         message="bbclass filenames should not contain '-'. Replace it by '_'")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         _files = {x.Origin for x in stash.GetItemsFor(filename=_file)}
-        for file in _files:
+        for file in _files:  # noqa: VNE002
             if '-' in os.path.basename(file):
                 res += self.finding(file, 1)
         return res

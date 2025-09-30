@@ -11,7 +11,7 @@ class TaskAddNoTaskBody(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.task.addnotaskbody',
                          severity='warning',
-                         message='The added task \'{FUNC}\' is not existing or has no body')
+                         message="The added task '{FUNC}' is not existing or has no body")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

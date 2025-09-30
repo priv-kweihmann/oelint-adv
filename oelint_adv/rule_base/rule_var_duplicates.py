@@ -38,7 +38,7 @@ class VarDuplicates(Rule):
                             _items[machine_mods_cleaned] = [x]
                         else:
                             res += self.finding(i.Origin, i.InFileLine,
-                                                'Item \'{x}\' was added multiple times to {c}'.format(x=x, c=c))
+                                                "Item '{x}' was added multiple times to {c}".format(x=x, c=c))
                     else:
                         if any(x in ['append', 'prepend', ' += ', ' =+ '] for x in _operations):
                             _items[machine_mods_cleaned].append(x)

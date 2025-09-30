@@ -24,7 +24,7 @@ class ImageFeaturesBad(Rule):
         }
         super().__init__(id='oelint.var.badimagefeature',
                          severity='warning',
-                         message='{var} contains \'{feature}\', {reason}',
+                         message="{var} contains '{feature}', {reason}",
                          appendix=list(self._map.keys()))
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:

@@ -11,7 +11,7 @@ class VarNativeSDKFilename(Rule):
         super().__init__(id='oelint.var.nativesdkfilename',
                          severity='warning',
                          run_on=[Classification.BBAPPEND, Classification.RECIPE],
-                         message='nativesdk-recipe-files should include \'nativesdk-\' in file name')
+                         message="nativesdk-recipe-files should include 'nativesdk-' in file name")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

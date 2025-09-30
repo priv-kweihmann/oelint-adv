@@ -10,7 +10,7 @@ class VarTrailingSlash(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.notrailingslash',
                          severity='error',
-                         message='\'{a}\' must not end with a \'/\'')
+                         message="'{a}' must not end with a '/'")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

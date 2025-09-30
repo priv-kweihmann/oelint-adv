@@ -12,7 +12,7 @@ class VarQuoted(Rule):
         super().__init__(id='oelint.vars.bbvars',
                          severity='warning',
                          run_on=[Classification.BBAPPEND, Classification.BBCLASS, Classification.RECIPE],
-                         message='Variable \'{VAR}\' should be set on a disto/layer or local.conf level, not in a recipe',
+                         message="Variable '{VAR}' should be set on a disto/layer or local.conf level, not in a recipe",
                          appendix=CONSTANTS.GetByPath('variables/protected'))
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
