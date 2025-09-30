@@ -237,6 +237,7 @@ Rules marked with **[I]** need to be activated through [a rule file](#defining-a
 * [oelint.vars.srcuridomains](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.srcuridomains.md) - Recipe is pulling from different domains, this will likely cause issues
 * [oelint.vars.srcurifile](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.srcurifile.md) - First item of SRC_URI should not be a file:// fetcher, if multiple fetcher are used
 * [oelint.vars.srcurigittag](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.srcurigittag.md) - 'tag' in SRC_URI-options leads to not-reproducible builds
+* [oelint.vars.srcurimutualex](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.srcurimutualex.md) - Mutual exclusive revision/checksum information is set
 * [oelint.vars.srcurioptions](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.srcurioptions.md) - Unsupported fetcher or invalid options detected
 * [oelint.vars.srcurisrcrevtag](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.srcurisrcrevtag.md) - 'tag' in SRC_URI and a SRCREV for the same component doesn't compute
 * [oelint.vars.summary80chars](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.summary80chars.md) - SUMMARY should max. be 80 characters long
