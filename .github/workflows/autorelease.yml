@@ -21,6 +21,7 @@ concurrency:
 
 env:
   VERSION_FILE: oelint_adv/version.py
+  PROJ_CONF: pyproject.toml
   MODULE_CODE: oelint_adv/*
   PYPI_PUBLISH: 1
 
@@ -58,7 +59,8 @@ jobs:
       with:
         filters: |
           relevant-for-release:
-            - 'requirements.txt'
+            - '${{ env.VERSION_FILE }}'
+            - '${{ env.PROJ_CONF }}'
             - '${{ env.MODULE_CODE }}'
 
     - name: Check if we need to release
@@ -87,19 +89,20 @@ jobs:
     - name: Install dependencies
       if: steps.release-needed.outputs.DO_RELEASE == 'true'
       run: |
-        python -m pip install --upgrade pip build
-        pip install -r requirements.txt
+        python -m pip install --upgrade pip
+        pip install .
 
     - name: Bump version
       id: version-bump
       run: |
-        pip install -r requirements-dev.txt
-        bump2version --list ${{ steps.release-needed.outputs.RELEASE_TYPE }} ${{ env.VERSION_FILE }} >> $GITHUB_OUTPUT
+        pip install .[dev]
+        bump-my-version bump --verbose ${{ steps.release-needed.outputs.RELEASE_TYPE }} ${{ env.PROJ_CONF }} ${{ env.VERSION_FILE }}
+        echo "new_version=$(bump-my-version show current_version)" >> $GITHUB_OUTPUT
 
     - name: Build
       if: steps.release-needed.outputs.DO_RELEASE == 'true'
       run: |
-        python -m build --sdist --wheel
+        python3 -m build --sdist --wheel
 
     - name: Commit new version
       if: steps.release-needed.outputs.DO_RELEASE == 'true'

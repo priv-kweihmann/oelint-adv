@@ -38,11 +38,8 @@ from source
 ```shell
 git clone https://github.com/priv-kweihmann/oelint-adv
 cd oelint-adv
-python3 setup.py install # might require sudo/root permissions
+pip install . # might require sudo/root permissions
 ```
-
-**NOTE** if you install from source, you'll have to provide all matching
-required python libraries on your own. See [requirements.txt](requirements.txt) for details
 
 ## Usage
 
