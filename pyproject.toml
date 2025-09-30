@@ -1,0 +1,92 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[tool.bumpversion]
+current_version = "8.2.2"
+tag = false
+commit = false
+
+[tool.setuptools]
+dynamic.optional-dependencies = {dev = { file = ["requirements-dev.txt"] }}
+dynamic.version = {attr = "oelint_adv.version.__version__"}
+include-package-data = false
+package-data.oelint_adv = ["data/*"]
+packages.find.where = ["."] 
+packages.find.exclude = ["docs*", "tests*", ".*tests*", "tests", ".*tests.*"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=oelint_adv --cov-fail-under=100 --cov-report term-missing --cov-branch --forked --no-header --quiet --random-order --random-order-bucket=global --showlocals -rs --old-summary --force-sugar -n auto"
+
+[tool.flake8]
+multiline-quotes = "'''"
+no-accept-encodings = true
+max-line-length = 127
+max-complexity = 10
+ignore = [
+    "C901",
+    "CFQ001",
+    "CFQ002",
+    "CFQ004",
+    "D1",
+    "D2",
+    "D4",
+    "DAR",
+    "E261",
+    "E302",
+    "E501",
+    "I001",
+    "I005",
+    "N400",
+    "N802",
+    "N803",
+    "N806",
+    "Q000",
+    "T201",
+    "VNE001",
+    "W504"
+]
+exclude = [ "tests/*" ]
+statistics = false
+
+[project]
+name = "oelint_adv"
+requires-python = ">= 3.9"
+description = "Advanced bitbake-recipe linter"
+readme = "README.md"
+maintainers = [
+  {name = "Konrad Weihmann", email = "kweihmann@outlook.com"}
+]
+license = "BSD-2-Clause"
+license-files = ["LICENSE"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.9",
+]
+dependencies = [
+  "anytree ~= 2.13",
+  "argcomplete ~= 3.6",
+  "colorama ~= 0.4",
+  "oelint-parser ~= 8.5",
+  "oelint-data",
+  "urllib3 ~= 2.5",
+]
+dynamic = ["optional-dependencies", "version"]
+
+[project.scripts]
+oelint-adv = "oelint_adv.__main__:main"
+
+[project.urls]
+homepage = "https://github.com/priv-kweihmann/oelint-adv"
+repository = "https://github.com/priv-kweihmann/oelint-adv.git"
+bugtracker = "https://github.com/priv-kweihmann/oelint-adv/issues"
