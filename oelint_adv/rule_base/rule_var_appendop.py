@@ -10,7 +10,7 @@ class VarAppendOperation(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.appendop',
                          severity='error',
-                         message='Use \'{a}\' instead of \'{b}\' as it overwrites \'{c}\'')
+                         message="Use '{a}' instead of '{b}' as it overwrites '{c}'")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

@@ -1,4 +1,5 @@
 from typing import List
+
 from colorama import Fore
 from colorama.ansi import AnsiCodes
 
@@ -12,7 +13,8 @@ class State():
         self.color = False
         self.inline_suppressions = {}
         self.messageformat = ''
-        self.hide = {'error': False, 'warning': False, 'info': False, 'inactive': True}
+        self.hide = {'error': False, 'warning': False,
+                     'info': False, 'inactive': True}
         self.rel_path = False
         self.rule_file = {}
         self.suppression = []
@@ -104,7 +106,7 @@ class State():
         """
         return self.additional_stash_args
 
-    def set_inline_suppression_seen(self, file: str, line: int, ids: List[str]) -> None:
+    def set_inline_suppression_seen(self, file: str, line: int, ids: List[str]) -> None:  # noqa: VNE002
         """Announce that inline suppression have been used
 
         Args:
@@ -114,7 +116,7 @@ class State():
         """
         self._seen_inline_suppressions += [(file, line, x) for x in ids]
 
-    def get_inline_suppression_seen(self, file: str, line: int, id_: str) -> bool:
+    def get_inline_suppression_seen(self, file: str, line: int, id_: str) -> bool:  # noqa: VNE002
         """Check if inline suppression have been used
 
         Args:

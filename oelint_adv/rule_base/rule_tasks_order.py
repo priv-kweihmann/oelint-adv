@@ -31,6 +31,6 @@ class TaskOrder(Rule):
                         continue
                     if CONSTANTS.FunctionsOrder.index(item.FuncName) < CONSTANTS.FunctionsOrder.index(_func_before.FuncName):
                         res += self.finding(item.Origin, item.InFileLine,
-                                            '\'{a}\' should be placed before \'{b}\''.format(
+                                            "'{a}' should be placed before '{b}'".format(
                                                 a=item.FuncName, b=_func_before.FuncName), appendix=item.FuncName)
         return res

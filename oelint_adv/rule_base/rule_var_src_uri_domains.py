@@ -26,7 +26,7 @@ class VarSRCUriOptions(Rule):
             _is_remove = 'remove' in item.AppendOperation()
             if _overrides not in _domains:
                 _domains[_overrides] = set()
-            for u in [x.strip('\'').strip() for x in item.get_items()]:
+            for u in [x.strip("'").strip() for x in item.get_items()]:
                 if u == INLINE_BLOCK:
                     continue
                 _url = stash.GetScrComponents(u)

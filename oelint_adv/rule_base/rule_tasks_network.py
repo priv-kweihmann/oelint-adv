@@ -11,7 +11,7 @@ class TaskNetwork(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.task.network',
                          severity='warning',
-                         message='Task \'{FUNC}\' uses the network flag, that can lead to unpredictable results',
+                         message="Task '{FUNC}' uses the network flag, that can lead to unpredictable results",
                          valid_from_release='kirkstone')
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:

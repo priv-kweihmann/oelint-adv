@@ -12,7 +12,7 @@ class VarBugtrackerIsUrl(Rule):
                          severity='warning',
                          run_on=[Classification.BBCLASS, Classification.DISTROCONF,
                                  Classification.LAYERCONF, Classification.MACHINECONF, Classification.RECIPE],
-                         message='\'FILESEXTRAPATHS\' should be used only in a bbappend file')
+                         message="'FILESEXTRAPATHS' should be used only in a bbappend file")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

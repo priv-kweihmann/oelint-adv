@@ -10,7 +10,7 @@ class VarAutorev(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.autorev',
                          severity='warning',
-                         message='The usage of \'AUTOREV\' for SRCREV leads to not reproducible builds')
+                         message="The usage of 'AUTOREV' for SRCREV leads to not reproducible builds")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

@@ -41,5 +41,5 @@ class VarSuggestedExists(Rule):
                 continue
             items = [x for x in all_items if x.VarName == var_]
             if not any(items):
-                res += self.finding(_file, 0, 'Variable \'{var}\' should be set'.format(var=var_), appendix=var_)
+                res += self.finding(_file, 0, "Variable '{var}' should be set".format(var=var_), appendix=var_)
         return res

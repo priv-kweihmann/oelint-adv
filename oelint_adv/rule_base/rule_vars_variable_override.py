@@ -28,6 +28,6 @@ class VarOverride(Rule):
                 if len(_items) > 1:
                     _files = {os.path.basename(x.Origin) for x in _items}
                     res += self.finding(_items[0].Origin, _items[0].InFileLine,
-                                        'Variable \'{a}\' is set by \'{b}\''.format(
+                                        "Variable '{a}' is set by '{b}'".format(
                                         a=v, b=','.join(_files)))
         return res

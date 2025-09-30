@@ -20,6 +20,6 @@ class VarQuoted(Rule):
             # at the beginning and the end of the value
             val_ = i.VarValue.strip()
             if ((not val_.startswith('"') or not val_.endswith('"'))
-                    and (not val_.startswith('\'') or not val_.endswith('\''))):  # noqa: W503
+                    and (not val_.startswith("'") or not val_.endswith("'"))):  # noqa: W503
                 res += self.finding(i.Origin, i.InFileLine)
         return res

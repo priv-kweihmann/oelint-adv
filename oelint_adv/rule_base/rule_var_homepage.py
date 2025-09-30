@@ -10,7 +10,7 @@ class VarHomepagePrefix(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.homepageprefix',
                          severity='warning',
-                         message='\'HOMEPAGE\' should start with \'http://\' or \'https://\'')
+                         message="'HOMEPAGE' should start with 'http://' or 'https://'")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

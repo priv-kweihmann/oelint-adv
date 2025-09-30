@@ -42,13 +42,13 @@ class VarListAppend(Rule):
         res = []
         res_app, res_pre = self.__getMatches(_file, stash)
         for i in res_app:
-            vv_rpl = i.VarValue.replace('"', '" ', 1).replace('\'', '\' ', 1)
+            vv_rpl = i.VarValue.replace('"', '" ', 1).replace("'", "' ", 1)
             i.RealRaw = i.RealRaw.replace(i.VarValue, vv_rpl)
             i.Raw = i.Raw.replace(i.VarValue, vv_rpl)
             i.VarValue = vv_rpl
             res.append(_file)
         for i in res_pre:
-            vv_rpl = i.VarValue[::-1].replace('"', '" ', 1).replace('\'', '\' ', 1)[::-1]
+            vv_rpl = i.VarValue[::-1].replace('"', '" ', 1).replace("'", "' ", 1)[::-1]
             i.RealRaw = i.RealRaw.replace(i.VarValue, vv_rpl)
             i.Raw = i.Raw.replace(i.VarValue, vv_rpl)
             i.VarValue = vv_rpl

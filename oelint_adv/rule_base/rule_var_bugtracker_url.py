@@ -10,7 +10,7 @@ class VarBugtrackerIsUrl(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.bugtrackerisurl',
                          severity='warning',
-                         message='\'BUGTRACKER\' should be an URL')
+                         message="'BUGTRACKER' should be an URL")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

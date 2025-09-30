@@ -12,7 +12,7 @@ class VarImproperInherit(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.var.improperinherit',
                          severity='error',
-                         message='\'{inherit}\' is not a proper bbclass name')
+                         message="'{inherit}' is not a proper bbclass name")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

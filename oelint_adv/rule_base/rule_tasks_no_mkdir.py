@@ -10,7 +10,7 @@ class TaskInstallNoMkdir(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.task.nomkdir',
                          severity='error',
-                         message='\'mkdir\' shall not be used in do_install. Use \'install\'')
+                         message="'mkdir' shall not be used in do_install. Use 'install'")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

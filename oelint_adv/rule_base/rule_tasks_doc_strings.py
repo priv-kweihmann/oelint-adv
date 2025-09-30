@@ -11,7 +11,7 @@ class TaskDocStrings(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.task.docstrings',
                          severity='info',
-                         message='Every custom task should have a doc string set by task[doc] = \'\'')
+                         message="Every custom task should have a doc string set by task[doc] = '...'")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

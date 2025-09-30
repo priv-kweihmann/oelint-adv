@@ -14,7 +14,7 @@ class FilePatchIsUpstreamStatusInAppMsg(Rule):
         super().__init__(id='oelint.file.inappropriatemsg',
                          severity='info',
                          run_on=[Classification.BBAPPEND, Classification.RECIPE],
-                         message='Patch \'{FILE}\' with Upstream-Status Inappropriate has to have a reasoning appended in [], chosen from {choices}')
+                         message="Patch '{FILE}' with Upstream-Status Inappropriate has to have a reasoning appended in [], chosen from {choices}")
 
     def _get_recipe(self, items, path):
         # Find matching SRC_URI assignment

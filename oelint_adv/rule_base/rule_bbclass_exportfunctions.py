@@ -11,7 +11,7 @@ class ExportFunctionsDash(Rule):
         super().__init__(id='oelint.exportfunction.dash',
                          severity='error',
                          run_on=[Classification.BBCLASS],
-                         message='EXPORT_FUNCTIONS should not contain \'-\', replace by \'_\'.')
+                         message="EXPORT_FUNCTIONS should not contain '-', replace by '_'.")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

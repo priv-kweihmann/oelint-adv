@@ -11,7 +11,7 @@ class VarLicFilePrefix(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.licfileprefix',
                          severity='warning',
-                         message='Prefix \'{PATH}\' to LIC_FILES_CHKSUM is not needed')
+                         message="Prefix '{PATH}' to LIC_FILES_CHKSUM is not needed")
 
     def __getMatches(self, _file: str, stash: Stash) -> List[Variable]:
         res = []

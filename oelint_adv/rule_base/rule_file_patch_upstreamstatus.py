@@ -14,7 +14,7 @@ class FilePatchIsUpstreamStatus(Rule):
         super().__init__(id='oelint.file.upstreamstatus',
                          severity='info',
                          run_on=[Classification.BBAPPEND, Classification.RECIPE],
-                         message='Patch \'{FILE}\' should contain an Upstream-Status entry')
+                         message="Patch '{FILE}' should contain an Upstream-Status entry")
 
     def _get_recipe(self, items, path):
         # Find matching SRC_URI assignment
@@ -48,7 +48,7 @@ class FilePatchIsUpstreamStatus(Rule):
                     for m in RegexRpl.finditer(r'^Upstream-Status:\s*(?P<class>.*)', cnt, flags=regex.regex.MULTILINE):
                         found = True
                         if not any(RegexRpl.match(v, m.group('class')) for k, v in _valid_class.items()):
-                            _msg = 'Upstream-Status in \'{FILE}\' doesn\'t pick from valid classifiers {cls}'.format(
+                            _msg = "Upstream-Status in '{FILE}' doesn't pick from valid classifiers {cls}".format(
                                 FILE=os.path.basename(i), cls=','.join(sorted(_valid_class.keys())),
                             )
                             res += self.finding(_recipe_match.Origin,

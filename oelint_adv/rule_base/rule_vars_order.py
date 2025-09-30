@@ -31,6 +31,6 @@ class VarsOrder(Rule):
                         continue
                     if CONSTANTS.GetByPath('variables/order').index(item.VarName) < CONSTANTS.GetByPath('variables/order').index(_func_before.VarName):
                         res += self.finding(item.Origin, item.InFileLine,
-                                            '\'{a}\' should be placed before \'{b}\''.format(
+                                            "'{a}' should be placed before '{b}'".format(
                                                 a=item.VarName, b=_func_before.VarName), appendix=self.__cleanname(item.VarName))
         return res

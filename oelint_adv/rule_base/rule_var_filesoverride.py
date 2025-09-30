@@ -10,7 +10,7 @@ class VarFilesOverride(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.var.filesoverride',
                          severity='warning',
-                         message='\'{a}\' should not be overriden')
+                         message="'{a}' should not be overriden")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

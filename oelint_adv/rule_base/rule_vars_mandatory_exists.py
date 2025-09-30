@@ -41,5 +41,5 @@ class VarMandatoryExists(Rule):
             filtered = stash.Reduce(items, attribute=Variable.ATTR_VAR, attributeValue=var_)
             if not any(filtered):
                 res += self.finding(_file, 0,
-                                    'Variable \'{a}\' should be set'.format(a=var_), appendix=var_)
+                                    "Variable '{a}' should be set".format(a=var_), appendix=var_)
         return res

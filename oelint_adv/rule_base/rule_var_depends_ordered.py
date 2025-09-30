@@ -12,7 +12,7 @@ class VarDependsOrdered(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.dependsordered',
                          severity='warning',
-                         message='\'{VAR}\' entries should be ordered alphabetically')
+                         message="'{VAR}' entries should be ordered alphabetically")
 
     def __overrides(self, findings: List[Item]) -> dict:
         res = {f.GetMachineEntry() for f in findings}

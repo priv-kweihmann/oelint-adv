@@ -16,7 +16,8 @@ class VarMisspell(Rule):
                          message='<FOO>',
                          appendix=['unknown'])
         try:
-            self._minconfidence = float(os.environ.get('OELINT_MISSPELL_CONFIDENCE', 'not-a-float'))
+            self._minconfidence = float(os.environ.get(
+                'OELINT_MISSPELL_CONFIDENCE', 'not-a-float'))
         except ValueError:
             self._minconfidence = 0.8
 
@@ -41,15 +42,17 @@ class VarMisspell(Rule):
         res = []
 
         _all: List[Item] = stash.GetItemsFor(filename=_file)
-        items: List[Item] = stash.Reduce(_all, filename=_file, classifier=[Variable.CLASSIFIER, FlagAssignment.CLASSIFIER])
+        items: List[Item] = stash.Reduce(_all, filename=_file, classifier=[
+                                         Variable.CLASSIFIER, FlagAssignment.CLASSIFIER])
         _extras = [f'SRCREV_{x}' for x in stash.GetValidNamedResources(_file)]
-        _pkgs = [x for x in stash.GetValidPackageNames(_file, strippn=True) if x]
+        _pkgs = [x for x in stash.GetValidPackageNames(
+            _file, strippn=True) if x]
         _taskname = CONSTANTS.FunctionsKnown + [x.FuncName for x in _all if isinstance(x, Function)]
         _vars = CONSTANTS.VariablesKnown
         _bbfile_collections = stash.ExpandVar(_file, attribute=Variable.ATTR_VAR,
                                               attributeValue='BBFILE_COLLECTIONS').get('BBFILE_COLLECTIONS', [])
         for collection in _bbfile_collections:
-            for var in self._layername_extensions_on:
+            for var in self._layername_extensions_on:  # noqa: VNE002
                 _vars.append(f'{var}_{collection}')
 
         for i in items:
@@ -63,7 +66,8 @@ class VarMisspell(Rule):
                     continue
                 for pkg in _pkgs:
                     if _cleanvarname.endswith(pkg):
-                        _cleanvarname = ''.join(_cleanvarname.rsplit(pkg, 1))  # pragma: no cover
+                        _cleanvarname = ''.join(
+                            _cleanvarname.rsplit(pkg, 1))  # pragma: no cover
             else:
                 _cleanvarname = i.VarName
                 if _cleanvarname.startswith('_'):
@@ -86,11 +90,12 @@ class VarMisspell(Rule):
             _bestmatch = self.get_best_match(_cleanvarname, _vars)
             if _bestmatch:
                 res += self.finding(i.Origin, i.InFileLine,
-                                    '\'{a}\' is unknown, maybe you meant \'{b}\''.format(
+                                    "'{a}' is unknown, maybe you meant '{b}'".format(
                                         a=_cleanvarname, b=_bestmatch))
             else:
                 res += self.finding(i.Origin, i.InFileLine,
-                                    '\'{a}\' is unknown. Consider adding it via --constantmods'.format(a=_cleanvarname),
+                                    "'{a}' is unknown. Consider adding it via --constantmods".format(
+                                        a=_cleanvarname),
                                     appendix='unknown',
                                     severity_override='info')
         return res

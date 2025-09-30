@@ -12,7 +12,7 @@ class VarHomepagePing(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.homepageping',
                          severity='warning',
-                         message='\'HOMEPAGE\' isn\'t reachable')
+                         message="'HOMEPAGE' isn't reachable")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

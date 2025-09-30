@@ -11,7 +11,7 @@ class VarQuoted(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.append.protvars',
                          severity='error',
-                         message='Variable \'{VAR}\' shouldn\'t be set as part of a bbappend',
+                         message="Variable '{VAR}' shouldn't be set as part of a bbappend",
                          run_on=[Classification.BBAPPEND],
                          appendix=CONSTANTS.GetByPath('variables/protected-append'))
 

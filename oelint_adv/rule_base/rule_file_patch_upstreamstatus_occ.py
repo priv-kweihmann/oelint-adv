@@ -23,7 +23,7 @@ class FilePatchUpstreamStatusOccurance(Rule):
         super().__init__(id='oelint.file.upstreamstatus_occurance',
                          severity='inactive',
                          run_on=[Classification.BBAPPEND, Classification.RECIPE],
-                         message='Found {ID} set as Upstream-Status in patch \'{FILE}\'',
+                         message="Found {ID} set as Upstream-Status in patch '{FILE}'",
                          appendix=list(self._valid_class.keys()))
 
     def _get_recipe(self, items, path):

@@ -10,7 +10,7 @@ class VarSectionLowercase(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.sectionlowercase',
                          severity='warning',
-                         message='\'SECTION\' should only lowercase characters')
+                         message="'SECTION' should only lowercase characters")
 
     def __getMatches(self, _file: str, stash: Stash) -> List[Variable]:
         res = []

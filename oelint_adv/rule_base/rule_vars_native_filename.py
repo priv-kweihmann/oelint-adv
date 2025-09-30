@@ -11,7 +11,7 @@ class VarNativeFilename(Rule):
         super().__init__(id='oelint.var.nativefilename',
                          severity='warning',
                          run_on=[Classification.BBAPPEND, Classification.RECIPE],
-                         message='native-recipe-files should include \'-native\' in file name')
+                         message="native-recipe-files should include '-native' in file name")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

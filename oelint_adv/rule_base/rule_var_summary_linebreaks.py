@@ -10,7 +10,7 @@ class VarSummaryLinebreaks(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.summarylinebreaks',
                          severity='warning',
-                         message='\'SUMMARY\' should not contain line breaks')
+                         message="'SUMMARY' should not contain line breaks")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []

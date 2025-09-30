@@ -33,7 +33,7 @@ def create_argparser() -> argparse.ArgumentParser:
     parser.add_argument('--fix', action='store_true', default=False,
                         help='Automatically try to fix the issues')
     parser.add_argument('--nobackup', action='store_true', default=False,
-                        help='Don\'t create backup file when auto fixing')
+                        help="Don't create backup file when auto fixing")
     parser.add_argument('--addrules', nargs='+', default=[],
                         help='Additional non-default rulessets to add')
     parser.add_argument('--customrules', nargs='+', default=[],
@@ -119,7 +119,7 @@ def main() -> int:  # pragma: no cover
         issues = run(args)
     except Exception as e:  # pragma: no cover - that shouldn't be covered anyway
         import traceback
-        print('OOPS - That shouldn\'t happen: {e} - {files}'.format(e=e, files=args.files))
+        print("OOPS - That shouldn't happen: {e} - {files}".format(e=e, files=args.files))
         traceback.print_exc()
         # Not using os.EX_SOFTWARE here because it is only available on Unix
         sys.exit(70)

@@ -10,7 +10,7 @@ class VarSummary80Chars(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.summary80chars',
                          severity='warning',
-                         message='\'SUMMARY\' should not be longer than 80 characters')
+                         message="'SUMMARY' should not be longer than 80 characters")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
