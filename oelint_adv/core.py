@@ -107,7 +107,9 @@ def group_files(files: Iterable[str], mode: str) -> List[Tuple[List[str], List[s
             continue
         _match = False
         for _, v in res.items():
-            _needle = '^.*/' + re.escape(os.path.basename(_filename)).replace('%', '.*') + '.bb$'
+            _needle = '^.*/' + \
+                re.escape(os.path.basename(_filename)
+                          ).replace('%', '.*') + '.bb$'
             if any(RegexRpl.match(_needle, x, re.MULTILINE) for x in v):
                 v.add(f)
                 _match = True
@@ -213,7 +215,8 @@ def group_run(group: List[Tuple],
               quiet: bool,
               fix: bool,
               rules: List[Rule],
-              state: State) -> List[Tuple[str, int, str]]:
+              state: State,
+              persistent: bool = True) -> Tuple[List[Tuple[str, int, str]], Dict[str, str]]:
     fixedfiles = []
     group_files, matrix, stash_params = group
     stash = Stash(
@@ -231,7 +234,7 @@ def group_run(group: List[Tuple],
     cached_res = state._caches.GetFromCache(
         [x.ID for x in rules], stash.FingerPrint)
     if cached_res is not None:
-        return cached_res
+        return (cached_res, {})
 
     inline_supp_map = {}
     for item in stash.GetItemsFor(classifier=Comment.CLASSIFIER):
@@ -266,17 +269,22 @@ def group_run(group: List[Tuple],
                 fixedfiles += r.fix(f, stash)
             issues += r.check(f, stash)
     fixedfiles = list(set(fixedfiles))
+    fixedfiledict = {}
     for f in fixedfiles:
         items: List[Item] = stash.GetItemsFor(filename=f)
         for file in {x.Origin for x in items}:  # noqa: VNE002
-            if not state.nobackup:
-                os.rename(file, file + '.bak')  # pragma: no cover
-            with open(file, 'w') as o:
-                o.write(''.join([x.RealRaw for x in sorted(
-                    items, key=lambda key: key.InFileLine) if x.Origin == file]))
-                if not quiet:
-                    print('{path}:{lvl}:{msg}'.format(path=os.path.abspath(file),  # noqa: T201 - it's fine here; # pragma: no cover
-                          lvl='debug', msg='Applied automatic fixes'))
+            cnt = ''.join([x.RealRaw for x in sorted(
+                items, key=lambda key: key.InFileLine) if x.Origin == file])
+            if persistent:
+                if not state.nobackup:
+                    os.rename(file, file + '.bak')  # pragma: no cover
+                with open(file, 'w') as o:
+                    o.write(cnt)
+                    if not quiet:
+                        print('{path}:{lvl}:{msg}'.format(path=os.path.abspath(file),  # noqa: T201 - it's fine here; # pragma: no cover
+                            lvl='debug', msg='Applied automatic fixes'))
+            else:
+                fixedfiledict[file] = cnt  # pragma: no cover
 
     if any(isinstance(x, FileNotApplicableInlineSuppression) for x in rules):
         known_ids = list(itertools.chain(*[x.get_ids() for x in rules]))
@@ -292,16 +300,19 @@ def group_run(group: List[Tuple],
 
     state._caches.SaveToCache([x.ID for x in rules], stash.FingerPrint, issues)
 
-    return issues
+    return (issues, fixedfiledict)
 
 
-def flatten(list_: Iterable) -> List:
+def flatten(list_: Iterable) -> Tuple:
     if not isinstance(list_, list):
-        return [list_]
-    flat = []
+        return (list_, {})  # pragma: no cover
+    res_a = []
+    res_b = {}
     for sublist in list_:
-        flat.extend(flatten(sublist))
-    return flat
+        _a, _b = sublist
+        res_a.extend(_a)
+        res_b = {**res_b, **_b}
+    return (res_a, res_b)
 
 
 def create_lib_arguments(files: List[str],
@@ -515,7 +526,7 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
     return args
 
 
-def run(args: argparse.Namespace) -> List[Tuple[Tuple[str, int], str]]:
+def run(args: argparse.Namespace, persistent: bool = True) -> Tuple[List[Tuple[str, int, str]], Dict[str, str]]:
     rules = load_rules(args, add_rules=args.addrules,
                        add_dirs=args.customrules)
     _loaded_ids = []
@@ -541,9 +552,10 @@ def run(args: argparse.Namespace) -> List[Tuple[Tuple[str, int], str]]:
         print('Loaded rules:\n\t{rules}'.format(  # noqa: T201 - it's here for a reason
             rules='\n\t'.join(sorted(_loaded_ids))))
     issues = []
+    fixedfiles = {}
     groups = group_files(args.files, args.mode)
     if not any(groups):
-        return []
+        return ([], {})
     # Starting with python 3.14 the default way of starting the mp Pool
     # will be 'forkserver' - see https://docs.python.org/3.14/library/multiprocessing.html#contexts-and-start-methods
     # But in our setup we will need to share e.g. the CONSTANTS object into
@@ -552,8 +564,8 @@ def run(args: argparse.Namespace) -> List[Tuple[Tuple[str, int], str]]:
     ctx = mp.get_context('fork')
     with ctx.Pool(processes=min(args.jobs, len(groups))) as pool:
         try:
-            issues = flatten(pool.map(partial(group_run, quiet=args.quiet, fix=args.fix,
-                                              rules=rules, state=args.state), groups))
+            issues, fixedfiles = flatten(pool.map(partial(group_run, quiet=args.quiet, fix=args.fix,
+                                                          rules=rules, state=args.state, persistent=persistent), groups))
         finally:
             pool.close()
             pool.join()
@@ -572,4 +584,4 @@ def run(args: argparse.Namespace) -> List[Tuple[Tuple[str, int], str]]:
 
     issues = sorted(deduplicate(issues), key=lambda x: x[0])
 
-    return issues
+    return (issues, fixedfiles)

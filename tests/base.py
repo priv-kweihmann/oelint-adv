@@ -95,7 +95,8 @@ class TestBaseClass:
 
     def check_for_id(self, args, id_, occurrences):
         from oelint_adv.__main__ import run
-        issues = [x[1] for x in run(args)]
+        _issues, _ = run(args)
+        issues = [x[1] for x in _issues]
         _files = '\n---\n'.join(['{k}:\n{v}'.format(k=k, v=v)
                                  for k, v in self.__created_files.items()])
         assert(len([x for x in issues if ':{id}:'.format(id=id_) in x]) ==

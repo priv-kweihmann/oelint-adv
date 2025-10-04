@@ -17,9 +17,10 @@ class TestLibMode(TestBaseClass):
 
         results = run(create_lib_arguments([tmp_file]))
 
-        assert isinstance(results, list)
-        assert len(results) > 0
+        assert isinstance(results, tuple)
+        assert len(results[0]) > 0
 
-        issues = [x[1] for x in results]
+        issues = [x[1] for x in results[0]]
 
-        assert len([x for x in issues if ':{id}:'.format(id='oelint.vars.insaneskip') in x]) == 1
+        assert len([x for x in issues if ':{id}:'.format(
+            id='oelint.vars.insaneskip') in x]) == 1
