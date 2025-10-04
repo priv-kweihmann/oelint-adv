@@ -42,11 +42,11 @@ class VarSRCURIMutualExItems(Rule):
         for item in _flags:
             if item.Flag.endswith('sum'):
                 needle = item.Flag.split('.')[0]
-                sum = item.Flag.split('.')[-1]
+                _sum = item.Flag.split('.')[-1]
                 if needle.endswith('sum'):
                     needle = ''
                 if needle in _map:
-                    _map[needle][sum] = item
+                    _map[needle][_sum] = item
 
         for _, v in _map.items():
             if 'srcrev' not in v:

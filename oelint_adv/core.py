@@ -108,8 +108,7 @@ def group_files(files: Iterable[str], mode: str) -> List[Tuple[List[str], List[s
         _match = False
         for _, v in res.items():
             _needle = '^.*/' + \
-                re.escape(os.path.basename(_filename)
-                          ).replace('%', '.*') + '.bb$'
+                re.escape(os.path.basename(_filename)).replace('%', '.*') + '.bb$'
             if any(RegexRpl.match(_needle, x, re.MULTILINE) for x in v):
                 v.add(f)
                 _match = True
@@ -282,7 +281,7 @@ def group_run(group: List[Tuple],
                     o.write(cnt)
                     if not quiet:
                         print('{path}:{lvl}:{msg}'.format(path=os.path.abspath(file),  # noqa: T201 - it's fine here; # pragma: no cover
-                            lvl='debug', msg='Applied automatic fixes'))
+                              lvl='debug', msg='Applied automatic fixes'))
             else:
                 fixedfiledict[file] = cnt  # pragma: no cover
 
