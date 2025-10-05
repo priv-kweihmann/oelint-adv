@@ -116,7 +116,7 @@ def main() -> int:  # pragma: no cover
         sys.exit(0)
 
     try:
-        issues = run(args)
+        issues, _ = run(args)
     except Exception as e:  # pragma: no cover - that shouldn't be covered anyway
         import traceback
         print("OOPS - That shouldn't happen: {e} - {files}".format(e=e, files=args.files))
