@@ -3,7 +3,7 @@ requires = ["setuptools >= 77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [tool.bumpversion]
-current_version = "9.0.0"
+current_version = "9.0.1"
 tag = false
 commit = false
 
