@@ -51,7 +51,7 @@ statistics = false
 
 [project]
 name = "oelint_adv"
-requires-python = ">= 3.9"
+requires-python = ">= 3.10"
 description = "Advanced bitbake-recipe linter"
 readme = "README.md"
 maintainers = [
@@ -72,13 +72,12 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
-    "Programming Language :: Python :: 3.9",
 ]
 dependencies = [
   "anytree ~= 2.13",
   "argcomplete ~= 3.6",
   "colorama ~= 0.4",
-  "oelint-parser ~= 8.5",
+  "oelint-parser ~= 8.6",
   "oelint-data",
   "urllib3 ~= 2.5",
 ]
