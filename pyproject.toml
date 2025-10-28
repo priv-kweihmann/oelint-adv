@@ -8,12 +8,14 @@ tag = false
 commit = false
 
 [tool.setuptools]
-dynamic.optional-dependencies = {dev = { file = ["requirements-dev.txt"] }}
-dynamic.version = {attr = "oelint_adv.version.__version__"}
 include-package-data = false
 package-data.oelint_adv = ["data/*"]
 packages.find.where = ["."] 
 packages.find.exclude = ["docs*", "tests*", ".*tests*", "tests", ".*tests.*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "oelint_adv.version.__version__"}
+optional-dependencies = {dev = { file = ["requirements-dev.txt"] }}
 
 [tool.pytest.ini_options]
 addopts = "--cov=oelint_adv --cov-fail-under=100 --cov-report term-missing --cov-branch --forked --no-header --quiet --random-order --random-order-bucket=global --showlocals -rs --old-summary --force-sugar -n auto"
