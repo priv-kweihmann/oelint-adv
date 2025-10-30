@@ -209,7 +209,7 @@ class Rule:
         # filter out suppressions
         if any(x in self._state.get_suppressions() for x in _id):
             return []
-        _severity = severity_override or self.get_severity(appendix)
+        _severity = self.get_severity(appendix) or severity_override
 
         if self._state.get_hide(_severity):
             return []
