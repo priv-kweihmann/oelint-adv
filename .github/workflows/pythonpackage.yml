@@ -33,11 +33,7 @@ jobs:
     - name: linter (flake8)
       run: flake8
     - name: test (pytest)
-      run: |
-        if [ "${{ matrix.python-version }}" = "3.12" ]; then
-          export COVERAGE_CORE=sysmon
-        fi
-        pytest
+      run: pytest
     - name: build
       run: python3 -m build --sdist --wheel
     - name: install
