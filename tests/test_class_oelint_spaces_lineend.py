@@ -85,3 +85,21 @@ class TestClassOelintSpacesLineEnd(TestBaseClass):
                              )
     def test_good(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize("id_", ["oelint.spaces.lineend"])
+    @pytest.mark.parametrize(
+        "input_",
+        [
+            (
+                {
+                    "oelint_adv_test.bb": 'do_compile() {\n\n    echo example \n}\n',
+                },
+                'do_compile() {\n\n    echo example\n}\n',
+            ),
+        ],
+    )
+    def test_fix_output(self, input_, id_):
+        args = self._create_args_fix(input_[0])
+        self.fix_and_check(args, id_)
+        with open(args.files[0]) as f:
+            assert f.read() == input_[1]

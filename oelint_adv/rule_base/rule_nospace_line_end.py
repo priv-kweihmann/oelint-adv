@@ -33,7 +33,7 @@ class NoSpaceTrailingRule(Rule):
     def fix(self, _file: str, stash: Stash) -> List[str]:
         res = []
         for i in self.__getMatches(_file, stash):
-            i[0].RealRaw = RegexRpl.sub(r'\s+\n', '\n', i[0].RealRaw)
-            i[0].Raw = RegexRpl.sub(r'\s+\n', '\n', i[0].Raw)
+            i[0].RealRaw = RegexRpl.sub(r"[^\S\r\n]+\n", "\n", i[0].RealRaw)
+            i[0].Raw = RegexRpl.sub(r"[^\S\r\n]+\n", "\n", i[0].Raw)
             res.append(_file)
         return res
