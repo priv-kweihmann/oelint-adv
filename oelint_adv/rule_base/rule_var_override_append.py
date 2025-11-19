@@ -21,6 +21,7 @@ class VarOverrideAppend(Rule):
             'DESCRIPTION',
             'FILES',
             'GROUPADD_PARAM',
+            'GROUPMEMS_PARAM',
             'INITSCRIPT_NAME',
             'INITSCRIPT_PARAMS',
             'INSANE_SKIP',
