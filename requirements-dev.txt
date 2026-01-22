@@ -34,4 +34,4 @@ pytest-sugar == 1.1.1
 pytest-tldr == 0.2.6
 pytest-xdist == 3.8.0
 twine == 6.2.0
-wheel ~= 0.45
+wheel ~= 0.46
