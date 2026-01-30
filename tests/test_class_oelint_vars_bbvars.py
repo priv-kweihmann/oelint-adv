@@ -84,6 +84,7 @@ class TestClassOelintVarsBBVars(TestBaseClass):
         'PRSERV_HOST',
         'STAMP',
         'TOPDIR',
+        'THISDIR',
     ])
     @pytest.mark.parametrize('operation', ['=', ':=', '.=', '=.', '+=', '=+', ' =+'])
     def test_bad(self, id_, occurrence, var, operation):
