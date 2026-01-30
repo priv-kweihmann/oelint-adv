@@ -218,6 +218,7 @@ Rules marked with **[I]** need to be activated through [a rule file](#defining-a
 * [oelint.vars.mispell.unknown](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.mispell.unknown.md) - Variable is not known from CONSTANTS, typo is unlikely
 * [oelint.vars.mispell](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.mispell.md) - Possible typo detected
 * [oelint.vars.multilineident](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.multilineident.md) - On a multiline assignment, line indent is desirable **[F]**
+* [oelint.vars.noncoreoverride](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.noncoreoverride.md) - core definitions are not overridden by just adding the layer with this bbappend
 * [oelint.vars.notneededspace](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.notneededspace.md) - Space at the beginning of the var is not needed **[F]**
 * [oelint.vars.notrailingslash](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.notrailingslash.md) - Variable shall not end on a slash
 * [oelint.vars.outofcontext](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.outofcontext.md) - variables are used in the wrong context
