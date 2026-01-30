@@ -20,6 +20,7 @@ class State():
         self.suppression = []
         self.nobackup = False
         self.additional_stash_args = {}
+        self.core_mod_ref = {}
 
         self.__colors_by_severity = {
             'info': Fore.GREEN,
