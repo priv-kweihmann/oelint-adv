@@ -361,7 +361,10 @@ def load_rules(args, add_rules: Iterable[str] = (), add_dirs: Iterable[str] = ()
                                 if _rule_file and not any(x in _rule_file for x in _potential_ids):
                                     continue  # pragma: no cover
                                 res.append(inst)
-                    except Exception:  # pragma: no cover, # noqa: S110
+                    except Exception as e:  # pragma: no cover, # noqa: S110
+                        if not args.quiet:
+                            print(  # noqa: T201 this print is fine here
+                                "Can't load rule {rule} -> {exp}".format(rule=name, exp=e))
                         pass  # pragma: no cover
             except Exception as e:  # pragma: no cover
                 if not args.quiet:  # pragma: no cover
