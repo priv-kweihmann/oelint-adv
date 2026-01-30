@@ -225,7 +225,8 @@
             "PREMIRRORS",
             "PRSERV_HOST",
             "STAMP",
-            "TOPDIR"
+            "TOPDIR",
+            "THISDIR"
         ],
         "protected-append": [
             "PV",
