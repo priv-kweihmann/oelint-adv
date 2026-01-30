@@ -15,7 +15,7 @@ available
 | name                     | layer                                   |
 | ------------------------ | --------------------------------------- |
 | ``clang-layer``          | meta-clang                              |
-| ``core``                 | meta from poky                          |
+| ``core``                 | meta from poky/openembedded-core        |
 | ``filesystems-layer``    | meta-filesystems from meta-openembedded |
 | ``flutter-layer``        | meta-flutter                            |
 | ``freescale-distro``     | meta-freescale-distro                   |
@@ -35,8 +35,8 @@ available
 | ``webkit``               | meta-webkit                             |
 | ``webserver``            | meta-webserver from meta-openembedded   |
 | ``xfce-layer``           | meta-xfce from meta-openembedded        |
-| ``yocto``                | meta-poky from poky                     |
-| ``yoctobsp``             | meta-yocto-bsp from poky                |
+| ``yocto``                | meta-poky from poky/meta-yocto          |
+| ``yoctobsp``             | meta-yocto-bsp from poky/meta-yocto     |
 
 ## layer specific constants
 
@@ -46,7 +46,7 @@ layer is checked.
 Those files contain information about the found machines, distros and class variables, in addition to dependencies
 on other 3rd party layer.
 
-Use the ``scripts/generate-layer-variables`` tool for that.
+Use the ``scripts/generate-layer-variables`` tool for that - see the following section for more details.
 
 ### step by step guide
 
@@ -62,6 +62,38 @@ Use the ``scripts/generate-layer-variables`` tool for that.
 
 In case your layer supports multiple different sets of information for different releases you can create a ``oelint.constants.<release name>.json``
 file in your layer root.
+
+### Example
+
+If you have a layer that depends on
+
+- `core` and `poky` distro + `meta-networking` from meta-openembedded
+- Your layer adds `MY_VARIABLE_1` through a bbclass
+- Offers `MACHINE` `MYMACHINE`
+
+then the resulting file named `oelint.constants.json` places into the layer root, should look like this
+
+```json
+{
+  "$imports": [ // note: core is loaded automatically, so it can be skipped here
+    "yocto",
+    "networking-layer"
+  ],
+  "variables": {
+    "known": [ // your custom layer variables go here
+      "MY_VARIABLE_1"
+    ],
+    "renamed": {}
+  },
+  "replacements": {
+    "machines": [ // your valid MACHINEs go here
+      "MYMACHINE"
+    ]
+  }
+}
+```
+
+**NOTE** those files are parsed automatically, so there is no need to configure them through e.g. a configuration file
 
 ## Constants to add
 
@@ -80,6 +112,24 @@ file in your layer root.
 | variables/protected        | list | variables not to be used in recipes        | `oelint_parse.constants.CONSTANT.VariablesProtected`       |
 | variables/protected-append | list | variables not to be used in bbappends      | `oelint_parse.constants.CONSTANT.VariablesProtectedAppend` |
 | variables/suggested        | list | suggested variable in a recipe             | `oelint_parse.constants.CONSTANT.VariablesSuggested`       |
+
+## Adding more user specific constants
+
+You can add more constants by creating a json file similar to [the above example](#example) and then reference that through
+a `.oelint.cfg` file.
+
+E.g. name the json file `my-vars.json` and add
+
+```ini
+[oelint]
+constantmods=
+  +my-vars.json
+```
+
+to the `.oelint.cfg` file.
+
+**WARNING**: this should be applied only in exceptionally special cases. Normally it's enough to create a layer specific constants file
+as described above
 
 ## Q&A
 
