@@ -101,7 +101,7 @@ def print_rulefile(args: argparse.Namespace) -> None:
     ruleset = {}
     for r in rules:
         ruleset.update(r.get_rulefile_entries())
-    print(json.dumps(ruleset, indent=2))  # noqa: T201 - it's here for a reason
+    print(json.dumps(ruleset, indent=2, sort_keys=True))  # noqa: T201 - it's here for a reason
 
 
 def main() -> int:  # pragma: no cover
