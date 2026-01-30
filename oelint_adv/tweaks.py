@@ -8,7 +8,8 @@ from oelint_data import known_variable_mod, layer_var_mods
 class Tweaks:
     """Release specific tweaks"""
 
-    standard_data_path = os.path.join(os.path.dirname(__file__), 'data', 'oelint.json')
+    standard_data_path = os.path.join(
+        os.path.dirname(__file__), 'data', 'oelint.json')
 
     DEFAULT_RELEASE = 'whinlatter'
     DEVELOPMENT_RELEASE = 'wrynose'
@@ -75,7 +76,8 @@ class Tweaks:
                 if obj_a.get(k, None) is None:  # pragma: no cover
                     obj_a[k] = {}
                 if isinstance(obj_a[k], list):
-                    obj_a[k] += recursive_merge(obj_a[k], v)  # pragma: no cover
+                    obj_a[k] += recursive_merge(obj_a[k],
+                                                v)  # pragma: no cover
                 else:
                     obj_a[k] = recursive_merge(obj_a[k], v)
             return obj_a
@@ -112,11 +114,14 @@ class Tweaks:
                 print('Using legacy dataset, accuracy of checks can not be guaranteed!')  # noqa: T201, pragma: no cover
             modlist += [fallback_release_mod]
 
-        mods, third_party = layer_var_mods(args.files, args.release, args.extra_layer)
+        mods, third_party = layer_var_mods(
+            args.files, args.release, args.extra_layer)
         modlist += mods
         for layer in third_party:
             mod = known_variable_mod(args.release, layer)
             if mod:
+                if layer == 'core':
+                    args.state.core_mod_ref = mod
                 modlist += [f'+{mod}']
         args.constantmods[0:0] = modlist
 
