@@ -157,6 +157,43 @@ class TestClassInlineSuppressions(TestBaseClass):
 
     @pytest.mark.parametrize('input_',
                              [
+                                 (0, {
+                                     'oelint-adv-test_git.bb':
+                                     '''
+                            # nooelint: oelint.var.mandatoryvar.SUMMARY,oelint.var.mandatoryvar.SRC_URI,oelint.var.bbclassextend
+                            PACKAGE_BEFORE_PN += "foo"
+                            ''',
+                                 }),
+                                 (1, {
+                                     'oelint-adv-test_git.bb':
+                                     '''
+                            # nooelint: oelint.var.mandatoryvar.SUMMARY,oelint.var.mandatoryvar.SRC_URI,oelint.var.bbclassextend,oelint.vars.spacesassignment
+                            PACKAGE_BEFORE_PN += "foo"
+                            ''',
+                                 }),
+                                 (1, {
+                                     'oelint-adv-test_git.bb':
+                                     '''
+                            # nooelint: oelint.var.mandatoryvar.SUMMARY,oelint.vars.spacesassignment,oelint.var.mandatoryvar.SRC_URI,oelint.var.bbclassextend
+                            PACKAGE_BEFORE_PN += "foo"
+                            ''',
+                                 }),
+                                 (1, {
+                                     'oelint-adv-test_git.bb':
+                                     '''
+                            # nooelint: oelint.vars.spacesassignment,oelint.var.mandatoryvar.SUMMARY,oelint.var.mandatoryvar.SRC_URI,oelint.var.bbclassextend
+                            PACKAGE_BEFORE_PN += "foo"
+                            ''',
+                                 }),
+                             ],
+                             )
+    def test_inlinesuppressions_multiple_na(self, input_):
+        _number, _content = input_
+        self.check_for_id(self._create_args(_content),
+                          'oelint.file.inlinesuppress_na', _number)
+
+    @pytest.mark.parametrize('input_',
+                             [
                                  {
                                      'oelint adv-test.bb':
                                      '''

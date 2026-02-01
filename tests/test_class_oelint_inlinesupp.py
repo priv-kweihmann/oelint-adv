@@ -19,7 +19,7 @@ class TestClassOelintNAInlineSuppression(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                     # nooelint: oelint.vars.mispell, oelint.var.badimagefeature
+                                     # nooelint: oelint.var.badimagefeature.allow-empty-password
                                      SRR_URI = "2"
                                      ''',
                                  },
@@ -45,7 +45,7 @@ class TestClassOelintNAInlineSuppression(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                     # nooelint: oelint.vars.mispell
+                                     # nooelint: oelint.var.mandatoryvar.SRC_URI
                                      SRR_URI = "2"
                                      ''',
                                  },
