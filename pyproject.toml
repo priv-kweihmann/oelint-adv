@@ -80,7 +80,7 @@ dependencies = [
   "argcomplete ~= 3.6",
   "colorama ~= 0.4",
   "oelint-parser ~= 8.8",
-  "oelint-data",
+  "oelint-data >= 1.4.0",
   "urllib3 ~= 2.5",
 ]
 dynamic = ["optional-dependencies", "version"]

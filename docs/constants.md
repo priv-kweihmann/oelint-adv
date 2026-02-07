@@ -31,6 +31,8 @@ available
 | ``perl-layer``           | meta-perl from meta-openembedded        |
 | ``qt6-layer``            | meta-qt6                                |
 | ``rubygems``             | meta-rubygems                           |
+| ``selinux``              | meta-selinux (from yocto git)           |
+| ``swupdate``             | meta-swupdate                           |
 | ``virtualization-layer`` | meta-virtualization                     |
 | ``webkit``               | meta-webkit                             |
 | ``webserver``            | meta-webserver from meta-openembedded   |
@@ -164,6 +166,12 @@ The variable 'XYZ' is not defined
 
 then an upstream patch needs to be posted adding a sane default value and documentation
 to it.
+
+For core variables it is best to propose a patch to ``meta/conf/documentation.conf`` adding
+
+```
+XYZ[doc] = "a description of what the variable controls"
+```
 
 ## the variable 'xyz' is part of the latest, but missing in an older release branch
 
