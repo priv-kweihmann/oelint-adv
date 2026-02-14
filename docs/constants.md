@@ -30,6 +30,7 @@ available
 | ``openembedded-layer``   | meta-oe from meta-openembedded          |
 | ``perl-layer``           | meta-perl from meta-openembedded        |
 | ``qt6-layer``            | meta-qt6                                |
+| ``rauc``                 | meta-rauc                               |
 | ``rubygems``             | meta-rubygems                           |
 | ``selinux``              | meta-selinux (from yocto git)           |
 | ``swupdate``             | meta-swupdate                           |
