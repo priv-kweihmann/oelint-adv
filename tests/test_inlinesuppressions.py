@@ -225,3 +225,18 @@ class TestClassInlineSuppressions(TestBaseClass):
     def test_inlinesuppressions_with_comment(self, input_):
         self.check_for_id(self._create_args(input_),
                           'oelint.var.badimagefeature', 0)
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint_adv-test.bbappend':
+                                     '''
+                                     # nooelint: oelint.vars.noncoreoverride
+                                     SRC_URI = "file://foo.bar"
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_inlinesuppressions_bbappend_first_line(self, input_):
+        self.check_for_id(self._create_args(input_),
+                          'oelint.file.inlinesuppress_na', 0)

@@ -290,8 +290,10 @@ def group_run(group: List[Tuple],
         for _file, _lineobj in inline_supp_map.items():
             for _line, _ids in _lineobj.items():
                 for _id in _ids:
-                    _search_line = _line if _line != 1 else -1
-                    if not state.get_inline_suppression_seen(_file, _search_line, _id):
+                    _search_lines = [_line]
+                    if _line == 1:
+                        _search_lines.append(-1)
+                    if not any(state.get_inline_suppression_seen(_file, x, _id) for x in _search_lines):
                         if _id not in known_ids:
                             continue
                         obj = FileNotApplicableInlineSuppression(state)
