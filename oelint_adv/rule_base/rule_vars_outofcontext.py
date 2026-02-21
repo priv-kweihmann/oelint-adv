@@ -17,7 +17,7 @@ class VarOutOfContext(Rule):
                results: List[Tuple[str, int, str]],
                items: List[Item],
                valid_context: List[Classification],
-               var_desc: str,
+               var_desc: str = '',
                context_desc: str = '') -> None:
         for item in items:
             classification = Rule.classify_file(item.Origin) or [
@@ -26,7 +26,7 @@ class VarOutOfContext(Rule):
                 context = context_desc or ",".join(
                     f'{Classification.tostr(x)}(s)' for x in valid_context)
                 results += self.finding(item.Origin, item.InFileLine,
-                                        override_msg=self.Msg.format(var=var_desc, context=context))
+                                        override_msg=self.Msg.format(var=var_desc or item.VarName, context=context))
 
     def _is_image(self, _file: str, stash: Stash):
         res = False
@@ -40,47 +40,44 @@ class VarOutOfContext(Rule):
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
 
-        for var in CONSTANTS.GetByPath('oelint-contextvars/conf-only'):  # noqa: VNE002
+        constants = CONSTANTS.GetByPath('oelint-contextvars/conf-only')
+        if constants:
             self._check(res, stash.GetItemsFor(filename=_file,
                                                classifier=Variable.CLASSIFIER,
                                                attribute=Variable.ATTR_VAR,
-                                               attributeValue=var),
+                                               attributeValue=constants),
                         [Classification.LAYERCONF, Classification.MACHINECONF,
-                            Classification.DISTROCONF],
-                        var_desc=var)
-        for var in CONSTANTS.GetByPath('oelint-contextvars/bbappend-only'):  # noqa: VNE002
+                            Classification.DISTROCONF])
+        constants = CONSTANTS.GetByPath('oelint-contextvars/bbappend-only')
+        if constants:
             self._check(res, stash.GetItemsFor(filename=_file,
                                                classifier=Variable.CLASSIFIER,
                                                attribute=Variable.ATTR_VAR,
-                                               attributeValue=var),
-                        [Classification.BBAPPEND],
-                        var_desc=var)
-
-        for var in CONSTANTS.GetByPath('oelint-contextvars/bbclass-only'):  # noqa: VNE002
+                                               attributeValue=constants),
+                        [Classification.BBAPPEND])
+        constants = CONSTANTS.GetByPath('oelint-contextvars/bbclass-only')
+        if constants:
             self._check(res, stash.GetItemsFor(filename=_file,  # pragma: no cover
                                                classifier=Variable.CLASSIFIER,
                                                attribute=Variable.ATTR_VAR,
-                                               attributeValue=var),
-                        [Classification.BBCLASS],
-                        var_desc=var)
+                                               attributeValue=constants),
+                        [Classification.BBCLASS])
 
-        for var in CONSTANTS.GetByPath('oelint-contextvars/recipe-only'):  # noqa: VNE002
+        constants = CONSTANTS.GetByPath('oelint-contextvars/recipe-only')
+        if constants:
             self._check(res, stash.GetItemsFor(filename=_file,
                                                classifier=Variable.CLASSIFIER,
                                                attribute=Variable.ATTR_VAR,
-                                               attributeValue=var),
+                                               attributeValue=constants),
                         [Classification.BBCLASS, Classification.BBAPPEND,
-                            Classification.RECIPE],
-                        var_desc=var)
-        for var in CONSTANTS.GetByPath('oelint-contextvars/image-only'):  # noqa: VNE002
-            if self._is_image(_file, stash):
-                continue
+                            Classification.RECIPE])
+        constants = CONSTANTS.GetByPath('oelint-contextvars/image-only')
+        if constants and not self._is_image(_file, stash):
             self._check(res, stash.GetItemsFor(filename=_file,
                                                classifier=Variable.CLASSIFIER,
                                                attribute=Variable.ATTR_VAR,
-                                               attributeValue=var),
+                                               attributeValue=constants),
                         [Classification.MACHINECONF, Classification.DISTROCONF],
-                        var_desc=var,
                         context_desc='file(s) that define image(s)')
 
         self._check(res, stash.GetItemsFor(filename=_file,
