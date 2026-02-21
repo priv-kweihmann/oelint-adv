@@ -1,5 +1,6 @@
 import os
 from difflib import SequenceMatcher
+import functools
 from typing import List, Tuple
 
 from oelint_parser.cls_item import FlagAssignment, Function, Item, Variable
@@ -31,6 +32,7 @@ class VarMisspell(Rule):
             'LAYERVERSION',
         ]
 
+    @functools.cache
     def get_best_match(self, item: str, _list: List[str]) -> str:
         _dict = sorted([(SequenceMatcher(None, item, k).ratio(), k)
                         for k in _list], key=lambda x: x[0], reverse=True)
@@ -87,7 +89,7 @@ class VarMisspell(Rule):
                     break
             if _used:
                 continue
-            _bestmatch = self.get_best_match(_cleanvarname, _vars)
+            _bestmatch = self.get_best_match(_cleanvarname, frozenset(_vars))
             if _bestmatch:
                 res += self.finding(i.Origin, i.InFileLine,
                                     "'{a}' is unknown, maybe you meant '{b}'".format(
