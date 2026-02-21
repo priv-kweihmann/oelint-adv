@@ -30,11 +30,12 @@ class VarUnneededFilesSetting(Rule):
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
-        _expanded = stash.ExpandVar(filename=_file, attribute=Variable.ATTR_VAR)
         _all_files = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                        attribute=Variable.ATTR_VAR, attributeValue='FILES')
         if not any(_all_files):
             return res
+
+        _expanded = stash.ExpandVar(filename=_file, attribute=Variable.ATTR_VAR)
         override_delimiter = _all_files[-1].OverrideDelimiter
         _seenpath = {}
         for p in _expanded['PACKAGES']:
