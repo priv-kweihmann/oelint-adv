@@ -57,7 +57,7 @@ class VarsPathHardcode(Rule):
                 pre = '(' + '|'.join(['^', "'", '"', ' ', r'\$\{D\}', '=']) + ')'
                 ext = '(' + '|'.join([' ', '/', '"', r'\*', '$']) + ')'
                 for line in i.get_items():
-                    if line.strip().startswith('#'):
+                    if line.strip().startswith('#') or k not in line:
                         continue
                     _match = RegexRpl.search(pre + k + ext, line)
                     if _match and k not in _matches:
