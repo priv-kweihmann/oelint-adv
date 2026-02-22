@@ -257,12 +257,12 @@ class TestClassOelintVarsMispell(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      '''
                                      A = "a"
-                                     B = "c"
+                                     BFOO = "c"
                                      do_configure() {
                                          ./configure ${A}
                                      }
                                      python do_foo() {
-                                         d.getVar("B")
+                                         d.getVar("BFOO")
                                      }
                                      ''',
                                  },
