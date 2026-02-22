@@ -105,7 +105,11 @@ def print_rulefile(args: argparse.Namespace) -> None:
 
 
 def main() -> int:  # pragma: no cover
-    args = arguments_post(parse_arguments())
+    try:
+        args = arguments_post(parse_arguments())
+    except argparse.ArgumentTypeError as e:
+        print("Bad command line arguments:", e)
+        sys.exit(1)
 
     if args.print_rulefile:
         print_rulefile(args)

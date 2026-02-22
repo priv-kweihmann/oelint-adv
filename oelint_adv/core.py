@@ -477,7 +477,7 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
                 args.state.rule_file = json.load(i)
         except (FileNotFoundError, json.JSONDecodeError):
             raise argparse.ArgumentTypeError(
-                "'rulefile' is not a valid file")
+                f"'{args.rulefile}' is not a valid rulefile")
 
     if args.hide:
         for severity in args.hide:
