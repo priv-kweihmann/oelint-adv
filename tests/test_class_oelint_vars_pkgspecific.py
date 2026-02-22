@@ -106,18 +106,18 @@ class TestClassOelintVarsPKGSpecific(TestBaseClass):
         self.check_for_id(self._create_args(input_), id_, occurrence)
 
     @pytest.mark.parametrize('id_', [
-        'oelint.var.pkgspecific.RDEPENDS',
-        'oelint.var.pkgspecific.RRECOMMENDS',
-        'oelint.var.pkgspecific.RSUGGESTS',
-        'oelint.var.pkgspecific.RCONFLICTS',
-        'oelint.var.pkgspecific.RPROVIDES',
-        'oelint.var.pkgspecific.RREPLACES',
-        'oelint.var.pkgspecific.FILES',
-        'oelint.var.pkgspecific.pkg_preinst',
-        'oelint.var.pkgspecific.pkg_postinst',
-        'oelint.var.pkgspecific.pkg_prerm',
-        'oelint.var.pkgspecific.pkg_postrm',
-        'oelint.var.pkgspecific.ALLOW_EMPTY',
+        'oelint.vars.pkgspecific.RDEPENDS',
+        'oelint.vars.pkgspecific.RRECOMMENDS',
+        'oelint.vars.pkgspecific.RSUGGESTS',
+        'oelint.vars.pkgspecific.RCONFLICTS',
+        'oelint.vars.pkgspecific.RPROVIDES',
+        'oelint.vars.pkgspecific.RREPLACES',
+        'oelint.vars.pkgspecific.FILES',
+        'oelint.vars.pkgspecific.pkg_preinst',
+        'oelint.vars.pkgspecific.pkg_postinst',
+        'oelint.vars.pkgspecific.pkg_prerm',
+        'oelint.vars.pkgspecific.pkg_postrm',
+        'oelint.vars.pkgspecific.ALLOW_EMPTY',
     ])
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
