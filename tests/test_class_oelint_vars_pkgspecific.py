@@ -56,6 +56,8 @@ class TestClassOelintVarsPKGSpecific(TestBaseClass):
         }
         id_ += '.{var}'.format(var=var)
         self.check_for_id(self._create_args(input_), id_, occurrence)
+        input_reversed_ = {k: input_[k] for k in reversed(input_)}
+        self.check_for_id(self._create_args(input_reversed_), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.pkgspecific'])
     @pytest.mark.parametrize('occurrence', [0])
