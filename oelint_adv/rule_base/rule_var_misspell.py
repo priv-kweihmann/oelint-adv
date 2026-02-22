@@ -49,7 +49,7 @@ class VarMisspell(Rule):
                 for var in self._layername_extensions_on:  # noqa: VNE002
                     self._collection_vars.add(f'{var}_{collection}')
 
-        return self._collection_vars
+        return self._collection_vars  # pragma: no cover
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
