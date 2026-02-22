@@ -40,37 +40,33 @@ class VarOutOfContext(Rule):
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
 
-        constants = CONSTANTS.GetByPath('oelint-contextvars/conf-only')
-        if constants:
-            self._check(res, stash.GetItemsFor(filename=_file,
-                                               classifier=Variable.CLASSIFIER,
-                                               attribute=Variable.ATTR_VAR,
-                                               attributeValue=constants),
-                        [Classification.LAYERCONF, Classification.MACHINECONF,
-                            Classification.DISTROCONF])
-        constants = CONSTANTS.GetByPath('oelint-contextvars/bbappend-only')
-        if constants:
-            self._check(res, stash.GetItemsFor(filename=_file,
-                                               classifier=Variable.CLASSIFIER,
-                                               attribute=Variable.ATTR_VAR,
-                                               attributeValue=constants),
-                        [Classification.BBAPPEND])
-        constants = CONSTANTS.GetByPath('oelint-contextvars/bbclass-only')
-        if constants:
-            self._check(res, stash.GetItemsFor(filename=_file,  # pragma: no cover
-                                               classifier=Variable.CLASSIFIER,
-                                               attribute=Variable.ATTR_VAR,
-                                               attributeValue=constants),
-                        [Classification.BBCLASS])
+        for constants, valid_context in [
+            (
+                CONSTANTS.GetByPath('oelint-contextvars/conf-only'),
+                [Classification.LAYERCONF, Classification.MACHINECONF, Classification.DISTROCONF],
+            ),
+            (
+                CONSTANTS.GetByPath('oelint-contextvars/bbappend-only'),
+                [Classification.BBAPPEND],
+            ),
+            (
+                CONSTANTS.GetByPath('oelint-contextvars/bbclass-only'),
+                [Classification.BBCLASS],
+            ),
+            (
+                CONSTANTS.GetByPath('oelint-contextvars/recipe-only'),
+                [Classification.BBCLASS, Classification.BBAPPEND, Classification.RECIPE],
+            ),
+        ]:
+            if not constants:
+                continue
 
-        constants = CONSTANTS.GetByPath('oelint-contextvars/recipe-only')
-        if constants:
             self._check(res, stash.GetItemsFor(filename=_file,
                                                classifier=Variable.CLASSIFIER,
                                                attribute=Variable.ATTR_VAR,
                                                attributeValue=constants),
-                        [Classification.BBCLASS, Classification.BBAPPEND,
-                            Classification.RECIPE])
+                        valid_context)
+
         constants = CONSTANTS.GetByPath('oelint-contextvars/image-only')
         if constants and not self._is_image(_file, stash):
             self._check(res, stash.GetItemsFor(filename=_file,
