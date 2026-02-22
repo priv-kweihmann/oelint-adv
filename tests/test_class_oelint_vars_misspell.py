@@ -266,6 +266,15 @@ class TestClassOelintVarsMispell(TestBaseClass):
                                      }
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     BFOO = "c"
+                                     python do_foo() {
+                                         d.getVar('BFOO')
+                                     }
+                                     ''',
+                                 },
                              ],
                              )
     def test_good_unknown(self, input_, id_, occurrence):

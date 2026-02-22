@@ -96,7 +96,9 @@ class VarMisspell(Rule):
             for a in _all:
                 if a == i:
                     continue
-                if '${{{a}}}'.format(a=i.VarName) in a.Raw or 'getVar("{a}"'.format(a=i.VarName) in a.Raw:
+                if '${{{a}}}'.format(a=i.VarName) in a.Raw \
+                        or 'getVar("{a}"'.format(a=i.VarName) in a.Raw \
+                        or "getVar('{a}'".format(a=i.VarName) in a.Raw:
                     _used = True
                     break
             if _used:
