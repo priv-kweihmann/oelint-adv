@@ -26,7 +26,7 @@ class TestClassOelintVarLicenseSPDX(TestBaseClass):
     def test_bad(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(input_), id_, occurrence)
 
-    @pytest.mark.parametrize('id_', ['oelint.var.licensespdx'])
+    @pytest.mark.parametrize('id_', ['oelint.vars.licensespdx'])
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
