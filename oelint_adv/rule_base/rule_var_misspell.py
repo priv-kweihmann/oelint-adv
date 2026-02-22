@@ -32,7 +32,7 @@ class VarMisspell(Rule):
             'LAYERVERSION',
         ]
 
-    @functools.cache
+    @functools.cache  # noqa: B019
     def get_best_match(self, item: str, _list: List[str]) -> str:
         _dict = sorted([(SequenceMatcher(None, item, k).ratio(), k)
                         for k in _list], key=lambda x: x[0], reverse=True)
