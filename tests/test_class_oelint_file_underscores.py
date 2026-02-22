@@ -94,4 +94,4 @@ class TestClassOelintFileUnderscores(TestBaseClass):
             '--constantmods=+{mod}'.format(mod=self._create_tempfile('constmod', __cnt))]
         _args = self._create_args(input_, extraopts=_extra_opts)
 
-        self.check_for_id(_args, id, occurrence)
+        self.check_for_id(_args, id_, occurrence)
