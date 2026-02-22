@@ -1,5 +1,6 @@
 import os
 from difflib import SequenceMatcher
+import functools
 from typing import List, Tuple
 
 from oelint_parser.cls_item import FlagAssignment, Function, Item, Variable
@@ -31,12 +32,24 @@ class VarMisspell(Rule):
             'LAYERVERSION',
         ]
 
+    @functools.cache
     def get_best_match(self, item: str, _list: List[str]) -> str:
         _dict = sorted([(SequenceMatcher(None, item, k).ratio(), k)
                         for k in _list], key=lambda x: x[0], reverse=True)
         if _dict and _dict[0][0] >= self._minconfidence:
             return _dict[0][1]
         return ''
+
+    def get_collection_vars(self, _file, stash):
+        if not hasattr(self, '_collection_vars'):
+            _bbfile_collections = stash.ExpandVar(_file, attribute=Variable.ATTR_VAR,
+                                                  attributeValue='BBFILE_COLLECTIONS').get('BBFILE_COLLECTIONS', [])
+            self._collection_vars = set()
+            for collection in _bbfile_collections:
+                for var in self._layername_extensions_on:  # noqa: VNE002
+                    self._collection_vars.add(f'{var}_{collection}')
+
+        return self._collection_vars
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
@@ -49,11 +62,6 @@ class VarMisspell(Rule):
             _file, strippn=True) if x]
         _taskname = CONSTANTS.FunctionsKnown + [x.FuncName for x in _all if isinstance(x, Function)]
         _vars = CONSTANTS.VariablesKnown
-        _bbfile_collections = stash.ExpandVar(_file, attribute=Variable.ATTR_VAR,
-                                              attributeValue='BBFILE_COLLECTIONS').get('BBFILE_COLLECTIONS', [])
-        for collection in _bbfile_collections:
-            for var in self._layername_extensions_on:  # noqa: VNE002
-                _vars.append(f'{var}_{collection}')
 
         for i in items:
             if isinstance(i, Variable):
@@ -78,6 +86,12 @@ class VarMisspell(Rule):
                     continue
                 if _cleanvarname in _extras:
                     continue
+            # Does it even make sense to involve collection related variables?
+            if any(i.VarName.startswith(v) for v in self._layername_extensions_on):
+                # We tried to delay calling ExpandVar for as long as possible, but it is time.
+                _vars.extend(self.get_collection_vars(_file, stash))
+                if i.VarName in _vars:
+                    continue
             _used = False
             for a in _all:
                 if a == i:
@@ -87,7 +101,7 @@ class VarMisspell(Rule):
                     break
             if _used:
                 continue
-            _bestmatch = self.get_best_match(_cleanvarname, _vars)
+            _bestmatch = self.get_best_match(_cleanvarname, frozenset(_vars))
             if _bestmatch:
                 res += self.finding(i.Origin, i.InFileLine,
                                     "'{a}' is unknown, maybe you meant '{b}'".format(
