@@ -79,7 +79,7 @@ dependencies = [
   "anytree ~= 2.13",
   "argcomplete ~= 3.6",
   "colorama ~= 0.4",
-  "oelint-parser ~= 8.8",
+  "oelint-parser ~= 8.9",
   "oelint-data >= 1.4.0",
   "urllib3 ~= 2.5",
 ]
