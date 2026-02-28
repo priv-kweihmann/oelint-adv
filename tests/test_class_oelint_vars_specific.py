@@ -31,6 +31,19 @@ class TestClassOelintVarsSpecific(TestBaseClass):
                                      B:bararch += "abc"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SRC_URI = "git://git.example.com;name=this_has_underscores"
+                                     SRCREV_this_has_underscores_but-not-this-part = "0123456789abcdef"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SRCREV_bad = "0123456789abcdef"
+                                     ''',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -152,6 +165,24 @@ class TestClassOelintVarsSpecific(TestBaseClass):
                                      INITSCRIPT_PACKAGES = "${PN}-foo"
                                      PACKAGES += "${INITSCRIPT_PACKAGES}"
                                      INITSCRIPT_NAME:${PN}-foo = "bar.sh"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SRC_URI = "git://git.example.com;name=this_has_underscores"
+                                     SRCREV_this_has_underscores = "0123456789abcdef"
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SRC_URI = " \
+                                         git://git.other.com;name=this_has \
+                                         git://git.example.com;name=this_has_underscores \
+                                     "
+                                     SRCREV_this_has_underscores = "0123456789abcdef"
+                                     SRCREV_this_has = "0123456789abcdef"
                                      ''',
                                  },
                              ],

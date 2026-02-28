@@ -21,13 +21,20 @@ class VarPnBpnUsage(Rule):
         _comp = ''.join(x.VarValueStripped for x in stash.Reduce(items, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR,
                                                                  attributeValue='COMPATIBLE_MACHINE'))
         _packages = stash.GetValidPackageNames(_file)
-        _named_res = stash.GetValidNamedResources(_file)
+        _named_res = sorted(stash.GetValidNamedResources(_file), key=len, reverse=True)
         _machines = CONSTANTS.MachinesKnown
         _distros = CONSTANTS.DistrosKnown
         _builtin_classes = ['class-native', 'class-target', 'class-nativesdk', 'class-cross']
         _operations = ['append', 'prepend', 'remove']
         for i in items:
             subs = [(x, stash.ExpandTerm(_file, x)) for x in i.SubItems]
+            if i.VarName == 'SRCREV':
+                # Parser splits named SRCREVs on underscores. To handle named resources with underscores,
+                # we need to find longest resource name that matches and remove its parts from subs.
+                for name in _named_res:
+                    if RegexRpl.match(f'^SRCREV_{name}(:|_|$)', i.VarNameComplete):
+                        subs = subs[name.count('_') + 1:]
+                        break
             for subitem in subs:
                 sub, expanded = subitem
                 if (expanded in _builtin_classes) or (sub in _builtin_classes):
@@ -37,8 +44,6 @@ class VarPnBpnUsage(Rule):
                 if (expanded in _operations) or (sub in _operations):
                     continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
                 if (expanded in _distros) or (sub in _distros):
-                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
-                if (expanded in _named_res) or (sub in _named_res):
                     continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
                 if (expanded in _machines) or (sub in _machines):
                     continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
