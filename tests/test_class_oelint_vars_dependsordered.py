@@ -146,6 +146,26 @@ class TestClassOelintVarsDependsOrdered(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
+                                     RDEPENDS:${PN} = "x y z"
+                                     ''',
+                                     'oelint_adv_test.bbappend':
+                                     '''
+                                     RDEPENDS:${PN} += "a"
+                                     '''
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     RDEPENDS:${PN} = "x y z"
+                                     ''',
+                                     'oelint_adv_test.bbappend':
+                                     '''
+                                     RDEPENDS:${PN}:append = " a"
+                                     '''
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
                                      RDEPENDS_${PN} += "\\
                                         bash \\
                                         libFormatConversion.so()(64bit) \\
