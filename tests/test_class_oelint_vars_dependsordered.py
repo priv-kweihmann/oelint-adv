@@ -1,9 +1,13 @@
+import os
+
 import pytest  # noqa: I900
 
 from .base import TestBaseClass
 
 
 class TestClassOelintVarsDependsOrdered(TestBaseClass):
+
+    THISDIR = os.path.dirname(__file__)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.dependsordered'])
     @pytest.mark.parametrize('occurrence', [1])
@@ -159,3 +163,39 @@ class TestClassOelintVarsDependsOrdered(TestBaseClass):
                              )
     def test_good(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.dependsordered'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('input_',
+                             [
+                                 [
+                                     os.path.join(
+                                         THISDIR, "testlayer3/recipes/test_depends_ordered.bb"),
+                                 ],
+                                 [
+                                     os.path.join(
+                                         THISDIR, "testlayer3/recipes/test_depends_ordered.bb"),
+                                     os.path.join(
+                                         THISDIR, "testlayer2/recipes/test_depends_ordered.bbappend"),
+                                 ]
+                             ],
+                             )
+    def test_good_complex_good(self, input_, id_, occurrence):
+        _args = self._create_args_existing_files(input_)
+        self.check_for_id(_args, id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.dependsordered'])
+    @pytest.mark.parametrize('occurrence', [1])
+    @pytest.mark.parametrize('input_',
+                             [
+                                 [
+                                     os.path.join(
+                                         THISDIR, "testlayer3/recipes/test_depends_ordered.bb"),
+                                     os.path.join(
+                                         THISDIR, "testlayer3/recipes/test_depends_ordered.bbappend"),
+                                 ],
+                             ],
+                             )
+    def test_good_complex_bad(self, input_, id_, occurrence):
+        _args = self._create_args_existing_files(input_)
+        self.check_for_id(_args, id_, occurrence)

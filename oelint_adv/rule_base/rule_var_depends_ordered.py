@@ -1,4 +1,3 @@
-import os
 from typing import List, Tuple
 
 from oelint_parser.cls_item import Item, Variable
@@ -30,24 +29,31 @@ class VarDependsOrdered(Rule):
                                                   attribute=Variable.ATTR_VAR)
         # ignore the settings from bbclasses
         items = [x for x in items if self.is_applicable(x)]
-        _keys = {x.VarName for x in items if RegexRpl.match(r'DEPENDS|RDEPENDS', x.VarName)}
-        _filegroups = {x.Origin for x in items}
+        _keys = {x.VarName for x in items if RegexRpl.match(
+            r'DEPENDS|RDEPENDS', x.VarName)}
+        # move item to buckets depending on their layer root
+        # like this bbappend and recipes can be different in their ordering
+        _filegroups = {}
+        for item in items:
+            _layerroot = stash.GetLayerRoot(item.Origin)
+            if _layerroot not in _filegroups:
+                _filegroups[_layerroot] = set()
+            _filegroups[_layerroot].add(item.Origin)
 
-        def applicable_all(_file, x):
+        def applicable_all(x):
             return x.VarName == _key
 
         def applicable_machine(_m, x):
             return _m == x.GetMachineEntry() or _m == x.GetClassOverride()
 
-        for _file in _filegroups:
-            _, _ext = os.path.splitext(_file)
-            if _ext not in ['.bb', '.bbappend']:
-                continue
+        for _, v in _filegroups.items():
             for _key in _keys:
-                _all_findings = sorted([x for x in items if applicable_all(_file, x)], key=lambda x: x.Line)
+                _all_findings = sorted([x for x in items if applicable_all(
+                    x) and x.Origin in v], key=lambda x: x.Line)
                 for _m in sorted(self.__overrides(_all_findings), key=lambda x: len(x), reverse=True):
                     _raw_list = []
-                    _machine_findings = sorted([x for x in _all_findings if applicable_machine(_m, x)], key=lambda x: x.Line)
+                    _machine_findings = sorted(
+                        [x for x in _all_findings if applicable_machine(_m, x)], key=lambda x: x.Line)
                     for item in _machine_findings:
                         _raw_list += item.get_items(versioned=True)
                         if _raw_list != sorted(_raw_list, key=str.lower):
@@ -56,5 +62,6 @@ class VarDependsOrdered(Rule):
                             # quit on the first finding, as all following will be corrupted anyway
                             break
                     # Filter out every seen entry
-                    _all_findings = [x for x in _all_findings if x not in _machine_findings]
+                    _all_findings = [
+                        x for x in _all_findings if x not in _machine_findings]
         return res
