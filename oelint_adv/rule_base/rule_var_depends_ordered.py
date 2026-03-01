@@ -20,7 +20,7 @@ class VarDependsOrdered(Rule):
         return res
 
     def is_applicable(self, item: Variable) -> bool:
-        if not item.IsImmediateModify() or item.Origin.endswith('.bbclass'):
+        if not item.IsImmediateModify() or item.Origin.endswith('.bbclass') or item.Origin.endswith('.bbappend'):
             return False
         return True
 
