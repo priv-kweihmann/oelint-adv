@@ -43,15 +43,15 @@ class VarMisspell(Rule):
     def get_collection_vars(self, _file, stash):
         _bbfile_collections = stash.ExpandVar(_file, attribute=Variable.ATTR_VAR,
                                               attributeValue='BBFILE_COLLECTIONS').get('BBFILE_COLLECTIONS', [])
-        if not hasattr(self, '_collection_vars') or self._collection_vars != _bbfile_collections:
+        if not hasattr(self, '_collection_vars') or self._collection_vars != _bbfile_collections:  # pragma: no cover
 
             self._collection_vars = _bbfile_collections
-            res = set()
+            self.__collected_var = set()
             for collection in _bbfile_collections:
                 for var in self._layername_extensions_on:  # noqa: VNE002
-                    res.add(f'{var}_{collection}')
+                    self.__collected_var.add(f'{var}_{collection}')
 
-        return res  # pragma: no cover
+        return self.__collected_var
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
