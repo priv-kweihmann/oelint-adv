@@ -40,7 +40,7 @@ class TestBaseClass:
             self.__pytest_empty_object_fixture(extraopts, []) +
             [self._create_tempfile(k, v) for k, v in input_.items()],
         ))
-    
+
     def _create_args_existing_file(self, file_, extraopts=None):
         if extraopts is None:
             extraopts = []
@@ -53,6 +53,21 @@ class TestBaseClass:
             # noqa: W504 - we need to concat lists here
             self.__pytest_empty_object_fixture(extraopts, []) +
             [file_],
+        ))
+
+    def _create_args_existing_files(self, files_, extraopts=None):
+        if extraopts is None:
+            extraopts = []
+        from oelint_adv.__main__ import arguments_post
+        self.__created_files = getattr(self, '__created_files', {})
+        for item in files_:
+            self.__created_files[item] = '<existing file>'
+        return arguments_post(self._create_args_parser().parse_args(
+            # noqa: W504 - we need to concat lists here
+            ['--quiet', '--jobs=1'] +
+            # noqa: W504 - we need to concat lists here
+            self.__pytest_empty_object_fixture(extraopts, []) +
+            files_,
         ))
 
     def _create_args_fix(self, input_, extraopts=None):
@@ -99,8 +114,8 @@ class TestBaseClass:
         issues = [x[1] for x in _issues]
         _files = '\n---\n'.join(['{k}:\n{v}'.format(k=k, v=v)
                                  for k, v in self.__created_files.items()])
-        assert(len([x for x in issues if ':{id}:'.format(id=id_) in x]) ==
-               occurrences), '{id} expected {o} time(s) in:\n{i}\n\n---\n{f}'.format(id=id_, o=occurrences, i='\n'.join(issues), f=_files)
+        assert (len([x for x in issues if ':{id}:'.format(id=id_) in x]) ==
+                occurrences), '{id} expected {o} time(s) in:\n{i}\n\n---\n{f}'.format(id=id_, o=occurrences, i='\n'.join(issues), f=_files)
 
     def teardown_method(self):
         if getattr(self, '_collected_tmpdirs', None) is not None:

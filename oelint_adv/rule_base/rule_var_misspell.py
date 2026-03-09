@@ -41,15 +41,17 @@ class VarMisspell(Rule):
         return ''
 
     def get_collection_vars(self, _file, stash):
-        if not hasattr(self, '_collection_vars'):
-            _bbfile_collections = stash.ExpandVar(_file, attribute=Variable.ATTR_VAR,
-                                                  attributeValue='BBFILE_COLLECTIONS').get('BBFILE_COLLECTIONS', [])
-            self._collection_vars = set()
+        _bbfile_collections = stash.ExpandVar(_file, attribute=Variable.ATTR_VAR,
+                                              attributeValue='BBFILE_COLLECTIONS').get('BBFILE_COLLECTIONS', [])
+        if not hasattr(self, '_collection_vars') or self._collection_vars != _bbfile_collections:
+
+            self._collection_vars = _bbfile_collections
+            res = set()
             for collection in _bbfile_collections:
                 for var in self._layername_extensions_on:  # noqa: VNE002
-                    self._collection_vars.add(f'{var}_{collection}')
+                    res.add(f'{var}_{collection}')
 
-        return self._collection_vars  # pragma: no cover
+        return res  # pragma: no cover
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
@@ -60,7 +62,8 @@ class VarMisspell(Rule):
         _extras = [f'SRCREV_{x}' for x in stash.GetValidNamedResources(_file)]
         _pkgs = [x for x in stash.GetValidPackageNames(
             _file, strippn=True) if x]
-        _taskname = CONSTANTS.FunctionsKnown + [x.FuncName for x in _all if isinstance(x, Function)]
+        _taskname = CONSTANTS.FunctionsKnown + \
+            [x.FuncName for x in _all if isinstance(x, Function)]
         _vars = CONSTANTS.VariablesKnown
 
         for i in items:

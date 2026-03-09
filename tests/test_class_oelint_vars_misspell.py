@@ -1,9 +1,13 @@
+import os
+
 import pytest  # noqa: I900
 
 from .base import TestBaseClass
 
 
 class TestClassOelintVarsMispell(TestBaseClass):
+
+    THISDIR = os.path.dirname(__file__)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.mispell'])
     @pytest.mark.parametrize('occurrence', [1])
@@ -247,7 +251,8 @@ class TestClassOelintVarsMispell(TestBaseClass):
                              ],
                              )
     def test_good_old(self, input_, id_, occurrence):
-        self.check_for_id(self._create_args(input_, ['--release=dunfell']), id_, occurrence)
+        self.check_for_id(self._create_args(
+            input_, ['--release=dunfell']), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.mispell.unknown'])
     @pytest.mark.parametrize('occurrence', [0])
@@ -279,3 +284,21 @@ class TestClassOelintVarsMispell(TestBaseClass):
                              )
     def test_good_unknown(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.mispell'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('input_',
+                             [
+                                 [
+                                     os.path.join(
+                                         THISDIR, "testlayer/conf/layer.conf"),
+                                     os.path.join(
+                                         THISDIR, "testlayer2/conf/machine/a.conf"),
+                                     os.path.join(
+                                         THISDIR, "testlayer2/conf/layer.conf"),
+                                 ]
+                             ],
+                             )
+    def test_good_complex(self, input_, id_, occurrence):
+        _args = self._create_args_existing_files(input_)
+        self.check_for_id(_args, id_, occurrence)
