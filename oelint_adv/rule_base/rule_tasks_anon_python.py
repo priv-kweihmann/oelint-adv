@@ -10,7 +10,7 @@ class TaskNoAnonPython(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.task.noanonpython',
                          severity='warning',
-                         message='Avoid anonymous python functions as they expensive and come with all sorts of side effects')
+                         message='Avoid anonymous python functions as they are expensive and come with all sorts of side effects')
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
