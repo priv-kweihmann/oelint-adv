@@ -222,7 +222,7 @@ Rules marked with **[I]** need to be activated through [a rule file](#defining-a
 * [oelint.vars.notneededspace](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.notneededspace.md) - Space at the beginning of the var is not needed **[F]**
 * [oelint.vars.notrailingslash](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.notrailingslash.md) - Variable shall not end on a slash
 * [oelint.vars.outofcontext](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.outofcontext.md) - variables are used in the wrong context
-* [oelint.vars.overrideappend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.overrideappend.md) - Check correct order of append/prepend on variables with override syntax
+* [oelint.vars.overrideappend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.overrideappend.md) - Check correct order of append/prepend on variables with override syntax **[F]**
 * [oelint.vars.pathhardcode](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pathhardcode.md) - Warn about the usage of hardcoded paths **[S]**
 * [oelint.vars.pbpusage](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pbpusage.md) - \$\{BP\} should be used instead of \$\{P\} **[F]**
 * [oelint.vars.pkgspecific](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pkgspecific.md) - Variable is package-specific, but isn't set in that way **[S]**
