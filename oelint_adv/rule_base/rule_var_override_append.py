@@ -17,7 +17,6 @@ class VarOverrideAppend(Rule):
             'CONFFILES',
             'DEBIAN_NOAUTONAME',
             'DEBIANNAME',
-            'DEPENDS',
             'DESCRIPTION',
             'FILES',
             'GROUPADD_PARAM',

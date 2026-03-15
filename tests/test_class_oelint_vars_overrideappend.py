@@ -43,6 +43,10 @@ class TestClassOelintVarsOverrideAppend(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'A:class-target =. "a"',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'DEPENDS:class-native:append = "a"',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
