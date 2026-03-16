@@ -475,9 +475,9 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
         try:
             with open(args.rulefile) as i:
                 args.state.rule_file = json.load(i)
-        except (FileNotFoundError, json.JSONDecodeError):
+        except (json.JSONDecodeError, FileNotFoundError, IsADirectoryError) as e:
             raise argparse.ArgumentTypeError(
-                f"'{args.rulefile}' is not a valid rulefile")
+                f"'{args.rulefile}' is not a valid rulefile: {e}")
 
     if args.hide:
         for severity in args.hide:
@@ -505,9 +505,9 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
                 else:
                     CONSTANTS.OverrideConstants(_cnt)
                     args.state._caches.AddToFingerPrint(str(_cnt))
-            except (FileNotFoundError, json.JSONDecodeError):
+            except (json.JSONDecodeError, FileNotFoundError, IsADirectoryError) as e:
                 raise argparse.ArgumentTypeError(
-                    "mod file '{file}' is not a valid file".format(file=mod))
+                    f"mod file '{mod}' is not a valid file: {e}")
         else:
             CONSTANTS.AddConstants(mod.get('+', {}))
             CONSTANTS.RemoveConstants(mod.get('-', {}))
