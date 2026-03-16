@@ -40,7 +40,6 @@ class VarOverrideAppend(Rule):
             'RSUGGESTS',
             'SECTION',
             'SKIP_FILEDEPS',
-            'sstate',
             'SUMMARY',
             'SYSTEMD_AUTO_ENABLE',
             'SYSTEMD_SERVICE',
