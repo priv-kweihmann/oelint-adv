@@ -111,7 +111,7 @@ class Tweaks:
             modlist += [release_mod]
         else:
             if not args.print_rulefile:
-                print('Using legacy dataset, accuracy of checks can not be guaranteed!')  # noqa: T201, pragma: no cover
+                print(f'WARNING: {args.release} is not a valid release name. Using legacy dataset, accuracy of checks can not be guaranteed!')  # noqa: T201, pragma: no cover
             modlist += [fallback_release_mod]
 
         mods, third_party = layer_var_mods(
