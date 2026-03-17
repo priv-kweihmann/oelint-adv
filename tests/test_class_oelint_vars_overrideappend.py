@@ -47,6 +47,38 @@ class TestClassOelintVarsOverrideAppend(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'DEPENDS:class-native:append = "a"',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SUMMARY:${PN}:class-native += "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'DESCRIPTION:${PN}:class-native .= "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'LICENSE:${PN}:class-native =. "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SECTION:${PN}:class-native += "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SUMMARY:class-native .= "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'DESCRIPTION:class-native =+ "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'LICENSE:class-native += "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SECTION:class-native += "a"',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -94,6 +126,38 @@ class TestClassOelintVarsOverrideAppend(TestBaseClass):
                                      A:class-target =+ "a"
                                      '''
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SUMMARY:${PN} += "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SECTION:${PN} += "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'DESCRIPTION:${PN} += "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'LICENSE:${PN} += "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SUMMARY += "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SECTION += "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'DESCRIPTION += "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'LICENSE += "a"',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
@@ -140,6 +204,38 @@ class TestClassOelintVarsOverrideAppend(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      'A:class-target =. "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SUMMARY:${PN}:class-native += "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'DESCRIPTION:${PN}:class-native .= "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'LICENSE:${PN}:class-native =. "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SECTION:${PN}:class-native += "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SUMMARY:class-native .= "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'DESCRIPTION:class-native =+ "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'LICENSE:class-native += "a"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'SECTION:class-native += "a"',
                                  },
                              ],
                              )
