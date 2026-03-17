@@ -101,6 +101,13 @@ class TestBaseClass:
 
         args.fix = False
 
+        # reread the content of the files
+        additions = {}
+        for k, _ in self.__created_files.items():
+            with open(os.path.join(self._tmpdir, k)) as i:
+                additions[f'{k}.fixed'] = i.read()
+        self.__created_files.update(additions)
+
         # check run
         self.check_for_id(args, id_, 0)
 
