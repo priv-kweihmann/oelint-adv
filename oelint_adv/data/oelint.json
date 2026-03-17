@@ -33,6 +33,38 @@
             "IMAGE_ROOTFS_EXTRA_SPACE"
         ]
     },
+    "oelint-contextvars": {
+        "bbappend-only": [
+            "FILESEXTRAPATHS"
+        ],
+        "bbclass-only": [],
+        "conf-only": [
+            "DISTROOVERRIDES",
+            "DISTRO_EXTRA_RDEPENDS",
+            "DISTRO_EXTRA_RRECOMMENDS",
+            "DISTRO_FEATURES",
+            "DISTRO_FEATURES_BACKFILL",
+            "DISTRO_FEATURES_BACKFILL_CONSIDERED",
+            "DISTRO_FEATURES_DEFAULT",
+            "MACHINE",
+            "MACHINEOVERRIDES",
+            "MACHINE_ESSENTIAL_EXTRA_RDEPENDS",
+            "MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS",
+            "MACHINE_EXTRA_RRECOMMENDS",
+            "MACHINE_FEATURES",
+            "MACHINE_FEATURES_BACKFILL"
+        ],
+        "image-only": [
+            "EXTRA_IMAGE_FEATURES",
+            "IMAGE_FEATURES"
+        ],
+        "recipe-only": [
+            "BBCLASSEXTEND",
+            "DEPENDS",
+            "INSANE_SKIP",
+            "LIC_FILES_CHKSUM"
+        ]
+    },
     "oelint-mandatoryvar": {
         "SRC_URI-exclude-classes": [
             "pypi",
@@ -50,6 +82,10 @@
             "SRC_URI"
         ]
     },
+    "oelint-semicolon-vars": [
+        "LIC_FILES_CHKSUM",
+        "SRC_URI"
+    ],
     "oelint-suggestedvar": {
         "image-excludes": [],
         "pkggroup-excludes": [
@@ -57,42 +93,42 @@
             "CVE_PRODUCT"
         ]
     },
-    "oelint-semicolon-vars": [
-        "LIC_FILES_CHKSUM",
-        "SRC_URI"
+    "oelint-variable-opt-with-pkgn": [
+        "SUMMARY",
+        "SECTION",
+        "DESCRIPTION",
+        "LICENSE"
     ],
-    "oelint-contextvars": {
-        "conf-only": [
-            "DISTROOVERRIDES",
-            "DISTRO_EXTRA_RDEPENDS",
-            "DISTRO_EXTRA_RRECOMMENDS",
-            "DISTRO_FEATURES",
-            "DISTRO_FEATURES_BACKFILL",
-            "DISTRO_FEATURES_BACKFILL_CONSIDERED",
-            "DISTRO_FEATURES_DEFAULT",
-            "MACHINE",
-            "MACHINEOVERRIDES",
-            "MACHINE_ESSENTIAL_EXTRA_RDEPENDS",
-            "MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS",
-            "MACHINE_EXTRA_RRECOMMENDS",
-            "MACHINE_FEATURES",
-            "MACHINE_FEATURES_BACKFILL"
-        ],
-        "bbappend-only": [
-            "FILESEXTRAPATHS"
-        ],
-        "bbclass-only": [],
-        "recipe-only": [
-            "BBCLASSEXTEND",
-            "DEPENDS",
-            "INSANE_SKIP",
-            "LIC_FILES_CHKSUM"
-        ],
-        "image-only": [
-            "EXTRA_IMAGE_FEATURES",
-            "IMAGE_FEATURES"
-        ]
-    },
+    "oelint-variables-with-pkgn": [
+        "ALLOW_EMPTY",
+        "ALTERNATIVE",
+        "CONFFILES",
+        "DEBIAN_NOAUTONAME",
+        "DEBIANNAME",
+        "FILES",
+        "GROUPADD_PARAM",
+        "GROUPMEMS_PARAM",
+        "INITSCRIPT_NAME",
+        "INITSCRIPT_PARAMS",
+        "INSANE_SKIP",
+        "PKG",
+        "pkg_postinst",
+        "pkg_postinst_ontarget",
+        "pkg_postrm",
+        "pkg_preinst",
+        "pkg_prerm",
+        "PRIVATE_LIBS",
+        "RCONFLICTS",
+        "RDEPENDS",
+        "RPROVIDES",
+        "RRECOMMENDS",
+        "RREPLACES",
+        "RSUGGESTS",
+        "SKIP_FILEDEPS",
+        "SYSTEMD_AUTO_ENABLE",
+        "SYSTEMD_SERVICE",
+        "USERADD_PARAM"
+    ],
     "replacements": {
         "mirrors": {
             "${APACHE_MIRROR}": "http://www.us.apache.org/dist",
