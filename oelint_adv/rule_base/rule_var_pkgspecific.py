@@ -33,7 +33,7 @@ class VarPkgSpecific(Rule):
             _machine = []
             if i.GetMachineEntry():
                 _machine = [i.GetMachineEntry(), stash.ExpandTerm(_file, i.GetMachineEntry())]
-            if not _machine or not any(x in _packages for x in _machine):
+            if not _machine or not any((x in _packages or stash.IsDynamicPackage(_file, x)) for x in _machine):
                 res += self.finding(i.Origin, i.InFileLine,
                                     override_msg=self.Msg.format(self.Msg, VAR=i.VarName, DEL=delimiter), appendix=i.VarName)
         return res
