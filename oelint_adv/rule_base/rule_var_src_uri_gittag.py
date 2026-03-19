@@ -11,7 +11,8 @@ class VarSRCUriGitTag(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.srcurigittag',
                          severity='warning',
-                         message="'tag' in SRC_URI-options leads to not-reproducible builds as git-tags can move around. Use explicit SRCREV")
+                         message="'tag' in SRC_URI-options leads to not-reproducible builds as git-tags can move around. Use explicit SRCREV",
+                         valid_till_release="whinlatter")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
