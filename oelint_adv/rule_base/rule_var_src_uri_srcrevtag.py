@@ -11,7 +11,8 @@ class VarSRCUriSRCREVTag(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.srcurisrcrevtag',
                          severity='error',
-                         message="'tag' in SRC_URI and a SRCREV for the same component doesn't compute")
+                         message="'tag' in SRC_URI and a SRCREV for the same component doesn't compute",
+                         valid_till_release="whinlatter")
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
