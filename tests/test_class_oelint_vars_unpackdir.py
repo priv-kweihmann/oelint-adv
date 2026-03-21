@@ -55,5 +55,5 @@ class TestClassOelintVarsUnpackdir(TestBaseClass):
                                  },
                              ],
                              )
-    def test_good_inherit(self, input_, id_, occurrence):
+    def test_good(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(input_), id_, occurrence)
