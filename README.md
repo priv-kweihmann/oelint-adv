@@ -243,7 +243,7 @@ Rules marked with **[I]** need to be activated through [a rule file](#defining-a
 * [oelint.vars.srcurisrcrevtag](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.srcurisrcrevtag.md) - 'tag' in SRC_URI and a SRCREV for the same component doesn't compute
 * [oelint.vars.summary80chars](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.summary80chars.md) - SUMMARY should max. be 80 characters long
 * [oelint.vars.summarylinebreaks](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.summarylinebreaks.md) - No line breaks in SUMMARY
-* [oelint.vars.unpackdir](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.unpackdir.md) - \$\{UNPACKDIR\} should be used instead of \$\{WORKDIR\} in S and B
+* [oelint.vars.unpackdir](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.unpackdir.md) - \$\{UNPACKDIR\} should be used instead of \$\{WORKDIR\} in S
 * [oelint.vars.valuequoted](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.valuequoted.md) - Variable values should be properly quoted
 * [oelint.vars.virtual](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.virtual.md) - no virtual/ items in RDEPENDS/RPROVIDES
 
@@ -261,7 +261,7 @@ To enable pass **--addrules jetm** to CLI.
 Rules marked with **[F]** are able to perform automatic fixing.
 
 * [oelint.jetm.vars.dependssingleline](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.jetm.vars.dependssingleline.md) - Each [R]DEPENDS entry should be put into a single line
-  
+
 ### Writing your own additional rules
 
 By passing `--customrules` via CLI you could add additional rules to be checked.
@@ -480,7 +480,7 @@ file and not relative to the directory ``oelint-adv`` runs in
 hide = warning
 # this will set A + B as suppress item
 # use indent (tab) and line breaks for multiple items
-suppress = 
+suppress =
   A
   B
 # this will set messageformat parameter
