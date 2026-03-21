@@ -16,7 +16,7 @@ class VarRootfsPostprocessCommand(Rule):
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                                  attribute=Variable.ATTR_VAR, attributeValue=['S', 'B'])
+                                                  attribute=Variable.ATTR_VAR, attributeValue=['S'])
         for i in items:
             if '${WORKDIR}' in i.VarValueStripped:
                 res += self.finding(i.Origin, i.InFileLine)

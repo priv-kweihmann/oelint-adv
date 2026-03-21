@@ -13,12 +13,6 @@ class TestClassOelintVarsUnpackdir(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'S = "${WORKDIR}"',
                                  },
-                                 {
-                                     'oelint_adv_test.bb':
-                                     '''
-                                     B = "${WORKDIR}/foo/bar"
-                                     ''',
-                                 },
                              ],
                              )
     def test_bad_new(self, input_, id_, occurrence):
@@ -31,12 +25,6 @@ class TestClassOelintVarsUnpackdir(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      'S = "${WORKDIR}"',
-                                 },
-                                 {
-                                     'oelint_adv_test.bb':
-                                     '''
-                                     B = "${WORKDIR}/foo/bar"
-                                     ''',
                                  },
                              ],
                              )
@@ -56,7 +44,7 @@ class TestClassOelintVarsUnpackdir(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                     B = "${UNPACKDIR}/foo/bar"
+                                     B = "${WORKDIR}/foo/bar"
                                      ''',
                                  },
                                  {
