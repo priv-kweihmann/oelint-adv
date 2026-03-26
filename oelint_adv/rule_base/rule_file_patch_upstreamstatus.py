@@ -23,6 +23,7 @@ class FilePatchIsUpstreamStatus(Rule):
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         patches = stash.GetFiles(_file, '*.patch')
+        patches.extend(stash.GetFiles(_file, '*.diff'))
         _items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                    attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
 
