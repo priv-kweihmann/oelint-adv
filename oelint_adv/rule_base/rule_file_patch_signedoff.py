@@ -17,6 +17,7 @@ class FilePatchIsSignedOff(Rule):
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         items = stash.GetFiles(_file, '*.patch')
+        items.extend(stash.GetFiles(_file, '*.diff'))
         _items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                    attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
         for i in items:

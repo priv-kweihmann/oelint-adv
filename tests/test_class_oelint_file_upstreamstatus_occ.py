@@ -4,17 +4,20 @@ import pytest  # noqa: I900
 
 from .base import TestBaseClass
 
-
 class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
+
+    def _generate_input(patch_suffix, upstream_status):
+        return {
+            'oelint_adv-test.bb': f'SRC_URI = "file://test.{patch_suffix}"',
+            f'files/test.{patch_suffix}': f'Upstream-Status: {upstream_status}',
+        }
 
     @pytest.mark.parametrize('id_', ['oelint.file.upstreamstatus_occurance.Pending'])
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb': 'SRC_URI = "file://test.patch"',
-                                     'files/test.patch': 'Upstream-Status: Pending',
-                                 },
+                                 _generate_input('patch', 'Pending'),
+                                 _generate_input('diff', 'Pending')
                              ],
                              )
     def test_pending(self, input_, id_, occurrence):
@@ -25,12 +28,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb':
-                                     'SRC_URI = "file://test.patch"',
-                                     'files/test.patch':
-                                     'Upstream-Status: Pending',
-                                 },
+                                 _generate_input('patch', 'Pending'),
+                                 _generate_input('diff', 'Pending')
                              ],
                              )
     def test_pending_std(self, input_, id_, occurrence):
@@ -40,10 +39,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb': 'SRC_URI = "file://test.patch"',
-                                     'files/test.patch': 'Upstream-Status: SomethingElse',
-                                 },
+                                 _generate_input('patch', 'SomethingElse'),
+                                 _generate_input('diff', 'SomethingElse')
                              ],
                              )
     def test_pending_no_hit(self, input_, id_, occurrence):
@@ -54,10 +51,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb': 'SRC_URI = "file://test.patch"',
-                                     'files/test.patch': 'Upstream-Status: Submitted',
-                                 },
+                                 _generate_input('patch', 'Submitted'),
+                                 _generate_input('diff', 'Submitted')
                              ],
                              )
     def test_submitted(self, input_, id_, occurrence):
@@ -68,12 +63,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb':
-                                     'SRC_URI = "file://test.patch"',
-                                     'files/test.patch':
-                                     'Upstream-Status: Submitted',
-                                 },
+                                 _generate_input('patch', 'Submitted'),
+                                 _generate_input('diff', 'Submitted')
                              ],
                              )
     def test_submitted_std(self, input_, id_, occurrence):
@@ -83,10 +74,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb': 'SRC_URI = "file://test.patch"',
-                                     'files/test.patch': 'Upstream-Status: SomethingElse',
-                                 },
+                                 _generate_input('patch', 'SomethingElse'),
+                                 _generate_input('diff', 'SomethingElse')
                              ],
                              )
     def test_submitted_no_hit(self, input_, id_, occurrence):
@@ -97,10 +86,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb': 'SRC_URI = "file://test.patch"',
-                                     'files/test.patch': 'Upstream-Status: Accepted',
-                                 },
+                                 _generate_input('patch', 'Accepted'),
+                                 _generate_input('diff', 'Accepted')
                              ],
                              )
     def test_accepted(self, input_, id_, occurrence):
@@ -111,12 +98,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb':
-                                     'SRC_URI = "file://test.patch"',
-                                     'files/test.patch':
-                                     'Upstream-Status: Accepted',
-                                 },
+                                 _generate_input('patch', 'Accepted'),
+                                 _generate_input('diff', 'Accepted')
                              ],
                              )
     def test_accepted_std(self, input_, id_, occurrence):
@@ -126,10 +109,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb': 'SRC_URI = "file://test.patch"',
-                                     'files/test.patch': 'Upstream-Status: SomethingElse',
-                                 },
+                                 _generate_input('patch', 'SomethingElse'),
+                                 _generate_input('diff', 'SomethingElse')
                              ],
                              )
     def test_accepted_no_hit(self, input_, id_, occurrence):
@@ -140,10 +121,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb': 'SRC_URI = "file://test.patch"',
-                                     'files/test.patch': 'Upstream-Status: Denied',
-                                 },
+                                 _generate_input('patch', 'Denied'),
+                                 _generate_input('diff', 'Denied')
                              ],
                              )
     def test_denied(self, input_, id_, occurrence):
@@ -154,12 +133,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb':
-                                     'SRC_URI = "file://test.patch"',
-                                     'files/test.patch':
-                                     'Upstream-Status: Denied',
-                                 },
+                                 _generate_input('patch', 'Denied'),
+                                 _generate_input('diff', 'Denied')
                              ],
                              )
     def test_denied_std(self, input_, id_, occurrence):
@@ -169,10 +144,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb': 'SRC_URI = "file://test.patch"',
-                                     'files/test.patch': 'Upstream-Status: SomethingElse',
-                                 },
+                                 _generate_input('patch', 'SomethingElse'),
+                                 _generate_input('diff', 'SomethingElse')
                              ],
                              )
     def test_denied_no_hit(self, input_, id_, occurrence):
@@ -183,10 +156,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb': 'SRC_URI = "file://test.patch"',
-                                     'files/test.patch': 'Upstream-Status: Backport',
-                                 },
+                                 _generate_input('patch', 'Backport'),
+                                 _generate_input('diff', 'Backport')
                              ],
                              )
     def test_backport(self, input_, id_, occurrence):
@@ -197,12 +168,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb':
-                                     'SRC_URI = "file://test.patch"',
-                                     'files/test.patch':
-                                     'Upstream-Status: Backport',
-                                 },
+                                 _generate_input('patch', 'Backport'),
+                                 _generate_input('diff', 'Backport')
                              ],
                              )
     def test_backport_std(self, input_, id_, occurrence):
@@ -212,10 +179,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb': 'SRC_URI = "file://test.patch"',
-                                     'files/test.patch': 'Upstream-Status: SomethingElse',
-                                 },
+                                 _generate_input('patch', 'SomethingElse'),
+                                 _generate_input('diff', 'SomethingElse')
                              ],
                              )
     def test_backport_no_hit(self, input_, id_, occurrence):
@@ -226,10 +191,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb': 'SRC_URI = "file://test.patch"',
-                                     'files/test.patch': 'Upstream-Status: Inappropriate [foo]',
-                                 },
+                                 _generate_input('patch', 'Inappropriate [foo]'),
+                                 _generate_input('diff', 'Inappropriate [foo]')
                              ],
                              )
     def test_inappropriate(self, input_, id_, occurrence):
@@ -240,12 +203,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb':
-                                     'SRC_URI = "file://test.patch"',
-                                     'files/test.patch':
-                                     'Upstream-Status: Inappropriate [foo]',
-                                 },
+                                 _generate_input('patch', 'Inappropriate [foo]'),
+                                 _generate_input('diff', 'Inappropriate [foo]')
                              ],
                              )
     def test_inappropriate_std(self, input_, id_, occurrence):
@@ -255,10 +214,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb': 'SRC_URI = "file://test.patch"',
-                                     'files/test.patch': 'Upstream-Status: SomethingElse',
-                                 },
+                                 _generate_input('patch', 'SomethingElse'),
+                                 _generate_input('diff', 'SomethingElse')
                              ],
                              )
     def test_inappropriate_no_hit(self, input_, id_, occurrence):
@@ -269,10 +226,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [1])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb': 'SRC_URI = "file://test.patch"',
-                                     'files/test.patch': 'Upstream-Status: Inactive-Upstream [foo]',
-                                 },
+                                 _generate_input('patch', 'Inactive-Upstream [foo]'),
+                                 _generate_input('diff', 'Inactive-Upstream [foo]')
                              ],
                              )
     def test_inactive(self, input_, id_, occurrence):
@@ -283,12 +238,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb':
-                                     'SRC_URI = "file://test.patch"',
-                                     'files/test.patch':
-                                     'Upstream-Status: Inactive-Upstream [foo]',
-                                 },
+                                 _generate_input('patch', 'Inactive-Upstream [foo]'),
+                                 _generate_input('diff', 'Inactive-Upstream [foo]')
                              ],
                              )
     def test_inactive_std(self, input_, id_, occurrence):
@@ -298,10 +249,8 @@ class TestClassOelintFileUpstreamStatusOcc(TestBaseClass):
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('input_',
                              [
-                                 {
-                                     'oelint_adv-test.bb': 'SRC_URI = "file://test.patch"',
-                                     'files/test.patch': 'Upstream-Status: SomethingElse',
-                                 },
+                                 _generate_input('patch', 'SomethingElse'),
+                                 _generate_input('diff', 'SomethingElse')
                              ],
                              )
     def test_inactive_no_hit(self, input_, id_, occurrence):

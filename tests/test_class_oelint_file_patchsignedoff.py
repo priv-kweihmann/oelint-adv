@@ -15,6 +15,12 @@ class TestClassOelintFilePatchSignedOff(TestBaseClass):
                                      'files/test.patch':
                                      'This is not a patch',
                                  },
+                                 {
+                                     'oelint_adv-test.bb':
+                                     'SRC_URI = "file://test.diff"',
+                                     'files/test.diff':
+                                     'This is not a patch',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -28,6 +34,12 @@ class TestClassOelintFilePatchSignedOff(TestBaseClass):
                                      'oelint_adv-test.bb':
                                      'SRC_URI = "file://test.patch"',
                                      'files/test.patch':
+                                     'Signed-off-by: some body <some@body.com>',
+                                 },
+                                 {
+                                     'oelint_adv-test.bb':
+                                     'SRC_URI = "file://test.diff"',
+                                     'files/test.diff':
                                      'Signed-off-by: some body <some@body.com>',
                                  },
                              ],
