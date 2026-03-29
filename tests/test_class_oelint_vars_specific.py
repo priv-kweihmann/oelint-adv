@@ -185,6 +185,14 @@ class TestClassOelintVarsSpecific(TestBaseClass):
                                      SRCREV_this_has = "0123456789abcdef"
                                      ''',
                                  },
+                                 {
+                                     'oelint-adv-test.bb':
+                                     '''
+                                     PACKAGES_DYNAMIC = "^${PN}-lib.*"
+                                     FILES:${PN}-libfoo = "${libdir}/foo"
+                                     FILES:${PN}-libbar = "${libdir}/bar"
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):

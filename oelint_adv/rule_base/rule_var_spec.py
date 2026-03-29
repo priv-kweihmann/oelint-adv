@@ -39,7 +39,7 @@ class VarPnBpnUsage(Rule):
                 sub, expanded = subitem
                 if (expanded in _builtin_classes) or (sub in _builtin_classes):
                     continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
-                if (expanded in _packages) or (sub in _packages):
+                if (expanded in _packages) or (sub in _packages) or stash.IsDynamicPackage(_file, sub):
                     continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
                 if (expanded in _operations) or (sub in _operations):
                     continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
