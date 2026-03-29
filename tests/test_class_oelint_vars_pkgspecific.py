@@ -129,6 +129,15 @@ class TestClassOelintVarsPKGSpecific(TestBaseClass):
                                      RDEPENDS_abc-foo += "bar"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     PACKAGES_DYNAMIC = "^${PN}-lib.* ^foo-"
+                                     RDEPENDS:${PN}-libfoo += "baz"
+                                     RSUGGESTS:oelint-libbar += "baz"
+                                     FILES:foo-bar += "baz"
+                                     ''',
+                                 },
                              ],
                              )
     def test_good_custom_pkg(self, input_, id_, occurrence):

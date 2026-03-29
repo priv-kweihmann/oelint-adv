@@ -143,6 +143,15 @@ class TestClassOelintFuncSpecific(TestBaseClass):
                                      }
                                      ''',
                                  },
+                                 {
+                                     'oelint-adv_test.bb':
+                                     '''
+                                     PACKAGES_DYNAMIC = "^${PN}-lib.*"
+                                     pkg_preinst:${PN}-libfoo () {
+                                         abc
+                                     }
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):

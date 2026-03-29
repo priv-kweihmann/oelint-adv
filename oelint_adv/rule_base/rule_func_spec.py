@@ -34,7 +34,7 @@ class VarPnBpnUsage(Rule):
                     continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
                 if (expanded in _distros) or (sub in _distros):
                     continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
-                if (expanded in _packages) or (sub in _packages):
+                if (expanded in _packages) or (sub in _packages) or stash.IsDynamicPackage(_file, sub):
                     continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
                 if (expanded in _machines) or (sub in _machines):
                     continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
