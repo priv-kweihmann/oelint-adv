@@ -158,6 +158,13 @@ class TestClassOelintVarsOverrideAppend(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'LICENSE += "a"',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     PACKAGES_DYNAMIC = "^${PN}-lib.*"
+                                     LICENSE:${PN}-libfoo += "a"
+                                     '''
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):

@@ -66,7 +66,7 @@ class VarOverrideAppend(Rule):
             if i.VarName in self.pkgspecific:
                 _items = _items[1:]
             elif i.VarName in self.potpkgspecific:
-                if _items and _items[0] in pkgnames:
+                if _items and (_items[0] in pkgnames or stash.IsDynamicPackage(_file, _items[0])):
                     _items = _items[1:]
 
             _scope = [x for x in _items if x not in ['append', 'prepend']]
