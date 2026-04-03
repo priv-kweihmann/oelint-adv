@@ -28,15 +28,13 @@ class VarPnBpnUsage(Rule):
         _operations = ['append', 'prepend', 'remove']
         for i in items:
             subs = [(x, stash.ExpandTerm(_file, x)) for x in i.SubItems]
-            if i.VarName == 'SRCREV':
-                # Parser splits named SRCREVs on underscores. To handle named resources with underscores,
-                # we need to find longest resource name that matches and remove its parts from subs.
-                for name in _named_res:
-                    if RegexRpl.match(f'^SRCREV_{name}(:|_|$)', i.VarNameComplete):
-                        subs = subs[name.count('_') + 1:]
-                        break
+            if i.VarName.startswith('SRCREV_') and not i.VarName.startswith('SRCREV_FORMAT'):
+                _split = '_'.join(i.VarName.split('_')[1:])
+                subs = [(_split, stash.ExpandTerm(_file, _split))] + subs
             for subitem in subs:
                 sub, expanded = subitem
+                if sub in _named_res:
+                    continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
                 if (expanded in _builtin_classes) or (sub in _builtin_classes):
                     continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
                 if (expanded in _packages) or (sub in _packages) or stash.IsDynamicPackage(_file, sub):
