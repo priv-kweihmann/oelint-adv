@@ -19,7 +19,7 @@ Upstream-Status: Inactive-Upstream [1234]
 ## Why is this bad?
 
 ``Inactive-Upstream`` shall name a timestamp when the last activity was seen upstream,
-see former [OpenEmbedded contribution guide](https://www.openembedded.org/index.php?title=Commit_Patch_Message_Guidelines&oldid=10935)
+see former [Yocto Upstream-Status guide](https://docs.yoctoproject.org/contributor-guide/recipe-style-guide.html#patch-upstream-status)
 
 ## Ways to fix it
 

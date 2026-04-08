@@ -26,7 +26,7 @@ Upstream-Status: Inappropriate (configuration)
 
 ``Inappropriate`` will create technical debt, as the will never be merged upstream,
 so labelling why this patch is needed is essential for tracking.
-See [OpenEmbedded contribution guide](https://www.openembedded.org/index.php?title=Commit_Patch_Message_Guidelines&oldid=10935)
+See [Yocto Upstream-Status guide](https://docs.yoctoproject.org/contributor-guide/recipe-style-guide.html#patch-upstream-status)
 
 ## Ways to fix it
 
