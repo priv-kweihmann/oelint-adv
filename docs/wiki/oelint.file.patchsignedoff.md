@@ -15,7 +15,7 @@ is missing
 ## Why is this bad?
 
 Every upstreamable patch should have a ``Signed-off-by`` line.
-See [OpenEmbedded contribution guide](https://www.openembedded.org/index.php?title=Commit_Patch_Message_Guidelines&oldid=10935)
+See [Yocto Upstream-Status guide](https://docs.yoctoproject.org/contributor-guide/recipe-style-guide.html#patch-upstream-status)
 
 ## Ways to fix it
 

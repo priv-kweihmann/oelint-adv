@@ -15,7 +15,7 @@ is missing or not classified properly
 ## Why is this bad?
 
 Every patch should have a ``Upstream-Status`` line.
-See [OpenEmbedded contribution guide](https://www.openembedded.org/index.php?title=Commit_Patch_Message_Guidelines&oldid=10935)
+See [Yocto Upstream-Status guide](https://docs.yoctoproject.org/contributor-guide/recipe-style-guide.html#patch-upstream-status)
 
 ## Ways to fix it
 
