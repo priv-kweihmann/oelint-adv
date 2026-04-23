@@ -1,6 +1,6 @@
 Flake8-pyproject == 1.2.4
 bump-my-version == 1.3.0
-build == 1.4.3
+build == 1.4.4
 codespell == 2.4.2
 dlint == 0.16.0
 flake8 == 7.3.0
