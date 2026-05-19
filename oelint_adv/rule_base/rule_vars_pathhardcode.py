@@ -1,14 +1,8 @@
 from collections import OrderedDict
+from re import escape
 from typing import List, Tuple
 
-from oelint_parser.cls_item import (
-    Export,
-    Function,
-    FunctionExports,
-    Item,
-    PythonBlock,
-    Variable,
-)
+from oelint_parser.cls_item import Export, Function, FunctionExports, Item, PythonBlock, Variable
 from oelint_parser.cls_stash import Stash
 from oelint_parser.rpl_regex import RegexRpl
 
@@ -41,6 +35,13 @@ class VarsPathHardcode(Rule):
                          message='<FOO>',
                          appendix=[v.strip('$').strip('{').strip('}') for v in self._map.values()])
 
+    def check_release_range(self, release_range: List[str]) -> bool:
+        if 'wrynose' in release_range:
+            self._map['/lib/firmware'] = '${firmwaredir}'
+            self._map['${nonarch_base_libdir}/firmware'] = '${firmwaredir}'
+            self._map.move_to_end('/lib')
+        return super().check_release_range(release_range)
+
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
         items: List[Item] = stash.GetItemsFor(filename=_file,
@@ -54,12 +55,13 @@ class VarsPathHardcode(Rule):
                 continue
             _matches = []
             for k, v in self._map.items():
-                pre = '(' + '|'.join(['^', "'", '"', ' ', r'\$\{D\}', '=']) + ')'
+                pre = '(' + '|'.join(['^', "'", '"',
+                                      ' ', r'\$\{D\}', r'\$\{D\}/', '=']) + ')'
                 ext = '(' + '|'.join([' ', '/', '"', r'\*', '$']) + ')'
                 for line in i.get_items():
                     if line.strip().startswith('#') or k not in line:
                         continue
-                    _match = RegexRpl.search(pre + k + ext, line)
+                    _match = RegexRpl.search(pre + escape(k) + ext, line)
                     if _match and k not in _matches:
                         _cleanapp = v.strip('$').strip('{').strip('}')
                         res += self.finding(i.Origin, i.InFileLine,

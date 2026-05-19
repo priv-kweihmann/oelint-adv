@@ -19,23 +19,26 @@ wrong paths.
 
 The following variables are known
 
-- ``${systemd_user_unitdir}`` => ``/usr/lib/systemd/user``
-- ``${systemd_system_unitdir}`` => ``/lib/systemd/system``
-- ``${docdir}`` => ``/usr/share/doc``
-- ``${infodir}`` => ``/usr/share/info``
-- ``${mandir}`` => ``/usr/share/man``
-- ``${libexecdir}`` => ``/usr/libexec``
-- ``${systemd_unitdir}`` => ``/lib/systemd``
-- ``${libdir}`` => ``/usr/lib``
 - ``${bindir}`` => ``/usr/bin``
 - ``${datadir}`` => ``/usr/share``
+- ``${docdir}`` => ``/usr/share/doc``
+- ``${firmwaredir}`` => ``/lib/firmware`` *1
 - ``${includedir}`` => ``/usr/include``
+- ``${infodir}`` => ``/usr/share/info``
+- ``${libdir}`` => ``/usr/lib``
+- ``${libexecdir}`` => ``/usr/libexec``
 - ``${localstatedir}`` => ``/var``
+- ``${mandir}`` => ``/usr/share/man``
 - ``${nonarch_base_libdir}`` => ``/lib``
 - ``${sbindir}`` => ``/usr/sbin``
 - ``${servicedir}`` => ``/srv``
 - ``${sharedstatedir}`` => ``/com``
 - ``${sysconfdir}`` => ``/etc``
+- ``${systemd_system_unitdir}`` => ``/lib/systemd/system``
+- ``${systemd_unitdir}`` => ``/lib/systemd``
+- ``${systemd_user_unitdir}`` => ``/usr/lib/systemd/user``
+
+* 1 - starting from `wrynose` release
 
 ```
 FILES:${PN} += "${docdir}"
