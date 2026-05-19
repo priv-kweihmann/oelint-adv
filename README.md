@@ -216,6 +216,7 @@ Rules marked with **[I]** need to be activated through [a rule file](#defining-a
 * [oelint.vars.licfileprefix](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.licfileprefix.md) - Unnecessary prefix to LIC_FILES_CHKSUM detected **[F]**
 * [oelint.vars.listappend](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.listappend.md) - Proper append/prepend to lists **[F]**
 * [oelint.vars.machineconf](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.machineconf.md) - Distro and image variables should not be set as part of a machine config **[S]**
+* [oelint.vars.machinefeatureoptout](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.machinefeatureoptout.md) - Use MACHINE_FEATURES_OPTED_OUT instead of MACHINE_FEATURES:remove
 * [oelint.vars.mispell.unknown](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.mispell.unknown.md) - Variable is not known from CONSTANTS, typo is unlikely
 * [oelint.vars.mispell](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.mispell.md) - Possible typo detected
 * [oelint.vars.multilineident](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.multilineident.md) - On a multiline assignment, line indent is desirable **[F]**
