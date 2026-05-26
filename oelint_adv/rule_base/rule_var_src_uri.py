@@ -24,6 +24,17 @@ class VarSRCUriOptions(Rule):
             'unpack',
             'user',
         ]
+        self._patch_options = [
+            'maxdate',
+            'maxrev',
+            'maxver',
+            'mindate',
+            'minrev',
+            'minver',
+            'notrev',
+            'pname',
+            'pnum',
+        ]
         self._valid_options = {
             'az': [
                 'md5sum',
@@ -206,12 +217,23 @@ class VarSRCUriOptions(Rule):
                                 "Fetcher '{a}' is not known".format(a=_url['scheme']),
                                 blockoffset=item.InFileLine)
         else:
+            # file:// fetcher applies patch handling for .patch/.diff files or
+            # when apply= is set to a truthy value (case-insensitive)
+            _is_patch_file = _url['scheme'] == 'file' and (
+                any(_url.get('src', '').endswith(ext) for ext in ('.patch', '.diff')) or
+                _url['options'].get('apply', '').lower() in ('1', 'yes', 'true')
+            )
             for k, v in _url['options'].items():
                 if _url['scheme'] not in self._valid_options:
                     continue  # pragma: no cover
                 if k == 'type' and v == 'kmeta':
                     continue  # linux-yocto uses this option to indicate kernel metadata sources
-                if k not in self._valid_options[_url['scheme']] + self._general_options:
+                _allowed = (
+                    self._valid_options[_url['scheme']] +
+                    self._general_options +
+                    (self._patch_options if _is_patch_file else [])
+                )
+                if k not in _allowed:
                     res += self.finding(item.Origin, item.InFileLine + _index,
                                         "Option '{a}' is not known with this fetcher type".format(a=k),
                                         blockoffset=item.InFileLine)
