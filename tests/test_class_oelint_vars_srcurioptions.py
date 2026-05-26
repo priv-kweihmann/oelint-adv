@@ -45,6 +45,18 @@ OPTIONS_AVAILABLE = [
     'vob',
     'unknownoperation',
 ]
+# Options valid only for patch files (file:// with .patch/.diff extension or apply= set)
+PATCH_OPTIONS = [
+    'maxdate',
+    'maxrev',
+    'maxver',
+    'mindate',
+    'minrev',
+    'minver',
+    'notrev',
+    'pname',
+    'pnum',
+]
 OPTION_MAPPING = {
     'az': [
         'apply',
@@ -982,4 +994,50 @@ class TestClassOelintVarsSRCURIOptions(TestBaseClass):
                              ],
                              )
     def test_type_kmeta_allowed(self, input_, id_, occurrence):
+        self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('option', PATCH_OPTIONS)
+    @pytest.mark.parametrize('extension', ['.patch', '.diff'])
+    def test_good_file_patch_options(self, id_, occurrence, option, extension):
+        input_ = {
+            'oelint_adv_test.bb': 'SRC_URI += "file://foo{ext};{opt}=1"'.format(ext=extension, opt=option),
+        }
+        self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('option', PATCH_OPTIONS)
+    def test_good_file_apply_patch_options(self, id_, occurrence, option):
+        input_ = {
+            'oelint_adv_test.bb': 'SRC_URI += "file://foo.tar.gz;apply=1;{opt}=1"'.format(opt=option),
+        }
+        self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurrence', [1])
+    @pytest.mark.parametrize('option', PATCH_OPTIONS)
+    def test_bad_file_non_patch_patch_options(self, id_, occurrence, option):
+        input_ = {
+            'oelint_adv_test.bb': 'SRC_URI += "file://foo.tar.gz;{opt}=1"'.format(opt=option),
+        }
+        self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurrence', [1])
+    @pytest.mark.parametrize('option', PATCH_OPTIONS)
+    def test_bad_non_file_patch_options(self, id_, occurrence, option):
+        input_ = {
+            'oelint_adv_test.bb': 'SRC_URI += "https://example.com/foo.patch;{opt}=1"'.format(opt=option),
+        }
+        self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.srcurioptions'])
+    @pytest.mark.parametrize('occurrence', [1])
+    @pytest.mark.parametrize('option', PATCH_OPTIONS)
+    def test_bad_git_patch_options(self, id_, occurrence, option):
+        input_ = {
+            'oelint_adv_test.bb': 'SRC_URI += "git://example.com/foo.git;protocol=https;branch=main;{opt}=1"'.format(opt=option),
+        }
         self.check_for_id(self._create_args(input_), id_, occurrence)
