@@ -21,6 +21,18 @@ class TestClassOelintVarImproperInherit(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'inherit ghi>bbclass',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'inherit_defer abc/abc abc',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'inherit_defer def~AAAA',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'inherit_defer ghi>bbclass',
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -52,6 +64,14 @@ class TestClassOelintVarImproperInherit(TestBaseClass):
                                      XORGBUILDCLASS ??= "autotools"
                                      inherit ${XORGBUILDCLASS} pkgconfig features_check
                                      ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'inherit_defer native',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'inherit_defer ${A}',
                                  },
                              ],
                              )

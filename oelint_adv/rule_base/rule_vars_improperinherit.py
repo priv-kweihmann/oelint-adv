@@ -16,8 +16,11 @@ class VarImproperInherit(Rule):
 
     def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
         res = []
-        items = stash.GetItemsFor(filename=_file, classifier=Inherit.CLASSIFIER)
+        items: list[Inherit] = stash.GetItemsFor(
+            filename=_file, classifier=Inherit.CLASSIFIER)
         for i in items:
+            if i.Statement in ['inherit_defer'] and '${' in i.Class:
+                continue
             for subi in [stash.ExpandTerm(_file, x) for x in i.get_items() if x and x != INLINE_BLOCK]:
                 if not RegexRpl.match(r'^[A-Za-z0-9_.-]+$', subi):
                     res += self.finding(i.Origin, i.InFileLine,
