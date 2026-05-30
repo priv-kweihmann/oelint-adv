@@ -38,7 +38,7 @@ class VarsLayerConf(Rule):
         for i in items:
             if not fnmatch.fnmatch(i.Origin, '*/layer.conf'):
                 continue
-            if not any(RegexRpl.match(x, i.VarName) for x in self.good):
+            if not any(RegexRpl.match(x, i.VarNameCompleteNoModifiers) for x in self.good):
                 res += self.finding(_file, i.InFileLine,
                                     self.Msg.format(var=i.VarName))
         return res
