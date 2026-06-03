@@ -82,6 +82,22 @@
             "SRC_URI"
         ]
     },
+    "oelint-inappropriate-status-classifiers": [
+        "oe-specific",
+        "OE specific",
+        "oe-core specific",
+        "not author",
+        "native",
+        "licensing",
+        "configuration",
+        "enable feature",
+        "disable feature",
+        "bugfix .*",
+        "embedded specific",
+        "no upstream",
+        "other",
+        "upstream ticket .*"
+    ],
     "oelint-semicolon-vars": [
         "LIC_FILES_CHKSUM",
         "SRC_URI"

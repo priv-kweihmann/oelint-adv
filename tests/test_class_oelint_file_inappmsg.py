@@ -58,6 +58,8 @@ class TestClassOelintFileUpstreamStatusInAppMsg(TestBaseClass):
                                  _generate_input('diff', 'Inappropriate [no upstream]'),
                                  _generate_input('patch', 'Inappropriate [other]'),
                                  _generate_input('diff', 'Inappropriate [other]'),
+                                 _generate_input('patch', 'Inappropriate [upstream ticket https://foo.com/bar]'),
+                                 _generate_input('diff', 'Inappropriate [upstream ticket https://foo.com/bar]'),
                                  {
                                      'oelint_adv-test.bb':
                                      'SRC_URI = "file://test.patch"',
@@ -82,3 +84,24 @@ class TestClassOelintFileUpstreamStatusInAppMsg(TestBaseClass):
                              )
     def test_good(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.file.inappropriatemsg'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('input_',
+                             [
+                                 _generate_input('patch', 'Inappropriate [vendor-specific]'),
+                                 _generate_input('diff', 'Inappropriate [vendor-specific]'),
+                             ],
+                             )
+    def test_good_custom_classifier_mod(self, input_, id_, occurrence):
+        _mod_content = '''
+        {
+            "oelint-inappropriate-status-classifiers": [
+                "vendor-specific"
+            ]
+        }
+        '''
+        _extra_opts = [
+            '--constantmods=+{mod}'.format(mod=self._create_tempfile('constmod', _mod_content)),
+        ]
+        self.check_for_id(self._create_args(input_, extraopts=_extra_opts), id_, occurrence)
