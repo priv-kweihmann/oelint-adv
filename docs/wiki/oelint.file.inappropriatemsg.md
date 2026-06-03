@@ -48,3 +48,6 @@ or any other reason in the square brackets from the following list
 - embedded specific
 - no upstream
 - other
+- upstream ticket .*
+
+The valid set of items can be configured through `oelint-inappropriate-status-classifiers` via [Constants](https://github.com/priv-kweihmann/oelint-adv/tree/master/docs/constants.md)

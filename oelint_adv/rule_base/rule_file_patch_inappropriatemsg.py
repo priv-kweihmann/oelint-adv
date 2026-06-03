@@ -4,6 +4,7 @@ from typing import List, Tuple
 import regex  # noqa: I900
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
+from oelint_parser.constants import CONSTANTS
 from oelint_parser.rpl_regex import RegexRpl
 
 from oelint_adv.cls_rule import Rule, Classification
@@ -13,7 +14,8 @@ class FilePatchIsUpstreamStatusInAppMsg(Rule):
     def __init__(self):
         super().__init__(id='oelint.file.inappropriatemsg',
                          severity='info',
-                         run_on=[Classification.BBAPPEND, Classification.RECIPE],
+                         run_on=[Classification.BBAPPEND,
+                                 Classification.RECIPE],
                          message="Patch '{FILE}' with Upstream-Status Inappropriate has to have a reasoning appended in [], chosen from {choices}")
 
     def _get_recipe(self, items, path):
@@ -27,21 +29,8 @@ class FilePatchIsUpstreamStatusInAppMsg(Rule):
         _items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                    attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')
 
-        _valid_classifiers = [
-            'oe-specific',
-            'OE specific',
-            'oe-core specific',
-            'not author',
-            'native',
-            'licensing',
-            'configuration',
-            'enable feature',
-            'disable feature',
-            'bugfix .*',
-            'embedded specific',
-            'no upstream',
-            'other',
-        ]
+        _valid_classifiers = CONSTANTS.GetByPath(
+            'oelint-inappropriate-status-classifiers')
 
         _valid_class = {
             'Inappropriate': r'Inappropriate\s+\[({a})\]'.format(a='|'.join(_valid_classifiers)),
