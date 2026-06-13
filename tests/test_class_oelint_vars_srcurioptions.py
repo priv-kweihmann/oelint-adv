@@ -222,9 +222,11 @@ OPTION_MAPPING = {
     ],
     'gomod': [
         'downloadfilename',
+        'md5sum',
         'mod',
         'module',
         'pswd',
+        'sha256sum',
         'user',
         'version',
     ],
