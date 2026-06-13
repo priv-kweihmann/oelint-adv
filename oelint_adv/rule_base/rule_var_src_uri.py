@@ -109,8 +109,10 @@ class VarSRCUriOptions(Rule):
             ],
             'gomod': [
                 'downloadfilename',
+                'md5sum',
                 'mod',
                 'module',
+                'sha256sum',
                 'version',
             ],
             'gomodgit': [
