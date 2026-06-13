@@ -100,6 +100,14 @@ class TestClassOelintVarsSRCURIdomains(TestBaseClass):
                                      SRC_URI = "git://foo.baz;branch=master;protocol=https"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     SRC_URI = "git://github.com/foo/bar;branch=main;protocol=https"
+                                     SRC_URI += "gomod://cel.dev/expr;version=v0.25.1;sha256sum=aaa"
+                                     SRC_URI += "crate://crates.io/aho-corasick/0.6.10"
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):

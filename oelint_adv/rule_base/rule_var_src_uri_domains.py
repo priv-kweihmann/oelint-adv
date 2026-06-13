@@ -8,6 +8,11 @@ from oelint_adv.cls_rule import Rule
 
 
 class VarSRCUriOptions(Rule):
+    # Package-manager fetchers reference a dependency manifest, so spanning many
+    # module domains (one entry per Go module, crate, npm package, ...) is
+    # expected and not an indication of a mirroring problem.
+    _package_manager_schemes = {'gomod', 'gomodgit', 'crate', 'npm', 'npmsw'}
+
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.srcuridomains',
                          severity='warning',
@@ -30,7 +35,8 @@ class VarSRCUriOptions(Rule):
                 if u == INLINE_BLOCK:
                     continue
                 _url = stash.GetScrComponents(u)
-                if _url['scheme'] and _url['scheme'] not in ['file']:
+                # 'file' has no remote domain to compare against
+                if _url['scheme'] and _url['scheme'] != 'file' and _url['scheme'] not in self._package_manager_schemes:
                     domain = _url['src'].split('/')[0]
                     if _is_append:
                         _domains[_overrides].add(domain)
