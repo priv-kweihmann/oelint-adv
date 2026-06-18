@@ -12,6 +12,7 @@ from oelint_adv.core import TypeSafeAppendAction, arguments_post, parse_configfi
 from oelint_adv.tweaks import Tweaks
 from oelint_adv.version import __version__
 from oelint_adv.caches import __default_cache_dir
+from oelint_adv.outputformat import _OUTPUT_FORMATS
 
 sys.path.append(os.path.abspath(os.path.join(__file__, '..')))
 
@@ -53,11 +54,14 @@ def create_argparser() -> argparse.ArgumentParser:
                         help=argparse.SUPPRESS)
     parser.add_argument('--nowarn', action='store_true', default=False,
                         help=argparse.SUPPRESS)
-    parser.add_argument('--mode', choices=['fast', 'all'], default='fast', help='Level of testing (default: fast)')
+    parser.add_argument('--mode', choices=['fast', 'all'],
+                        default='fast', help='Level of testing (default: fast)')
     parser.add_argument('--relpaths', action='store_true', default=False,
                         help='Show relative paths instead of absolute paths in results')
     parser.add_argument('--messageformat', default='{path}:{line}:{severity}:{id}:{msg}',
                         type=str, help='Format of message output')
+    parser.add_argument('--outputformat', choices=_OUTPUT_FORMATS.keys(),
+                        type=str, default='stdout', help='Output format')
     parser.add_argument('--constantmods', default=[], nargs='+',
                         help='''
                              Modifications to the constant db.
@@ -72,10 +76,12 @@ def create_argparser() -> argparse.ArgumentParser:
                         help='Always return a 0 (non-error) status code, even if lint errors are found')
     parser.add_argument('--release', default=Tweaks.DEFAULT_RELEASE, choices=Tweaks.releases(),
                         help='Run against a specific Yocto release')
-    parser.add_argument('--cached', action='store_true', help='Use caches (default: off)')
+    parser.add_argument('--cached', action='store_true',
+                        help='Use caches (default: off)')
     parser.add_argument('--cachedir', default=os.environ.get('OELINT_CACHE_DIR', __default_cache_dir),
                         help=f'Cache directory (default {__default_cache_dir})')
-    parser.add_argument('--clear-caches', action='store_true', help='Clear cache directory and exit')
+    parser.add_argument('--clear-caches', action='store_true',
+                        help='Clear cache directory and exit')
     parser.add_argument('--extra-layer', nargs='*', action='extend',
                         default=['core'], help='Layer names of 3rd party layers to use')
     # Override the defaults with the values from the config file
@@ -123,18 +129,13 @@ def main() -> int:  # pragma: no cover
         issues, _ = run(args)
     except Exception as e:  # pragma: no cover - that shouldn't be covered anyway
         import traceback
-        print("OOPS - That shouldn't happen: {e} - {files}".format(e=e, files=args.files))
+        print(
+            "OOPS - That shouldn't happen: {e} - {files}".format(e=e, files=args.files))
         traceback.print_exc()
         # Not using os.EX_SOFTWARE here because it is only available on Unix
         sys.exit(70)
 
-    if args.output != sys.stderr:
-        args.output = open(args.output, 'w')
-    args.output.write('\n'.join([x[1] for x in issues]))
-    if issues:
-        args.output.write('\n')
-    if args.output != sys.stderr:
-        args.output.close()
+    _OUTPUT_FORMATS[args.outputformat](args, issues)
 
     # Exit 1 in case of any issue, except when --exit-zero was used.
     exit_code = 0 if args.exit_zero else len(issues) and 1

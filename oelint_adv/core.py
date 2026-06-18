@@ -331,6 +331,7 @@ def create_lib_arguments(files: List[str],
                          hide: List[str] = None,
                          relpaths: bool = False,
                          messageformat: str = None,
+                         outputformat: str = None,
                          constantmods: List[str] = None,
                          release: str = None,
                          mode: str = 'fast',
@@ -354,6 +355,7 @@ def create_lib_arguments(files: List[str],
         nowarn (bool, optional): No warning messages. Defaults to False. (legacy interface)
         relpaths (bool, optional): Use relative paths in output. Defaults to False.
         messageformat (str, optional): Override message format. Defaults to None.
+        outputformat (str, optional): Output format. Defaults to None = stdout.
         constantmods (List[str], optional): Constant mods. Defaults to None.
         release (str, optional): Release to check against. Defaults to None.
         mode (str, optional): Level of testing. Defaults to fast.
@@ -382,6 +384,8 @@ def create_lib_arguments(files: List[str],
     parser.add_argument('--relpaths', action='store_true', default=False)
     parser.add_argument(
         '--messageformat', default='{path}:{line}:{severity}:{id}:{msg}', type=str)
+    parser.add_argument('--outputformat', choices=['stdout', 'junit'],
+                        type=str, default='stdout', help='Output format')
     parser.add_argument('--constantmods', default=[], nargs='+')
     parser.add_argument(
         '--release', default=Tweaks.DEFAULT_RELEASE, choices=Tweaks.releases())
@@ -412,6 +416,7 @@ def create_lib_arguments(files: List[str],
         *[f'--hide={x}' for x in (hide or ())],
         '--relpaths' if relpaths else '',
         f'--messageformat={messageformat}' if messageformat else '',
+        f'--outputformat={outputformat}' if outputformat else '',
         *[f'--constantmods={x}' for x in (constantmods or ())],
         f'--release={release}' if release else '',
         f'--mode={mode}',
