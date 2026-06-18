@@ -47,7 +47,8 @@ pip install . # might require sudo/root permissions
 usage: oelint-adv [-h] [--suppress SUPPRESS] [--output OUTPUT] [--fix] [--nobackup] [--addrules ADDRULES [ADDRULES ...]]
                   [--customrules CUSTOMRULES [CUSTOMRULES ...]] [--rulefile RULEFILE] [--jobs JOBS] [--color] [--quiet]
                   [--hide {info,warning,error}]
-                  [--mode {fast,all}] [--relpaths] [--messageformat MESSAGEFORMAT] [--constantmods CONSTANTMODS [CONSTANTMODS ...]] [--print-rulefile]
+                  [--mode {fast,all}] [--relpaths] [--messageformat MESSAGEFORMAT] [--outputformat {stdout,junit}]
+                  [--constantmods CONSTANTMODS [CONSTANTMODS ...]] [--print-rulefile]
                   [--exit-zero]
                   [--release {...}]
                   [--cached] [--cachedir CACHEDIR] [--clear-caches] [--extra-layer [EXTRA_LAYER ...]]
@@ -79,6 +80,8 @@ options:
   --relpaths            Show relative paths instead of absolute paths in results
   --messageformat MESSAGEFORMAT
                         Format of message output
+  --outputformat {stdout,junit}
+                        Output forma
   --constantmods CONSTANTMODS [CONSTANTMODS ...]
                         Modifications to the constant db. prefix with: + - to add to DB, - - to remove from DB, None - to override DB
   --print-rulefile      Print loaded rules as a rulefile and exit

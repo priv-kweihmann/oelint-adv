@@ -196,7 +196,7 @@ class Rule:
             severity_override {str} -- override the base severity (empty == use base)
 
         Returns:
-            Tuple[Tuple[str, int], List[str], str] -- Path, line, matrix, Human readable finding (possibly with color codes)
+            Tuple[Tuple[str, int, str], List[str], str] -- Path, line, ID, matrix, Human readable finding (possibly with color codes)
         """
         if override_msg is None:
             override_msg = self.Msg
@@ -240,7 +240,7 @@ class Rule:
                                                       id=_display_id, msg=override_msg,
                                                       wikiurl=wikiurl,
                                                       rungroup=','.join(self.__rungroup))
-        return [((_path, _line), self.__matrix, f'{_color}{_msg}{_style}')]
+        return [((_path, _line, _display_id), self.__matrix, f'{_color}{_msg}{_style}')]
 
     def __repr__(self) -> str:
         return '{id}'.format(id=self.ID)  # pragma: no cover
