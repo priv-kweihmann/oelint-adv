@@ -1,3 +1,4 @@
+import os
 from typing import List
 
 from colorama import Fore
@@ -33,7 +34,7 @@ class State():
 
     def get_colorize(self) -> bool:
         """Returns weather or not the terminal output is to be colorized"""
-        return self.color
+        return self.color and not os.environ.get('NO_COLOR')
 
     def get_color_by_severity(self, severity: str) -> AnsiCodes:
         """Get an ANSI color code given a severity
@@ -41,6 +42,8 @@ class State():
         Args:
             severity (str): either `neutral`, `info`, `warning` or `error`
         """
+        if os.environ.get('NO_COLOR'):
+            return ''
         return self.__colors_by_severity.get(severity, '')
 
     def get_hide(self, severity) -> bool:
