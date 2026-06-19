@@ -101,6 +101,8 @@ options:
 Will be [file]:[line]:[severity]:[id]:[message].
 To change the default message format, please see [Output message format](#output-message-format) section.
 
+### stdout (default)
+
 Example:
 
 ```shell
@@ -121,6 +123,13 @@ E.g.
 - ``[branch:false,mydistro.conf]``, means the finding occurs only when using ``mydistro.conf`` and on the ``false`` branch of an expanded inline function block.
 
 This should help to better spot the issue found by the linter.
+
+### junit
+
+When running with ``--outputformat=junit`` you will get a JUnit XML report.
+
+If the run found issues, you will get each finding as a separate failing testcase.
+In the case nothing was found you will get a `synthetic` passing testcase
 
 ## Apply automatic fixing
 
@@ -555,9 +564,9 @@ args = create_lib_arguments(['file to check', 'another file to check']])
 
 results = run(args)
 
-# the results will be a List[Tuple[Tuple[str, int], str]]
+# the results will be a List[Tuple[Tuple[str, int, str], str]]
 # each item is
-#  [0] - 'path to the finding', 'line of the finding'
+#  [0] - 'path to the finding', 'line of the finding', 'id of the finding'
 #  [1] - 'message'
 ```
 
