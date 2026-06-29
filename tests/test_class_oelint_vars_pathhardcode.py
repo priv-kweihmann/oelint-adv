@@ -32,8 +32,6 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
         ('${servicedir}', '/srv'),
         ('${sharedstatedir}', '/com'),
         ('${sysconfdir}', '/etc'),
-        ('${firmwaredir}', '/lib/firmware'),
-        ('${firmwaredir}', '${nonarch_base_libdir}/firmware'),
     ])
     def test_bad(self, id_, occurrence, pair):
         id_ += '.{var}'.format(var=pair[0].strip('${}'))  # noqa: P103 - false positive
@@ -50,9 +48,10 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
     @pytest.mark.parametrize('id_', ['oelint.vars.pathhardcode'])
     @pytest.mark.parametrize('occurrence', [0])
     @pytest.mark.parametrize('pair', [
+        ('${firmwaredir}', '/lib/firmware'),
         ('${firmwaredir}', '${nonarch_base_libdir}/firmware'),
     ])
-    def test_bad_pre_wrynose(self, id_, occurrence, pair):
+    def test_bad_pre_blacksail(self, id_, occurrence, pair):
         id_ += '.{var}'.format(var=pair[0].strip('${}'))  # noqa: P103 - false positive
         for variation in [pair[1],
                           pair[1] + '/',
@@ -62,7 +61,25 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
             input_ = {
                 'oelint_adv_test.bb': self.__generate_sample_code(variation),
             }
-            self.check_for_id(self._create_args(input_, ['--release=scarthgap']), id_, occurrence)
+            self.check_for_id(self._create_args(input_, ['--release=wrynose']), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.pathhardcode'])
+    @pytest.mark.parametrize('occurrence', [1])
+    @pytest.mark.parametrize('pair', [
+        ('${firmwaredir}', '/lib/firmware'),
+        ('${firmwaredir}', '${nonarch_base_libdir}/firmware'),
+    ])
+    def test_bad_blacksail(self, id_, occurrence, pair):
+        id_ += '.{var}'.format(var=pair[0].strip('${}'))  # noqa: P103 - false positive
+        for variation in [pair[1],
+                          pair[1] + '/',
+                          os.path.join(pair[1], 'fooooo/ggsg'),
+                          os.path.join(pair[1], '*'),
+                          os.path.join('${D}', pair[1])]:
+            input_ = {
+                'oelint_adv_test.bb': self.__generate_sample_code(variation),
+            }
+            self.check_for_id(self._create_args(input_, ['--release=blacksail']), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.pathhardcode'])
     @pytest.mark.parametrize('occurrence', [0])
@@ -87,6 +104,7 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
         ('${sharedstatedir}', '/com'),
         ('${sysconfdir}', '/etc'),
         ('${firmwaredir}', '/lib/firmware'),
+        ('${firmwaredir}', '${nonarch_base_libdir}/firmware'),
     ])
     def test_good(self, id_, occurrence, pair):
         id_ += '.{var}'.format(var=pair[0].strip('${}'))  # noqa: P103 - false positive

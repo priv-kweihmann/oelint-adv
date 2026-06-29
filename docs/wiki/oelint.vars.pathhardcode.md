@@ -38,7 +38,7 @@ The following variables are known
 - ``${systemd_unitdir}`` => ``/lib/systemd``
 - ``${systemd_user_unitdir}`` => ``/usr/lib/systemd/user``
 
-* 1 - starting from `wrynose` release
+* 1 - starting from `blacksail` release
 
 ```
 FILES:${PN} += "${docdir}"
