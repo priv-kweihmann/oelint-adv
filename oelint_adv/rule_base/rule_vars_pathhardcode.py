@@ -36,7 +36,7 @@ class VarsPathHardcode(Rule):
                          appendix=[v.strip('$').strip('{').strip('}') for v in self._map.values()])
 
     def check_release_range(self, release_range: List[str]) -> bool:
-        if 'wrynose' in release_range:
+        if 'blacksail' in release_range:
             self._map['/lib/firmware'] = '${firmwaredir}'
             self._map['${nonarch_base_libdir}/firmware'] = '${firmwaredir}'
             self._map.move_to_end('/lib')
