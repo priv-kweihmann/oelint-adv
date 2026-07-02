@@ -48,6 +48,10 @@ class TestClassOelintFileUnderscores(TestBaseClass):
                                  },
                                  {
                                      'oelint_adv_test.bb':
+                                     'inherit kernel-fit-image',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
                                      'IMAGE_INSTALL += "foo"',
                                  },
                                  {
