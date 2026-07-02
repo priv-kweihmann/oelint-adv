@@ -21,6 +21,7 @@
             "image-container",
             "image-live",
             "kernel-fitimage",
+            "kernel-fit-image",
             "kernel-uimage",
             "license_image",
             "testimage"
