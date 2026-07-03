@@ -18,5 +18,5 @@ class BBClassUnderscore(Rule):
         _files = {x.Origin for x in stash.GetItemsFor(filename=_file)}
         for file in _files:  # noqa: VNE002
             if '-' in os.path.basename(file):
-                res += self.finding(file, 1)
+                res += self.finding(file, 0)
         return res
