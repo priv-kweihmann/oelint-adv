@@ -240,3 +240,54 @@ class TestClassInlineSuppressions(TestBaseClass):
     def test_inlinesuppressions_bbappend_first_line(self, input_):
         self.check_for_id(self._create_args(input_),
                           'oelint.file.inlinesuppress_na', 0)
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint adv-test.bb':
+                                     '''
+                                     # nooelint: oelint.file.nospaces
+                                     A = "1"
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_inlinesuppressions_no_spaces_suppress(self, input_):
+        self.check_for_id(self._create_args(input_),
+                          'oelint.file.inlinesuppress_na', 0)
+        self.check_for_id(self._create_args(input_),
+                          'oelint.file.nospaces', 0)
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint-adv-test.bbclass':
+                                     '''
+                                     # nooelint: oelint.bbclass.underscores
+                                     A = "1"
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_inlinesuppressions_bbclass_unserscore_suppress(self, input_):
+        self.check_for_id(self._create_args(input_),
+                          'oelint.file.inlinesuppress_na', 0)
+        self.check_for_id(self._create_args(input_),
+                          'oelint.bbclass.underscores', 0)
+
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint-adv-test.bb':
+                                     '''
+                                     # nooelint: oelint.file.underscores
+                                     A = "1"
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_inlinesuppressions_file_unserscore_suppress(self, input_):
+        self.check_for_id(self._create_args(input_),
+                          'oelint.file.inlinesuppress_na', 0)
+        self.check_for_id(self._create_args(input_),
+                          'oelint.file.underscores', 0)

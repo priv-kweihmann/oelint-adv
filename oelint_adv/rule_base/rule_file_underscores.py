@@ -21,9 +21,9 @@ class FileNoSpaces(Rule):
                 return []
             _us = [x for x in _basename if x == '_']
             if len(_us) > 1:
-                res += self.finding(_file, 1,
+                res += self.finding(_file, 0,
                                     override_msg="Filename should not contain more than one '_'")
             elif not _us:
                 res += self.finding(
-                    _file, 1, override_msg="Filename should contain at least one '_' in the end")
+                    _file, 0, override_msg="Filename should contain at least one '_' in the end")
         return res

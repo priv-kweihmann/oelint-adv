@@ -16,5 +16,5 @@ class FileNoSpaces(Rule):
         _layer_root = stash.GetLayerRoot(_file)
         _relpath = _file.replace(_layer_root, '').lstrip('/')
         if ' ' in _relpath:
-            res += self.finding(_file, 1)
+            res += self.finding(_file, 0)
         return res
