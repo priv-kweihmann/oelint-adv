@@ -54,7 +54,7 @@ jobs:
         fi
 
     - name: Check if relevant for release
-      uses: dorny/paths-filter@v4.0.1
+      uses: dorny/paths-filter@v4.0.2
       id: code-changes
       with:
         filters: |
