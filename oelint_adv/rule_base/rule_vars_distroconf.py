@@ -20,6 +20,7 @@ class VarsDistroConf(Rule):
             'MACHINE_FEATURES_BACKFILL_CONSIDERED',
             'IMAGE_INSTALL',
             'MACHINEOVERRIDES',
+            'MACHINE_FEATURES_OPTED_OUT',
         ]
 
         super().__init__(id='oelint.vars.distroconf',

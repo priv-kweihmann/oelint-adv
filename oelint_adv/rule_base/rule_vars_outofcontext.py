@@ -20,11 +20,14 @@ class VarOutOfContext(Rule):
                var_desc: str = '',
                context_desc: str = '') -> None:
         for item in items:
-            classification = Rule.classify_file(item.Origin) or [
-                Classification.RECIPE]
+            classification = set()
+            for file_ in item.IncludedFrom:
+                classification.update(Rule.classify_file(file_))
             if not any(set(classification).intersection(valid_context)):
                 context = context_desc or ",".join(
                     f'{Classification.tostr(x)}(s)' for x in valid_context)
+                if len(item.IncludedFrom) > 1:
+                    context += f" but is used in {','.join(item.IncludedFrom)}"  # pragma: no cover
                 results += self.finding(item.Origin, item.InFileLine,
                                         override_msg=self.Msg.format(var=var_desc or item.VarName, context=context))
 
@@ -42,8 +45,16 @@ class VarOutOfContext(Rule):
 
         for constants, valid_context in [
             (
-                CONSTANTS.GetByPath('oelint-contextvars/conf-only'),
-                [Classification.LAYERCONF, Classification.MACHINECONF, Classification.DISTROCONF],
+                CONSTANTS.GetByPath('oelint-contextvars/machine-conf-only'),
+                [Classification.MACHINECONF],
+            ),
+            (
+                CONSTANTS.GetByPath('oelint-contextvars/distro-conf-only'),
+                [Classification.DISTROCONF],
+            ),
+            (
+                CONSTANTS.GetByPath('oelint-contextvars/layer-conf-only'),
+                [Classification.LAYERCONF],
             ),
             (
                 CONSTANTS.GetByPath('oelint-contextvars/bbappend-only'),
@@ -55,7 +66,8 @@ class VarOutOfContext(Rule):
             ),
             (
                 CONSTANTS.GetByPath('oelint-contextvars/recipe-only'),
-                [Classification.BBCLASS, Classification.BBAPPEND, Classification.RECIPE],
+                [Classification.BBCLASS, Classification.BBAPPEND,
+                    Classification.RECIPE],
             ),
         ]:
             if not constants:
