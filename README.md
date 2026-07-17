@@ -243,6 +243,7 @@ Rules marked with **[I]** need to be activated through [a rule file](#defining-a
 * [oelint.vars.pnbpnusage](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pnbpnusage.md) - \$\{BPN\} should be used instead of \$\{PN\} **[F]**
 * [oelint.vars.pnusagediscouraged](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pnusagediscouraged.md) - Variable shouldn't contain \$\{PN\} or \$\{BPN\}
 * [oelint.vars.pythonpnusage](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pythonpnusage.md) - python3 should be used instead of \$\{PYTHON_PN\} **[F]** (scarthgap+)
+* [oelint.vars.pythonrdepends](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.pythonrdepends.md) - Check if meta package for python is used instead of the sub-packages
 * [oelint.vars.renamed](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.renamed.md) - Warn about renamed or deprecated variables **[F]**
 * [oelint.vars.sectionlowercase](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.sectionlowercase.md) - SECTION should be lowercase only **[F]**
 * [oelint.vars.spacesassignment](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.spacesassignment.md) - ' = ' should be correct variable assignment
