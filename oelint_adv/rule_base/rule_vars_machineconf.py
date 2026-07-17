@@ -17,6 +17,7 @@ class VarsMachineConf(Rule):
             'DISTRO_FEATURES_BACKFILL',
             'DISTRO_FEATURES_BACKFILL_CONSIDERED',
             'DISTRO_FEATURES_DEFAULT',
+            'DISTRO_FEATURES_OPTED_OUT',
             'IMAGE_INSTALL',
         ]
 

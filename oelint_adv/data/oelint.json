@@ -39,7 +39,7 @@
             "FILESEXTRAPATHS"
         ],
         "bbclass-only": [],
-        "conf-only": [
+        "distro-conf-only": [
             "DISTROOVERRIDES",
             "DISTRO_EXTRA_RDEPENDS",
             "DISTRO_EXTRA_RRECOMMENDS",
@@ -47,13 +47,25 @@
             "DISTRO_FEATURES_BACKFILL",
             "DISTRO_FEATURES_BACKFILL_CONSIDERED",
             "DISTRO_FEATURES_DEFAULT",
+            "DISTRO_FEATURES_OPTED_OUT"
+        ],
+        "machine-conf-only": [
             "MACHINE",
             "MACHINEOVERRIDES",
             "MACHINE_ESSENTIAL_EXTRA_RDEPENDS",
             "MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS",
             "MACHINE_EXTRA_RRECOMMENDS",
             "MACHINE_FEATURES",
-            "MACHINE_FEATURES_BACKFILL"
+            "MACHINE_FEATURES_BACKFILL",
+            "MACHINE_FEATURES_OPTED_OUT"
+        ],
+        "layer-conf-only": [
+            "BBFILES",
+            "BBFILES_DYNAMIC",
+            "BBFILE_COLLECTIONS",
+            "BBPATH",
+            "HOSTTOOLS_NONFATAL",
+            "LICENSE_PATH"
         ],
         "image-only": [
             "EXTRA_IMAGE_FEATURES",

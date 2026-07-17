@@ -1,4 +1,1 @@
-A = "1"
 require conf/machine/include/test.inc
-
-DISTRO_FEATURES = "foo"
