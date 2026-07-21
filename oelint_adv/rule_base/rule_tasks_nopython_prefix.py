@@ -19,7 +19,7 @@ class TaskNoPythonPrefix(Rule):
         items: List[Function] = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER)
         for item in items:
             try:
-                ast.parse(textwrap.dedent(item.FuncBodyRaw.rstrip('}\n')), 'tempfile')
+                ast.parse(textwrap.dedent(item.FuncBodyRaw), 'tempfile')
             except Exception:
                 if item.IsPython:
                     res += self.finding(item.Origin, item.InFileLine)

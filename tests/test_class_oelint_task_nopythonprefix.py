@@ -45,6 +45,17 @@ class TestClassOelintTaskNoPythonPrefix(TestBaseClass):
                                      }
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     python do_baz() {
+                                         import json
+                                         foo = {
+                                             "bar": []
+                                         }
+                                     }
+                                     ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
