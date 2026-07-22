@@ -22,7 +22,7 @@ concurrency:
 env:
   VERSION_FILE: oelint_adv/version.py
   PROJ_CONF: pyproject.toml
-  MODULE_CODE: oelint_adv/*
+  MODULE_CODE: oelint_adv/**
   PYPI_PUBLISH: 1
 
 jobs:
