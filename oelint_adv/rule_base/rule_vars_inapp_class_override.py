@@ -21,6 +21,9 @@ class VarsInappClassOverride(Rule):
         bbclassextend = stash.ExpandVar(_file, Variable.ATTR_VAR, attributeValue='BBCLASSEXTEND').get('BBCLASSEXTEND', [])
 
         for item in stash.GetItemsFor(filename=_file, classifier=[Variable.CLASSIFIER, Function.CLASSIFIER]):
+            if item.Origin.endswith('.bbclass'):
+                # ignore all class related settings
+                continue
             for needle in [('class-native', 'native'), ('class-nativesdk', 'nativesdk')]:
                 override, class_ = needle
                 if override not in item.SubItems:

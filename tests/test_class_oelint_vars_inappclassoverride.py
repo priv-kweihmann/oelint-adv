@@ -154,6 +154,17 @@ class TestClassOelintVarsInAppClassOverride(TestBaseClass):
                                      inherit nativesdk
                                      ''',
                                  },
+                                 {
+                                     'classes/test.bbclass':
+                                     '''
+                                    A:nativesdk = "1"
+                                    ''',
+                                     'conf/layer.conf': '',
+                                     'oelint_adv_test.bb':
+                                     '''
+                                    inherit test
+                                    ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
