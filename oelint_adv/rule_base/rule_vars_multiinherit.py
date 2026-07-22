@@ -18,8 +18,9 @@ class VarMultiInherit(Rule):
         keys = []
         for i in items:
             for y in i.get_items():
-                if y not in keys:
-                    keys.append(y)
+                _map_needle = f'{i.Origin}:{y}'
+                if _map_needle not in keys:
+                    keys.append(_map_needle)
                 else:
                     res += self.finding(i.Origin, i.InFileLine,
                                         self.Msg.replace('{inherit}', y))

@@ -38,6 +38,14 @@ class TestClassOelintVarMultiInherit(TestBaseClass):
                                              pkgconfig
                                      ''',
                                  },
+                                 {
+                                     'classes/d.class': '',
+                                     'classes/c.class': 'inherit d',
+                                     'classes/b.class': 'inherit d',
+                                     'classes/a.class': 'inherit d',
+                                     'conf/layer.conf': '',
+                                     'oelint_adv_test.bb': 'inherit a b c',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
