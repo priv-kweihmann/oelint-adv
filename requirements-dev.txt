@@ -33,5 +33,5 @@ pytest-socket == 0.8.0
 pytest-sugar == 1.1.1
 pytest-tldr == 0.2.6
 pytest-xdist == 3.8.0
-twine == 6.2.0
+twine == 7.0.0
 wheel ~= 0.47
