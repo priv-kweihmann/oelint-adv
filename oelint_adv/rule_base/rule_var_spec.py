@@ -15,7 +15,7 @@ class VarPnBpnUsage(Rule):
                          message="'{a}' is set specific to ['{b}'], but isn't known from PACKAGES, MACHINE, DISTRO or resources",
                          run_on=[Classification.RECIPE, Classification.BBCLASS])
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER)
         _comp = ''.join(x.VarValueStripped for x in stash.Reduce(items, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR,

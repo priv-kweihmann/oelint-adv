@@ -13,7 +13,7 @@ class VarRootfsPostprocessCommand(Rule):
                          valid_from_release='styhead',
                          message='Use ${UNPACKDIR} instead of ${WORKDIR}')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR, attributeValue=['S'])

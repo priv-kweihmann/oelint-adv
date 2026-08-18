@@ -20,7 +20,7 @@ class TaskCustomOrder(Rule):
             return [x for x in m.group('path').split('/') if x]
         return []  # pragma: no cover
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items = stash.GetItemsFor(
             filename=_file, classifier=TaskAdd.CLASSIFIER)

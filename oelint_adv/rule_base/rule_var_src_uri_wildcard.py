@@ -13,7 +13,7 @@ class VarSRCURIWildcard(Rule):
                          severity='error',
                          message="'SRC_URI' should not contain any wildcards")
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         _items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                    attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')

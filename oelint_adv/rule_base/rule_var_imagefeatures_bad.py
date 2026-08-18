@@ -27,7 +27,7 @@ class ImageFeaturesBad(Rule):
                          message="{var} contains '{feature}', {reason}",
                          appendix=list(self._map.keys()))
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         for item in stash.GetItemsFor(filename=_file,
                                       classifier=Variable.CLASSIFIER,

@@ -17,7 +17,7 @@ class VarsOrder(Rule):
     def __cleanname(self, _input: str) -> str:
         return _input.replace('$', '').replace('{', '').replace('}', '')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         _files = {item.Origin for item in stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER)}
         for _single_file in _files:

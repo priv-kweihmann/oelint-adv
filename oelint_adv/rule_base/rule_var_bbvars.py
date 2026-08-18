@@ -15,7 +15,7 @@ class VarQuoted(Rule):
                          message="Variable '{VAR}' should be set on a disto/layer or local.conf level, not in a recipe",
                          appendix=CONSTANTS.GetByPath('variables/protected'))
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file,
                                                   classifier=Variable.CLASSIFIER,

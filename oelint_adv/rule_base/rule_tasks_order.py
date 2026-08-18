@@ -14,7 +14,7 @@ class TaskOrder(Rule):
                          message='<FOO>',
                          appendix=CONSTANTS.FunctionsOrder)
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         _files = {item.Origin for item in stash.GetItemsFor(
             filename=_file, classifier=Function.CLASSIFIER)}

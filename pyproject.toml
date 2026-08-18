@@ -51,9 +51,6 @@ ignore = [
 exclude = [ "tests/*" ]
 statistics = false
 
-[tool.mypy]
-python_executable="../venv/bin/python"
-
 [project]
 name = "oelint_adv"
 requires-python = ">= 3.10"

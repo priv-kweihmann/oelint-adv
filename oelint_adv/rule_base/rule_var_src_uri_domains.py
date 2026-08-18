@@ -18,7 +18,7 @@ class VarSRCUriOptions(Rule):
                          severity='warning',
                          message='Recipe is pulling from different domains, this will likely cause issues')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')

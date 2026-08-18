@@ -42,7 +42,7 @@ class VarsPathHardcode(Rule):
             self._map.move_to_end('/lib')
         return super().check_release_range(release_range)
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Item] = stash.GetItemsFor(filename=_file,
                                               classifier=[Variable.CLASSIFIER, Export.CLASSIFIER,

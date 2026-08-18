@@ -12,7 +12,7 @@ class TaskNoAnonPython(Rule):
                          severity='warning',
                          message='Avoid anonymous python functions as they are expensive and come with all sorts of side effects')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items = stash.GetItemsFor(
             filename=_file, classifier=Function.CLASSIFIER)

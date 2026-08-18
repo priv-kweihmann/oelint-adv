@@ -12,7 +12,7 @@ class VarDependsSingleLine(Rule):
                          severity='warning',
                          message='Each [R]DEPENDS entry should be put into a single line')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                   attribute=Variable.ATTR_VAR, attributeValue=['DEPENDS', 'RDEPENDS'])

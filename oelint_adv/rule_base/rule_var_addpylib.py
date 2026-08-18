@@ -13,7 +13,7 @@ class AddpyLib(Rule):
                          run_on=[Classification.BBCLASS, Classification.BBAPPEND, Classification.RECIPE],
                          message='addpylib is only valid in .conf files')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items_pylib: List[AddPylib] = stash.GetItemsFor(filename=_file, classifier=AddPylib.CLASSIFIER)
         for item in items_pylib:

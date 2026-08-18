@@ -12,7 +12,7 @@ class VarsDownloadfilename(Rule):
                          severity='warning',
                          message="Fetcher does create a download artifact without 'PV' in the filename")
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')

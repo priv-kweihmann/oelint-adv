@@ -14,7 +14,7 @@ class VarDependsClass(Rule):
                          run_on=[Classification.RECIPE, Classification.BBAPPEND],
                          message="{org} should be {patched} as it's a {class_} only recipe")
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR, attributeValue='DEPENDS')

@@ -12,7 +12,7 @@ class FileReqIncNoRelPaths(Rule):
                          severity='warning',
                          message='include or require statements should not use relative paths. Try using bbclasses instead')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         for item in stash.GetItemsFor(filename=_file,
                                       classifier=Include.CLASSIFIER):

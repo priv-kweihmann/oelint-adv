@@ -12,7 +12,7 @@ class VarInsaneSkip(Rule):
                          severity='error',
                          message='INSANE_SKIP should be avoided at any cost')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR, attributeValue='INSANE_SKIP')

@@ -13,7 +13,7 @@ class VarMultiInclude(Rule):
                          severity='warning',
                          message="'{INC}' is included multiple times")
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Include] = stash.GetItemsFor(filename=_file, classifier=Include.CLASSIFIER)
         _map = {}

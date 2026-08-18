@@ -12,7 +12,7 @@ class VarSRCURIAppend(Rule):
                          severity='error',
                          message='<FOO>')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         inherits = stash.GetItemsFor(filename=_file, classifier=Inherit.CLASSIFIER)
         if not inherits:

@@ -106,7 +106,7 @@ class VarOverrideAppend(Rule):
 
         return res
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         for i, extra_check, _ in self.__getMatches(_file, stash):
             res += self.finding(

@@ -21,7 +21,7 @@ class VarSectionLowercase(Rule):
                 res.append(i)
         return res
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         for i in self.__getMatches(_file, stash):
             res += self.finding(i.Origin, i.InFileLine)

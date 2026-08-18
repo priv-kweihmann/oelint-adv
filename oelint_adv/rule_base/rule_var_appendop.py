@@ -12,7 +12,7 @@ class VarAppendOperation(Rule):
                          severity='error',
                          message="Use '{a}' instead of '{b}' as it overwrites '{c}'")
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER)
         for name in {x.VarName for x in items}:

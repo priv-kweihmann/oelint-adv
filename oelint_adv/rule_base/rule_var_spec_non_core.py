@@ -14,7 +14,7 @@ class VarSpecNonCore(Rule):
                          message="'{a}' need to be specific to a custom MACHINE or DISTRO to be Yocto project compliant",
                          run_on=[Classification.BBAPPEND])
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         self._core_constants = Constants(self._state.core_mod_ref)
 
         res = []

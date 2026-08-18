@@ -53,7 +53,7 @@ class VarMisspell(Rule):
 
         return self.__collected_var
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
 
         _all: List[Item] = stash.GetItemsFor(filename=_file)

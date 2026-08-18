@@ -15,7 +15,7 @@ class VarPythonRdepends(Rule):
                          message='{var} installs the entire python ecosystem. Most likely you only want sub packages like {var}-core',
                          valid_from_release='scarthgap')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file,
                                                   classifier=Variable.CLASSIFIER,

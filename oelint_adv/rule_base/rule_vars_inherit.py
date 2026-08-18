@@ -14,7 +14,7 @@ class VarInherit(Rule):
                          appendix=['inherit', 'inherit_defer'],
                          valid_from_release='scarthgap')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Inherit] = stash.GetItemsFor(filename=_file, classifier=Inherit.CLASSIFIER)
         for i in items:

@@ -22,7 +22,7 @@ class VarsRenamed(Rule):
                                                   attributeValue=list(self._map.keys()))
         return items
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         for i in self.__getMatches(_file, stash):
             message = self._map[i.VarName]

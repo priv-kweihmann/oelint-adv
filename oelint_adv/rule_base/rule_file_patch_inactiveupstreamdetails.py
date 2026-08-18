@@ -20,7 +20,7 @@ class FilePatchIsUpstreamStatusInactiveUpstreamDetails(Rule):
         # Find matching SRC_URI assignment
         return [x for x in items if x.VarValue.find(os.path.basename(path)) != -1]
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         patches = stash.GetFiles(_file, '*.patch')
         patches.extend(stash.GetFiles(_file, '*.diff'))

@@ -29,7 +29,7 @@ class VarsDistroConf(Rule):
                          message='{var} should not be set as part of a distro configuration',
                          appendix=self.needles)
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR)

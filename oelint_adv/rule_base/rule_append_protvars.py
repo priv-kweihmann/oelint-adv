@@ -15,7 +15,7 @@ class VarQuoted(Rule):
                          run_on=[Classification.BBAPPEND],
                          appendix=CONSTANTS.GetByPath('variables/protected-append'))
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items = stash.GetItemsFor(
             filename=_file, classifier=Variable.CLASSIFIER)
