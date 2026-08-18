@@ -1,4 +1,6 @@
 import argparse
+import hashlib
+import json
 import sys
 from typing import List, Tuple
 
@@ -45,7 +47,40 @@ class OutputFormatJUnit():
             args.output.close()  # pragma: no cover
 
 
+class OutputFormatGitlabCodequality():
+    _SEVERITY_TO_GITLAB = {
+        'info': 'info',
+        'warning': 'minor',
+        'error': 'critical',
+    }
+
+    def __init__(self, args: argparse.Namespace, issues: List[Tuple[Tuple[str, int, str, str], str]]) -> None:
+        json_a = [self._to_cq_issue(issue) for issue in issues]
+
+        if args.output != sys.stderr:
+            args.output = open(args.output, 'w')  # pragma: no cover
+
+        json.dump(json_a, args.output, indent=2)
+
+        if args.output != sys.stderr:
+            args.output.close()  # pragma: no cover
+
+    def _to_cq_issue(self, issue: Tuple[Tuple[str, int, str, str], str]) -> str:
+        path, line, check_name, severity = issue[0]
+        msg = issue[1]
+        out = {
+            'description': msg,
+            'check_name': check_name,
+            'fingerprint': hashlib.sha256(msg.encode('utf-8')).hexdigest(),
+            'location': {'path': path, 'lines': {'begin': line}},
+            'severity': self._SEVERITY_TO_GITLAB.get(severity, 'minor'),
+        }
+
+        return out
+
+
 _OUTPUT_FORMATS = {
     'stdout': OutputFormatStdOut,
     'junit': OutputFormatJUnit,
+    'gitlab-codequality': OutputFormatGitlabCodequality,
 }
