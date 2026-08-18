@@ -131,6 +131,22 @@ When running with ``--outputformat=junit`` you will get a JUnit XML report.
 If the run found issues, you will get each finding as a separate failing testcase.
 In the case nothing was found you will get a `synthetic` passing testcase
 
+### GitLab Code Quality
+
+Run with ``--outputformat=gitlab-codequality`` to get the output formatted as a [GitLab Code Quality report](https://docs.gitlab.com/ci/testing/code_quality/#code-quality-report-format).
+
+When running the linter in a GitLab CI job, the resulting output can be uploaded as an artifact of type [`reports:codequality`](https://docs.gitlab.com/ci/yaml/artifacts_reports/#artifactsreportscodequality).
+This will result in the findings being displayed in the Code Quality pages of pipelines and merge requests.
+
+The finding severities of this tool are mapped to the GitLab severities as follows:
+ - `info -> info`
+ - `warning -> minor`
+ - `error -> critical`
+
+The view will provide a link to the corresponding code location. Depending on the directory structure, using the `--relpaths` option is likely necessary for this to work
+because GitLab expects file paths to be relative to the repository root.
+
+
 ## Apply automatic fixing
 
 Some of the rules are capable of fixing the issues found automatically.
