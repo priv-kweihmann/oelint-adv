@@ -13,7 +13,7 @@ class VarNativeFilename(Rule):
                          run_on=[Classification.BBAPPEND, Classification.RECIPE],
                          message="native-recipe-files should include '-native' in file name")
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Inherit] = [x for x in stash.GetItemsFor(
             filename=_file, classifier=Inherit.CLASSIFIER) if 'native' in x.get_items()]

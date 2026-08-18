@@ -13,7 +13,7 @@ class FileNoSpaces(Rule):
                          message='FOO',
                          run_on=[Classification.RECIPE])
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         _basename, _ext = os.path.splitext(os.path.basename(_file))
         if _ext in ['.bb']:  # pragma: no cover

@@ -36,7 +36,7 @@ class VarMultiLineIndent(Rule):
 
         return (last_line_indent, non_empty_line_indent, _map)
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER)
         for i in items:

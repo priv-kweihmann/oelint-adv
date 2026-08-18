@@ -12,7 +12,7 @@ class VarRootfsPostprocessCommand(Rule):
                          severity='warning',
                          message='ROOTFS_POSTPROCESS_COMMAND should not have trailing blanks')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR, attributeValue='ROOTFS_POSTPROCESS_COMMAND')

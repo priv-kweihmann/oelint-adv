@@ -14,7 +14,7 @@ class TaskNoPythonPrefix(Rule):
                          severity='warning',
                          message="Tasks that don't contain valid python code (e.g. shell code), should not be prefixed with python in function header")
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Function] = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER)
         for item in items:

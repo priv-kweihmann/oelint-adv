@@ -14,7 +14,7 @@ class VarPnBpnUsage(Rule):
                          severity='error',
                          message="'{func}' is set specific to ['{b}'], but isn't known from PACKAGES, MACHINE, DISTRO")
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER,
                                   attribute=Function.ATTR_FUNCNAME)

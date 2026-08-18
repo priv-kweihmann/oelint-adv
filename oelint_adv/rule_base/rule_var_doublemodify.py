@@ -12,7 +12,7 @@ class VarSectionLowercase(Rule):
                          severity='error',
                          message='Multiple modifiers of append/prepend/remove/+= found in one operation')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER)
         for i in items:

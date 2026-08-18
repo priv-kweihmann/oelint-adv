@@ -14,7 +14,7 @@ class FilePatchIsSignedOff(Rule):
                          run_on=[Classification.BBAPPEND, Classification.RECIPE],
                          message="Patch '{FILE}' should contain a Signed-off-by entry")
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items = stash.GetFiles(_file, '*.patch')
         items.extend(stash.GetFiles(_file, '*.diff'))

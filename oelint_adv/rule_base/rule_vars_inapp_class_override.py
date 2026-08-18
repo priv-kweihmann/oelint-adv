@@ -13,7 +13,7 @@ class VarsInappClassOverride(Rule):
                          run_on=[Classification.RECIPE],
                          message='{var} is using {override}, but the recipe does not set {class_} in BBCLASSEXTEND or inherits the class {class_}')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         inherits = set()
         for item in stash.GetItemsFor(filename=_file, classifier=Inherit.CLASSIFIER):

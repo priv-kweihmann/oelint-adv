@@ -12,7 +12,7 @@ class TaskMultiFragments(Rule):
                          severity='info',
                          message='Multiple fragments of the same function in the same file should be merged')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         _stash: List[Function] = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER)
         _known_matches = []

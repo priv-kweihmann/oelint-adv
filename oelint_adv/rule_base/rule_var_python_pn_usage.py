@@ -35,7 +35,7 @@ class VarPythonPnUsage(Rule):
                 res.append((i, needles))
         return res
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         for i in self.__getMatches(_file, stash):
             item, _ = i

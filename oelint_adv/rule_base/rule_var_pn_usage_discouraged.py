@@ -12,7 +12,7 @@ class VarPnUsageDiscouraged(Rule):
                          severity='warning',
                          message="Variable shouldn't contain ${PN} or ${BPN}")
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         needles = ['SUMMARY', 'HOMEPAGE', 'BUGTRACKER', 'DESCRIPTION']
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,

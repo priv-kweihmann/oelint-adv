@@ -13,7 +13,7 @@ class VarOverride(Rule):
                          severity='error',
                          message='<FOO>')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         _all: List[Variable] = list(x for x in stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER))  # noqa: C400
         for v in {x.VarName for x in _all}:

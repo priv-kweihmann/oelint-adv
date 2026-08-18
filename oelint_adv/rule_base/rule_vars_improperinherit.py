@@ -14,7 +14,7 @@ class VarImproperInherit(Rule):
                          severity='error',
                          message="'{inherit}' is not a proper bbclass name")
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: list[Inherit] = stash.GetItemsFor(
             filename=_file, classifier=Inherit.CLASSIFIER)

@@ -12,7 +12,7 @@ class VarQuoted(Rule):
                          severity='error',
                          message='Variable value should be quoted')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER)
         for i in items:

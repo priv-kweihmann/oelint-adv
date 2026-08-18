@@ -19,7 +19,7 @@ class NewLineEOF(Rule):
                 filename=_uniqname, nolink=True), key=lambda x: x.InFileLine)
         return res
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         for _, v in self.__getMatches(_file, stash).items():
             if not v[-1].Raw.endswith('\n'):

@@ -12,7 +12,7 @@ class TaskInstallNoMkdir(Rule):
                          severity='error',
                          message="'mkdir' shall not be used in do_install. Use 'install'")
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Function] = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER)
         for item in items:

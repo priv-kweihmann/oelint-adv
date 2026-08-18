@@ -13,7 +13,7 @@ class TaskAddNoTaskBody(Rule):
                          severity='warning',
                          message="The added task '{FUNC}' is not existing or has no body")
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         for item in stash.GetItemsFor(filename=_file, classifier=TaskAdd.CLASSIFIER):
             if item.FuncName in CONSTANTS.FunctionsOrder:

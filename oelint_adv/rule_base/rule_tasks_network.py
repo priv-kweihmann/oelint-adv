@@ -14,7 +14,7 @@ class TaskNetwork(Rule):
                          message="Task '{FUNC}' uses the network flag, that can lead to unpredictable results",
                          valid_from_release='kirkstone')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         task_names = {x.FuncName for x in stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER)}
         task_names.update(CONSTANTS.FunctionsKnown)

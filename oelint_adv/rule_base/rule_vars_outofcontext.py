@@ -14,7 +14,7 @@ class VarOutOfContext(Rule):
                          message='{var} should be only set in {context}')
 
     def _check(self,
-               results: list[Rule.Finding],
+               results: List[Rule.Finding],
                items: List[Item],
                valid_context: List[Classification],
                var_desc: str = '',
@@ -40,7 +40,7 @@ class VarOutOfContext(Rule):
                        if x in CONSTANTS.ImagesClasses)
         return res
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
 
         for constants, valid_context in [

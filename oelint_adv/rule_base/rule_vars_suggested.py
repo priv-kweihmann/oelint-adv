@@ -15,7 +15,7 @@ class VarSuggestedExists(Rule):
                          run_on=[Classification.RECIPE],
                          appendix=CONSTANTS.GetByPath('variables/suggested'))
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         _is_pkg_group = stash.IsPackageGroup(_file)
         _is_image = stash.IsImage(_file)

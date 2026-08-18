@@ -11,7 +11,7 @@ class FileNoSpaces(Rule):
                          severity='error',
                          message='Path to file contains spaces. Please remove them')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         _layer_root = stash.GetLayerRoot(_file)
         _relpath = _file.replace(_layer_root, '').lstrip('/')

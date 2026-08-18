@@ -13,7 +13,7 @@ class FileNotApplicableInlineSuppression(Rule):
                          message="Inline suppression for '{id}' is not needed")
         self._state = state
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         # special handling from main
         # do not announce any finding
         return []

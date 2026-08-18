@@ -565,9 +565,9 @@ args = create_lib_arguments(['file to check', 'another file to check']])
 
 results = run(args)
 
-# the results will be a List[Tuple[Tuple[str, int, str], str]]
+# the results will be a List[Tuple[Tuple[str, int, str, str], str]]
 # each item is
-#  [0] - 'path to the finding', 'line of the finding', 'id of the finding'
+#  [0] - 'path to the finding', 'line of the finding', 'id of the finding', 'severity of the finding'
 #  [1] - 'message'
 ```
 

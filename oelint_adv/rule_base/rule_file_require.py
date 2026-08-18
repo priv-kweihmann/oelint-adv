@@ -13,7 +13,7 @@ class FileRequireNotFound(Rule):
                          severity='error',
                          message="'{FILE}' was not found")
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         for item in stash.GetItemsFor(filename=_file,
                                       classifier=Include.CLASSIFIER):

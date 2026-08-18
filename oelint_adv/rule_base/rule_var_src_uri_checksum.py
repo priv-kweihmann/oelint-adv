@@ -13,7 +13,7 @@ class VarSRCUriChecksum(Rule):
                          severity='error',
                          message='<FOO>')
 
-    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
+    def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
         items: List[Item] = stash.GetItemsFor(filename=_file,
                                               classifier=[FlagAssignment.CLASSIFIER, Variable.CLASSIFIER],
