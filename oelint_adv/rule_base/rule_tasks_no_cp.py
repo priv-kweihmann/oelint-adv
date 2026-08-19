@@ -22,7 +22,8 @@ class TaskInstallNoCp(Rule):
                     if line.strip().startswith('#'):
                         continue
                     if (RegexRpl.search(r'^\s*cp ', line) or RegexRpl.search(r'\s+cp ', line)) and not RegexRpl.search(
-                            r'\s*cp\s+(-R|-r)', line):
+                            r'\s*cp\s+(-R|-r)', line) and not RegexRpl.search(
+                                r'\s*cp\s+--no-preserve=ownership(?:\s|$)', line):
                         res += self.finding(item.Origin,
                                             item.InFileLine + lineindex, blockoffset=item.InFileLine)
         return res

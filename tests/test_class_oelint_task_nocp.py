@@ -59,7 +59,15 @@ class TestClassOelintTaskNoCopy(TestBaseClass):
                                          }
                                          ''',
                                  },
-                             ],
+                                 {
+                                     'oelint_adv_test.bb':
+                                         '''
+                                         do_install_append() {
+                                             cp --no-preserve=ownership A B
+                                         }
+                                         ''',
+                                 },
+                                 ],
                              )
     def test_good(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(input_), id_, occurrence)
