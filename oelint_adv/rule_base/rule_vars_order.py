@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
@@ -17,7 +17,7 @@ class VarsOrder(Rule):
     def __cleanname(self, _input: str) -> str:
         return _input.replace('$', '').replace('{', '').replace('}', '')
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         _files = {item.Origin for item in stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER)}
         for _single_file in _files:

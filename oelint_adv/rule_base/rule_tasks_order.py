@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Function
 from oelint_parser.cls_stash import Stash
@@ -14,7 +14,7 @@ class TaskOrder(Rule):
                          message='<FOO>',
                          appendix=CONSTANTS.FunctionsOrder)
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         _files = {item.Origin for item in stash.GetItemsFor(
             filename=_file, classifier=Function.CLASSIFIER)}

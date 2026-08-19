@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
@@ -19,7 +19,7 @@ class VarUnneededFilesSetting(Rule):
                                 needle: str,
                                 msg: str,
                                 appendix: str,
-                                onappendonly: bool = False) -> List[Tuple[str, int, str]]:
+                                onappendonly: bool = False) -> list[Rule.Finding]:
         res = []
         for i in _files:
             if variable_ in i.SubItems and 'remove' not in i.SubItems and needle in i.VarValue:  # pragma: no cover
@@ -28,7 +28,7 @@ class VarUnneededFilesSetting(Rule):
                                         override_msg=msg, appendix=appendix)
         return res
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         _all_files = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                        attribute=Variable.ATTR_VAR, attributeValue='FILES')

@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Inherit
 from oelint_parser.cls_stash import Stash
@@ -14,7 +14,7 @@ class VarImproperInherit(Rule):
                          severity='error',
                          message="'{inherit}' is not a proper bbclass name")
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items: list[Inherit] = stash.GetItemsFor(
             filename=_file, classifier=Inherit.CLASSIFIER)

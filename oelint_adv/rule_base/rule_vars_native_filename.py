@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Inherit
 from oelint_parser.cls_stash import Stash
@@ -13,7 +13,7 @@ class VarNativeFilename(Rule):
                          run_on=[Classification.BBAPPEND, Classification.RECIPE],
                          message="native-recipe-files should include '-native' in file name")
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items: List[Inherit] = [x for x in stash.GetItemsFor(
             filename=_file, classifier=Inherit.CLASSIFIER) if 'native' in x.get_items()]

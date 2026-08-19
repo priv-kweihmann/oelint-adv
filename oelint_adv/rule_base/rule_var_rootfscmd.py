@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
@@ -12,7 +12,7 @@ class VarRootfsPostprocessCommand(Rule):
                          severity='warning',
                          message='ROOTFS_POSTPROCESS_COMMAND should not have trailing blanks')
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR, attributeValue='ROOTFS_POSTPROCESS_COMMAND')

@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
@@ -15,7 +15,7 @@ class VarPkgSpecific(Rule):
                          message='Variable {VAR} is package-specific and therefore it should be {VAR}{DEL}<known package name>',
                          appendix=self.needles)
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
 
         if self.is_lone_append(stash, _file):

@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Function
 from oelint_parser.cls_stash import Stash
@@ -13,7 +13,7 @@ class TaskInstallNoCp(Rule):
                          severity='warning',
                          message='Usage of heredocs should be avoided. Use files instead')
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER,
                                   attribute=Function.ATTR_FUNCNAME)

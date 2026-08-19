@@ -1,5 +1,5 @@
 import os
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
@@ -13,7 +13,7 @@ class VarOverride(Rule):
                          severity='error',
                          message='<FOO>')
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         _all: List[Variable] = list(x for x in stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER))  # noqa: C400
         for v in {x.VarName for x in _all}:

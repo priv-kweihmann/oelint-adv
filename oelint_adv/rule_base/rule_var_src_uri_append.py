@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable, Inherit
 from oelint_parser.cls_stash import Stash
@@ -12,7 +12,7 @@ class VarSRCURIAppend(Rule):
                          severity='error',
                          message='<FOO>')
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         inherits = stash.GetItemsFor(filename=_file, classifier=Inherit.CLASSIFIER)
         if not inherits:

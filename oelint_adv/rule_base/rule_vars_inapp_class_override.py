@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable, Inherit, Function
 from oelint_parser.cls_stash import Stash
@@ -13,7 +13,7 @@ class VarsInappClassOverride(Rule):
                          run_on=[Classification.RECIPE],
                          message='{var} is using {override}, but the recipe does not set {class_} in BBCLASSEXTEND or inherits the class {class_}')
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         inherits = set()
         for item in stash.GetItemsFor(filename=_file, classifier=Inherit.CLASSIFIER):

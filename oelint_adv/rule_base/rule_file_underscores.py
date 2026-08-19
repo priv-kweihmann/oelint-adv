@@ -1,5 +1,5 @@
 import os
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_stash import Stash
 
@@ -13,7 +13,7 @@ class FileNoSpaces(Rule):
                          message='FOO',
                          run_on=[Classification.RECIPE])
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         _basename, _ext = os.path.splitext(os.path.basename(_file))
         if _ext in ['.bb']:  # pragma: no cover

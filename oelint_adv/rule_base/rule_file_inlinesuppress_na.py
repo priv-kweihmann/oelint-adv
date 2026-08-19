@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_stash import Stash
 
@@ -13,7 +13,7 @@ class FileNotApplicableInlineSuppression(Rule):
                          message="Inline suppression for '{id}' is not needed")
         self._state = state
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         # special handling from main
         # do not announce any finding
         return []

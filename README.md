@@ -293,7 +293,7 @@ class FooMagicRule(Rule):
                          severity="error",
                          message="Too much foo happening here")
 
-    def check(self, _file, stash):
+    def check(self, _file, stash) -> list[Rule.Finding]
         res = []
         items = stash.GetItemsFor(filename=_file)
         for i in items:

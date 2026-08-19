@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import FunctionExports, Inherit, Item, Variable
 from oelint_parser.cls_stash import Stash
@@ -14,7 +14,7 @@ class VarOutOfContext(Rule):
                          message='{var} should be only set in {context}')
 
     def _check(self,
-               results: List[Tuple[str, int, str]],
+               results: list[Rule.Finding],
                items: List[Item],
                valid_context: List[Classification],
                var_desc: str = '',
@@ -40,7 +40,7 @@ class VarOutOfContext(Rule):
                        if x in CONSTANTS.ImagesClasses)
         return res
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
 
         for constants, valid_context in [

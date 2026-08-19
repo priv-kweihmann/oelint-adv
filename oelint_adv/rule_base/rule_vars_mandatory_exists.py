@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Inherit, Variable
 from oelint_parser.cls_stash import Stash
@@ -15,7 +15,7 @@ class VarMandatoryExists(Rule):
                          run_on=[Classification.RECIPE],
                          appendix=CONSTANTS.GetByPath('variables/mandatory'))
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         _is_pkg_group = stash.IsPackageGroup(_file)
         _is_image = stash.IsImage(_file)

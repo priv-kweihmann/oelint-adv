@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable, FlagAssignment
 from oelint_parser.cls_stash import Stash
@@ -13,7 +13,7 @@ class VarSRCURIMutualExItems(Rule):
                          severity='error',
                          message="'SRCREV' and a checksum are defined for the same item - only one is applicable")
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         _srcuri: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                     attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')

@@ -5,7 +5,7 @@ from typing import List, Tuple
 
 class OutputFormatStdOut():
 
-    def __init__(self, args: argparse.Namespace, issues: List[Tuple[str, int, str]]) -> None:
+    def __init__(self, args: argparse.Namespace, issues: List[Tuple[Tuple[str, int, str], str]]) -> None:
         if args.output != sys.stderr:
             args.output = open(args.output, 'w')  # pragma: no cover
         args.output.write('\n'.join([x[1] for x in issues]))
@@ -17,7 +17,7 @@ class OutputFormatStdOut():
 
 class OutputFormatJUnit():
 
-    def __init__(self, args: argparse.Namespace, issues: List[Tuple[str, int, str]]) -> None:
+    def __init__(self, args: argparse.Namespace, issues: List[Tuple[Tuple[str, int, str], str]]) -> None:
         output = '<?xml version="1.0" encoding="UTF-8"?>\n'
         output += '<testsuites>\n'
         if not issues:

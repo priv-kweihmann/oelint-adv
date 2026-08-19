@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
@@ -14,7 +14,7 @@ class VarBugtrackerIsUrl(Rule):
                                  Classification.LAYERCONF, Classification.MACHINECONF, Classification.RECIPE],
                          message="'FILESEXTRAPATHS' should be used only in a bbappend file")
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR, attributeValue='FILESEXTRAPATHS')

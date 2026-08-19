@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_stash import Stash
 from oelint_parser.cls_item import AddPylib
@@ -13,7 +13,7 @@ class AddpyLib(Rule):
                          run_on=[Classification.BBCLASS, Classification.BBAPPEND, Classification.RECIPE],
                          message='addpylib is only valid in .conf files')
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items_pylib: List[AddPylib] = stash.GetItemsFor(filename=_file, classifier=AddPylib.CLASSIFIER)
         for item in items_pylib:

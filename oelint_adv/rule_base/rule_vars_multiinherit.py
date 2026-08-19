@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Inherit
 from oelint_parser.cls_stash import Stash
@@ -12,7 +12,7 @@ class VarMultiInherit(Rule):
                          severity='warning',
                          message="'{inherit}' is included multiple times")
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items: List[Inherit] = stash.GetItemsFor(filename=_file, classifier=Inherit.CLASSIFIER)
         keys = []

@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable, Inherit
 from oelint_parser.cls_stash import Stash
@@ -15,7 +15,7 @@ class VarQuoted(Rule):
                          message="Variable '{VAR}' should be set on a disto/layer or local.conf level, not in a recipe",
                          appendix=CONSTANTS.GetByPath('variables/protected'))
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file,
                                                   classifier=Variable.CLASSIFIER,

@@ -1,5 +1,5 @@
 import os
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_stash import Stash
 
@@ -13,7 +13,7 @@ class BBClassUnderscore(Rule):
                          run_on=[Classification.BBCLASS],
                          message="bbclass filenames should not contain '-'. Replace it by '_'")
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         _files = {x.Origin for x in stash.GetItemsFor(filename=_file)}
         for file in _files:  # noqa: VNE002

@@ -1,7 +1,7 @@
 import os
 from difflib import SequenceMatcher
 import functools
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import FlagAssignment, Function, Item, Variable
 from oelint_parser.cls_stash import Stash
@@ -53,7 +53,7 @@ class VarMisspell(Rule):
 
         return self.__collected_var
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
 
         _all: List[Item] = stash.GetItemsFor(filename=_file)

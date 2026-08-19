@@ -215,7 +215,7 @@ def group_run(group: List[Tuple],
               fix: bool,
               rules: List[Rule],
               state: State,
-              persistent: bool = True) -> Tuple[List[Tuple[str, int, str]], Dict[str, str]]:
+              persistent: bool = True) -> Tuple[List[Rule.Finding], Dict[str, str]]:
     fixedfiles = []
     group_files, matrix, stash_params = group
     stash = Stash(
@@ -533,7 +533,7 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
     return args
 
 
-def run(args: argparse.Namespace, persistent: bool = True) -> Tuple[List[Tuple[str, int, str]], Dict[str, str]]:
+def run(args: argparse.Namespace, persistent: bool = True) -> Tuple[List[Tuple[Tuple[str, int, str], str]], Dict[str, str]]:
     rules = load_rules(args, add_rules=args.addrules,
                        add_dirs=args.customrules)
     _loaded_ids = []

@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
@@ -14,7 +14,7 @@ class VarHomepagePing(Rule):
                          severity='warning',
                          message="'HOMEPAGE' isn't reachable")
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR, attributeValue='HOMEPAGE')

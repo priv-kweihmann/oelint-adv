@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Function
 from oelint_parser.cls_stash import Stash
@@ -12,7 +12,7 @@ class TaskMultiFragments(Rule):
                          severity='info',
                          message='Multiple fragments of the same function in the same file should be merged')
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         _stash: List[Function] = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER)
         _known_matches = []

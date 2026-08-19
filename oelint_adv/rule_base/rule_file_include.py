@@ -1,5 +1,5 @@
 import os
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Include
 from oelint_parser.cls_stash import Stash
@@ -13,7 +13,7 @@ class FileIncludeNotFound(Rule):
                          severity='warning',
                          message="'{FILE}' was not found")
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         for item in stash.GetItemsFor(filename=_file,
                                       classifier=Include.CLASSIFIER):
