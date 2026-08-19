@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
@@ -207,7 +207,7 @@ class VarSRCUriOptions(Rule):
             'gitsm': {'usehead': ['branch', 'nobranch']},
         }
 
-    def __analyse(self, stash: Stash, item: Variable, _input: str, _index: int) -> List[Tuple[str, int, str]]:
+    def __analyse(self, stash: Stash, item: Variable, _input: str, _index: int) -> list[Rule.Finding]:
         _url = stash.GetScrComponents(_input)
         res = []
         if 'scheme' not in _url:
@@ -259,7 +259,7 @@ class VarSRCUriOptions(Rule):
                                         blockoffset=item.InFileLine)
         return res
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR, attributeValue='SRC_URI')

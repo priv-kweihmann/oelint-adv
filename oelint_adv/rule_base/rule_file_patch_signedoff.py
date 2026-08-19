@@ -1,5 +1,5 @@
 import os
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
@@ -14,7 +14,7 @@ class FilePatchIsSignedOff(Rule):
                          run_on=[Classification.BBAPPEND, Classification.RECIPE],
                          message="Patch '{FILE}' should contain a Signed-off-by entry")
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items = stash.GetFiles(_file, '*.patch')
         items.extend(stash.GetFiles(_file, '*.diff'))

@@ -1,6 +1,6 @@
 import ast
 import textwrap
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Function
 from oelint_parser.cls_stash import Stash
@@ -14,7 +14,7 @@ class TaskPythonPrefix(Rule):
                          severity='warning',
                          message='Tasks containing python code, should be prefixed with python in function header')
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items: List[Function] = stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER)
         for item in items:

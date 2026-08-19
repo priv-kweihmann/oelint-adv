@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_stash import Stash
 
@@ -11,7 +11,7 @@ class FileNoSpaces(Rule):
                          severity='error',
                          message='Path to file contains spaces. Please remove them')
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         _layer_root = stash.GetLayerRoot(_file)
         _relpath = _file.replace(_layer_root, '').lstrip('/')

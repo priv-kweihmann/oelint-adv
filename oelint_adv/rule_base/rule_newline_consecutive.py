@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_stash import Stash
 
@@ -19,7 +19,7 @@ class NewLineConsecutive(Rule):
                 filename=_uniqname, nolink=True), key=lambda x: x.InFileLine)
         return res
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         for _, v in self.__getMatches(_file, stash).items():
             for index, value in enumerate(v):

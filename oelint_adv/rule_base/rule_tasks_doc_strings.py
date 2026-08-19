@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import FlagAssignment, Function
 from oelint_parser.cls_stash import Stash
@@ -13,7 +13,7 @@ class TaskDocStrings(Rule):
                          severity='info',
                          message="Every custom task should have a doc string set by task[doc] = '...'")
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         for item in stash.GetItemsFor(filename=_file, classifier=Function.CLASSIFIER):
             if item.FuncName in CONSTANTS.FunctionsKnown or item.FuncName in ['', 'anonymous', '__anonymous']:

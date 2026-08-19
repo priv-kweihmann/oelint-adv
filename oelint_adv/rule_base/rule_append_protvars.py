@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
@@ -15,7 +15,7 @@ class VarQuoted(Rule):
                          run_on=[Classification.BBAPPEND],
                          appendix=CONSTANTS.GetByPath('variables/protected-append'))
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items = stash.GetItemsFor(
             filename=_file, classifier=Variable.CLASSIFIER)

@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Include
 from oelint_parser.cls_stash import Stash
@@ -12,7 +12,7 @@ class FileIncludeVsRequire(Rule):
                          severity='warning',
                          message="Use 'require {FILE}' instead of 'include {FILE}'")
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         for item in stash.GetItemsFor(filename=_file,
                                       classifier=Include.CLASSIFIER):

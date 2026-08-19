@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
@@ -106,7 +106,7 @@ class VarOverrideAppend(Rule):
 
         return res
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         for i, extra_check, _ in self.__getMatches(_file, stash):
             res += self.finding(

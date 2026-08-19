@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Include
 from oelint_parser.cls_stash import Stash
@@ -13,7 +13,7 @@ class VarMultiInclude(Rule):
                          severity='warning',
                          message="'{INC}' is included multiple times")
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items: List[Include] = stash.GetItemsFor(filename=_file, classifier=Include.CLASSIFIER)
         _map = {}

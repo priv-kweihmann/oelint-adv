@@ -5,7 +5,7 @@ import os
 import pkgutil
 import sys
 from enum import Enum
-from typing import FrozenSet, Iterable, List, Tuple
+from typing import FrozenSet, Iterable, List
 
 from colorama import Style
 from oelint_parser.cls_stash import Stash
@@ -38,6 +38,9 @@ class Classification(Enum):
 
 
 class Rule:
+    Finding = tuple[tuple[str, int, str], frozenset[str], str]
+    """ Path, line, ID, matrix, Human readable finding (possibly with color codes)"""
+
     def __init__(self,
                  id: str = '',  # noqa: A002, VNE003
                  severity: str = '',
@@ -152,7 +155,7 @@ class Rule:
         """
         return any(set(groupclass).intersection(self._run_on))
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> List[Finding]:
         """Stub for running check - is overridden by each rule
 
         Arguments:
@@ -182,7 +185,7 @@ class Rule:
                 override_msg: str = None,
                 appendix: str = None,
                 blockoffset: int = 0,
-                severity_override: str = '') -> Tuple[Tuple[str, int], List[str], str]:
+                severity_override: str = '') -> list[Finding]:
         """Called by rule to indicate a finding
 
         Arguments:
@@ -196,7 +199,7 @@ class Rule:
             severity_override {str} -- override the base severity (empty == use base)
 
         Returns:
-            Tuple[Tuple[str, int, str], List[str], str] -- Path, line, ID, matrix, Human readable finding (possibly with color codes)
+            Rule.Finding -- Path, line, ID, severity, matrix, Human readable finding (possibly with color codes). Empty if suppressed or hidden.
         """
         if override_msg is None:
             override_msg = self.Msg

@@ -24,7 +24,7 @@ class NoSpaceTrailingRule(Rule):
                 _linecnt += 1
         return res
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         for (i, line, blockoffset) in self.__getMatches(_file, stash):
             res += self.finding(i.Origin, line, blockoffset=blockoffset)

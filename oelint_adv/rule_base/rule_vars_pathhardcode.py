@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from re import escape
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Export, Function, FunctionExports, Item, PythonBlock, Variable
 from oelint_parser.cls_stash import Stash
@@ -42,7 +42,7 @@ class VarsPathHardcode(Rule):
             self._map.move_to_end('/lib')
         return super().check_release_range(release_range)
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items: List[Item] = stash.GetItemsFor(filename=_file,
                                               classifier=[Variable.CLASSIFIER, Export.CLASSIFIER,

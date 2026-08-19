@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Inherit
 from oelint_parser.cls_stash import Stash
@@ -14,7 +14,7 @@ class VarInherit(Rule):
                          appendix=['inherit', 'inherit_defer'],
                          valid_from_release='scarthgap')
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items: List[Inherit] = stash.GetItemsFor(filename=_file, classifier=Inherit.CLASSIFIER)
         for i in items:

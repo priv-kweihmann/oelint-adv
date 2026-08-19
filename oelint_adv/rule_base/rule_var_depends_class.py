@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Inherit, Variable
 from oelint_parser.cls_stash import Stash
@@ -14,7 +14,7 @@ class VarDependsClass(Rule):
                          run_on=[Classification.RECIPE, Classification.BBAPPEND],
                          message="{org} should be {patched} as it's a {class_} only recipe")
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
                                                   attribute=Variable.ATTR_VAR, attributeValue='DEPENDS')

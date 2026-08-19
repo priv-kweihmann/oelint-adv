@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from anytree import LoopError, Node
 from oelint_parser.cls_item import TaskAdd
@@ -20,7 +20,7 @@ class TaskCustomOrder(Rule):
             return [x for x in m.group('path').split('/') if x]
         return []  # pragma: no cover
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items = stash.GetItemsFor(
             filename=_file, classifier=TaskAdd.CLASSIFIER)

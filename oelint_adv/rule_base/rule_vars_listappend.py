@@ -27,7 +27,7 @@ class VarListAppend(Rule):
                 res_pre.append(i)
         return (res_app, res_pre)
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         res_app, res_pre = self.__getMatches(_file, stash)
         for i in res_app:

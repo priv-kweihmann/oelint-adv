@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import FlagAssignment, Variable
 from oelint_parser.cls_stash import Stash
@@ -12,7 +12,7 @@ class VarSpacesOnAssignment(Rule):
                          severity='warning',
                          message='Suggest spaces around assignment. E.g. \'FOO = "BAR"\'')
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=[Variable.CLASSIFIER, FlagAssignment.CLASSIFIER])
         for i in items:

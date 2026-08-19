@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Inherit, Variable
 from oelint_parser.cls_stash import Stash
@@ -13,7 +13,7 @@ class VarBbclassextend(Rule):
                          run_on=[Classification.RECIPE],
                          message='BBCLASSEXTEND should be set if possible')
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         if stash.IsPackageGroup(_file) or stash.IsImage(_file) or _file in stash.GetConfFiles():
             return []
         res = []

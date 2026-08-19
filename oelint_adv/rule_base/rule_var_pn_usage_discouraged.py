@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
@@ -12,7 +12,7 @@ class VarPnUsageDiscouraged(Rule):
                          severity='warning',
                          message="Variable shouldn't contain ${PN} or ${BPN}")
 
-    def check(self, _file: str, stash: Stash) -> List[Tuple[str, int, str]]:
+    def check(self, _file: str, stash: Stash) -> list[Rule.Finding]:
         res = []
         needles = ['SUMMARY', 'HOMEPAGE', 'BUGTRACKER', 'DESCRIPTION']
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
