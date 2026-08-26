@@ -16,7 +16,7 @@ class FileReqIncNoRelPaths(Rule):
         res = []
         for item in stash.GetItemsFor(filename=_file,
                                       classifier=Include.CLASSIFIER):
-            _path = stash.ExpandTerm(_file, item.IncName)
+            _path = stash.ExpandTerm(_file, item.IncName, for_include=True)
             if '..' in _path.split('/'):
                 res += self.finding(item.Origin, item.InFileLine)
         return res

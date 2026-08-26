@@ -127,5 +127,9 @@ class Tweaks:
         args.constantmods[0:0] = modlist
 
         setattr(args, '_release_range', _release_range)  # noqa: B010
-        args.state.additional_stash_args = getattr(args, '_stash_args', {})
+        _stash_args = dict(getattr(args, '_stash_args', {}))
+        _layer_path = getattr(args, 'layer_path', None)
+        if _layer_path:
+            _stash_args['layer_paths'] = _layer_path
+        args.state.additional_stash_args = _stash_args
         return args

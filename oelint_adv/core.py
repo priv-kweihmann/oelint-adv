@@ -337,7 +337,8 @@ def create_lib_arguments(files: List[str],
                          mode: str = 'fast',
                          cached: bool = False,
                          cachedir: str = __default_cache_dir,
-                         extra_layer: List[str] = None) -> argparse.Namespace:
+                         extra_layer: List[str] = None,
+                         layer_path: List[str] = None) -> argparse.Namespace:
     """Create runtime arguments in library mode
 
     Args:
@@ -362,6 +363,8 @@ def create_lib_arguments(files: List[str],
         cached (bool, optional): Use caching
         cachedir (str, optional): Path to cache directory,
         extra_layer (List[str], optional): Extra 3rd party layer to load data for
+        layer_path (List[str], optional): Extra layer root directories to search when
+            resolving a require/include path, mirroring BBPATH. Defaults to None.
 
     Returns:
         argparse.Namespace: runtime arguments
@@ -397,6 +400,9 @@ def create_lib_arguments(files: List[str],
                         help='Clear cache directory and exit')
     parser.add_argument('--extra-layer', nargs='*', action='extend',
                         default=['core'], help='Layer names of 3rd party layers to use')
+    parser.add_argument('--layer-path', nargs='*', action='extend', default=[],
+                        help='Extra layer root directories to search when resolving a '
+                             'require/include path, mirroring BBPATH')
     # Override the defaults with the values from the config file
     parser.set_defaults(**parse_configfile())
 
@@ -423,6 +429,7 @@ def create_lib_arguments(files: List[str],
         '--cached' if cached else '',
         f'--cachedir={cachedir}',
         *[f'--extra-layer={x}' for x in (extra_layer or ())],
+        *[f'--layer-path={x}' for x in (layer_path or ())],
         * files,
     ] if y != '']
 
@@ -456,6 +463,7 @@ def arguments_post(args: argparse.Namespace) -> argparse.Namespace:  # noqa: C90
         'customrules',
         'suppress',
         'extra_layer',
+        'layer_path',
         'hide',
     ]:
         try:

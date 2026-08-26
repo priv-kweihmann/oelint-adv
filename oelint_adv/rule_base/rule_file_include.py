@@ -18,7 +18,7 @@ class FileIncludeNotFound(Rule):
         for item in stash.GetItemsFor(filename=_file,
                                       classifier=Include.CLASSIFIER):
             if item.Statement == 'include':
-                _path = stash.ExpandTerm(_file, item.IncName)
+                _path = stash.ExpandTerm(_file, item.IncName, for_include=True)
                 if not stash.FindLocalOrLayer(_path, os.path.dirname(item.Origin)):
                     res += self.finding(item.Origin, item.InFileLine,
                                         self.Msg.replace('{FILE}', item.IncName))

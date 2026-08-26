@@ -84,6 +84,10 @@ def create_argparser() -> argparse.ArgumentParser:
                         help='Clear cache directory and exit')
     parser.add_argument('--extra-layer', nargs='*', action='extend',
                         default=['core'], help='Layer names of 3rd party layers to use')
+    parser.add_argument('--layer-path', nargs='*', action='extend', default=[],
+                        help='Extra layer root directories to search when resolving a '
+                             'require/include path, mirroring BBPATH. Opt-in; when unset '
+                             'a require is only searched in its own layer.')
     # Override the defaults with the values from the config file
     parser.set_defaults(**parse_configfile())
 
