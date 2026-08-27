@@ -23,3 +23,13 @@ do_install() {
     install ${WORKDIR}/foo ${D}/foo
 }
 ```
+
+also allowed is to use `cp`'s `--no-preserve=ownership` flag, e.g.
+
+```
+do_install() {
+    cp --no-preserve=ownership ${WORKDIR}/foo ${D}/foo
+}
+```
+
+even though using `install` should be the preferred way

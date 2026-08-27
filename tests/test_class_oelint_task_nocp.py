@@ -25,6 +25,14 @@ class TestClassOelintTaskNoCopy(TestBaseClass):
                                      }
                                      ''',
                                  },
+                                 {
+                                    'oelint_adv_test.bb':
+                                    '''
+                                    do_install_append() {
+                                        otherop --no-preserve=ownership && cp * B
+                                    }
+                                    ''',
+                                },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -48,6 +56,38 @@ class TestClassOelintTaskNoCopy(TestBaseClass):
                                      # nooelint: oelint.task.nocopy
                                      do_install_append() {
                                          cp A B
+                                     }
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     do_install_append() {
+                                         cp -r A
+                                     }
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     do_install_append() {
+                                         cp -R A
+                                     }
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     do_install_append() {
+                                         cp --no-preserve=ownership A
+                                     }
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     do_install_append() {
+                                         cp -R --no-preserve=ownership A
                                      }
                                      ''',
                                  },
