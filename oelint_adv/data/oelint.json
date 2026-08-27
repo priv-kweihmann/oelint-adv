@@ -49,6 +49,18 @@
             "DISTRO_FEATURES_DEFAULT",
             "DISTRO_FEATURES_OPTED_OUT"
         ],
+        "image-only": [
+            "EXTRA_IMAGE_FEATURES",
+            "IMAGE_FEATURES"
+        ],
+        "layer-conf-only": [
+            "BBFILES",
+            "BBFILES_DYNAMIC",
+            "BBFILE_COLLECTIONS",
+            "BBPATH",
+            "HOSTTOOLS_NONFATAL",
+            "LICENSE_PATH"
+        ],
         "machine-conf-only": [
             "MACHINE",
             "MACHINEOVERRIDES",
@@ -59,40 +71,11 @@
             "MACHINE_FEATURES_BACKFILL",
             "MACHINE_FEATURES_OPTED_OUT"
         ],
-        "layer-conf-only": [
-            "BBFILES",
-            "BBFILES_DYNAMIC",
-            "BBFILE_COLLECTIONS",
-            "BBPATH",
-            "HOSTTOOLS_NONFATAL",
-            "LICENSE_PATH"
-        ],
-        "image-only": [
-            "EXTRA_IMAGE_FEATURES",
-            "IMAGE_FEATURES"
-        ],
         "recipe-only": [
             "BBCLASSEXTEND",
             "DEPENDS",
             "INSANE_SKIP",
             "LIC_FILES_CHKSUM"
-        ]
-    },
-    "oelint-mandatoryvar": {
-        "SRC_URI-exclude-classes": [
-            "pypi",
-            "gnomebase"
-        ],
-        "image-excludes": [
-            "CVE_PRODUCT",
-            "HOMEPAGE",
-            "SRC_URI"
-        ],
-        "pkggroup-excludes": [
-            "CVE_PRODUCT",
-            "HOMEPAGE",
-            "LICENSE",
-            "SRC_URI"
         ]
     },
     "oelint-inappropriate-status-classifiers": [
@@ -111,6 +94,24 @@
         "other",
         "upstream ticket .*"
     ],
+    "oelint-mandatoryvar": {
+        "SRC_URI-exclude-classes": [
+            "pypi",
+            "gnomebase"
+        ],
+        "image-excludes": [
+            "CVE_PRODUCT",
+            "HOMEPAGE",
+            "SRC_URI"
+        ],
+        "pkggroup-excludes": [
+            "CVE_PRODUCT",
+            "HOMEPAGE",
+            "LICENSE",
+            "SRC_URI"
+        ]
+    },
+    "oelint-require-file-ignore": [],
     "oelint-semicolon-vars": [
         "LIC_FILES_CHKSUM",
         "SRC_URI"
