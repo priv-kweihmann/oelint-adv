@@ -33,3 +33,6 @@ require a/file/from/another/layer.inc
 ```
 
 in case the required file is from another layer.
+
+Another way is to use the `oelint-require-file-ignore` constant, which defines
+exceptions for files that e.g. reside in a different layer
