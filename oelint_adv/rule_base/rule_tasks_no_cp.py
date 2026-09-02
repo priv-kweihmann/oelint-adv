@@ -28,6 +28,10 @@ class TaskInstallNoCp(Rule):
                             continue
                         if line.find(' -R ') >= _cp_pre_index:
                             continue
+                        if line.find(' -ra ') >= _cp_pre_index:
+                            continue
+                        if line.find(' -Ra ') >= _cp_pre_index:
+                            continue
                         if line.find(' --no-preserve=ownership ') >= _cp_pre_index:
                             continue
                         res += self.finding(item.Origin,
