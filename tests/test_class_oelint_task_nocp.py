@@ -26,13 +26,13 @@ class TestClassOelintTaskNoCopy(TestBaseClass):
                                      ''',
                                  },
                                  {
-                                    'oelint_adv_test.bb':
-                                    '''
+                                     'oelint_adv_test.bb':
+                                     '''
                                     do_install_append() {
                                         otherop --no-preserve=ownership && cp * B
                                     }
                                     ''',
-                                },
+                                 },
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -88,6 +88,30 @@ class TestClassOelintTaskNoCopy(TestBaseClass):
                                      '''
                                      do_install_append() {
                                          cp -R --no-preserve=ownership A
+                                     }
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     do_install() {
+                                         cp -Ra A
+                                     }
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     do_install() {
+                                         cp -ra A
+                                     }
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     do_install() {
+                                        # cp A
                                      }
                                      ''',
                                  },
