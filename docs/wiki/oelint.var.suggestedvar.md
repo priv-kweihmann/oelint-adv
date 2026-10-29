@@ -19,14 +19,12 @@ In terms of ``CVE_PRODUCT`` it also helps to avoid false positives of the CVE ch
 
 The following variables are suggested to be added to each recipe
 
-- AUTHOR
 - BUGTRACKER
 - BBCLASSEXTEND
 - CVE_PRODUCT
 - SECTION
 
 ```
-AUTHOR = "me <me@mine.org>"
 BUGTRACKER = "https://my-homepage/issues"
 CVE_PRODUCT = "me/lib"
 SECTION = "graphics"
