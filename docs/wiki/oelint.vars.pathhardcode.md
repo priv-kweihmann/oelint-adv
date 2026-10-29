@@ -22,7 +22,7 @@ The following variables are known
 - ``${bindir}`` => ``/usr/bin``
 - ``${datadir}`` => ``/usr/share``
 - ``${docdir}`` => ``/usr/share/doc``
-- ``${firmwaredir}`` => ``/lib/firmware`` *1
+- ``${firmwaredir}`` => ``/lib/firmware`` [^1]
 - ``${includedir}`` => ``/usr/include``
 - ``${infodir}`` => ``/usr/share/info``
 - ``${libdir}`` => ``/usr/lib``
@@ -38,7 +38,7 @@ The following variables are known
 - ``${systemd_unitdir}`` => ``/lib/systemd``
 - ``${systemd_user_unitdir}`` => ``/usr/lib/systemd/user``
 
-* 1 - starting from `blacksail` release
+[^1]: starting from `blacksail` release
 
 ```
 FILES:${PN} += "${docdir}"
