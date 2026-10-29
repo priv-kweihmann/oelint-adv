@@ -43,7 +43,7 @@ class TestClassOelintVarsSpecific(TestBaseClass):
                                      '''
                                      SRCREV_bad = "0123456789abcdef"
                                      ''',
-                                 },
+                                 }
                              ],
                              )
     def test_bad(self, input_, id_, occurrence):
@@ -78,7 +78,8 @@ class TestClassOelintVarsSpecific(TestBaseClass):
                              ],
                              )
     def test_bad_old(self, input_, id_, occurrence):
-        self.check_for_id(self._create_args(input_, ['--release=dunfell']), id_, occurrence)
+        self.check_for_id(self._create_args(
+            input_, ['--release=dunfell']), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.specific'])
     @pytest.mark.parametrize('occurrence', [0])
@@ -193,6 +194,12 @@ class TestClassOelintVarsSpecific(TestBaseClass):
                                      FILES:${PN}-libbar = "${libdir}/bar"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                    B:pn-xzy-native += "abc"
+                                    ''',
+                                 },
                              ],
                              )
     def test_good(self, input_, id_, occurrence):
@@ -265,7 +272,14 @@ class TestClassOelintVarsSpecific(TestBaseClass):
                                      B_bararch += "abc"
                                      ''',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                    B_pn-xzy-native += "abc"
+                                    ''',
+                                 },
                              ],
                              )
     def test_good_old(self, input_, id_, occurrence):
-        self.check_for_id(self._create_args(input_, ['--release=dunfell']), id_, occurrence)
+        self.check_for_id(self._create_args(
+            input_, ['--release=dunfell']), id_, occurrence)

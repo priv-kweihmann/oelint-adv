@@ -17,14 +17,17 @@ class VarPnBpnUsage(Rule):
 
     def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []
-        items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER)
+        items: List[Variable] = stash.GetItemsFor(
+            filename=_file, classifier=Variable.CLASSIFIER)
         _comp = ''.join(x.VarValueStripped for x in stash.Reduce(items, classifier=Variable.CLASSIFIER, attribute=Variable.ATTR_VAR,
                                                                  attributeValue='COMPATIBLE_MACHINE'))
         _packages = stash.GetValidPackageNames(_file)
-        _named_res = sorted(stash.GetValidNamedResources(_file), key=len, reverse=True)
+        _named_res = sorted(stash.GetValidNamedResources(
+            _file), key=len, reverse=True)
         _machines = CONSTANTS.MachinesKnown
         _distros = CONSTANTS.DistrosKnown
-        _builtin_classes = ['class-native', 'class-target', 'class-nativesdk', 'class-cross']
+        _builtin_classes = ['class-native', 'class-target',
+                            'class-nativesdk', 'class-cross']
         _operations = ['append', 'prepend', 'remove']
         for i in items:
             subs = [(x, stash.ExpandTerm(_file, x)) for x in i.SubItems]
@@ -48,6 +51,8 @@ class VarPnBpnUsage(Rule):
                 if _comp and (RegexRpl.match(_comp, expanded) or RegexRpl.match(_comp, sub)):
                     continue  # pragma: nocover_3.9 - coverage looks buggy on 3.9
                 if expanded.startswith('task-'):
+                    continue
+                if expanded.startswith('pn-'):
                     continue
                 res += self.finding(i.Origin, i.InFileLine,
                                     override_msg=self.Msg.format(a=i.VarName, b=sub))
