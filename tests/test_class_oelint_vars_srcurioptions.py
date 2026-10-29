@@ -174,6 +174,7 @@ OPTION_MAPPING = {
         'pswd',
         'rebaseable',
         'rev',
+        'shallow',
         'striplevel',
         'subdir',
         'subpath',

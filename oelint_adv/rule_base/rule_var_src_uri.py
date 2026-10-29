@@ -84,6 +84,7 @@ class VarSRCUriOptions(Rule):
                 'protocol',
                 'rebaseable',
                 'rev',
+                'shallow',
                 'subdir',
                 'subpath',
                 'tag',
