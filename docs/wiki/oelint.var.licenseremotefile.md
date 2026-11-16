@@ -28,3 +28,6 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=sjdjasdjhddh"
 
 For file that reside in the same layer, please add a copy of your license (including your name) and the year,
 via ``SRC_URI`` with another ``file://`` fetcher
+
+Another way to "fix" it is to use the ``oelint-licenseremotefile-optout`` entry of the [Constants interface](https://github.com/priv-kweihmann/oelint-adv/tree/master/docs/constants.md).
+For given case adding ``${COMMON_LIC_DIR}/MIT`` to the list of entries, would also suppress initially reported finding.

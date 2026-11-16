@@ -94,6 +94,7 @@
         "other",
         "upstream ticket .*"
     ],
+    "oelint-licenseremotefile-optout": [],
     "oelint-mandatoryvar": {
         "SRC_URI-exclude-classes": [
             "pypi",
