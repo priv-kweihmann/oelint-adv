@@ -14,6 +14,9 @@ This works around the license detection.
 Changes in LICENSE won't be found in that case.
 Also this is prone to setting the wrong LICENSE in the recipe.
 
+Also be aware that the template files in ``${COMMON_LIC_DIR}`` do lack copyright holder and year, rendering them
+effectively useful for claiming the copyright on any sources/packages.
+
 ## Ways to fix it
 
 Get in touch with the maintainer of the source code and ask them to ship a proper license file with
@@ -22,3 +25,6 @@ the release. Alternatively use a ``git://`` fetcher instead of downloading an ar
 ```
 LIC_FILES_CHKSUM = "file://LICENSE;md5=sjdjasdjhddh"
 ```
+
+For file that reside in the same layer, please add a copy of your license (including your name) and the year,
+via ``SRC_URI`` with another ``file://`` fetcher
