@@ -11,33 +11,29 @@ class VarOverrideAppend(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.overrideappend',
                          severity='warning',
-                         message='This creates an empty scope which is then appended. It should be {op}:{_class} instead')
+                         message='This creates an empty scope which is then appended. It should be {_class} instead')
         self.pkgspecific = CONSTANTS.GetByPath(
             "oelint-variables-with-pkgn" or [])
         self.potpkgspecific = CONSTANTS.GetByPath(
             "oelint-variable-opt-with-pkgn" or [])
 
-    def fix_override_append_order(self, item, op, scope):
+    def fix_override_append_order(self, item, scope):
         def replacer(v):
             return v.replace(
-                item.VarNameComplete, item.VarName + ':' + op + ':' + scope,
+                item.VarNameComplete, item.VarName + ':' + scope,
             )
 
         item.Raw = replacer(item.Raw)
         item.RealRaw = replacer(item.RealRaw)
 
-    def fix_pluseq_to_override(self, item, op_to_use, space):
-        varname = item.VarName
-        if item.VarName in (self.pkgspecific + self.potpkgspecific):
-            varname += ':' + item.SubItems[0]
-
+    def fix_pluseq_to_override(self, item, scope, space):
         def replacer(v):
             ret = v.replace(
-                varname, varname + ':' + op_to_use,
+                item.VarNameComplete, item.VarName + ':' + scope,
             ).replace(
                 item.VarOp, ' = ',
             )
-            if op_to_use == 'append':
+            if 'append' in scope:
                 opening_quote = ret.find(item.VarValue[0])
                 if space and ret[opening_quote + 1] not in ' \t\n':
                     ret = ret[:opening_quote + 1] + \
@@ -63,11 +59,20 @@ class VarOverrideAppend(Rule):
 
         for i in sorted(items, key=lambda key: key.Line):
             _items = [x for x in i.SubItems if x]
+            _op_scope = 0
             if i.VarName in self.pkgspecific:
-                _items = _items[1:]
+                _op_scope = 1
             elif i.VarName in self.potpkgspecific:
-                if _items and (_items[0] in pkgnames or stash.IsDynamicPackage(_file, _items[0])):
-                    _items = _items[1:]
+                for index, chunk in enumerate(_items):
+                    if chunk in pkgnames or stash.IsDynamicPackage(_file, chunk):
+                        if len(_items) > 1:
+                            _op_scope = index + 1
+                        else:
+                            _op_scope = 999999
+                        break
+
+            if len(_items) <= _op_scope:
+                continue
 
             _scope = [x for x in _items if x not in ['append', 'prepend']]
             if not _scope:
@@ -79,7 +84,7 @@ class VarOverrideAppend(Rule):
                 # Skip if the override scope exists. This operation may be intentional
                 continue
 
-            extra_check = []
+            extra_check = ''
             extra_fixes = []
             _op = [x for x in _items if x in ['append', 'prepend']]
             if i.VarOp.strip() in ('+=', '.=', '=+', '=.') and not _op:
@@ -88,17 +93,19 @@ class VarOverrideAppend(Rule):
                     0] == '=' else 'append'
                 space = ' ' if '+' in i.VarOp else ''
 
-                extra_check = [op_to_use, ':'.join(_scope)]
+                _scope.insert(_op_scope, op_to_use)
+                extra_check = ':'.join(_scope)
                 # to catch double errors
                 extra_fixes.append(
-                    [self.fix_override_append_order, op_to_use, ':'.join(_scope)])
+                    [self.fix_override_append_order, ':'.join(_scope)])
                 extra_fixes.append(
-                    [self.fix_pluseq_to_override, op_to_use, space])
-            elif _op and _items[0] not in _op:
+                    [self.fix_pluseq_to_override, ':'.join(_scope), space])
+            elif _op and _items[_op_scope] not in _op:
                 # Case: A:foo:append = " b" -> A:append:foo = " b"
-                extra_check = [_op[0], ':'.join(_scope)]
+                _scope.insert(_op_scope, _op[0])
+                extra_check = ':'.join(_scope)
                 extra_fixes.append(
-                    [self.fix_override_append_order, _op[0], ':'.join(_scope)])
+                    [self.fix_override_append_order, ':'.join(_scope)])
 
             _store.add(_scope_key)
             if extra_check or extra_fixes:
@@ -113,8 +120,7 @@ class VarOverrideAppend(Rule):
                 i.Origin,
                 i.InFileLine,
                 override_msg=self.Msg.format(
-                    op=extra_check[0],
-                    _class=extra_check[1],
+                    _class=extra_check,
                 ),
             )
 
