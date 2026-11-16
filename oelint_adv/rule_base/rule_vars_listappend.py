@@ -2,6 +2,7 @@ from typing import List, Tuple
 
 from oelint_parser.cls_item import Variable
 from oelint_parser.cls_stash import Stash
+from oelint_parser.rpl_regex import RegexRpl
 
 from oelint_adv.cls_rule import Rule
 
@@ -16,14 +17,13 @@ class VarListAppend(Rule):
         res_app = []
         res_pre = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                                  attribute=Variable.ATTR_VAR,
-                                                  attributeValue=['PACKAGES', 'SRC_URI', 'FILES', 'RDEPENDS', 'DEPENDS'])
+                                                  attribute=Variable.ATTR_VAR)
 
         for i in items:
             ops = i.AppendOperation()
-            if not i.VarValue.startswith('" ') and any(x in ops for x in ['append', ' .= ']):
+            if RegexRpl.match('["|\'](\x1b)* ', i.VarValue) is None and any(x in ops for x in ['append', ' .= ']):
                 res_app.append(i)
-            if not i.VarValue.endswith(' "') and any(x in ops for x in ['prepend', ' =. ']):
+            if not i.VarValue.endswith(' "') and any(x in ops for x in ['prepend', ' =. ']) and ':=' not in i.VarOp:
                 res_pre.append(i)
         return (res_app, res_pre)
 
@@ -42,15 +42,21 @@ class VarListAppend(Rule):
         res = []
         res_app, res_pre = self.__getMatches(_file, stash)
         for i in res_app:
-            vv_rpl = i.VarValue.replace('"', '" ', 1).replace("'", "' ", 1)
+            _m = RegexRpl.match('"(\x1b)*', i.VarValue)
+            vv_rpl = i.VarValue.replace(_m.group(0), _m.group(0) + ' ', 1)
             i.RealRaw = i.RealRaw.replace(i.VarValue, vv_rpl)
             i.Raw = i.Raw.replace(i.VarValue, vv_rpl)
             i.VarValue = vv_rpl
             res.append(_file)
         for i in res_pre:
-            vv_rpl = i.VarValue[::-1].replace('"', '" ', 1).replace("'", "' ", 1)[::-1]
-            i.RealRaw = i.RealRaw.replace(i.VarValue, vv_rpl)
-            i.Raw = i.Raw.replace(i.VarValue, vv_rpl)
+            _m = RegexRpl.match('["|\'](\x1b)*', i.VarValue[::-1])
+            if _m is None:
+                continue
+            vv_rpl = i.VarValue[::-1].replace(_m.group(0), _m.group(0) + ' ', 1)[
+                ::-1].replace('\x1b', '\\\n')
+            vv_needle = i.VarValue.replace('\x1b', '\\\n')
+            i.RealRaw = i.RealRaw.replace(vv_needle, vv_rpl)
+            i.Raw = i.Raw.replace(vv_needle, vv_rpl)
             i.VarValue = vv_rpl
             res.append(_file)
         return res

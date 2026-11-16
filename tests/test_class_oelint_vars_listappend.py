@@ -61,7 +61,8 @@ class TestClassOelintVarsListAppend(TestBaseClass):
                              ],
                              )
     def test_bad_old(self, input_, id_, occurrence):
-        self.check_for_id(self._create_args(input_, ['--release=dunfell']), id_, occurrence)
+        self.check_for_id(self._create_args(
+            input_, ['--release=dunfell']), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.listappend'])
     @pytest.mark.parametrize('input_',
@@ -114,10 +115,27 @@ class TestClassOelintVarsListAppend(TestBaseClass):
                                      'oelint_adv_test.bb':
                                      'SRC_URI .= "file://abc"',
                                  },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A:prepend = "\
+                                         a\
+                                     "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A:append = "\
+                                     a \
+                                     "
+                                     ''',
+                                 },
                              ],
                              )
     def test_fix_old(self, input_, id_):
-        self.fix_and_check(self._create_args_fix(input_, ['--release=dunfell']), id_)
+        self.fix_and_check(self._create_args_fix(
+            input_, ['--release=dunfell']), id_)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.listappend'])
     @pytest.mark.parametrize('occurrence', [0])
@@ -150,6 +168,22 @@ class TestClassOelintVarsListAppend(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      'FILESEXTRAPATHS:prepend := "${THISDIR}/file:"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     A:prepend = "\
+                                        a \
+                                     "
+                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                    A:append = "\
+                                        a \
+                                    "
+                                    ''',
                                  },
                              ],
                              )
@@ -191,4 +225,5 @@ class TestClassOelintVarsListAppend(TestBaseClass):
                              ],
                              )
     def test_good_old(self, input_, id_, occurrence):
-        self.check_for_id(self._create_args(input_, ['--release=dunfell']), id_, occurrence)
+        self.check_for_id(self._create_args(
+            input_, ['--release=dunfell']), id_, occurrence)
