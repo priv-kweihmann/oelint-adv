@@ -66,3 +66,30 @@ class TestClassOelintVarLicenseRemoteFile(TestBaseClass):
                              )
     def test_good(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(input_), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.var.licenseremotefile'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('input_',
+                             [
+                                 {
+                                     'oelint_adv_test.bb':
+                                     '''
+                                     LIC_FILES_CHKSUM = "file://${COMMON_LIC_DIR}/MIT;md5=sjdjasdjhddh"
+                                     ''',
+                                 },
+                             ],
+                             )
+    def test_good_with_optout(self, input_, id_, occurrence):
+        _mod_content = '''
+        {
+            "oelint-licenseremotefile-optout": [
+                "${COMMON_LIC_DIR}/MIT"
+            ]
+        }
+        '''
+        _extra_opts = [
+            '--constantmods=+{mod}'.format(
+                mod=self._create_tempfile('constmod', _mod_content)),
+        ]
+        self.check_for_id(self._create_args(
+            input_, extraopts=_extra_opts), id_, occurrence)
