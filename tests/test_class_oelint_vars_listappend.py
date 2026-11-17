@@ -118,7 +118,7 @@ class TestClassOelintVarsListAppend(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                     A:prepend = "\
+                                     SRC_URI:prepend = "\
                                          a\
                                      "
                                      ''',
@@ -126,7 +126,7 @@ class TestClassOelintVarsListAppend(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                     A:append = "\
+                                     SRC_URI:append = "\
                                      a \
                                      "
                                      ''',
@@ -172,7 +172,7 @@ class TestClassOelintVarsListAppend(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                     A:prepend = "\
+                                     SRC_URI:prepend = "\
                                         a \
                                      "
                                      ''',
@@ -180,10 +180,22 @@ class TestClassOelintVarsListAppend(TestBaseClass):
                                  {
                                      'oelint_adv_test.bb':
                                      '''
-                                    A:append = "\
+                                    SRC_URI:append = "\
                                         a \
                                     "
                                     ''',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'BBPATH .= ":${LAYERDIR}"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'PV .= "+git"',
+                                 },
+                                 {
+                                     'oelint_adv_test.bb':
+                                     'GALLIUMDRIVERS:append:x86 = ",i915,iris,crocus"',
                                  },
                              ],
                              )
