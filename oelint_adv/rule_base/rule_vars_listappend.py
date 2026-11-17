@@ -17,7 +17,8 @@ class VarListAppend(Rule):
         res_app = []
         res_pre = []
         items: List[Variable] = stash.GetItemsFor(filename=_file, classifier=Variable.CLASSIFIER,
-                                                  attribute=Variable.ATTR_VAR)
+                                                  attribute=Variable.ATTR_VAR,
+                                                  attributeValue=['PACKAGES', 'SRC_URI', 'FILES', 'RDEPENDS', 'DEPENDS'])
 
         for i in items:
             ops = i.AppendOperation()
