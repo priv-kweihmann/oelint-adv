@@ -213,6 +213,7 @@ Rules marked with **[I]** need to be activated through [a rule file](#defining-a
 * [oelint.var.order](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.order.md) - Variable order **[S]**
 * [oelint.var.override](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.override.md) - Check if include/append is overriding a variable
 * [oelint.var.rootfspostcmd](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.rootfspostcmd.md) - ROOTFS_POSTPROCESS_COMMAND should not have trailing blanks
+* [oelint.var.rootfspostcmdsemicolon](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.rootfspostcmdsemicolon.md) - ROOTFS_POSTPROCESS_COMMAND is a space separated list
 * [oelint.var.srcuriwildcard](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.srcuriwildcard.md) - 'SRC_URI' should not contain any wildcards
 * [oelint.var.suggestedvar](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.var.suggestedvar.md) - Notice on suggested variables **[S]**
 * [oelint.vars.appendop](https://github.com/priv-kweihmann/oelint-adv/blob/master/docs/wiki/oelint.vars.appendop.md) - Use ':append(_append)' instead of ' += '

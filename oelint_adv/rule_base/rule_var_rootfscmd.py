@@ -10,7 +10,8 @@ class VarRootfsPostprocessCommand(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.var.rootfspostcmd',
                          severity='warning',
-                         message='ROOTFS_POSTPROCESS_COMMAND should not have trailing blanks')
+                         message='ROOTFS_POSTPROCESS_COMMAND should not have trailing blanks',
+                         valid_till_release='blacksail')
 
     def check(self, _file: str, stash: Stash) -> List[Rule.Finding]:
         res = []

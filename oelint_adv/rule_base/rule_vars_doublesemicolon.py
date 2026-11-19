@@ -12,7 +12,8 @@ class VarsDoubleSemicolon(Rule):
     def __init__(self) -> None:
         super().__init__(id='oelint.vars.doublesemicolon',
                          severity='info',
-                         message='";;" is not needed')
+                         message='";;" is not needed',
+                         valid_till_release='blacksail')
 
     def __getMatches(self, _file: str, stash: Stash) -> List[Variable]:
         res = []
