@@ -18,6 +18,19 @@ class TestClassOelintVarsAutorev(TestBaseClass):
         self.check_for_id(self._create_args(input_), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.doublesemicolon'])
+    @pytest.mark.parametrize('occurrence', [0])
+    @pytest.mark.parametrize('var', [
+        "LIC_FILES_CHKSUM",
+        "SRC_URI",
+    ])
+    def test_bad_new(self, var, id_, occurrence):
+        input_ = {
+            'test.bb': f'{var} = "foo;;bar;;;;baz;;a=1;b=2"\n',
+        }
+        self.check_for_id(self._create_args(
+            input_, ['--release=blacksail']), id_, occurrence)
+
+    @pytest.mark.parametrize('id_', ['oelint.vars.doublesemicolon'])
     @pytest.mark.parametrize('var', [
         "LIC_FILES_CHKSUM",
         "SRC_URI",
