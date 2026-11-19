@@ -15,7 +15,8 @@ class TestClassOelintVarsAutorev(TestBaseClass):
         input_ = {
             'test.bb': f'{var} = "foo;;bar;;;;baz;;a=1;b=2"\n',
         }
-        self.check_for_id(self._create_args(input_), id_, occurrence)
+        self.check_for_id(self._create_args(
+            input_, ['--release=wrynose']), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.doublesemicolon'])
     @pytest.mark.parametrize('occurrence', [0])
@@ -28,7 +29,7 @@ class TestClassOelintVarsAutorev(TestBaseClass):
             'test.bb': f'{var} = "foo;;bar;;;;baz;;a=1;b=2"\n',
         }
         self.check_for_id(self._create_args(
-            input_, ['--release=blacksail']), id_, occurrence)
+            input_), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.doublesemicolon'])
     @pytest.mark.parametrize('var', [
@@ -39,7 +40,8 @@ class TestClassOelintVarsAutorev(TestBaseClass):
         input_ = {
             'test.bb': f'{var} = "foo;;bar;;;;baz;;a=1;b=2"\n',
         }
-        self.fix_and_check(self._create_args_fix(input_), id_)
+        self.fix_and_check(self._create_args_fix(
+            input_, ['--release=wrynose']), id_)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.doublesemicolon'])
     @pytest.mark.parametrize('occurrence', [0])
@@ -51,4 +53,5 @@ class TestClassOelintVarsAutorev(TestBaseClass):
         input_ = {
             'test.bb': f'{var} = "foo;bar;baz;a=1;b=2"\n',
         }
-        self.check_for_id(self._create_args(input_), id_, occurrence)
+        self.check_for_id(self._create_args(
+            input_, ['--release=wrynose']), id_, occurrence)

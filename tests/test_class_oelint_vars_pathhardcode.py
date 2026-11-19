@@ -61,7 +61,8 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
             input_ = {
                 'oelint_adv_test.bb': self.__generate_sample_code(variation),
             }
-            self.check_for_id(self._create_args(input_, ['--release=wrynose']), id_, occurrence)
+            self.check_for_id(self._create_args(
+                input_, ['--release=wrynose']), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.pathhardcode'])
     @pytest.mark.parametrize('occurrence', [1])
@@ -79,7 +80,7 @@ class TestClassOelintVarsPathHardcode(TestBaseClass):
             input_ = {
                 'oelint_adv_test.bb': self.__generate_sample_code(variation),
             }
-            self.check_for_id(self._create_args(input_, ['--release=blacksail']), id_, occurrence)
+            self.check_for_id(self._create_args(input_), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.vars.pathhardcode'])
     @pytest.mark.parametrize('occurrence', [0])

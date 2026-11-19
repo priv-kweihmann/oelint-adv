@@ -31,7 +31,7 @@ class TestClassOelintVarRootFSCmdSemiColon(TestBaseClass):
                              )
     def test_bad_new(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(
-            input_, ['--release=blacksail']), id_, occurrence)
+            input_), id_, occurrence)
 
     @pytest.mark.parametrize('id_', ['oelint.var.rootfspostcmd'])
     @pytest.mark.parametrize('occurrence', [0])
@@ -59,4 +59,4 @@ class TestClassOelintVarRootFSCmdSemiColon(TestBaseClass):
                              )
     def test_good_new(self, input_, id_, occurrence):
         self.check_for_id(self._create_args(
-            input_, ['--release=blacksail']), id_, occurrence)
+            input_), id_, occurrence)
