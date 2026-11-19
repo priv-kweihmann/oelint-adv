@@ -11,8 +11,8 @@ class Tweaks:
     standard_data_path = os.path.join(
         os.path.dirname(__file__), 'data', 'oelint.json')
 
-    DEFAULT_RELEASE = 'wrynose'
-    DEVELOPMENT_RELEASE = 'blacksail'
+    DEFAULT_RELEASE = 'blacksail'
+    DEVELOPMENT_RELEASE = 'garburn'
 
     _map = {
         "inky": {},
@@ -54,6 +54,7 @@ class Tweaks:
         "whinlatter": {},
         "wrynose": {},
         "blacksail": {},
+        "garburn": {},
     }
 
     @staticmethod
