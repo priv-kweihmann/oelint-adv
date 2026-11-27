@@ -23,16 +23,19 @@ class VarSRCUriFirstFile(Rule):
         def extract_fetcher(item, prepend=False):
             lines = [y.strip('"') for y in item.get_items() if y]
 
+            _found = []
             for x in lines:
                 if x == INLINE_BLOCK:
-                    _fetcher.append(('inline', item.InFileLine))
+                    _found.append(('inline', item))
                     continue
-                _url = stash.GetScrComponents(x)
-                if _url['scheme']:
-                    if prepend:
-                        _fetcher.insert(0, (_url['scheme'], item.InFileLine))
-                    else:
-                        _fetcher.append((_url['scheme'], item.InFileLine))
+                for y in stash.ExpandTerm(_file, x).split():
+                    _url = stash.GetScrComponents(y)
+                    if _url['scheme']:
+                        _found.append((_url['scheme'], item))
+            if prepend:
+                _fetcher[0:0] = _found
+            else:
+                _fetcher.extend(_found)
 
         for item in items:
             if 'remove' in item.SubItems:
@@ -47,5 +50,6 @@ class VarSRCUriFirstFile(Rule):
 
         if _fetcher:
             if any(x[0] not in ['file', 'inline'] for x in _fetcher) and _fetcher[0][0] == 'file':
-                res += self.finding(item.Origin, _fetcher[0][1])
+                _first = _fetcher[0][1]
+                res += self.finding(_first.Origin, _first.InFileLine)
         return res
